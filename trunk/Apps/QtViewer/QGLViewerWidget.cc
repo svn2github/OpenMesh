@@ -705,7 +705,7 @@ QGLViewerWidget::del_draw_mode(const std::string& _s)
 #endif
 
   popup_menu_->removeAction(*it);
-  QActionGroup *grp = draw_modes_group_;
+  //QActionGroup *grp = draw_modes_group_;
 
 }
 
