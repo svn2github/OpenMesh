@@ -335,7 +335,7 @@ private:
     typename MeshType::HalfedgeHandle   heh;
 
     // find boundary edge
-    for( fe_it=_m.fe_iter( _fh ); fe_it && !_m.is_boundary( fe_it ); ++fe_it );
+    for( fe_it=_m.fe_iter( _fh ); fe_it && !_m.is_boundary( fe_it ); ++fe_it ) {};
 
     // use precomputed, already inserted but not linked vertices
     vhl = _m.property(ep_nv_, fe_it).first;
