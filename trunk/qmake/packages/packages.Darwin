@@ -1,0 +1,30 @@
+
+################################################################################
+# INCLUDE Packages
+################################################################################
+
+defineTest( qt ) {
+  QT += opengl network script sql
+  export(QT)
+}
+
+defineTest( glew ) {
+  INCLUDEPATH *= /Users/sattler/acg/glew/include/GL
+  export(INCLUDEPATH)
+  LIBS *= -L/Users/sattler/acg/glew/lib -lGLEW
+  export(LIBS)
+}
+
+defineTest( glut ) {
+  INCLUDEPATH *= /System/Library/Frameworks/GLUT.framework/Headers
+  export(INCLUDEPATH)
+  LIBS *= -framework GLUT
+  export(LIBS)
+}
+
+defineTest( openmesh ) {
+  QMAKE_LIBDIR += $${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY}
+  LIBS+= -install_name$${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY} -lCore
+  export(QMAKE_LIBDIR)
+  export(LIBS)
+}

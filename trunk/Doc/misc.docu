@@ -1,0 +1,93 @@
+//-----------------------------------------------------------------------------
+
+
+/** \page naming_conventions Naming Conventions
+
+The following naming conventions are used for the OpenMesh code:
+
+<b>Files:</b>
+  \li \c MyClass.cc for C++-Implementation of class \c MyClass
+  \li \c MyClass.hh for C++-Header of class \c MyClass
+
+<b>Classes:</b>
+  \li Class names start with a capital letter: \c MyClass
+  \li Class templates end with \c T: \c MyClassTemplateT
+
+<b>Variables:</b>
+  \li One leading underscore for parameters in function-calls: \c _var
+  \li One trailing underscore for member-variables: \c var_
+  \li Two trailing underscores for static member-variables: \c var__
+
+<b>Functions:</b>
+  \li Words are separated by underscores: \c my_function()
+		 
+<b>Accessing members:</b>
+  \li To get the member \c xxx_ use <tt> const& xxx() const </tt>
+  \li To set the member \c xxx_ use <tt> void set_xxx(arg)  </tt>
+  
+**/
+
+
+//-----------------------------------------------------------------------------
+
+
+/** \page compiling Compiling OpenMesh
+
+\section compilers Tested compilers
+
+%OpenMesh has been tested sucessfully for the following operating
+systems / compilers:
+
+<table>
+
+<tr><td> Linux </td><td>
+gcc 4.0.x<br>
+gcc 4.1.x<br>
+gcc 4.2.x<br>
+gcc 4.3.x<br>
+</td></tr>
+
+<tr><td> Windows </td><td> 
+Microsoft Visual Studio 2008<br>
+</td></tr>
+
+<tr><td> MacOS X <br>(Panther and Tiger)</td><td> 
+gcc 3.3 <br>
+gcc 4.0 <br>
+</td></tr>
+
+</table>
+
+
+\section sec_compiling_unix Unix
+
+Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+In order to compile and install OpenMesh, enter following commands in OpenMesh's root directory:<br><br>
+<tt>
+qmake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+sudo make install&nbsp;## Install OpenMesh (as root)
+</tt><br><br>
+When using the \c qmake command, make sure to use Qt version 4 (some linux distributions<br>
+use the link \c qmake-qt4 against the executable).
+
+\section sec_compiling_windows Windows
+
+For Microsoft Visual Studio 2008, you can use
+the predefined solution file <tt>Core/OpenMesh_Core.vcproj</tt> and <tt>Tools/OpenMesh_Tools.vcproj</tt> 
+
+\section sec_compiling_macosx MacOSX
+
+Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
+<tt>
+qmake -macx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+sudo make install&nbsp;## Install OpenMesh (as root)
+</tt>
+
+
+**/
+
+
+//-----------------------------------------------------------------------------

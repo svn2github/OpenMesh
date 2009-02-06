@@ -1,0 +1,167 @@
+
+################################################################################
+# This is a library
+################################################################################
+
+
+################################################################################
+# Needed Qt packages and build plugin
+################################################################################
+
+CONFIG += qt uitools opengl thread debug_and_release 
+
+QT += opengl network script sql webkit
+
+################################################################################
+# Add toplevel directory to include path
+# TOPDIR has to be specified in a .qmake.cach file in your projects toplevel 
+# directory
+################################################################################
+INCLUDEPATH = $$quote( $${TOPDIR} )
+DEPENDPATH  = $$quote(  $${TOPDIR} )
+
+################################################################################
+# Define header Extension
+# This will also override the header extension for uic output
+# ( Do not change to += otherwise uic output will end with .h ! )
+################################################################################
+QMAKE_EXT_H = .hh .h
+
+################################################################################
+# Architecture detection
+################################################################################
+include( architecture.include )
+
+################################################################################
+# Helper functions
+################################################################################
+include( functions.include )
+
+################################################################################
+# Custom settings for compiler flags and similar
+################################################################################
+include( compiler.include)
+
+################################################################################
+# Extra target definitions
+################################################################################
+include( targets.include )
+
+################################################################################
+# Global package definitions
+################################################################################
+include( packages/packages.$${SYSTEMTYPE} )
+
+################################################################################
+# Local package definitions
+# These lines will include a file from a .qmake directory inside your home.
+# this file will overwrite existing setting
+################################################################################
+
+unix { 
+	HOME=$$system(echo ~) 
+} 
+#else {
+	#message( TODO : Define Home in Windows )
+#}
+
+exists( $${HOME}/.qmake/config.$${SYSTEMTYPE} ) {
+	include( $${HOME}/.qmake/config.$${SYSTEMTYPE} ) 
+}
+
+################################################################################
+# Set standard build directories 
+# ( Everything generated while compiling will go # into a per architecture 
+#   directory )
+################################################################################
+OBJECTS_DIR = tmp/$$BUILDDIRECTORY
+MOC_DIR = tmp/$$BUILDDIRECTORY
+UI_DIR = tmp/$$BUILDDIRECTORY 
+
+################################################################################
+# type definitions
+################################################################################
+
+# This function sets all parameters required to build a plugin
+defineTest(Plugin) {
+	unix{
+		TEMPLATE = lib		
+	}	
+	win32 {
+		TEMPLATE = vclib
+		TARGET = $$replace(TARGET, - , _)
+		export(TARGET)
+		QMAKE_INCDIR += $${TOPDIR}/OpenFlipper/BasePlugin
+		export(QMAKE_INCDIR)       
+  		LIBS+= -L$${TOPDIR}/OpenFlipper/$${BUILDDIRECTORY} -lPluginLib		
+		export(LIBS)
+		DEPENDPATH += $${TOPDIR}/OpenFlipper/$${BUILDDIRECTORY} 
+		DEFINES += ACGDLL USEACG
+		export(DEFINES)
+		export(DEPENDPATH)
+		glut()
+	}
+        macx {
+ 		glut()
+        }
+	export(TEMPLATE)
+	CONFIG *= plugin
+	export(CONFIG)
+	DESTDIR = $${TOPDIR}/OpenFlipper/Plugins/$${SYSTEMTYPE}/$${ARCHITECTURE}/$${MODE}	
+	export(DESTDIR)	
+	acg()
+	openmesh()
+	glew()
+	defineTargets()
+}
+
+defineTest(Library) {
+	unix{
+		TEMPLATE = lib
+		contains( OPERATING_SYSTEM, Darwin) {
+			CONFIG -= static
+			export(CONFIG)
+		}
+	}
+	win32 {
+		TEMPLATE = vclib
+	}
+	export(TEMPLATE)
+	DESTDIR = lib/$$BUILDDIRECTORY
+	export(DESTDIR)
+	defineTargets()
+	UI_DIR = include
+	export(UI_DIR)
+}
+
+defineTest(Application) {
+	unix {
+		TEMPLATE = app
+	}
+	win32 {
+		TEMPLATE = vcapp
+	}
+	macx {
+		CONFIG -= app_bundle
+		export( CONFIG )
+	}
+	export(TEMPLATE)
+	DESTDIR = $$BUILDDIRECTORY
+	export(DESTDIR)
+	defineTargets()
+}
+
+
+defineTest(Subdirs) {
+	unix {
+        	TEMPLATE = subdirs
+	}
+	win32 {
+		TEMPLATE = vcsubdirs
+	}
+        export(TEMPLATE)
+        CONFIG += ordered
+        export(CONFIG)
+	defineTargets()
+}
+

@@ -1,0 +1,41 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenMesh_Apps_Decimating", "Apps\Decimating\OpenMesh_Apps_Decimating.vcproj", "{2F3AB3BA-D857-4328-9CBC-C2A27F8B2CF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ED38FC0A-3C42-4D41-B234-B2912430DE52} = {ED38FC0A-3C42-4D41-B234-B2912430DE52}
+		{682CF0FD-24AD-44AC-8438-A6BECD7ABE1C} = {682CF0FD-24AD-44AC-8438-A6BECD7ABE1C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenMesh_Apps_ProgViewer", "Apps\ProgViewer\OpenMesh_Apps_ProgViewer.vcproj", "{6CC92D44-A0AC-47D0-9482-D983B1F27E63}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ED38FC0A-3C42-4D41-B234-B2912430DE52} = {ED38FC0A-3C42-4D41-B234-B2912430DE52}
+		{682CF0FD-24AD-44AC-8438-A6BECD7ABE1C} = {682CF0FD-24AD-44AC-8438-A6BECD7ABE1C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenMesh_Core", "Core\OpenMesh_Core.vcproj", "{ED38FC0A-3C42-4D41-B234-B2912430DE52}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenMesh_Tools", "Tools\OpenMesh_Tools.vcproj", "{682CF0FD-24AD-44AC-8438-A6BECD7ABE1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F3AB3BA-D857-4328-9CBC-C2A27F8B2CF8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2F3AB3BA-D857-4328-9CBC-C2A27F8B2CF8}.Release|Win32.ActiveCfg = Release|Win32
+		{6CC92D44-A0AC-47D0-9482-D983B1F27E63}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6CC92D44-A0AC-47D0-9482-D983B1F27E63}.Release|Win32.ActiveCfg = Release|Win32
+		{ED38FC0A-3C42-4D41-B234-B2912430DE52}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ED38FC0A-3C42-4D41-B234-B2912430DE52}.Debug|Win32.Build.0 = Debug|Win32
+		{ED38FC0A-3C42-4D41-B234-B2912430DE52}.Release|Win32.ActiveCfg = Release|Win32
+		{ED38FC0A-3C42-4D41-B234-B2912430DE52}.Release|Win32.Build.0 = Release|Win32
+		{682CF0FD-24AD-44AC-8438-A6BECD7ABE1C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{682CF0FD-24AD-44AC-8438-A6BECD7ABE1C}.Debug|Win32.Build.0 = Debug|Win32
+		{682CF0FD-24AD-44AC-8438-A6BECD7ABE1C}.Release|Win32.ActiveCfg = Release|Win32
+		{682CF0FD-24AD-44AC-8438-A6BECD7ABE1C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

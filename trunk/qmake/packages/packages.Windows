@@ -1,0 +1,41 @@
+
+################################################################################
+# INCLUDE Packages
+################################################################################
+
+
+defineTest( glew ) {
+  INCLUDEPATH *= c:\glew\include
+  export(INCLUDEPATH)
+  LIBS *= -Lc:\glew\lib -lglew32
+  export(LIBS)
+}
+
+defineTest( qt ) {
+
+}
+
+defineTest( glut ) {
+  INCLUDEPATH *= c:\glut\include
+  export(INCLUDEPATH)
+  LIBS *= -Lc:\glut\lib -lglut32
+  export(LIBS)
+}
+
+defineTest( openmp ) {
+	QMAKE_CXXFLAGS_DEBUG += /openmp
+	QMAKE_CXXFLAGS_RELEASE += /openmp
+	export(QMAKE_CXXFLAGS_DEBUG)
+	export(QMAKE_CXXFLAGS_RELEASE)
+}
+
+defineTest( openmesh ) {
+  DEFINES += _USE_MATH_DEFINES NOMINMAX
+  QMAKE_LIBDIR += $${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY}
+  LIBS+= -L$${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY} -lCore 
+  LIBS+= -L$${TOPDIR}/OpenMesh/Tools/lib/$${BUILDDIRECTORY} -lTools 
+  export(DEFINES)
+  export(QMAKE_LIBDIR)
+  export(LIBS)
+}
+
