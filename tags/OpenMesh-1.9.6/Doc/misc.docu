@@ -1,0 +1,77 @@
+//-----------------------------------------------------------------------------
+
+
+/** \page naming_conventions Naming Conventions
+
+The following naming conventions are used for the OpenMesh code:
+
+<b>Files:</b>
+  \li \c MyClass.cc for C++-Implementation of class \c MyClass
+  \li \c MyClass.hh for C++-Header of class \c MyClass
+
+<b>Classes:</b>
+  \li Class names start with a capital letter: \c MyClass
+  \li Class templates end with \c T: \c MyClassTemplateT
+
+<b>Variables:</b>
+  \li One leading underscore for parameters in function-calls: \c _var
+  \li One trailing underscore for member-variables: \c var_
+  \li Two trailing underscores for static member-variables: \c var__
+
+<b>Functions:</b>
+  \li Words are separated by underscores: \c my_function()
+		 
+<b>Accessing members:</b>
+  \li To get the member \c xxx_ use <tt> const& xxx() const </tt>
+  \li To set the member \c xxx_ use <tt> void set_xxx(arg)  </tt>
+  
+**/
+
+
+//-----------------------------------------------------------------------------
+
+
+/** \page compiling Compiling OpenMesh
+
+\section compilers Tested compilers
+
+%OpenMesh has been tested sucessfully for the following operating
+systems / compilers:
+
+<table>
+
+<tr><td> Linux </td><td>
+gcc 3.x<br>
+gcc 4.0.x<br>
+gcc 4.1.x<br>
+</td></tr>
+
+<tr><td> Windows </td><td> 
+Microsoft VisualC++ .NET 2002<br>
+Microsoft VisualC++ .NET 2003
+</td></tr>
+
+<tr><td> MacOS X <br>(Panther and Tiger)</td><td> 
+gcc 3.3 <br>
+gcc 4.0 <br>
+</td></tr>
+
+</table>
+
+
+\section sec_compiling_unix Unix
+
+At the moment you should use our tool \c acgmake to compile %OpenMesh.
+See the acgmake documentation for installation/configuration hints.
+
+
+\section sec_compiling_windows Windows
+
+For Microsoft Visual C++ .NET 2003, you can use
+the predefined solution file <tt>Win/msvc7/OpenMesh.sln</tt>.
+
+
+**/
+
+
+//-----------------------------------------------------------------------------

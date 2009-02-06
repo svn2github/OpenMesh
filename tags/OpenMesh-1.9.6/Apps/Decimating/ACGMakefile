@@ -1,0 +1,29 @@
+#==  SYSTEM PART -- DON'T TOUCH  ==============================================
+include $(ACGMAKE)/Config
+#==============================================================================
+
+CXX_CFLAGS += -DQT_THREAD_SUPPORT
+
+USE_OSG    := no
+
+ifeq ($(USE_OSG),yes)
+  CXX_CFLAGS += -DOM_USE_OSG=1
+endif
+
+SUBDIRS	    = $(call find-subdirs)
+
+ifeq ($(USE_OSG),yes)
+  PACKAGES   := OSG qt4 glut opengl
+else
+  PACKAGES   := qt4 glut opengl
+endif
+
+
+PROJ_LIBS   = OpenMesh/Apps/QtViewer OpenMesh/Tools OpenMesh/Core
+
+MODULES    := moc4 cxx
+
+
+#==  SYSTEM PART -- DON'T TOUCH  ==============================================
+include $(ACGMAKE)/Rules
+#==============================================================================

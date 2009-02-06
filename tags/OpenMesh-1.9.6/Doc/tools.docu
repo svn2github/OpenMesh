@@ -1,0 +1,13 @@
+//-----------------------------------------------------------------------------
+
+/** \page tools_docu OpenMesh Tools Documentation
+
+- \ref decimater_docu
+- \ref subdivider_docu
+- \ref vdpm_docu
+- Miscellaneous
+  - \ref OpenMesh::StripifierT
+
+*/
+
+// ----------------------------------------------------------------------------

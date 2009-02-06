@@ -1,0 +1,98 @@
+/** \page tutorial_06 Using mesh traits and attributes
+
+this example shows:
+
+- How to change the data type for positions, normals, colors, and texture,
+- How to add standard properties using traits.
+
+In the previous tutorial (\ref tutorial_05) we learned to use standard
+properties. Unlike the custom properties, where the user specifies the
+data type by passing the type to the handle (e.g. \c
+MyMesh::FPropHandleT< <b>int</b>>), the data types of the standard
+properties are defined by so-called mesh traits. With traits we can
+customize and extend the mesh data structure. We can do this by
+changing three important features
+
+-# changing data type for positions, normals, colors, and texture
+   coordinates 
+-# adding standard properties using \c OpenMesh::Attributes.
+-# extend mesh entities Vertex, Face, Edge, and Halfedge
+   (see tutorial '\ref tutorial_07')
+
+Let's start. Every custom traits should derive from the default traits
+
+\dontinclude 06-attributes/attributes.cc 
+\skipline struct MyTraits
+
+As mentioned, we can change the basic data types for the basic types
+\c MyMesh::Point, \c MyMesh::Normal, \c MyMesh::Color, and \c
+MyMesh::TexCoord. We can use the provided vector class or we use a
+different one from another library. Here we simply replace the default
+type \c OpenMesh::Vec3f (defined in the \c OpenMesh::DefaultTraits)
+for positions and normals with \c OpenMesh::Vec3d
+
+\skipline Vec3d
+\skipline Vec3d
+
+(In general it's better to have the same scalar type for the point and
+normal vector, for instance \c double in this case. Otherwise we have
+to casts quite a lot depending on the implementation of the vector class.)
+
+The second feature are attributes. Using attributes allows us to do two things
+
+-# indicate the usage of standard properties at compile time.
+-# set special features, which influences the behaviour of the
+   mesh.
+
+Following attributes (see also OpenMesh::Attributes) are available
+
+- OpenMesh::Attributes::Normal
+- OpenMesh::Attributes::Color
+- OpenMesh::Attributes::TexCoord
+- OpenMesh::Attributes::Status
+- OpenMesh::Attributes::PrevHalfedge
+
+Apparently the first four attributes control the integration of the
+standard properties Normal, Color, TexCoord and Status. Recall the
+last tutorial, where used the request-methods to have normals. Now we use the
+attributes to achieve the same goal
+
+\skipline VertexAttributes
+\skipline FaceAttributes
+
+Be aware that theses settings overwrite the ones of the parent traits
+class! As we usually derive from the DefaultTraits let's have a close look.
+
+Actually the struct \c OpenMesh::DefaultTraits is merely empty. It solely
+defines the types for \c Point, \c Normal, \c TexCoord, and \c Color
+and one attribute, that we used implicitly all the time:
+
+\skipline HalfedgeAttributes
+
+The attribute \c PrevHalfedge is different, as it does not control a
+property.  Yet it has a great impact on the resulting mesh type, as it
+adds additional information to the halfedge structure. The impact
+is twofold:
+
+-# fast access to previous halfedge
+-# increase of memory consumption
+
+Using this feature depends highly on our needs. One situation where
+the previous halfedges are quite handy, is the mesh member function
+add_face(). The execution time for the member function drops
+dramatically, when the information about the previous halfedge is
+available. Usually we want to have this information. But if not, because we
+must save memory, we can easily remove it with
+
+\skipline HalfedgeAttributes
+
+Then we need 8 bytes less per edge, which can be quite a lot as one can
+derive from the Euler formula (\f$V-E+F=2 (1-g)\f$), that for a regular
+triangle meshes with genus \f$g=0\f$ the number of edges \f$E\f$is approximately
+three times the number of vertices \f$V\f$: \f$ E \approx 3 \cdot V\f$.
+
+The complete source looks like this:
+
+\include 06-attributes/attributes.cc
+
+*/
