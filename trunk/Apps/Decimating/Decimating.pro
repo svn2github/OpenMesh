@@ -3,23 +3,13 @@
 ################################################################################
 
 contains( OPENFLIPPER , OpenFlipper ){
-	include( $$TOPDIR/qmake/all.include )
+        include( $$TOPDIR/qmake/all.include )
 } else {
-	include( $$TOPDIR/OpenMesh/qmake/all.include )
+        include( $$TOPDIR/OpenMesh/qmake/all.include )
 }
 
-INCLUDEPATH += ../../..
+Subdirs()
+SUBDIRS  = commandline gui  
 
-Application()
-glew()
-glut()
-openmesh()
-
-DIRECTORIES = . ../QtViewer
-
-# Input
-HEADERS += $$getFilesFromDir($$DIRECTORIES,*.hh)
-SOURCES += $$getFilesFromDir($$DIRECTORIES,*.cc)
-FORMS   += $$getFilesFromDir($$DIRECTORIES,*.ui)
 
 ################################################################################
