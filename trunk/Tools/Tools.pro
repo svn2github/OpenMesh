@@ -22,7 +22,7 @@ win32 {
 }
 
 macx {
-      # Post process
+      # Set library binary header to the correct path
       QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${TOPDIR}/OpenMesh/Tools/lib/$${BUILDDIRECTORY}/
       export(QMAKE_LFLAGS_SONAME)
 }
