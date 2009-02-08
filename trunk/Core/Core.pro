@@ -24,6 +24,12 @@ win32 {
  }
 }
 
+macx {
+      # Post process
+      QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY}/
+      export(QMAKE_LFLAGS_SONAME)
+}
+
 # Input
 HEADERS += $$getFilesFromDir($$DIRECTORIES,*.hh)
 SOURCES += $$getFilesFromDir($$DIRECTORIES,*.cc)
