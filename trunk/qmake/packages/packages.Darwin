@@ -9,9 +9,9 @@ defineTest( qt ) {
 }
 
 defineTest( glew ) {
-  INCLUDEPATH *= /Users/sattler/acg/glew/include/GL
+  INCLUDEPATH *= /sw/include/GL
   export(INCLUDEPATH)
-  LIBS *= -L/Users/sattler/acg/glew/lib -lGLEW
+  LIBS *= -L/sw/lib -lGLEW
   export(LIBS)
 }
 
@@ -24,7 +24,14 @@ defineTest( glut ) {
 
 defineTest( openmesh ) {
   QMAKE_LIBDIR += $${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY}
-  LIBS+= -install_name$${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY} -lCore
+  LIBS += -lCore
+  export(QMAKE_LIBDIR)
+  export(LIBS)
+}
+
+defineTest( openmesh_tools ) {
+  QMAKE_LIBDIR += $${TOPDIR}/OpenMesh/Tools/lib/$${BUILDDIRECTORY}
+  LIBS += -lTools
   export(QMAKE_LIBDIR)
   export(LIBS)
 }
