@@ -39,8 +39,11 @@
 
 #include "DecimaterViewerWidget.hh"
 
+#ifdef ARCH_DARWIN
+#include <glut.h>
+#else
 #include <GL/glut.h>
-
+#endif
 
 void usage_and_exit(int xcode);
 
