@@ -39,7 +39,11 @@
 #include <QMenuBar>
 #include <QFileDialog>
 
+#ifdef ARCH_DARWIN
+#include <glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 #include "MeshViewerWidget.hh"
 
