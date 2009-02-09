@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="gui"
-	ProjectGUID="{F17CCB46-3679-3DDF-BBEE-1D7CDB5EB870}"
+	Name="DecimaterGui"
+	ProjectGUID="{2939AD4A-35B4-3C5A-8EFA-14D3A3C3B25A}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -45,7 +45,7 @@
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="Windows_32_Debug\gui.exe"
+				OutputFile="Windows_32_Debug\DecimaterGui.exe"
 				ProgramDatabaseFile=""
 				SubSystem="2"
 				SuppressStartupBanner="true"/>
@@ -100,7 +100,7 @@
 				IgnoreImportLibrary="true"
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
-				OutputFile="Windows_32_Release\gui.exe"
+				OutputFile="Windows_32_Release\DecimaterGui.exe"
 				ProgramDatabaseFile=""
 				SubSystem="2"
 				SuppressStartupBanner="true"/>
