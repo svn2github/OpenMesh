@@ -1,0 +1,68 @@
+
+################################################################################
+# INCLUDE Packages
+################################################################################
+
+
+defineTest( glew ) {
+
+  #######################################
+  ## Enter here the correct path to GLEW
+  #######################################
+
+  GLEW_PATH = c:\glew
+
+  #######################################
+
+  !exists ( $${GLEW_PATH} ) {
+    error (ERROR: GLEW not found or wrong path entry in OpenMesh\qmake\packages\packages.Windows!)
+  }
+  INCLUDEPATH *= $${GLEW_PATH}\include
+  export(INCLUDEPATH)
+  LIBS *= -L$${GLEW_PATH}\lib -lglew32
+  export(LIBS)
+}
+
+defineTest( qt ) {
+  CONFIG *= uitools
+  export(CONFIG)
+  QT += opengl network script sql
+  export(QT)
+}
+
+defineTest( glut ) {
+
+  #######################################
+  ## Enter here the correct path to GLUT
+  #######################################
+
+  GLUT_PATH = c:\glut
+
+  ########################################
+
+  !exists ( $${GLUT_PATH} ) {
+    error (ERROR: GLUT not found or wrong path entry in OpenMesh\qmake\packages\packages.Windows!)
+  }
+  INCLUDEPATH *= $${GLUT_PATH}\include
+  export(INCLUDEPATH)
+  LIBS *= -L$${GLUT_PATH}\lib -lglut32
+  export(LIBS)
+}
+
+defineTest( openmp ) {
+	QMAKE_CXXFLAGS_DEBUG += /openmp
+	QMAKE_CXXFLAGS_RELEASE += /openmp
+	export(QMAKE_CXXFLAGS_DEBUG)
+	export(QMAKE_CXXFLAGS_RELEASE)
+}
+
+defineTest( openmesh ) {
+  DEFINES += _USE_MATH_DEFINES NOMINMAX
+  QMAKE_LIBDIR += $${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY}
+  LIBS+= -L$${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY} -lCore 
+  LIBS+= -L$${TOPDIR}/OpenMesh/Tools/lib/$${BUILDDIRECTORY} -lTools 
+  export(DEFINES)
+  export(QMAKE_LIBDIR)
+  export(LIBS)
+}
+

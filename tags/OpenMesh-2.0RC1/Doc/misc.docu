@@ -1,0 +1,121 @@
+//-----------------------------------------------------------------------------
+
+
+/** \page naming_conventions Naming Conventions
+
+The following naming conventions are used for the OpenMesh code:
+
+<b>Files:</b>
+  \li \c MyClass.cc for C++-Implementation of class \c MyClass
+  \li \c MyClass.hh for C++-Header of class \c MyClass
+
+<b>Classes:</b>
+  \li Class names start with a capital letter: \c MyClass
+  \li Class templates end with \c T: \c MyClassTemplateT
+
+<b>Variables:</b>
+  \li One leading underscore for parameters in function-calls: \c _var
+  \li One trailing underscore for member-variables: \c var_
+  \li Two trailing underscores for static member-variables: \c var__
+
+<b>Functions:</b>
+  \li Words are separated by underscores: \c my_function()
+		 
+<b>Accessing members:</b>
+  \li To get the member \c xxx_ use <tt> const& xxx() const </tt>
+  \li To set the member \c xxx_ use <tt> void set_xxx(arg)  </tt>
+  
+**/
+
+
+//-----------------------------------------------------------------------------
+
+
+/** \page compiling Compiling OpenMesh
+
+\section compilers Tested compilers
+
+%OpenMesh has been tested sucessfully for the following operating
+systems / compilers:
+
+<table>
+
+<tr><td> Linux </td><td>
+gcc 4.0.x<br>
+gcc 4.1.x<br>
+gcc 4.2.x<br>
+gcc 4.3.x<br>
+</td></tr>
+
+<tr><td> Windows </td><td> 
+Microsoft Visual Studio 2008<br>
+</td></tr>
+
+<tr><td> MacOS X <br>(Panther and Tiger)</td><td> 
+gcc 4.0 <br>
+</td></tr>
+
+</table>
+
+
+\section sec_compiling_unix Unix
+
+Install the following external libraries / frameworks:<br><br>
+<table>
+<tr><td>OpenGL</td><td><a href="http://www.opengl.org" target="_blank">http://www.opengl.org</a></td></tr>
+<tr><td>Qt4</td><td><a href="http://www.qtsoftware.com/downloads" target="_blank">http://www.qtsoftware.com/downloads</a></td></tr>
+<tr><td>GLEW</td><td><a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a></td></tr>
+</table><br><br>
+In order to compile and install OpenMesh, enter following commands in OpenMesh's root directory:<br><br>
+<tt>
+qmake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+</tt><br>
+When using the \c qmake command, make sure to use Qt version 4 (some linux distributions<br>
+use the link \c qmake-qt4 against the executable).
+
+\section sec_compiling_windows Windows
+
+Prerequisites:<br><br>
+If you want to use qmake to build your Visual Studio 2008 solution file,<br>
+download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
+Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
+<br>
+<br>
+Open \c OpenMesh\qmake\packages\packages.Windows in a text editor and change the include and library paths<br>
+for GLEW and GLUT such that they match the installed ones (see comments to find the right path entries).
+<ul>
+<li>In Microsoft Visual Studio 2008 open <tt> Tools->Visual Studio command prompt </tt></li>
+<li>Go to the folder of your application and call \c C:\\qt4\\bin\\qmake.exe</li>
+<li>Open the resulting visual studio solution ( *.sln )</li>
+<li>Choose which build target to use ( Debug/Release )</li>
+<li>Choose \c Build \c solution from the build menu</li>
+</ul>
+
+\section sec_compiling_macosx MacOSX
+
+Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+Because some of the examples depend on the GLEW library, it's recommended to install glew via the darwin portage
+system <a href="http://www.finkproject.org" target="_blank">fink</a>.<br>
+If you have not installed fink yet, follow the instructions given on their site in order to install it.<br>
+Type
+<tt>
+sudo fink install glew
+</tt>
+to install glew headers and libraries. ( Fink usually installs header files to \c /sw/include and libraries to \c /sw/lib. )<br>
+<br>
+( If you don't want to use fink and install the libraries manually instead -or via darwin ports-, make sure that<br>
+the right paths are specified in \c OpenMesh/qmake/packages/packages.Darwin )
+<br><br>
+In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
+<tt>
+qmake -macx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+</tt>
+
+
+**/
+
+
+//-----------------------------------------------------------------------------
