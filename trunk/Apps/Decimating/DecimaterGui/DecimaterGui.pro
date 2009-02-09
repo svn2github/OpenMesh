@@ -15,12 +15,12 @@ glew()
 glut()
 openmesh()
 
-DIRECTORIES = .. ../../QtViewer
+DIRECTORIES = ../../QtViewer ../
 
 # Input
 HEADERS += $$getFilesFromDir($$DIRECTORIES,*.hh)
-SOURCES += $$getFilesFromDir($$DIRECTORIES,*.cc)
-SOURCES -= ../decimater.cc ../../QtViewer/meshviewer.cc
-FORMS   += $$getFilesFromDir($$DIRECTORIES,*.ui)
+SOURCES += ../../QtViewer/QGLViewerWidget.cc ../../QtViewer/MeshViewerWidgetT.cc ../DecimaterViewerWidget.cc
+SOURCES += ../decimaterviewer.cc
+
 
 ################################################################################
