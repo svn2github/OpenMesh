@@ -19,8 +19,7 @@ DIRECTORIES = .. ../../QtViewer
 
 # Input
 HEADERS += $$getFilesFromDir($$DIRECTORIES,*.hh)
-SOURCES += $$getFilesFromDir($$DIRECTORIES,*.cc)
-SOURCES -= ../../QtViewer/meshviewer.cc ../subdivider.cc ../adaptive_subdivider.cc
-FORMS   += $$getFilesFromDir($$DIRECTORIES,*.ui)
+SOURCES += ../../QtViewer/QGLViewerWidget.cc ../../QtViewer/MeshViewerWidgetT.cc ../MeshViewerWidget.cc ../SubdivideWidget.cc
+SOURCES += ../qtsubdivider.cc
 
 ################################################################################
