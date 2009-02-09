@@ -83,7 +83,7 @@ the predefined solution file <tt>Core/OpenMesh_Core.vcproj</tt> and <tt>Tools/Op
 \section sec_compiling_macosx MacOSX
 
 Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
-Because some of the examples depend on the glew library, it's recommended to install glew via the darwin portage
+Because some of the examples depend on the GLEW library, it's recommended to install glew via the darwin portage
 system <a href="http://www.finkproject.org" target="_blank">fink</a>.<br>
 If you have not installed fink yet, follow the instructions given on their site in order to install it.<br>
 Type
