@@ -9,7 +9,7 @@ defineTest( qt ) {
 }
 
 defineTest( glew ) {
-  # INCLUDEPATH *= /sw/include/GL
+  INCLUDEPATH *= /sw/include/GL
   export(INCLUDEPATH)
   LIBS *= -L/sw/lib -lGLEW
   export(LIBS)
