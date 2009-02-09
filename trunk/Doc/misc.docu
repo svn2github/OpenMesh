@@ -78,7 +78,9 @@ use the link \c qmake-qt4 against the executable).
 \section sec_compiling_windows Windows
 
 Prerequisites:<br><br>
-Install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+If you want to use qmake to build your Visual Studio 2008 solution file,<br>
+download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
 Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
 <br>
 <br>
@@ -94,9 +96,7 @@ for GLEW and GLUT such that they match the installed ones (see comments to find 
 
 \section sec_compiling_macosx MacOSX
 
-If you want to use qmake to build your Visual Studio 2008 solution file,<br>
-download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
-(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br>
+Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
 Because some of the examples depend on the GLEW library, it's recommended to install glew via the darwin portage
 system <a href="http://www.finkproject.org" target="_blank">fink</a>.<br>
 If you have not installed fink yet, follow the instructions given on their site in order to install it.<br>
