@@ -101,7 +101,7 @@ public:
   typedef std::auto_ptr< mod_nf_t      >   mod_nf_o;
 
   /// default constructor
-  DecimaterViewerWidget(QWidget* _parent=0, const char* _name=0)
+  DecimaterViewerWidget(QWidget* _parent=0)
     : MeshViewerWidget(_parent), steps_(1)
   {
     timer_ = new QTimer(this);

@@ -82,7 +82,7 @@ int main(int argc, char **argv)
      }
   }
   // create widget
-  DecimaterViewerWidget w(0, "Viewer");  
+  DecimaterViewerWidget w(0);  
 //  app.setMainWidget(&w);
 
   w.resize(400, 400);
