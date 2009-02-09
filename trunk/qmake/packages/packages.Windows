@@ -5,12 +5,21 @@
 
 
 defineTest( glew ) {
-  !exists ( c:\glew ) {
+
+  #######################################
+  ## Enter here the correct path to GLEW
+  #######################################
+
+  GLEW_PATH = c:\glew
+
+  #######################################
+
+  !exists ( $${GLEW_PATH} ) {
     error (ERROR: GLEW not found or wrong path entry in OpenMesh\qmake\packages\packages.Windows!)
   }
-  INCLUDEPATH *= c:\glew\include
+  INCLUDEPATH *= $${GLEW_PATH}\include
   export(INCLUDEPATH)
-  LIBS *= -Lc:\glew\lib -lglew32
+  LIBS *= -L$${GLEW_PATH}\lib -lglew32
   export(LIBS)
 }
 
@@ -22,12 +31,21 @@ defineTest( qt ) {
 }
 
 defineTest( glut ) {
-  !exists ( c:\glut ) {
+
+  #######################################
+  ## Enter here the correct path to GLUT
+  #######################################
+
+  GLUT_PATH = c:\glut
+
+  ########################################
+
+  !exists ( $${GLUT_PATH} ) {
     error (ERROR: GLUT not found or wrong path entry in OpenMesh\qmake\packages\packages.Windows!)
   }
-  INCLUDEPATH *= c:\glut\include
+  INCLUDEPATH *= $${GLUT_PATH}\include
   export(INCLUDEPATH)
-  LIBS *= -Lc:\glut\lib -lglut32
+  LIBS *= -L$${GLUT_PATH}\lib -lglut32
   export(LIBS)
 }
 
