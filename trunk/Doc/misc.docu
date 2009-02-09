@@ -79,7 +79,7 @@ use the link \c qmake-qt4 against the executable).
 
 Prerequisites:<br><br>
 Install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
-Install the OpenGL Extension Wrangler Library from <a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a>.
+Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
 <br>
 <br>
 Open \c OpenMesh\qmake\packages\packages.Windows in a text editor and change the include and library paths<br>
