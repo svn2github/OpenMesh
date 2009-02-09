@@ -1,57 +1,44 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcproj", "{68E46D49-FF4B-337F-9909-E8CC0C457A5D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "D:/Development/OpenMesh/Core\Core.vcproj", "{68E46D49-FF4B-337F-9909-E8CC0C457A5D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tools", "Tools\Tools.vcproj", "{A84C45D6-CAE9-38A7-8A45-631F520C70CC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tools", "D:/Development/OpenMesh/Tools\Tools.vcproj", "{A84C45D6-CAE9-38A7-8A45-631F520C70CC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DecimaterGui", "Apps\Decimating\DecimaterGui\DecimaterGui.vcproj", "{A7693C18-4EB1-3014-A132-3E18D4793B29}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68E46D49-FF4B-337F-9909-E8CC0C457A5D} = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
-		{A84C45D6-CAE9-38A7-8A45-631F520C70CC} = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DecimaterGui", "D:/Development/OpenMesh/Apps/Decimating/DecimaterGui\DecimaterGui.vcproj", "{A7693C18-4EB1-3014-A132-3E18D4793B29}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mconvert", "Apps\mconvert\mconvert.vcproj", "{C136F542-FF37-35CD-BAB8-BDAB2A92474F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68E46D49-FF4B-337F-9909-E8CC0C457A5D} = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
-		{A84C45D6-CAE9-38A7-8A45-631F520C70CC} = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mconvert", "D:/Development/OpenMesh/Apps/mconvert\mconvert.vcproj", "{C136F542-FF37-35CD-BAB8-BDAB2A92474F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtViewer", "Apps\QtViewer\QtViewer.vcproj", "{C20CAA3E-676B-33FB-BEBB-892439D2118B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68E46D49-FF4B-337F-9909-E8CC0C457A5D} = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
-		{A84C45D6-CAE9-38A7-8A45-631F520C70CC} = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtViewer", "D:/Development/OpenMesh/Apps/QtViewer\QtViewer.vcproj", "{C20CAA3E-676B-33FB-BEBB-892439D2118B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Smoothing", "Apps\Smoothing\Smoothing.vcproj", "{05E35907-5935-365E-AE2C-7B3F6B8FA7B3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68E46D49-FF4B-337F-9909-E8CC0C457A5D} = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
-		{A84C45D6-CAE9-38A7-8A45-631F520C70CC} = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Smoothing", "D:/Development/OpenMesh/Apps/Smoothing\Smoothing.vcproj", "{05E35907-5935-365E-AE2C-7B3F6B8FA7B3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commandlineSubdivider", "Apps\Subdivider\commandlineSubdivider\commandlineSubdivider.vcproj", "{26A2CAD4-28E9-3300-AF02-7A8B84B95A79}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68E46D49-FF4B-337F-9909-E8CC0C457A5D} = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
-		{A84C45D6-CAE9-38A7-8A45-631F520C70CC} = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commandlineSubdivider", "D:/Development/OpenMesh/Apps/Subdivider/commandlineSubdivider\commandlineSubdivider.vcproj", "{26A2CAD4-28E9-3300-AF02-7A8B84B95A79}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commandlineAdaptiveSubdivider", "Apps\Subdivider\commandlineAdaptiveSubdivider\commandlineAdaptiveSubdivider.vcproj", "{D1560DFC-0FCD-3C10-A05D-2C3455DBD3A4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68E46D49-FF4B-337F-9909-E8CC0C457A5D} = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
-		{A84C45D6-CAE9-38A7-8A45-631F520C70CC} = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commandlineAdaptiveSubdivider", "D:/Development/OpenMesh/Apps/Subdivider/commandlineAdaptiveSubdivider\commandlineAdaptiveSubdivider.vcproj", "{D1560DFC-0FCD-3C10-A05D-2C3455DBD3A4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SubdividerGui", "Apps\Subdivider\SubdividerGui\SubdividerGui.vcproj", "{FEE7E201-E66B-3391-8A99-C01E63D13420}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68E46D49-FF4B-337F-9909-E8CC0C457A5D} = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
-		{A84C45D6-CAE9-38A7-8A45-631F520C70CC} = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SubdividerGui", "D:/Development/OpenMesh/Apps/Subdivider/SubdividerGui\SubdividerGui.vcproj", "{FEE7E201-E66B-3391-8A99-C01E63D13420}"
 EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Win32 = Debug|Win32
-		Release|Win32 = Release|Win32
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug|Win32
+		ConfigName.1 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+	GlobalSection(ProjectDependencies) = postSolution
+		{A7693C18-4EB1-3014-A132-3E18D4793B29}.0 = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
+		{A7693C18-4EB1-3014-A132-3E18D4793B29}.1 = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
+		{C136F542-FF37-35CD-BAB8-BDAB2A92474F}.0 = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
+		{C136F542-FF37-35CD-BAB8-BDAB2A92474F}.1 = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
+		{C20CAA3E-676B-33FB-BEBB-892439D2118B}.0 = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
+		{C20CAA3E-676B-33FB-BEBB-892439D2118B}.1 = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
+		{05E35907-5935-365E-AE2C-7B3F6B8FA7B3}.0 = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
+		{05E35907-5935-365E-AE2C-7B3F6B8FA7B3}.1 = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
+		{26A2CAD4-28E9-3300-AF02-7A8B84B95A79}.0 = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
+		{26A2CAD4-28E9-3300-AF02-7A8B84B95A79}.1 = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
+		{D1560DFC-0FCD-3C10-A05D-2C3455DBD3A4}.0 = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
+		{D1560DFC-0FCD-3C10-A05D-2C3455DBD3A4}.1 = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
+		{FEE7E201-E66B-3391-8A99-C01E63D13420}.0 = {68E46D49-FF4B-337F-9909-E8CC0C457A5D}
+		{FEE7E201-E66B-3391-8A99-C01E63D13420}.1 = {A84C45D6-CAE9-38A7-8A45-631F520C70CC}
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
 		{68E46D49-FF4B-337F-9909-E8CC0C457A5D}.Debug|Win32.ActiveCfg = Debug|Win32
 		{68E46D49-FF4B-337F-9909-E8CC0C457A5D}.Debug|Win32.Build.0 = Debug|Win32
 		{68E46D49-FF4B-337F-9909-E8CC0C457A5D}.Release|Win32.ActiveCfg = Release|Win32
@@ -89,7 +76,8 @@ Global
 		{FEE7E201-E66B-3391-8A99-C01E63D13420}.Release|Win32.ActiveCfg = Release|Win32
 		{FEE7E201-E66B-3391-8A99-C01E63D13420}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
 	EndGlobalSection
 EndGlobal

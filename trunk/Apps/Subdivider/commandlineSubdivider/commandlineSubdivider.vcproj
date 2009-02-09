@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib c:\qt4\lib\qtmaind.lib Core.lib Tools.lib c:\qt4\lib\QtWebKitd4.lib c:\qt4\lib\QtScriptd4.lib c:\qt4\lib\QtSqld4.lib c:\qt4\lib\QtXmld4.lib c:\qt4\lib\QtOpenGLd4.lib c:\qt4\lib\QtGuid4.lib c:\qt4\lib\QtNetworkd4.lib c:\qt4\lib\QtCored4.lib c:\qt4\lib\QtUiToolsd.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib c:\qt4\lib\qtmaind.lib d:\Development\OpenMesh\..\\OpenMesh\Core\lib\Windows_32_Debug\Core.lib D:\Development\OpenMesh/..//OpenMesh/Tools/lib/Windows_32_Debug\Tools.lib c:\qt4\lib\QtWebKitd4.lib c:\qt4\lib\QtScriptd4.lib c:\qt4\lib\QtSqld4.lib c:\qt4\lib\QtXmld4.lib c:\qt4\lib\QtOpenGLd4.lib c:\qt4\lib\QtGuid4.lib c:\qt4\lib\QtNetworkd4.lib c:\qt4\lib\QtCored4.lib c:\qt4\lib\QtUiToolsd.lib"
 				AdditionalLibraryDirectories="d:\Development\OpenMesh\..\\OpenMesh\Core\lib\Windows_32_Debug,c:\qt4\lib,D:\Development\OpenMesh/..//OpenMesh/Core/lib/Windows_32_Debug,D:\Development\OpenMesh/..//OpenMesh/Tools/lib/Windows_32_Debug"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
