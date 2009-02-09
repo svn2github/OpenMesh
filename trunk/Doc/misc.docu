@@ -102,8 +102,11 @@ Type
 <tt>
 sudo fink install glew
 </tt>
-to install glew headers and libraries. ( Fink usually installs header files to \c /sw/include and libraries to \c /sw/lib. )
+to install glew headers and libraries. ( Fink usually installs header files to \c /sw/include and libraries to \c /sw/lib. )<br>
 <br>
+( If you don't want to use fink and install the libraries manually instead -or via darwin ports-, make sure that<br>
+the right paths are specified in \c OpenMesh/qmake/packages/packages.Darwin )
+<br><br>
 In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
 <tt>
 qmake -macx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
