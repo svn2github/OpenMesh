@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="Core"
-	ProjectGUID="{AB94EE4F-08A5-39B2-96D5-97A3465686E7}"
+	ProjectGUID="{68E46D49-FF4B-337F-9909-E8CC0C457A5D}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -19,7 +19,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;d:\&quot;,&quot;..\..&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Debug&quot;,&quot;include&quot;,c:\qt4\mkspecs\default"
+				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;d:\Development&quot;,&quot;..\..&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Debug&quot;,&quot;include&quot;,c:\qt4\mkspecs\default"
 				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
 				AssemblerListingLocation="tmp\Windows_32_Debug\"
 				BufferSecurityCheck="false"
@@ -65,7 +65,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;d:\&quot;,&quot;..\..&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Release&quot;,&quot;include&quot;,c:\qt4\mkspecs\default"
+				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;d:\Development&quot;,&quot;..\..&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Release&quot;,&quot;include&quot;,c:\qt4\mkspecs\default"
 				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
 				AssemblerListingLocation="tmp\Windows_32_Release\"
 				BufferSecurityCheck="false"
