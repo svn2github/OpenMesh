@@ -2,8 +2,6 @@
 #
 ################################################################################
 
-message(1)
-
 contains( OPENFLIPPER , OpenFlipper ){
 	include( $$TOPDIR/qmake/all.include )
 } else {
