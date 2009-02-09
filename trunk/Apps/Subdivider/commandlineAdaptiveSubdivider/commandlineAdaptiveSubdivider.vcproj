@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="commandlineAdaptive"
-	ProjectGUID="{171DBF49-07B4-399B-95E8-C6DF5D4130D3}"
+	Name="commandlineAdaptiveSubdivider"
+	ProjectGUID="{DB081FEB-A936-341D-A318-AC03676DC3F1}"
 	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
@@ -19,7 +19,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;..\..\..&quot;,&quot;c:\glew\include&quot;,&quot;c:\glut\include&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Debug&quot;,&quot;tmp\Windows_32_Debug&quot;,c:\qt4\mkspecs\default"
+				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;d:\&quot;,&quot;..\..\..&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Debug&quot;,&quot;tmp\Windows_32_Debug&quot;,c:\qt4\mkspecs\default"
 				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
 				AssemblerListingLocation="tmp\Windows_32_Debug\"
 				BufferSecurityCheck="false"
@@ -39,13 +39,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib c:\qt4\lib\qtmaind.lib c:\glew\lib\glew32.lib c:\glut\lib\glut32.lib \OpenMesh\Core\lib\Windows_32_Debug\Core.lib /OpenMesh/Tools/lib/Windows_32_Debug\Tools.lib c:\qt4\lib\QtWebKitd4.lib c:\qt4\lib\QtScriptd4.lib c:\qt4\lib\QtSqld4.lib c:\qt4\lib\QtXmld4.lib c:\qt4\lib\QtOpenGLd4.lib c:\qt4\lib\QtGuid4.lib c:\qt4\lib\QtNetworkd4.lib c:\qt4\lib\QtCored4.lib c:\qt4\lib\QtUiToolsd.lib"
-				AdditionalLibraryDirectories="\OpenMesh\Core\lib\Windows_32_Debug,c:\qt4\lib,c:\glew\lib,c:\glut\lib,/OpenMesh/Core/lib/Windows_32_Debug,/OpenMesh/Tools/lib/Windows_32_Debug"
+				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib c:\qt4\lib\qtmaind.lib d:\OpenMesh\..\\OpenMesh\Core\lib\Windows_32_Debug\Core.lib D:\OpenMesh/..//OpenMesh/Tools/lib/Windows_32_Debug\Tools.lib c:\qt4\lib\QtWebKitd4.lib c:\qt4\lib\QtScriptd4.lib c:\qt4\lib\QtSqld4.lib c:\qt4\lib\QtXmld4.lib c:\qt4\lib\QtOpenGLd4.lib c:\qt4\lib\QtGuid4.lib c:\qt4\lib\QtNetworkd4.lib c:\qt4\lib\QtCored4.lib c:\qt4\lib\QtUiToolsd.lib"
+				AdditionalLibraryDirectories="d:\OpenMesh\..\\OpenMesh\Core\lib\Windows_32_Debug,c:\qt4\lib,D:\OpenMesh/..//OpenMesh/Core/lib/Windows_32_Debug,D:\OpenMesh/..//OpenMesh/Tools/lib/Windows_32_Debug"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
 				IgnoreImportLibrary="true"
 				LinkTimeCodeGeneration="0"
-				OutputFile="Windows_32_Debug\commandlineAdaptive.exe"
+				OutputFile="Windows_32_Debug\commandlineAdaptiveSubdivider.exe"
 				ProgramDatabaseFile=""
 				SubSystem="2"
 				SuppressStartupBanner="true"/>
@@ -73,7 +73,7 @@
 			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;..\..\..&quot;,&quot;c:\glew\include&quot;,&quot;c:\glut\include&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Release&quot;,&quot;tmp\Windows_32_Release&quot;,c:\qt4\mkspecs\default"
+				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;d:\&quot;,&quot;..\..\..&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Release&quot;,&quot;tmp\Windows_32_Release&quot;,c:\qt4\mkspecs\default"
 				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
 				AssemblerListingLocation="tmp\Windows_32_Release\"
 				BufferSecurityCheck="false"
@@ -93,14 +93,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib c:\qt4\lib\qtmain.lib c:\glew\lib\glew32.lib c:\glut\lib\glut32.lib Core.lib Tools.lib c:\qt4\lib\QtWebKit4.lib c:\qt4\lib\QtScript4.lib c:\qt4\lib\QtSql4.lib c:\qt4\lib\QtXml4.lib c:\qt4\lib\QtOpenGL4.lib c:\qt4\lib\QtGui4.lib c:\qt4\lib\QtNetwork4.lib c:\qt4\lib\QtCore4.lib c:\qt4\lib\QtUiTools.lib"
-				AdditionalLibraryDirectories="\OpenMesh\Core\lib\Windows_32_Release,c:\qt4\lib,c:\glew\lib,c:\glut\lib,/OpenMesh/Core/lib/Windows_32_Release,/OpenMesh/Tools/lib/Windows_32_Release"
+				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib c:\qt4\lib\qtmain.lib Core.lib Tools.lib c:\qt4\lib\QtWebKit4.lib c:\qt4\lib\QtScript4.lib c:\qt4\lib\QtSql4.lib c:\qt4\lib\QtXml4.lib c:\qt4\lib\QtOpenGL4.lib c:\qt4\lib\QtGui4.lib c:\qt4\lib\QtNetwork4.lib c:\qt4\lib\QtCore4.lib c:\qt4\lib\QtUiTools.lib"
+				AdditionalLibraryDirectories="d:\OpenMesh\..\\OpenMesh\Core\lib\Windows_32_Release,c:\qt4\lib,D:\OpenMesh/..//OpenMesh/Core/lib/Windows_32_Release,D:\OpenMesh/..//OpenMesh/Tools/lib/Windows_32_Release"
 				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="false"
 				IgnoreImportLibrary="true"
 				LinkIncremental="1"
 				LinkTimeCodeGeneration="0"
-				OutputFile="Windows_32_Release\commandlineAdaptive.exe"
+				OutputFile="Windows_32_Release\commandlineAdaptiveSubdivider.exe"
 				ProgramDatabaseFile=""
 				SubSystem="2"
 				SuppressStartupBanner="true"/>
@@ -126,134 +126,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\MeshViewerWidget.cc"/>
-			<File
-				RelativePath="..\..\QtViewer\QGLViewerWidget.cc"/>
-			<File
-				RelativePath="..\SubdivideWidget.cc"/>
-			<File
 				RelativePath="..\adaptive_subdivider.cc"/>
-			<File
-				RelativePath="..\..\QtViewer\meshviewer.cc"/>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath="..\..\QtViewer\MeshViewerWidget.hh">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						AdditionalDependencies="..\..\QtViewer\MeshViewerWidget.hh;C:\qt4\bin\moc.exe"
-						CommandLine="C:\qt4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D_USE_MATH_DEFINES -DNOMINMAX -DQT_THREAD_SUPPORT -DQT_DLL -DQT_WEBKIT_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I&quot;c:\qt4\include\QtUiTools&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include&quot; -I&quot;..\..\..&quot; -I&quot;c:\glew\include&quot; -I&quot;c:\glut\include&quot; -I&quot;c:\qt4\include\ActiveQt&quot; -I&quot;tmp\Windows_32_Debug&quot; -I&quot;tmp\Windows_32_Debug&quot; -Ic:\qt4\mkspecs\default -D_MSC_VER=1500 -DWIN32 ..\..\QtViewer\MeshViewerWidget.hh -o tmp\Windows_32_Debug\moc_MeshViewerWidget.cpp"
-						Description="MOC ..\..\QtViewer\MeshViewerWidget.hh"
-						Outputs="tmp\Windows_32_Debug\moc_MeshViewerWidget.cpp"
-						Path="c:\qt4\bin"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						AdditionalDependencies="..\..\QtViewer\MeshViewerWidget.hh;C:\qt4\bin\moc.exe"
-						CommandLine="C:\qt4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D_USE_MATH_DEFINES -DNOMINMAX -DQT_THREAD_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_WEBKIT_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I&quot;c:\qt4\include\QtUiTools&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include&quot; -I&quot;..\..\..&quot; -I&quot;c:\glew\include&quot; -I&quot;c:\glut\include&quot; -I&quot;c:\qt4\include\ActiveQt&quot; -I&quot;tmp\Windows_32_Release&quot; -I&quot;tmp\Windows_32_Release&quot; -Ic:\qt4\mkspecs\default -D_MSC_VER=1500 -DWIN32 ..\..\QtViewer\MeshViewerWidget.hh -o tmp\Windows_32_Release\moc_MeshViewerWidget.cpp"
-						Description="MOC ..\..\QtViewer\MeshViewerWidget.hh"
-						Outputs="tmp\Windows_32_Release\moc_MeshViewerWidget.cpp"
-						Path="c:\qt4\bin"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\MeshViewerWidget.hh"/>
-			<File
-				RelativePath="..\..\QtViewer\MeshViewerWidgetT.hh"/>
-			<File
-				RelativePath="..\..\QtViewer\QGLViewerWidget.hh">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						AdditionalDependencies="..\..\QtViewer\QGLViewerWidget.hh;C:\qt4\bin\moc.exe"
-						CommandLine="C:\qt4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D_USE_MATH_DEFINES -DNOMINMAX -DQT_THREAD_SUPPORT -DQT_DLL -DQT_WEBKIT_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I&quot;c:\qt4\include\QtUiTools&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include&quot; -I&quot;..\..\..&quot; -I&quot;c:\glew\include&quot; -I&quot;c:\glut\include&quot; -I&quot;c:\qt4\include\ActiveQt&quot; -I&quot;tmp\Windows_32_Debug&quot; -I&quot;tmp\Windows_32_Debug&quot; -Ic:\qt4\mkspecs\default -D_MSC_VER=1500 -DWIN32 ..\..\QtViewer\QGLViewerWidget.hh -o tmp\Windows_32_Debug\moc_QGLViewerWidget.cpp"
-						Description="MOC ..\..\QtViewer\QGLViewerWidget.hh"
-						Outputs="tmp\Windows_32_Debug\moc_QGLViewerWidget.cpp"
-						Path="c:\qt4\bin"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						AdditionalDependencies="..\..\QtViewer\QGLViewerWidget.hh;C:\qt4\bin\moc.exe"
-						CommandLine="C:\qt4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D_USE_MATH_DEFINES -DNOMINMAX -DQT_THREAD_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_WEBKIT_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I&quot;c:\qt4\include\QtUiTools&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include&quot; -I&quot;..\..\..&quot; -I&quot;c:\glew\include&quot; -I&quot;c:\glut\include&quot; -I&quot;c:\qt4\include\ActiveQt&quot; -I&quot;tmp\Windows_32_Release&quot; -I&quot;tmp\Windows_32_Release&quot; -Ic:\qt4\mkspecs\default -D_MSC_VER=1500 -DWIN32 ..\..\QtViewer\QGLViewerWidget.hh -o tmp\Windows_32_Release\moc_QGLViewerWidget.cpp"
-						Description="MOC ..\..\QtViewer\QGLViewerWidget.hh"
-						Outputs="tmp\Windows_32_Release\moc_QGLViewerWidget.cpp"
-						Path="c:\qt4\bin"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\SubdivideWidget.hh">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						AdditionalDependencies="..\SubdivideWidget.hh;C:\qt4\bin\moc.exe"
-						CommandLine="C:\qt4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D_USE_MATH_DEFINES -DNOMINMAX -DQT_THREAD_SUPPORT -DQT_DLL -DQT_WEBKIT_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I&quot;c:\qt4\include\QtUiTools&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include&quot; -I&quot;..\..\..&quot; -I&quot;c:\glew\include&quot; -I&quot;c:\glut\include&quot; -I&quot;c:\qt4\include\ActiveQt&quot; -I&quot;tmp\Windows_32_Debug&quot; -I&quot;tmp\Windows_32_Debug&quot; -Ic:\qt4\mkspecs\default -D_MSC_VER=1500 -DWIN32 ..\SubdivideWidget.hh -o tmp\Windows_32_Debug\moc_SubdivideWidget.cpp"
-						Description="MOC ..\SubdivideWidget.hh"
-						Outputs="tmp\Windows_32_Debug\moc_SubdivideWidget.cpp"
-						Path="c:\qt4\bin"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						AdditionalDependencies="..\SubdivideWidget.hh;C:\qt4\bin\moc.exe"
-						CommandLine="C:\qt4\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D_USE_MATH_DEFINES -DNOMINMAX -DQT_THREAD_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_WEBKIT_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I&quot;c:\qt4\include\QtUiTools&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtCore&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtNetwork&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtGui&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtOpenGL&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtXml&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtSql&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtScript&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include\QtWebKit&quot; -I&quot;c:\qt4\include&quot; -I&quot;..\..\..&quot; -I&quot;c:\glew\include&quot; -I&quot;c:\glut\include&quot; -I&quot;c:\qt4\include\ActiveQt&quot; -I&quot;tmp\Windows_32_Release&quot; -I&quot;tmp\Windows_32_Release&quot; -Ic:\qt4\mkspecs\default -D_MSC_VER=1500 -DWIN32 ..\SubdivideWidget.hh -o tmp\Windows_32_Release\moc_SubdivideWidget.cpp"
-						Description="MOC ..\SubdivideWidget.hh"
-						Outputs="tmp\Windows_32_Release\moc_SubdivideWidget.cpp"
-						Path="c:\qt4\bin"/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Generated Files"
-			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
-			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
-			<File
-				RelativePath="tmp\Windows_32_Debug\moc_MeshViewerWidget.cpp">
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"/>
-			</File>
-			<File
-				RelativePath="tmp\Windows_32_Release\moc_MeshViewerWidget.cpp">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"/>
-			</File>
-			<File
-				RelativePath="tmp\Windows_32_Debug\moc_QGLViewerWidget.cpp">
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"/>
-			</File>
-			<File
-				RelativePath="tmp\Windows_32_Release\moc_QGLViewerWidget.cpp">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"/>
-			</File>
-			<File
-				RelativePath="tmp\Windows_32_Debug\moc_SubdivideWidget.cpp">
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"/>
-			</File>
-			<File
-				RelativePath="tmp\Windows_32_Release\moc_SubdivideWidget.cpp">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"/>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
