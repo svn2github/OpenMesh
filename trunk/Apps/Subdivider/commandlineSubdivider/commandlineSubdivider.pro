@@ -11,16 +11,9 @@ contains( OPENFLIPPER , OpenFlipper ){
 INCLUDEPATH += ../../..
 
 Application()
-glew()
-glut()
 openmesh()
 
-DIRECTORIES = .. ../../QtViewer
-
 # Input
-HEADERS += $$getFilesFromDir($$DIRECTORIES,*.hh)
-SOURCES += $$getFilesFromDir($$DIRECTORIES,*.cc)
-SOURCES -= ../../QtViewer/meshviewer.cc ../qtsubdivider.cc ../adaptive_subdivider.cc
-FORMS   += $$getFilesFromDir($$DIRECTORIES,*.ui)
+SOURCES += ../subdivider.cc
 
 ################################################################################
