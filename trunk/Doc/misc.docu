@@ -77,8 +77,20 @@ use the link \c qmake-qt4 against the executable).
 
 \section sec_compiling_windows Windows
 
-For Microsoft Visual Studio 2008, you can use
-the predefined solution file <tt>Core/OpenMesh_Core.vcproj</tt> and <tt>Tools/OpenMesh_Tools.vcproj</tt> 
+Prerequisites:<br><br>
+Install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+Install the OpenGL Extension Wrangler Library from <a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a>.
+<br>
+<br>
+Open \c OpenMesh\qmake\packages\packages.Windows in a text editor and change the include and library paths<br>
+for GLEW and GLUT such that they match the installed ones (see comments to find the right path entries).
+<ul>
+<li>In Microsoft Visual Studio 2008 open <tt> Tools->Visual Studio command prompt </tt></li>
+<li>Go to the folder of your application and call \c C:\\qt4\\bin\\qmake.exe</li>
+<li>Open the resulting visual studio solution ( *.sln )</li>
+<li>Choose which build target to use ( Debug/Release )</li>
+<li>Choose \c Build \c solution from the build menu</li>
+</ul>
 
 \section sec_compiling_macosx MacOSX
 
