@@ -14,11 +14,11 @@ QT += opengl network script sql webkit
 
 ################################################################################
 # Add toplevel directory to include path
-# TOPDIR has to be specified in a .qmake.cach file in your projects toplevel 
+# TOPDIR has to be specified in a .qmake.cache file in your projects toplevel 
 # directory
 ################################################################################
 INCLUDEPATH = $$quote( $${TOPDIR} )
-DEPENDPATH  = $$quote(  $${TOPDIR} )
+DEPENDPATH  = $$quote( $${TOPDIR} )
 
 ################################################################################
 # Define header Extension
