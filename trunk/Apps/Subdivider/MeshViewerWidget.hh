@@ -39,6 +39,7 @@
 // -------------------- OpenMesh
 #include <OpenMesh/Apps/QtViewer/MeshViewerWidgetT.hh>
 #include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
+#include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/Composite/CompositeTraits.hh>
 
 //
@@ -66,7 +67,15 @@ public:
   ~MeshViewerWidget() {}
 
   /// open mesh
-  bool open_mesh(const char* _filename, OpenMesh::IO::Options);
+  inline bool open_mesh(const char* _filename, OpenMesh::IO::Options _opt)
+  {
+    if ( Base::open_mesh( _filename, _opt ) )
+    {
+      orig_mesh_ = mesh_;
+      return true;
+    }
+    return false;
+  }
 
   Mesh& orig_mesh() { return orig_mesh_; }
   const Mesh& orig_mesh() const { return orig_mesh_; }
