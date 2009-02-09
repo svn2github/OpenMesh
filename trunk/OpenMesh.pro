@@ -8,15 +8,14 @@ Subdirs()
 
 addSubdirs( Core )
 addSubdirs( Tools , Core )
-
-addSubdirs( Apps/Decimating/commandlineDecimater , Core Tools)
+addSubdirs( OpenMesh/Apps/commandlineDecimater , Core Tools)
 addSubdirs( Apps/Decimating/DecimaterGui , Core Tools)
 addSubdirs( Apps/mconvert , Core Tools)
 addSubdirs( Apps/QtViewer , Core Tools)
 addSubdirs( Apps/Smoothing , Core Tools)
-addSubdirs( Apps/Subdivider/commandline , Core Tools)
-addSubdirs( Apps/Subdivider/commandlineAdaptive , Core Tools)
-addSubdirs( Apps/Subdivider/gui , Core Tools)
+addSubdirs( Apps/Subdivider/commandlineSubdivider , Core Tools)
+addSubdirs( Apps/Subdivider/commandlineAdaptiveSubdivider , Core Tools)
+addSubdirs( Apps/Subdivider/SubdividerGui , Core Tools)
 
 win32 {
 	!ReleaseBuild{
