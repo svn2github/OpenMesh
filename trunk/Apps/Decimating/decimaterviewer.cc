@@ -33,7 +33,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <getopt.h>
+#include <OpenMesh/Tools/Utils/getopt.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
 
