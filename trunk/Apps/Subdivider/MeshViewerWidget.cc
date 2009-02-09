@@ -46,7 +46,7 @@ using namespace OpenMesh;
 //== IMPLEMENTATION ========================================================== 
 
 
-bool 
+inline bool 
 MeshViewerWidget::open_mesh(const char* _filename, IO::Options _opt)
 {
   if ( Base::open_mesh( _filename, _opt ) )
