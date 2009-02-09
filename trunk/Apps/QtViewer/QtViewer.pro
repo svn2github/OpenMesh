@@ -8,8 +8,6 @@ contains( OPENFLIPPER , OpenFlipper ){
 	include( $$TOPDIR/OpenMesh/qmake/all.include )
 }
 
-INCLUDEPATH += ../../..
-
 Application()
 glew()
 glut()
