@@ -61,13 +61,17 @@ gcc 4.0 <br>
 
 \section sec_compiling_unix Unix
 
-Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+Install the following external libraries / frameworks:<br><br>
+<table>
+<tr><td>OpenGL</td><td><a href="http://www.opengl.org" target="_blank">http://www.opengl.org</a></td></tr>
+<tr><td>Qt4</td><td><a href="http://www.qtsoftware.com/downloads" target="_blank">http://www.qtsoftware.com/downloads</a></td></tr>
+<tr><td>GLEW</td><td><a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a></td></tr>
+</table><br><br>
 In order to compile and install OpenMesh, enter following commands in OpenMesh's root directory:<br><br>
 <tt>
 qmake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
 make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
-sudo make install&nbsp;## Install OpenMesh (as root)
-</tt><br><br>
+</tt><br>
 When using the \c qmake command, make sure to use Qt version 4 (some linux distributions<br>
 use the link \c qmake-qt4 against the executable).
 
@@ -79,11 +83,19 @@ the predefined solution file <tt>Core/OpenMesh_Core.vcproj</tt> and <tt>Tools/Op
 \section sec_compiling_macosx MacOSX
 
 Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+Because some of the examples depend on the glew library, it's recommended to install glew via the darwin portage
+system <a href="http://www.finkproject.org" target="_blank">fink</a>.<br>
+If you have not installed fink yet, follow the instructions given on their site in order to install it.<br>
+Type
+<tt>
+sudo fink install glew
+</tt>
+to install glew headers and libraries. ( Fink usually installs header files to \c /sw/include and libraries to \c /sw/lib. )
+<br>
 In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
 <tt>
 qmake -macx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
 make release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
-sudo make install&nbsp;## Install OpenMesh (as root)
 </tt>
 
 
