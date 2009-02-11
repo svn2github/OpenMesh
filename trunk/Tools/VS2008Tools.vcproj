@@ -47,7 +47,7 @@
 				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
 				Optimization="4"
 				AdditionalIncludeDirectories="..\.."
-				PreprocessorDefinitions="UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_USE_MATH_DEFINES,NOMINMAX,QT_THREAD_SUPPORT,QT_WEBKIT_LIB,QT_SCRIPT_LIB,QT_SQL_LIB,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB"
+				PreprocessorDefinitions="UNICODE;WIN32;QT_LARGEFILE_SUPPORT;_USE_MATH_DEFINES;NOMINMAX"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
 				RuntimeLibrary="3"
@@ -123,7 +123,7 @@
 				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
 				AdditionalIncludeDirectories="..\.."
-				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_USE_MATH_DEFINES,NOMINMAX,QT_THREAD_SUPPORT,QT_NO_DEBUG,QT_WEBKIT_LIB,QT_SCRIPT_LIB,QT_SQL_LIB,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,NDEBUG"
+				PreprocessorDefinitions="NDEBUG;UNICODE;WIN32;_USE_MATH_DEFINES;NOMINMAX"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
@@ -212,19 +212,19 @@
 				>
 			</File>
 			<File
-				RelativePath="Subdivider\Uniform\Composite\CompositeT.hh"
-				>
-			</File>
-			<File
 				RelativePath="Subdivider\Adaptive\Composite\CompositeT.hh"
 				>
 			</File>
 			<File
-				RelativePath="Subdivider\Uniform\Composite\CompositeTraits.hh"
+				RelativePath="Subdivider\Uniform\Composite\CompositeT.hh"
 				>
 			</File>
 			<File
 				RelativePath="Subdivider\Adaptive\Composite\CompositeTraits.hh"
+				>
+			</File>
+			<File
+				RelativePath="Subdivider\Uniform\Composite\CompositeTraits.hh"
 				>
 			</File>
 			<File

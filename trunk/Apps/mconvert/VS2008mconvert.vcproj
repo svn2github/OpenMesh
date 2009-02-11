@@ -2,11 +2,11 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="mconvert"
-	ProjectGUID="{C136F542-FF37-35CD-BAB8-BDAB2A92474F}"
-	RootNamespace="mconvert"
-	Keyword="Qt4VSv1.0"
-	TargetFrameworkVersion="0"
+	Name="VS2008MConvert"
+	ProjectGUID="{C2F9DF8D-9293-4B6C-839C-57A38D1C873B}"
+	RootNamespace="VS2008MConvert"
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -18,11 +18,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="."
-			IntermediateDirectory="tmp\Windows_32_Debug\"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -38,51 +37,34 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				WarningLevel="0"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
-				Optimization="4"
-				AdditionalIncludeDirectories="..\..\.."
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_USE_MATH_DEFINES,NOMINMAX,QT_THREAD_SUPPORT,QT_DLL,QT_WEBKIT_LIB,QT_SCRIPT_LIB,QT_SQL_LIB,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB"
-				GeneratePreprocessedFile="0"
-				ExceptionHandling="1"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../../"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_USE_MATH_DEFINES"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				BufferSecurityCheck="false"
-				TreatWChar_tAsBuiltInType="false"
-				RuntimeTypeInfo="true"
-				AssemblerListingLocation="tmp\Windows_32_Debug\"
-				ObjectFile="tmp\Windows_32_Debug\"
-				ProgramDataBaseFileName=".\"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_USE_MATH_DEFINES,NOMINMAX,QT_THREAD_SUPPORT,QT_DLL,QT_WEBKIT_LIB,QT_SCRIPT_LIB,QT_SQL_LIB,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,_DEBUG"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				IgnoreImportLibrary="true"
-				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
-				AdditionalDependencies="gdi32.lib user32.lib ..\..\..\OpenMesh\Core\lib\Windows_32_Debug\Core.lib ..\..\..\OpenMesh\Tools\lib\Windows_32_Debug\Tools.lib"
-				OutputFile="Windows_32_Debug\mconvert.exe"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="OpenMesh\Core\lib\Windows_32_Debug"
+				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=""
-				SubSystem="2"
-				LinkTimeCodeGeneration="0"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -108,11 +90,11 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="."
-			IntermediateDirectory="tmp\Windows_32_Release\"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -128,52 +110,36 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				WarningLevel="0"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -w34100 -w34189 -Zm200 -w34100 -w34189 -w34100 -w34189"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;c:\qt4\include\QtUiTools&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtCore&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtNetwork&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtGui&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtOpenGL&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtXml&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtSql&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtScript&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include\QtWebKit&quot;,&quot;c:\qt4\include&quot;,&quot;d:\Development&quot;,&quot;..\..\..&quot;,&quot;c:\glew\include&quot;,&quot;c:\glut\include&quot;,&quot;c:\qt4\include\ActiveQt&quot;,&quot;tmp\Windows_32_Release&quot;,&quot;tmp\Windows_32_Release&quot;,c:\qt4\mkspecs\default"
-				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_USE_MATH_DEFINES,NOMINMAX,QT_THREAD_SUPPORT,QT_DLL,QT_NO_DEBUG,QT_WEBKIT_LIB,QT_SCRIPT_LIB,QT_SQL_LIB,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,NDEBUG"
-				GeneratePreprocessedFile="0"
-				ExceptionHandling="1"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="../../../"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_USE_MATH_DEFINES"
 				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
-				TreatWChar_tAsBuiltInType="false"
-				RuntimeTypeInfo="true"
-				AssemblerListingLocation="tmp\Windows_32_Release\"
-				ObjectFile="tmp\Windows_32_Release\"
-				ProgramDataBaseFileName=".\"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,_USE_MATH_DEFINES,NOMINMAX,QT_THREAD_SUPPORT,QT_DLL,QT_NO_DEBUG,QT_WEBKIT_LIB,QT_SCRIPT_LIB,QT_SQL_LIB,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				IgnoreImportLibrary="true"
-				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; &quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
-				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib Core.lib Tools.lib"
-				OutputFile="Windows_32_Release\mconvert.exe"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\Tools\lib\Windows_32_Release;..\..\Core\lib\Windows_32_Release"
-				GenerateDebugInformation="false"
-				ProgramDatabaseFile=""
-				SubSystem="2"
-				LinkTimeCodeGeneration="0"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -203,13 +169,25 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="mconvert.cc"
+				RelativePath=".\mconvert.cc"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
 		</Filter>
 	</Files>
 	<Globals>
