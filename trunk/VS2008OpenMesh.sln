@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\VS2008Core.vcproj", "{68E46D49-FF4B-337F-9909-E8CC0C457A5D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tools", "Tools\VS2008Tools.vcproj", "{A84C45D6-CAE9-38A7-8A45-631F520C70CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68E46D49-FF4B-337F-9909-E8CC0C457A5D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{68E46D49-FF4B-337F-9909-E8CC0C457A5D}.Debug|Win32.Build.0 = Debug|Win32
+		{68E46D49-FF4B-337F-9909-E8CC0C457A5D}.Release|Win32.ActiveCfg = Release|Win32
+		{68E46D49-FF4B-337F-9909-E8CC0C457A5D}.Release|Win32.Build.0 = Release|Win32
+		{A84C45D6-CAE9-38A7-8A45-631F520C70CC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A84C45D6-CAE9-38A7-8A45-631F520C70CC}.Debug|Win32.Build.0 = Debug|Win32
+		{A84C45D6-CAE9-38A7-8A45-631F520C70CC}.Release|Win32.ActiveCfg = Release|Win32
+		{A84C45D6-CAE9-38A7-8A45-631F520C70CC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
