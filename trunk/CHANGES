@@ -1,3 +1,7 @@
+
+OpenMesh 2.0-RC3:
+- Readd toplevel ACGMakefiles
+
 OpenMesh 2.0-RC2:
 - Fix for OBJ reader not reading texture coordinates correctly ( Thanks to Kamalneet Singh )
 - Fixed included Visual Studio files
