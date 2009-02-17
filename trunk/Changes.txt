@@ -1,0 +1,1 @@
+- Fix for OBJ reader not reading texture coordinates correctly ( Thanks to Kamalneet Singh )
