@@ -391,6 +391,9 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
             std::stringstream tmp( vertex );
             tmp >> value;
 
+            // Clear vertex after finished reading the line
+            vertex="";
+
             // Nothing to read here ( garbage at end of line )
             if ( tmp.fail() ) {
               continue;
@@ -432,7 +435,8 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
           // Prepare for reading next component
           ++component;
 
-        } while ( vertex.find("/") != std::string::npos );
+          // Read until line does not contain any other info
+        } while ( !vertex.empty() );
 
         component = 0;
         nV++;
