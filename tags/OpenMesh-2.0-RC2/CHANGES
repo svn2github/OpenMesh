@@ -1,0 +1,50 @@
+This file contains the changes, that have been made between two versions
+of OpenMesh. It lists only the changes yielding incompatibilities!
+
+0-12-0 -> 1-0-0
+~~~~~~~~~~~~~~~
+
+- Internal data storage has changed. Now each property of
+  each entity (vertex/face/...) is stored in a separate array. For
+  instance all face normals are in one array now.
+
+- Decimater module handling improved and corrected.
+
+- OBJReader has limited ability to read material files. The diffuse color
+  information is used to set the face color property if both are
+  available.
+
+- Added tool for View Dependent Progressive Meshes.
+  Demo applications are located in in OpenMesh/Apps/VDProgMesh.
+
+- Documentation moved to OpenMesh/Doc.
+
+- OpenMesh/Win/msvc7 contains an MS VC++ solution file and projects viles.
+
+- ASCII based file formats use C I/O functions instead of C++ I/O streams.
+  The change increased the speed of reading and writing by factor 2.
+
+- Utility to create triangle strips from a mesh.
+
+0-11-2 -> 0-12-0
+~~~~~~~~~~~~~~~~
+
+- directory structure has changed! 
+  Use script migrate.sh to adjust your existing sources and ACGMakefiles 
+  software.
+- OpenMesh::IO: The read/write methods need now an additional argument
+- Namespace MeshIO has been renamed to IO
+  Use script migrate.sh to adjust your existing sources.
+
+1-9-6 -> 2-0
+~~~~~~~~~~~~~~~~~
+
+- Reader / writer have been updated
+
+- Some general bugfixes
+
+- The usage of acgmake has become deprecated since the last release.
+  It has been entirely replaced by qmake.
+
+- Credits to Simon Floery, Canjiang Ren, Johannes Totz, Leon Kos,
+  Jean Pierre Charalambos, Mathieu Gauthier

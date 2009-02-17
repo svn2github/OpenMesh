@@ -1,0 +1,509 @@
+/** \page history Version history
+
+\htmlonly
+
+<table border=1 cellpadding=4 cellspacing=2>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>2.0</b> (2009/01/28)</td><td> 
+<ul>
+<li>Reader / writer have been updated</li>
+<li>Some general bugfixes</li>
+<li>Improved Documentation</li>
+<li>Dropped support for acgmake which has been entirely replaced by qmake</li>
+</ul>
+</tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>1.9.7</b> (2008/10/13)</td><td> 
+<ul>
+<li>Ported applications to qt4</li>
+<li>Bugfixes in Decimater</li>
+<li>Improved Documentation</li>
+<li>Dropped support for gcc 3.x compilers (This does not mean that it does not work anymore)</li>
+<li>Dropped support for Versions of Visual Studio older than 2008</li>
+</ul>
+</tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>1.1.0</b> (2007/02/26)</td><td> 
+<ul>
+<li>Fixed a VS 2005 compilation issue regarding the Sqrt3 subdivision class.</li>
+<li>Fixed GCC-4.1 compilation problems.</li>
+<li>The STL writer routine now correctly closes the <tt>"solid"</tt> block with <tt>"endsolid"</tt>.</li>
+<li>The API of the vector class has been changed slightly due to problems with some versions of GCC:<br/>
+The cast operator to the scalar type has been removed and replaced by
+the function <tt>data()</tt>. Hence, existing code like
+<blockquote>
+<tt>Vec3f vertex;</tt><br/>
+<tt>...</tt><br/>
+<tt>glVertex3fv( vertex );</tt>
+</blockquote>
+has to be changed to
+<blockquote>
+<tt>Vec3f vertex;</tt><br/>
+<tt>...</tt><br/>
+<tt>glVertex3fv( vertex.data() );</tt>
+</blockquote>
+</li>
+</ul>
+</tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>1.0.0</b> (2005/09/20)</td><td> 
+<ul>
+<li>Mainly fixed the bugs collected in beta4.</li>
+<li>Slightly changed module handling in the Decimater.</li>
+<li>Removed some parts to keep the project maintainable.</li>
+<li>Fixed MacOS compilation problems.</li>
+<li>Compatibility for latest gcc4 compilers.</li>
+</ul>
+</tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>1.0.0-beta4</b> (2004/01/20)</td><td> 
+<ul>
+<li>Bugs fixed: 1.0.0-beta3:001</li>
+<li>Documentation of module Core completed.</li>
+<li>Documentation of module Tools::Decimater and 
+    Tools::Subdivider completed.</li>
+<li>Revised class structure for uniform subdivision.</li>
+<li>Revised rule handling for composite adaptive subdivision.</li>
+</ul>
+</tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>1.0.0-beta3</b> (2003/12/04)</td><td> 
+The beta3 fixes only the known bugs in beta2.
+<ul>
+<li>Bugs fixed: 1.0.0-beta2:{001, 002, 003, 004}</li>
+<li><b>Known Bugs</b>:
+  <ul>
+    <li>001: OFFReader: Option bit not cleared before analyzing .off header.
+      <br>Symptoms: If a previously read .off file had normals/texcoords,
+          a second read of another file w/o normals or texcoords, will return
+          with option bits normals/texcoords enabled.          
+    </li>
+  </ul>
+</li>
+</ul>
+</tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>1.0.0-beta2</b> (2003/11/05)</td><td> 
+
+<ul>
+
+<li>Change of directory structure
+    <pre>
++- %OpenMesh/
+   +- Core/     # previously %OpenMesh
+   +- Tools/    # previously OpenMeshTools
+   +- Apps/     # previously OpenMeshApps
+   +- Win/      # contains all solutions files and projects for MS VC++
+   +- Doc/      # contains all documentation
+    </pre>
+    Note! The supplied script \c %OpenMesh/migrate.sh can be used to
+    adjust include paths and ACGMakefiles. (It's not guarantied the
+    script handles every case, but so far it did not missed a file to
+    adjust.)
+</li>
+
+<li><b>Porting issues</b>: Due to a number of major changes in the
+    structure of %OpenMesh a few incompatibilities have been
+    introduced. Have look in <b>\c %OpenMesh/porting.txt </b> for hints how to
+    treat your source when updating from 0.11.x to
+     1.0.0.<br>Hint! The supplied script \c %OpenMesh/migrate.sh does a
+    few of the necessary modifications. 
+</li>
+
+<li><b>The list kernel has been removed</b>
+</li>
+
+<li>Improved IO support:
+  <ul>
+  <li>Read/write ascii and binary STL </li>
+  <li>Read/write ascii and binary OFF </li>
+  <li>Support for vertex normals and vertex texcoords in OFF and OBJ</li>
+  <li>Support importing diffuse material into face color property from
+      OBJ files.
+  </li>
+  <li>Properietary binary format OM, supporting read/write of custom properties
+  </li>
+  </ul>
+</li>
+
+<li>Improved coordinate class OpenMesh::VectorT:
+  <ul>
+    <li> <tt>VectorT::vectorize(Scalar)</tt> is no longer static, now 
+          it changes the vector. Use it e.g. to clear vector values. 
+    </li>
+    <li> Casts between two vector classes of the same dimension are now
+         explicit. This avoids unwanted and expensive casts. 
+    </li>
+    <li> Optimized performance by manual loop-unrolling. These optimizations
+	 are partial specializations for vectors of dimension 2, 3 and 4. 
+         Since Microsoft's VC++ still does not support partial specialization
+         and also provides rather poor loop-unrolling, users of this compiler
+         are stuck to lower performance.
+    </li>
+  </ul>
+</li>
+
+<li>OpenSG Support:
+  <ul>
+    <li>New kernel type \c class TriMesh_OSGArrayKernelT<>.
+      <ul>
+        <li>Uses OpenSG geometry types!</li>
+        <li>PolyMesh not supported, yet!</li>
+      </ul>
+    <li>Use \c OpenMesh::Kernel_OSG::bind<> to link a mesh obj with an
+        \c osg::Geometry and vice versa.<br>Please note that both objects
+        share the same data!
+      <ul>
+       <li>Binding a mesh to an \c osg::Geometry changes the content
+           of the \c osg::Geometry!
+       <li>Triangulates non-triangular faces!</li>
+       <li>Multi-indexed geometry not supported!</li>
+       <li>Transfer of vertex normals</li>
+       <li>Limited capability to transfer colors: 
+           So far, only \c osg::Color3f <-> \c OpenMesh::Vec3ub
+      </ul>
+    </li>
+  </ul>
+</li>
+
+<li>Microsoft VC++ 7.0 projects files
+  <ul>
+    <li>Tutorial solution file
+  </ul>
+</li>
+
+<li> New tools/applications:
+     <ul>
+     <li>\c Tools/VDPM (View Dependent Progressive Mesh Library)
+       <ul>
+         <li>\c Apps/VDProgMesh/mkbalancedpm - Create a balanced 
+             progressive mesh.
+         </li>
+         <li>\c Apps/VDProgMesh/Analyzer - Create a view dependent 
+             progressive mesh file.
+         </li>
+         <li>\c Apps/VDProgMesh/Synthesizer - A viewer for the VDPM file.</li>
+       </ul>
+     </li>
+     <li>Apps/mconvert</li>
+     <li>Apps/IvViewer - added support for Coin</li>
+     </ul>
+</li>
+
+<li><b>Known Bugs</b>:
+  The following bugs are related to the TriMesh_OSGArrayKernelT<>:
+  <ul>
+    <li>001: Cannot request/release the default attribute 
+             <tt>halfedge_status</tt>.
+    </li>
+    <li>002: Cannot release the default attribute <tt>vertex_texcoords</tt>
+    </li>
+    <li>003: Assignment operator = () does not work properly.</li>
+    <li>004: No copy-constructor available!</li>
+  </ul>
+</li>
+
+</ul>
+</td></tr>
+
+
+<!-- --------------------------------------------------------------------- -->
+
+
+<tr valign=top><td><b>0.11.1</b> (2002/12/02)</td><td>  
+<ul>
+
+<li>Bugs fixed: 0.11.0:{001, 002, 003, 004, 006}<br><br>
+    006: Use acgmake version 1.1.1.
+</li>
+
+<li>Preprocessor warnings of gcc >= 3 fixed.
+</li>
+
+<li>Added some more dynamic ways to append properties to items:
+    OpenMesh::Any and OpenMesh::PropertyT .
+</li>
+
+<li>VectorT: standard operator less added, Vec4f is now
+    16-bit aligned using gcc compiler (for later SIMD usage).
+</li>
+
+<li>Use OM_STATIC_BUILD=1 when creating a static library.
+    The static version of the library needs to included IOInstances.hh,
+    which is done in that case.
+    When compiling with MS VC7, the define is set automatically, as 
+    the DLL-Version is not supported yet.
+    acgmake (Version >= 1.1) set the define automatically when
+    using the flag for static compiling.
+</li>
+
+<li>The read_mesh() methods now clears the mesh before reading a new one.
+</li>
+
+<li>Added can_read() and can_write() methods to the IOManager.
+</li>
+
+
+</ul>
+</td></tr>
+
+
+<!-- --------------------------------------------------------------------- -->
+<tr valign=top><td><b>0.11.0</b> (2002/09/07)</td><td> 
+
+<ul>
+
+<li>Bugs fixed: 0.10.2:{001, 002, 003, 004, 005}
+</li>
+
+<li>Added MS VC++ 7.0 project files for the tutorial programms.
+    (Have a look in <OpenMesh>/Win32/MSVC/)
+</li>
+
+<li>New Input/Output management, see \ref mesh_io. The new interface
+    is as backwards-compatible as possible. Only the read_[off,obj]
+    and write_[off,obj] methods do no longer exist. You should now
+    include OpenMesh/IO/MeshIO.hh instead of MeshReader.hh and
+    MeshWriter.hh. The old include files may be removed in a future
+    release.
+</li>
+
+<li>Added: Generic algorithms may now define their own traits, these traits can
+    be merged with other user-defined traits by the OM_Merge_Traits macro. 
+    See tutorial \ref tutorial_06.
+</li>
+
+<li>Added generic handle <-> item conversions, see 
+    <ul>
+    <li> OpenMesh::Concepts::KernelT::handle() and
+    <li> OpenMesh::PolyMeshT::deref().
+    </ul>
+    The kernel methods vertex_handle(), halfedge_handle(), edge_handle(), 
+    face_handle() should no longer be used, but are still existent for 
+    compatibility reasons. You can hide them by uncommenting the define
+    OM_HIDE_DEPRECATED in OpenMesh/System/config.h.
+</li>
+
+<li>Internal methods, like Vertex::halfedge_handle() or Vertex::point() are 
+    now hidden, since the respective kernel methods (like 
+    MeshKernel::halfedge_handle(VertexHandle) or 
+    MeshKernel::point(VertexHandle)) should be used instead.
+</li>
+
+<li>Added convenience methods for the mesh kernels: 
+    <ul>
+    <li>OpenMesh::Concepts::KernelT::n_halfedges()
+    <li>OpenMesh::Concepts::KernelT::halfedges_empty()
+    <li>OpenMesh::Concepts::KernelT::halfedge_handle(unsigned int _i)
+    </ul>
+</li>
+
+<li><b>Known Bugs</b>: 
+    <ul>
+    <li>001: Ambigous auto_ptr<> cast in ExporterT.hh.</li>
+    <li>002: BaseImporter and BaseExporter have no virtual destructor.</li>
+    <li>003: Reader does not work correctly, when reading from a istream.</li>
+    <li>004: cross(VectorT, VectorT) returns Scalar instead of VectorT.</li>
+    <li>005: PolyMeshT::calc_face_normal() may give wrong results if the
+             first 3 points of the polygon are colinear or concave.</li>
+    <li>006: Reading/writing (MeshIO) of files does not work when using acgmake
+             with SuSE 8.1.</li>
+    </ul>
+</li>
+
+</ul> 
+</td></tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>0.10.2</b> (2002/06/25)</td><td> 
+<ul>
+<li>Bugs fixed: 0.10.1:{001, 002} 
+</li>
+
+<li>The edge collapse checking method TriMeshT::is_collapse_ok() is now more
+    restrictive. It prohibits cases that could be handled by the
+    halfedge data structure, but would probably not be regarded as a
+    legal mesh.
+</li>
+
+<li>The vertex split operation creates up to 3 new edges and 2 new
+    faces. Up to now it was possible to pass handles to edges/faces
+    that should be used instead of creating new ones. This option has
+    been removed in order to get a cleaner interface.
+</li>
+
+<li>The MeshCheckerT has been changed slightly: it omits deleted elements, so
+    one does not have to perform a garbage collection before checking the mesh.
+    It also checks for the halfedges building cycles around faces or
+    boundaries.
+</li>
+
+<li><b>Known Bugs</b>: 
+    <ul>
+    <li>001: OpenMesh::PolyMeshT::operator=() does not return \c *this.
+    <li>002: OpenMesh::DefaultAttributer added unnecessary 20 bits to the 
+             elementary mesh types.
+    </ul>
+</li> 
+</ul> 
+</td></tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>0.10.1</b> (2002/04/22)</td><td> 
+<ul>
+<li>Bugs fixed: 0.10.0:{001, 002, 003, 004, 005} 
+</li>
+
+<li>Added: Predefined attribute \c TexCoord. 
+</li>
+
+<li>Added: Support for MS VC++ 6.0 IDE with Intel Compiler. 
+</li>
+
+<li>Added: Tutorial 6 on generic algorithms. 
+</li>
+
+<li>SharedCoordArrayKernelT is now derived from ArrayKernelT.
+</li>
+
+<li>Added: Assignment operator operator=() for PolyMeshT and TriMeshT.
+</li>
+
+<li>Added: Method TriMeshT::is_collapse_ok(), checking topological conditions
+    for a given halfedge collapse.
+</li>
+
+<li><b>Known Bugs</b>: 
+    <ul>
+    <li>001: PolyMeshT::delete_face(): Outgoing halfedge handle of
+             a vertex can incorrectly be invalidated. Influences
+             vertex circulators, find_halfedge() and therefore
+             add_face().<br>
+             Workaround: Replace <tt>v0</tt> by <tt>v1</tt> in line 585 of
+	     PolyMeshT.cc
+    </li>
+    <li>002: TriMeshT::collapse(): Some special cases are incorrectly
+             handled when collapsing boundary halfedges. The same
+             cases are also incorrect for the inverse operation
+             TriMeshT::vertex_split() operation. 
+    </li>
+    </ul>
+</li>
+</ul>
+</td></tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>0.10.0</b> (2002/03/19)</td><td> 
+<ul>
+<li>Interface for specifying the traits classes simplified (see
+    Traits.hh).  
+</li>
+
+<li>Changed attribute handling; the attributer class (the class that
+    adds and registers attributes to mesh items) can be provided by
+    the user.
+</li>
+
+<li>Removed MyMesh::Face::n_vertices() and
+    MyMesh::Face::set_n_vertices().
+</li>
+
+<li>MeshWriter::write_* changed accordingly.
+</li>
+
+<li>Bug fix: PolyMeshT::delete_[face,edge,vertex] now work correctly.
+</li>
+
+<li>Removed cyclic dependency between items and kernel, because MS
+    VC++ cannot handle the resulting template forward declaration
+    :-(. Therefore the <tt>Base::Refs</tt> class, given for the traits
+    classes, no longer provides the types \c Vertex, \c Halfedge, \c
+    Edge, and \c Face. It now only provides all handle types, the
+    point and the scalar type.
+</li>
+
+<li>Finally: MS VC++ 7.0 supported.
+</li>
+
+<li><b>Known Bugs</b>:
+    <ul> 
+    <li>001: TriMeshT.cc::vertex_split(): call to undefined
+        method Face::set_n_vertices().<br>
+        Workaround: Comment out the two occurences of the call.
+    </li>
+    <li>002: Missing <tt>\#include
+        <OpenMesh/Mesh/Kernels/ListKernel/ListHandles.hh></tt>
+	in OpenMesh/Mesh/Types/PolyMesh_ListKernelT.hh.
+    </li>
+    <li>003: Special case in TriMeshT::edge_collapse(): when collapsing a 
+        boundary vertex into an interior one, the outgoing halfedge of
+        the resulting vertex my not be a boundary one.
+    </li>
+    <li>004: PolyMeshT::delete_edge did not pass its argument 
+        _delete_isolated_vertices to PolyMeshT::delete_face.
+    </li>
+    <li>005: PolyMeshT::assign() was not linked because of an \#if error.
+    </ul>
+</li>
+</ul>
+</td></tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>0.9.2</b> (-) </td><td> 
+<ul>
+<li>PolyMeshT::add_face() now detects more topological errors.
+</li>
+
+<li>Added mesh kernel methods: remove_last_[vertex,edge,face]().
+</li>
+
+</ul>
+</td></tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>0.9.1</b> (2002/02/07)</td><td> 
+<ul>
+<li>Changed the main namespace from ACG to OpenMesh.
+</li>
+
+<li>Added invalid handle constants, e.g. PolyMeshT::InvalidVertexHandle.
+</li>
+
+<li>Mesh provides circulators: PolyMeshT::vv_iter(VertexHandle).
+</li>
+</ul>
+</td></tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b> 0.9</b> (2002/01/25)</td><td> 
+<ul>
+<li>initial release</li>
+</ul>
+</td></tr>
+
+
+</table>
+
+\endhtmlonly
+
+**/

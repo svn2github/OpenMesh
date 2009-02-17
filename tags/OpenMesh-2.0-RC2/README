@@ -1,0 +1,22 @@
+OpenMesh, 2-0
+~~~~~~~~~~~~~~~
+
+0. Licence
+   see LICENSE
+ 
+  
+1. Installing
+~~~~~~~~~~~~~~
+Unpack the tar-ball to a suitable place and compile with:
+
+qmake-qt4     ## Build Makefiles
+make          ## Build project (use 'make debug' for debug version)
+
+
+2. OpenMesh + STLport
+~~~~~~~~~~~~~~~~~~~~~~
+
+We tested the MS .NET with STLport 4.6 (with STLport iostream) and 
+encountered on problem in OpenMesh/Core/IO/reader/OBJReader.cc.
+A workaround for 4.6 version of STLport has been applied. It might have
+to be adjusted for other STLport versions.
