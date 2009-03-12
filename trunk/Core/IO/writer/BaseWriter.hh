@@ -67,6 +67,9 @@ class BaseWriter
 public:
 
   typedef unsigned int Option;
+
+  /// Destructor
+  virtual ~BaseWriter() {};
    
   /// Return short description of the supported file format.
   virtual std::string get_description() const = 0;

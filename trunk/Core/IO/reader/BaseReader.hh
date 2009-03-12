@@ -69,6 +69,9 @@ class BaseReader
 {
 public:
 
+  /// Destructor
+  virtual ~BaseReader() {};
+
   /// Returns a brief description of the file type that can be parsed.
   virtual std::string get_description() const = 0;
   

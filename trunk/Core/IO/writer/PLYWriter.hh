@@ -73,6 +73,9 @@ public:
 
   _PLYWriter_();
 
+  /// Destructor
+  virtual ~_PLYWriter_() {};
+
   std::string get_description() const { return "PLY polygon file format"; }
   std::string get_extensions() const  { return "ply"; }
 

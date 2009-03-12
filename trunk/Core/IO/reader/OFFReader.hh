@@ -101,6 +101,9 @@ public:
 
   _OFFReader_();
 
+  /// Destructor
+  virtual ~_OFFReader_() {};
+
   std::string get_description() const { return "Object File Format"; }
   std::string get_extensions()  const { return "off"; }
   std::string get_magic()       const { return "OFF"; }

@@ -79,6 +79,8 @@ public:
 
   _OFFWriter_();
 
+  virtual ~_OFFWriter_() {};
+
   std::string get_description() const { return "no description"; }
   std::string get_extensions() const  { return "off"; }
 

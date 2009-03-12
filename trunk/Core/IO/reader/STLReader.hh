@@ -74,6 +74,9 @@ public:
   // constructor
   _STLReader_();
 
+  /// Destructor
+  virtual ~_STLReader_() {};
+
 
   std::string get_description() const 
   { return "Stereolithography Interface Format"; }

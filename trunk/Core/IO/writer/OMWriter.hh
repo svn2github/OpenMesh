@@ -74,8 +74,11 @@ class _OMWriter_ : public BaseWriter
 {
 public:
 
-  // constructor
+  /// Constructor
   _OMWriter_();
+
+  /// Destructor
+  virtual ~_OMWriter_() {};
 
   std::string get_description() const
   { return "OpenMesh Format"; }

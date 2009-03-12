@@ -70,6 +70,9 @@ class _STLWriter_ : public BaseWriter
 public:
   
   _STLWriter_();
+
+  /// Destructor
+  virtual ~_STLWriter_() {};
   
   std::string get_description() const { return "Stereolithography Format"; }
   std::string get_extensions()  const { return "stla stlb"; }
