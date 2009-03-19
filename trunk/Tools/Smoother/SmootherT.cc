@@ -1,35 +1,35 @@
 //=============================================================================
-//                                                                            
-//                               OpenMesh                                     
-//        Copyright (C) 2003 by Computer Graphics Group, RWTH Aachen          
-//                           www.openmesh.org                                 
-//                                                                            
+//
+//                               OpenMesh
+//        Copyright (C) 2003 by Computer Graphics Group, RWTH Aachen
+//                           www.openmesh.org
+//
 //-----------------------------------------------------------------------------
-//                                                                            
-//                                License                                     
-//                                                                            
-//   This library is free software; you can redistribute it and/or modify it 
-//   under the terms of the GNU Lesser General Public License as published   
-//   by the Free Software Foundation, version 2.1.                           
-//                                                                             
-//   This library is distributed in the hope that it will be useful, but       
-//   WITHOUT ANY WARRANTY; without even the implied warranty of                
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         
-//   Lesser General Public License for more details.                           
-//                                                                            
-//   You should have received a copy of the GNU Lesser General Public          
-//   License along with this library; if not, write to the Free Software       
-//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 
-//                                                                            
+//
+//                                License
+//
+//   This library is free software; you can redistribute it and/or modify it
+//   under the terms of the GNU Lesser General Public License as published
+//   by the Free Software Foundation, version 2.1.
+//
+//   This library is distributed in the hope that it will be useful, but
+//   WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//   Lesser General Public License for more details.
+//
+//   You should have received a copy of the GNU Lesser General Public
+//   License along with this library; if not, write to the Free Software
+//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 //-----------------------------------------------------------------------------
-//                                                                            
+//
 //   $Revision$
 //   $Date$
-//                                                                            
+//
 //=============================================================================
 
 /** \file SmootherT.cc
-    
+
  */
 
 //=============================================================================
@@ -58,7 +58,8 @@ namespace Smoother {
 template <class Mesh>
 SmootherT<Mesh>::
 SmootherT(Mesh& _mesh)
-  : mesh_(_mesh)
+  : mesh_(_mesh),
+    skip_features_(false)
 {
   // request properties
   mesh_.request_vertex_status();
@@ -151,9 +152,33 @@ set_active_vertices()
   bool active;
   for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
-    active = ((nothing_selected || mesh_.status(v_it).selected()) 
-	      && !mesh_.is_boundary(v_it)
-	      && !mesh_.status(v_it).locked());
+    active = ((nothing_selected || mesh_.status(v_it).selected())
+	          && !mesh_.is_boundary(v_it)
+	          && !mesh_.status(v_it).locked());
+
+    if ( skip_features_ ) {
+
+      active = active && !mesh_.status(v_it).feature();
+
+      typename Mesh::VertexOHalfedgeIter  voh_it(mesh_,v_it);
+      for ( ; voh_it ; ++voh_it ) {
+
+        // If the edge is a feature edge, skip the current vertex while smoothing
+        if ( mesh_.status(mesh_.edge_handle(voh_it.handle())).feature() )
+          active = false;
+
+        typename Mesh::FaceHandle fh1 = mesh_.face_handle(voh_it.handle() );
+        typename Mesh::FaceHandle fh2 = mesh_.face_handle(mesh_.opposite_halfedge_handle(voh_it.handle() ) );
+
+        // If one of the faces is a feature, lock current vertex
+        if ( fh1.is_valid() && mesh_.status( fh1 ).feature() )
+          active = false;
+        if ( fh2.is_valid() && mesh_.status( fh2 ).feature() )
+          active = false;
+
+      }
+    }
+
     mesh_.property(is_active_, v_it) = active;
   }
 
@@ -212,7 +237,7 @@ set_relative_local_error(Scalar _err)
 {
   if (!mesh_.vertices_empty())
   {
-    typename Mesh::VertexIter  v_it(mesh_.vertices_begin()), 
+    typename Mesh::VertexIter  v_it(mesh_.vertices_begin()),
                                v_end(mesh_.vertices_end());
 
 
@@ -315,14 +340,14 @@ void
 SmootherT<Mesh>::
 project_to_tangent_plane()
 {
-  typename Mesh::VertexIter  v_it(mesh_.vertices_begin()), 
+  typename Mesh::VertexIter  v_it(mesh_.vertices_begin()),
                              v_end(mesh_.vertices_end());
   // Normal should be a vector type. In some environment a vector type
   // is different from point type, e.g. OpenSG!
   typename Mesh::Normal      translation, normal;
 
 
-  for (; v_it != v_end; ++v_it)  
+  for (; v_it != v_end; ++v_it)
   {
     if (is_active(v_it))
     {
@@ -345,14 +370,14 @@ void
 SmootherT<Mesh>::
 local_error_check()
 {
-  typename Mesh::VertexIter  v_it(mesh_.vertices_begin()), 
+  typename Mesh::VertexIter  v_it(mesh_.vertices_begin()),
                              v_end(mesh_.vertices_end());
 
   typename Mesh::Normal      translation;
   typename Mesh::Scalar      s;
 
 
-  for (; v_it != v_end; ++v_it)  
+  for (; v_it != v_end; ++v_it)
   {
     if (is_active(v_it))
     {
@@ -379,10 +404,10 @@ void
 SmootherT<Mesh>::
 move_points()
 {
-  typename Mesh::VertexIter  v_it(mesh_.vertices_begin()), 
+  typename Mesh::VertexIter  v_it(mesh_.vertices_begin()),
                              v_end(mesh_.vertices_end());
 
-  for (; v_it != v_end; ++v_it)  
+  for (; v_it != v_end; ++v_it)
     if (is_active(v_it))
       mesh_.set_point(v_it, mesh_.property(new_positions_, v_it));
 }

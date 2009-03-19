@@ -1,35 +1,35 @@
 //=============================================================================
-//                                                                            
-//                               OpenMesh                                     
-//        Copyright (C) 2003 by Computer Graphics Group, RWTH Aachen          
-//                           www.openmesh.org                                 
-//                                                                            
+//
+//                               OpenMesh
+//        Copyright (C) 2003 by Computer Graphics Group, RWTH Aachen
+//                           www.openmesh.org
+//
 //-----------------------------------------------------------------------------
-//                                                                            
-//                                License                                     
-//                                                                            
-//   This library is free software; you can redistribute it and/or modify it 
-//   under the terms of the GNU Lesser General Public License as published   
-//   by the Free Software Foundation, version 2.1.                           
-//                                                                             
-//   This library is distributed in the hope that it will be useful, but       
-//   WITHOUT ANY WARRANTY; without even the implied warranty of                
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         
-//   Lesser General Public License for more details.                           
-//                                                                            
-//   You should have received a copy of the GNU Lesser General Public          
-//   License along with this library; if not, write to the Free Software       
-//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 
-//                                                                            
+//
+//                                License
+//
+//   This library is free software; you can redistribute it and/or modify it
+//   under the terms of the GNU Lesser General Public License as published
+//   by the Free Software Foundation, version 2.1.
+//
+//   This library is distributed in the hope that it will be useful, but
+//   WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//   Lesser General Public License for more details.
+//
+//   You should have received a copy of the GNU Lesser General Public
+//   License along with this library; if not, write to the Free Software
+//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 //-----------------------------------------------------------------------------
-//                                                                            
+//
 //   $Revision$
 //   $Date$
-//                                                                            
+//
 //=============================================================================
 
 /** \file SmootherT.hh
-    
+
  */
 
 //=============================================================================
@@ -58,7 +58,7 @@ namespace Smoother {
 //== CLASS DEFINITION =========================================================
 
 /** Base class for smoothing algorithms.
- */	      
+ */
 template <class Mesh>
 class SmootherT : private Utils::Noncopyable
 {
@@ -71,30 +71,34 @@ public:
   typedef typename Mesh::EdgeHandle    EdgeHandle;
 
   // initialize smoother
-  enum Component { 
+  enum Component {
     Tangential,           ///< Smooth tangential direction
     Normal,               ///< Smooth normal direction
     Tangential_and_Normal ///< Smooth tangential and normal direction
   };
 
-  enum Continuity { 
-    C0, 
-    C1, 
-    C2 
+  enum Continuity {
+    C0,
+    C1,
+    C2
   };
 
 public:
 
-  // constructor & destructor
+  /** \brief constructor & destructor
+   *
+   * @param _mesh Reference to the mesh
+   */
   SmootherT( Mesh& _mesh );
   virtual ~SmootherT();
 
 
 public:
 
-  /// Initialize smoother
-  /// \param _comp Determine component to smooth
-  /// \param _cont 
+  /** Initialize smoother
+   * \param _comp Determine component to smooth
+   * \param _cont Determine Continuity
+   */
   void initialize(Component _comp, Continuity _cont);
 
 
@@ -105,6 +109,12 @@ public:
   void disable_local_error_check();
   //@}
 
+  /** \brief enable or disable feature handling
+   *
+   * @param _state true  : If features are selected on the mesh, they will be left unmodified\n
+   *               false : Features will be ignored
+   */
+  void skip_features( bool _state ){ skip_features_ = _state; };
 
   /// Do _n smoothing iterations
   virtual void smooth(unsigned int _n);
@@ -122,7 +132,7 @@ private:
   void project_to_tangent_plane();
   void local_error_check();
   void move_points();
-  
+
 
 
 protected:
@@ -149,7 +159,7 @@ protected:
   void set_new_position(VertexHandle _vh, const Point& _p)
   { mesh_.property(new_positions_, _vh) = _p; }
 
-  bool is_active(VertexHandle _vh) const 
+  bool is_active(VertexHandle _vh) const
   { return mesh_.property(is_active_, _vh); }
 
   Component  component()  const { return component_;  }
@@ -158,6 +168,7 @@ protected:
 protected:
 
   Mesh&  mesh_;
+  bool   skip_features_;
 
 
 private:
