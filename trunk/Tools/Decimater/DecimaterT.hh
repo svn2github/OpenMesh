@@ -9,15 +9,15 @@
 //                                License
 //
 //   This library is free software; you can redistribute it and/or modify it
-//   under the terms of the GNU Lesser General Public License as published 
+//   under the terms of the GNU Lesser General Public License as published
 //   by the Free Software Foundation, version 2.
 //
 //   This library is distributed in the hope that it will be useful, but
 //   WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//   Lesser General Public License for more details. 
+//   Lesser General Public License for more details.
 //
-//   You should have received a copy of the GNU Lesser General Public 
+//   You should have received a copy of the GNU Lesser General Public
 //   License along with this library; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
@@ -126,6 +126,13 @@ public: //--------------------------------------------------- module management
   {
     if (!_mh.is_valid())
       return false;
+
+    if ( cmodule_ == _mh.module() ) {
+      cmodule_     = 0;
+      initialized_ = false; // reset initialized state
+      _mh.clear();
+      return true;
+    }
 
     typename ModuleList::iterator it = std::find(bmodules_.begin(),
              bmodules_.end(),
