@@ -121,6 +121,24 @@ public:
   }
 
 
+  virtual void add_face_texcoords( FaceHandle _fh, VertexHandle _vh, const std::vector<Vec2f>& _face_texcoords)
+  {
+    // get first halfedge handle
+    HalfedgeHandle cur_heh   = mesh_.halfedge_handle(_fh);
+    HalfedgeHandle end_heh   = mesh_.prev_halfedge_handle(cur_heh);
+    
+    // find start heh
+    while( mesh_.to_vertex_handle(cur_heh) != _vh && cur_heh != end_heh ) 
+      cur_heh = mesh_.next_halfedge_handle( cur_heh);
+
+    for(unsigned int i=0; i<_face_texcoords.size(); ++i)
+    {
+      set_texcoord( cur_heh, _face_texcoords[i]);
+      cur_heh = mesh_.next_halfedge_handle( cur_heh);
+    }
+  }
+
+
   // vertex attributes
 
   virtual void set_normal(VertexHandle _vh, const Vec3f& _normal)
@@ -146,6 +164,12 @@ public:
   {
     if (mesh_.has_vertex_texcoords2D())
     mesh_.set_texcoord2D(_vh, vector_cast<TexCoord2D>(_texcoord));
+  }
+
+  virtual void set_texcoord(HalfedgeHandle _heh, const Vec2f& _texcoord)
+  {
+    if (mesh_.has_halfedge_texcoords2D())
+      mesh_.set_texcoord2D(_heh, vector_cast<TexCoord2D>(_texcoord));
   }
 
 

@@ -77,6 +77,9 @@ public:
   typedef std::vector<VertexHandle> VHandles;
   virtual FaceHandle add_face(const VHandles& _indices) = 0;
 
+  // add texture coordinates per face, _vh references the first texcoord
+  virtual void add_face_texcoords( FaceHandle _fh, VertexHandle _vh, const std::vector<Vec2f>& _face_texcoords) = 0;
+
   // set vertex normal
   virtual void set_normal(VertexHandle _vh, const Vec3f& _normal) = 0;
 
@@ -88,6 +91,9 @@ public:
 
   // set vertex texture coordinate
   virtual void set_texcoord(VertexHandle _vh, const Vec2f& _texcoord) = 0;
+
+  // set vertex texture coordinate
+  virtual void set_texcoord(HalfedgeHandle _heh, const Vec2f& _texcoord) = 0;
 
   // set face normal
   virtual void set_normal(FaceHandle _fh, const Vec3f& _normal) = 0;

@@ -239,6 +239,8 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
   std::vector<Vec3f>     normals;
   std::vector<Vec2f>     texcoords;
 
+  std::vector<Vec2f>     face_texcoords;
+
   std::map<std::string,Material> materials;
   std::string            matname;
 
@@ -343,6 +345,7 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
       int value;
 
       vhandles.clear();
+      face_texcoords.clear();
 
       // read full line after detecting a face
       std::string faceLine;
@@ -419,6 +422,7 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
               assert(!vhandles.empty());
               assert((unsigned int)(value-1) < texcoords.size());
               _bi.set_texcoord(vhandles.back(), texcoords[value-1]);
+	      face_texcoords.push_back( texcoords[value-1] );
               break;
 
             case 2: // normal
@@ -445,6 +449,9 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
 
       size_t n_faces = _bi.n_faces();
       FaceHandle fh = _bi.add_face(vhandles);
+
+      if( !vhandles.empty() )
+	_bi.add_face_texcoords( fh, vhandles[0], face_texcoords );
 
       if ( !matname.empty() && materials_[matname].has_Kd() )
       {
