@@ -12,6 +12,11 @@ unix {
 	
 	OPERATING_SYSTEM = UNKNOWN_OS
 
+	exists( /etc/lsb-release ) {
+		OPERATING_SYSTEM = Ubuntu
+	}
+
+
 	exists( /etc/debian_version ) | exists( /etc/debian_release ) {
 		OPERATING_SYSTEM = Debian
 	}
@@ -44,10 +49,6 @@ unix {
 		OPERATING_SYSTEM = SuSE
 	}
 
-	exists( /etc/lsb-release ) {
-		OPERATING_SYSTEM = Ubuntu
-	}
-	
 	TEST_DARWIN = $$system(uname -s)
 	contains( TEST_DARWIN, Darwin) {
 		OPERATING_SYSTEM = Darwin
