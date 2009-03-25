@@ -10,7 +10,7 @@
 
 CONFIG += qt uitools opengl thread debug_and_release 
 
-QT += opengl network script sql webkit
+QT += opengl
 
 ################################################################################
 # Add toplevel directory to include path
