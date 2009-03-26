@@ -90,30 +90,30 @@ public:
 
       // test for valid vertex indices
       for (it=_indices.begin(); it!=end; ++it)
-	if (! mesh_.is_valid_handle(*it))
-	{
-	  omerr() << "ImporterT: Face contains invalid vertex index\n";
-	  return fh;
-	}
+        if (! mesh_.is_valid_handle(*it))
+        {
+          omerr() << "ImporterT: Face contains invalid vertex index\n";
+          return fh;
+        }
 
 
       // don't allow double vertices
       for (it=_indices.begin(); it!=end; ++it)
-	for (it2=it+1; it2!=end; ++it2)
-	  if (*it == *it2)
-	  {
-	    omerr() << "ImporterT: Face has equal vertices\n";
-	    failed_faces_.push_back(_indices);
-	    return fh;
-	  }
+        for (it2=it+1; it2!=end; ++it2)
+          if (*it == *it2)
+          {
+            omerr() << "ImporterT: Face has equal vertices\n";
+            failed_faces_.push_back(_indices);
+            return fh;
+          }
 
 
       // try to add face
       fh = mesh_.add_face(_indices);
       if (!fh.is_valid())
       {
-	failed_faces_.push_back(_indices);
-	return fh;
+        failed_faces_.push_back(_indices);
+        return fh;
       }
     }
 
@@ -163,7 +163,7 @@ public:
   virtual void set_texcoord(VertexHandle _vh, const Vec2f& _texcoord)
   {
     if (mesh_.has_vertex_texcoords2D())
-    mesh_.set_texcoord2D(_vh, vector_cast<TexCoord2D>(_texcoord));
+      mesh_.set_texcoord2D(_vh, vector_cast<TexCoord2D>(_texcoord));
   }
 
   virtual void set_texcoord(HalfedgeHandle _heh, const Vec2f& _texcoord)
