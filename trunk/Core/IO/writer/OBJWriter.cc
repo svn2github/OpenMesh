@@ -256,19 +256,22 @@ write(std::fstream& _out, BaseExporter& _be, Options _opt) const
   {
 
     if (useMatrial &&  _opt.check(Options::FaceColor) ){
-      int i;
+      int material = -1;
+
       //color with alpha
       if ( _opt.color_has_alpha() ){
         cA  = color_cast<OpenMesh::Vec4f> (_be.colorA( FaceHandle(i) ));
-        i = getMaterial(cA);
-      }else{
+        material = getMaterial(cA);
+      } else{
       //and without alpha
         c  = color_cast<OpenMesh::Vec3f> (_be.color( FaceHandle(i) ));
-        i = getMaterial(c);
+        material = getMaterial(c);
       }
 
-      if(lastMat != i)
-        _out << "usemtl mat" << i << std::endl;
+      if(lastMat != material) {
+        _out << "usemtl mat" << material << std::endl;
+	lastMat = material;
+      }
     }
 
     _out << "f";
