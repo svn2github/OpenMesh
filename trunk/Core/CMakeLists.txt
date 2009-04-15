@@ -22,6 +22,10 @@ set (directories
 append_files (headers "*.hh" ${directories})
 append_files (sources "*.cc" ${directories})
 
+if (WIN32)
 add_library (OpenMeshCore STATIC ${sources} ${headers})
+else ()
+add_library (OpenMeshCore SHARED ${sources} ${headers})
+endif ()
 
 set_target_props (OpenMeshCore)
