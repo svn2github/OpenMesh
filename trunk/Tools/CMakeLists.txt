@@ -19,9 +19,9 @@ append_files (headers "*.hh" ${directories})
 append_files (sources "*.cc" ${directories})
 
 if (WIN32)
-add_library (OpenMeshCore STATIC ${sources} ${headers})
+add_library (OpenMeshTools STATIC ${sources} ${headers})
 else ()
-add_library (OpenMeshCore SHARED ${sources} ${headers})
+add_library (OpenMeshTools SHARED ${sources} ${headers})
 endif ()
 
 target_link_libraries (OpenMeshTools OpenMeshCore)
