@@ -465,7 +465,7 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
       FaceHandle fh = _bi.add_face(vhandles);
 
       if( !vhandles.empty() )
-	_bi.add_face_texcoords( fh, vhandles[0], face_texcoords );
+	     _bi.add_face_texcoords( fh, vhandles[0], face_texcoords );
 
       if ( !matname.empty() && materials_[matname].has_Kd() )
       {
