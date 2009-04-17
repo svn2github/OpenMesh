@@ -253,6 +253,16 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
       return false;
     }
 
+    // Trim Both leading and trailing spaces
+
+    size_t start = line.find_first_not_of(" \t");
+    size_t end   = line.find_last_not_of(" \t");
+
+    if(( std::string::npos == start ) || ( std::string::npos == end))
+      line = "";
+    else
+      line = line.substr( start, end-start+1 );
+
     // comment
     if ( line.size() == 0 || line[0] == '#' || isspace(line[0]) ) {
       continue;
