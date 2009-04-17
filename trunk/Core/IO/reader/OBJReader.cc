@@ -430,9 +430,13 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
                 value = _bi.n_vertices() + value + 1;
               }
               assert(!vhandles.empty());
-              assert((unsigned int)(value-1) < texcoords.size());
-              _bi.set_texcoord(vhandles.back(), texcoords[value-1]);
-	      face_texcoords.push_back( texcoords[value-1] );
+              if ( ! texcoords.empty() && (unsigned int)(value-1) < texcoords.size() ) {
+                _bi.set_texcoord(vhandles.back(), texcoords[value-1]);
+                face_texcoords.push_back( texcoords[value-1] );
+              } else {
+                omerr() << "Error setting Texture coordinates" << std::endl;
+              }
+
               break;
 
             case 2: // normal
