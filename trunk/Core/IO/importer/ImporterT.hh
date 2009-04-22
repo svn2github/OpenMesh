@@ -120,25 +120,6 @@ public:
     return fh;
   }
 
-
-  virtual void add_face_texcoords( FaceHandle _fh, VertexHandle _vh, const std::vector<Vec2f>& _face_texcoords)
-  {
-    // get first halfedge handle
-    HalfedgeHandle cur_heh   = mesh_.halfedge_handle(_fh);
-    HalfedgeHandle end_heh   = mesh_.prev_halfedge_handle(cur_heh);
-    
-    // find start heh
-    while( mesh_.to_vertex_handle(cur_heh) != _vh && cur_heh != end_heh ) 
-      cur_heh = mesh_.next_halfedge_handle( cur_heh);
-
-    for(unsigned int i=0; i<_face_texcoords.size(); ++i)
-    {
-      set_texcoord( cur_heh, _face_texcoords[i]);
-      cur_heh = mesh_.next_halfedge_handle( cur_heh);
-    }
-  }
-
-
   // vertex attributes
 
   virtual void set_normal(VertexHandle _vh, const Vec3f& _normal)
@@ -191,6 +172,40 @@ public:
   {
     if (mesh_.has_face_colors())
       mesh_.set_color(_fh, color_cast<Color>(_color));
+  }
+
+  virtual void add_face_texcoords( FaceHandle _fh, VertexHandle _vh, const std::vector<Vec2f>& _face_texcoords)
+  {
+    // get first halfedge handle
+    HalfedgeHandle cur_heh   = mesh_.halfedge_handle(_fh);
+    HalfedgeHandle end_heh   = mesh_.prev_halfedge_handle(cur_heh);
+
+    // find start heh
+    while( mesh_.to_vertex_handle(cur_heh) != _vh && cur_heh != end_heh )
+      cur_heh = mesh_.next_halfedge_handle( cur_heh);
+
+    for(unsigned int i=0; i<_face_texcoords.size(); ++i)
+    {
+      set_texcoord( cur_heh, _face_texcoords[i]);
+      cur_heh = mesh_.next_halfedge_handle( cur_heh);
+    }
+  }
+
+  virtual void set_face_texindex( FaceHandle _fh, int _texId ) {
+    if ( mesh_.has_face_texture_index() ) {
+      mesh_.set_texture_index(_fh , _texId);
+    }
+  }
+
+  virtual void add_texture_information( int _id , std::string _name ) {
+    OpenMesh::MPropHandleT< std::map< int, std::string > > property;
+
+    if ( !mesh_.get_property_handle(property,"TextureMapping") ) {
+      mesh_.add_property(property,"TextureMapping");
+    }
+
+    if ( mesh_.property(property).find( _id ) == mesh_.property(property).end() )
+      mesh_.property(property)[_id] = _name;
   }
 
   // low-level access to mesh

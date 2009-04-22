@@ -64,6 +64,21 @@ _OBJReader_& OBJReader() { return __OBJReaderInstance; }
 
 //=== IMPLEMENTATION ==========================================================
 
+//-----------------------------------------------------------------------------
+
+void trimString( std::string& _string) {
+  // Trim Both leading and trailing spaces
+
+  size_t start = _string.find_first_not_of(" \t");
+  size_t end   = _string.find_last_not_of(" \t");
+
+  if(( std::string::npos == start ) || ( std::string::npos == end))
+    _string = "";
+  else
+    _string = _string.substr( start, end-start+1 );
+}
+
+//-----------------------------------------------------------------------------
 
 _OBJReader_::
 _OBJReader_()
@@ -115,11 +130,13 @@ read_material(std::fstream& _in)
 {
   std::string line;
   std::string keyWrd;
+  std::string textureName;
 
   std::string key;
   Material    mat;
   float       f1,f2,f3;
   bool        indef = false;
+  int         textureId = 1;
 
 
   mat.cleanup();
@@ -190,7 +207,6 @@ read_material(std::fstream& _in)
 
     else if (keyWrd == "map_") // map images
     {
-      // map_Kd, diffuse map
       // map_Ks, specular map
       // map_Ka, ambient map
       // map_Bump, bump map
@@ -198,7 +214,12 @@ read_material(std::fstream& _in)
       ; // just skip this
     }
 #endif
-
+    else if (keyWrd == "map_Kd" ) {
+      // Get the rest of the line, removeing leading or trailing spaces
+      std::getline(stream,textureName);
+      trimString(textureName);
+      mat.set_map_Kd( textureName, textureId++ );
+    }
     else if (keyWrd == "Tr") // transparency value
     {
       stream >> f1;
@@ -222,7 +243,6 @@ read_material(std::fstream& _in)
 
 //-----------------------------------------------------------------------------
 
-
 bool
 _OBJReader_::
 read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
@@ -238,10 +258,8 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
   BaseImporter::VHandles vhandles;
   std::vector<Vec3f>     normals;
   std::vector<Vec2f>     texcoords;
-
   std::vector<Vec2f>     face_texcoords;
 
-  std::map<std::string,Material> materials;
   std::string            matname;
 
 
@@ -254,14 +272,7 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
     }
 
     // Trim Both leading and trailing spaces
-
-    size_t start = line.find_first_not_of(" \t");
-    size_t end   = line.find_last_not_of(" \t");
-
-    if(( std::string::npos == start ) || ( std::string::npos == end))
-      line = "";
-    else
-      line = line.substr( start, end-start+1 );
+    trimString(line);
 
     // comment
     if ( line.size() == 0 || line[0] == '#' || isspace(line[0]) ) {
@@ -290,10 +301,22 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
         if ( !read_material( matStream ) )
 	        omerr() << "  Warning! Could not read file properly!\n";
         matStream.close();
-	      omlog() << "  " << materials_.size() << " materials loaded.\n";
 
       }else
 	      omerr() << "  Warning! Material file '" << matFile << "' not found!\n";
+
+      omlog() << "  " << materials_.size() << " materials loaded.\n";
+
+      for ( MaterialList::iterator material = materials_.begin(); material != materials_.end(); material++ )
+      {
+
+        if ( (*material).second.has_map_Kd() ) {
+          std::string filename = path_ + (*material).second.map_Kd();
+          _bi.add_texture_information( (*material).second.map_Kd_index() , filename );
+        }
+      }
+
+//          mat.has_map_Kd();
     }
 
     // usemtl
@@ -467,24 +490,53 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
       if( !vhandles.empty() )
 	     _bi.add_face_texcoords( fh, vhandles[0], face_texcoords );
 
-      if ( !matname.empty() && materials_[matname].has_Kd() )
+      if ( !matname.empty()  )
       {
         std::vector<FaceHandle> newfaces;
 
         for( size_t i=0; i < _bi.n_faces()-n_faces; ++i )
           newfaces.push_back(FaceHandle(n_faces+i));
 
-        Material & mat = materials_[matname];
+        Material& mat = materials_[matname];
 
-        Vec3uc fc = color_cast<Vec3uc, Vec3f>(mat.Kd());
+        if ( mat.has_Kd() ) {
+          Vec3uc fc = color_cast<Vec3uc, Vec3f>(mat.Kd());
 
-        for (std::vector<FaceHandle>::iterator it = newfaces.begin();
-                                               it != newfaces.end(); ++it)
-          _bi.set_color( *it, fc );
+          for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
+                                                 it != newfaces.end(); ++it)
+            _bi.set_color( *it, fc );
 
-        _opt += Options::FaceColor;
+          _opt += Options::FaceColor;
+        }
+
+        // Set the texture index in the face index property
+        if ( mat.has_map_Kd() ) {
+
+          for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
+                                                 it != newfaces.end(); ++it)
+            _bi.set_face_texindex( *it, mat.map_Kd_index() );
+
+        } else {
+          // If we don't have the info, set it to no texture
+          for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
+                                                 it != newfaces.end(); ++it)
+            _bi.set_face_texindex( *it, 0 );
+        }
+
+      } else {
+        std::vector<FaceHandle> newfaces;
+
+        for( size_t i=0; i < _bi.n_faces()-n_faces; ++i )
+          newfaces.push_back(FaceHandle(n_faces+i));
+
+        // Set the texture index to zero as we don't have any information
+        for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
+                                              it != newfaces.end(); ++it)
+          _bi.set_face_texindex( *it, 0 );
       }
+
     }
+
   }
 
   return true;

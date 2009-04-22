@@ -80,6 +80,9 @@ public:
   // add texture coordinates per face, _vh references the first texcoord
   virtual void add_face_texcoords( FaceHandle _fh, VertexHandle _vh, const std::vector<Vec2f>& _face_texcoords) = 0;
 
+  // Set the texture index for a face
+  virtual void set_face_texindex( FaceHandle _fh, int _texId ) = 0;
+
   // set vertex normal
   virtual void set_normal(VertexHandle _vh, const Vec3f& _normal) = 0;
 
@@ -103,6 +106,10 @@ public:
 
   // set face color
   virtual void set_color(FaceHandle _fh, const Vec4uc& _color) = 0;
+
+  // Store a property in the mesh mapping from an int to a texture file
+  // Use set_face_texindex to set the index for each face
+  virtual void add_texture_information( int _id , std::string _name ) = 0;
 
   // get reference to base kernel
   virtual BaseKernel* kernel() { return 0; }
