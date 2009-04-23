@@ -58,7 +58,7 @@
 #include <OpenMesh/Core/IO/writer/OFFWriter.hh>
 #include <OpenMesh/Core/IO/writer/STLWriter.hh>
 #include <OpenMesh/Core/IO/writer/OMWriter.hh>
-
+#include <OpenMesh/Core/IO/writer/PLYWriter.hh>
 
 //=== NAMESPACES ==============================================================
 
@@ -80,6 +80,7 @@ static BaseWriter* OBJWriterInstance = &OBJWriter();
 static BaseWriter* OFFWriterInstance = &OFFWriter();
 static BaseWriter* STLWriterInstance = &STLWriter();
 static BaseWriter* OMWriterInstance  = &OMWriter();
+static BaseWriter* PLYWriterInstance = &PLYWriter();
 
 
 //=============================================================================

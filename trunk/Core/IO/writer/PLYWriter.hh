@@ -4,7 +4,7 @@
  *        Copyright (C) 2003 by Computer Graphics Group, RWTH Aachen         *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *                                                                           *
  *                                License                                    *
  *                                                                           *
@@ -32,7 +32,7 @@
 
 
 #ifndef __PLYWRITER_HH__
-#define __PWRITER_HH__
+#define __PLYWRITER_HH__
 
 
 //=== INCLUDES ================================================================
@@ -58,8 +58,8 @@ namespace IO {
 //=== IMPLEMENTATION ==========================================================
 
 
-/** 
-    Implementation of the PLY format writer. This class is singleton'ed by 
+/**
+    Implementation of the PLY format writer. This class is singleton'ed by
     SingletonT to PLYWriter.
 
     currently supported options:
