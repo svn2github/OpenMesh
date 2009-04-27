@@ -64,4 +64,103 @@ void BaseKernel::property_stats(std::ostream& _ostr) const
   }
 }
 
+
+
+void BaseKernel::vprop_stats( std::string& _string ) const
+{
+  _string.clear();
+
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& vps = vprops_.properties();
+  for (it=vps.begin(); it!=vps.end(); ++it)
+    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+
+}
+
+void BaseKernel::hprop_stats( std::string& _string ) const
+{
+  _string.clear();
+
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& hps = hprops_.properties();
+  for (it=hps.begin(); it!=hps.end(); ++it)
+    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+
+}
+
+void BaseKernel::eprop_stats( std::string& _string ) const
+{
+  _string.clear();
+
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& eps = eprops_.properties();
+  for (it=eps.begin(); it!=eps.end(); ++it)
+    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+
+}
+void BaseKernel::fprop_stats( std::string& _string ) const
+{
+  _string.clear();
+
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& fps = fprops_.properties();
+  for (it=fps.begin(); it!=fps.end(); ++it)
+    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+
+}
+
+void BaseKernel::mprop_stats( std::string& _string ) const
+{
+  _string.clear();
+
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& mps = mprops_.properties();
+  for (it=mps.begin(); it!=mps.end(); ++it)
+    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+
+}
+
+void BaseKernel::vprop_stats(std::ostream& _ostr ) const
+{
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& vps = vprops_.properties();
+  for (it=vps.begin(); it!=vps.end(); ++it)
+    *it == NULL ? (void)(_ostr << "[deleted]" << "\n") : (*it)->stats(_ostr);
+
+}
+
+void BaseKernel::hprop_stats(std::ostream& _ostr ) const
+{
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& hps = hprops_.properties();
+  for (it=hps.begin(); it!=hps.end(); ++it)
+    *it == NULL ? (void)(_ostr << "[deleted]" << "\n") : (*it)->stats(_ostr);
+
+}
+void BaseKernel::eprop_stats(std::ostream& _ostr ) const
+{
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& eps = eprops_.properties();
+  for (it=eps.begin(); it!=eps.end(); ++it)
+    *it == NULL ? (void)(_ostr << "[deleted]" << "\n") : (*it)->stats(_ostr);
+
+}
+void BaseKernel::fprop_stats(std::ostream& _ostr ) const
+{
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& fps = fprops_.properties();
+  for (it=fps.begin(); it!=fps.end(); ++it)
+    *it == NULL ? (void)(_ostr << "[deleted]" << "\n") : (*it)->stats(_ostr);
+
+}
+void BaseKernel::mprop_stats(std::ostream& _ostr ) const
+{
+  PropertyContainer::Properties::const_iterator it;
+  const PropertyContainer::Properties& mps = mprops_.properties();
+  for (it=mps.begin(); it!=mps.end(); ++it)
+    *it == NULL ? (void)(_ostr << "[deleted]" << "\n") : (*it)->stats(_ostr);
+
+}
+
+
 }

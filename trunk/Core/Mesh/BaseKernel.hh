@@ -9,15 +9,15 @@
 //                                License
 //
 //   This library is free software; you can redistribute it and/or modify it
-//   under the terms of the GNU Lesser General Public License as published 
+//   under the terms of the GNU Lesser General Public License as published
 //   by the Free Software Foundation, version 2.
 //
 //   This library is distributed in the hope that it will be useful, but
 //   WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//   Lesser General Public License for more details. 
+//   Lesser General Public License for more details.
 //
-//   You should have received a copy of the GNU Lesser General Public 
+//   You should have received a copy of the GNU Lesser General Public
 //   License along with this library; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
@@ -520,6 +520,18 @@ protected: //------------------------------------------- synchronize properties
 public:
 
   void property_stats(std::ostream& _ostr = std::clog) const;
+
+  void vprop_stats( std::string& _string ) const;
+  void hprop_stats( std::string& _string ) const;
+  void eprop_stats( std::string& _string ) const;
+  void fprop_stats( std::string& _string ) const;
+  void mprop_stats( std::string& _string ) const;
+
+  void vprop_stats(std::ostream& _ostr = std::clog) const;
+  void hprop_stats(std::ostream& _ostr = std::clog) const;
+  void eprop_stats(std::ostream& _ostr = std::clog) const;
+  void fprop_stats(std::ostream& _ostr = std::clog) const;
+  void mprop_stats(std::ostream& _ostr = std::clog) const;
 
 public:
 
