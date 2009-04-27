@@ -73,7 +73,12 @@ void BaseKernel::vprop_stats( std::string& _string ) const
   PropertyContainer::Properties::const_iterator it;
   const PropertyContainer::Properties& vps = vprops_.properties();
   for (it=vps.begin(); it!=vps.end(); ++it)
-    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+    if ( *it == NULL )
+      _string += "[deleted] \n";
+    else {
+      _string += (*it)->name();
+      _string += "\n";
+    }
 
 }
 
@@ -84,7 +89,12 @@ void BaseKernel::hprop_stats( std::string& _string ) const
   PropertyContainer::Properties::const_iterator it;
   const PropertyContainer::Properties& hps = hprops_.properties();
   for (it=hps.begin(); it!=hps.end(); ++it)
-    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+    if ( *it == NULL )
+      _string += "[deleted] \n";
+    else {
+      _string += (*it)->name();
+      _string += "\n";
+    }
 
 }
 
@@ -95,7 +105,12 @@ void BaseKernel::eprop_stats( std::string& _string ) const
   PropertyContainer::Properties::const_iterator it;
   const PropertyContainer::Properties& eps = eprops_.properties();
   for (it=eps.begin(); it!=eps.end(); ++it)
-    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+    if ( *it == NULL )
+      _string += "[deleted] \n";
+    else {
+      _string += (*it)->name();
+      _string += "\n";
+    }
 
 }
 void BaseKernel::fprop_stats( std::string& _string ) const
@@ -105,7 +120,12 @@ void BaseKernel::fprop_stats( std::string& _string ) const
   PropertyContainer::Properties::const_iterator it;
   const PropertyContainer::Properties& fps = fprops_.properties();
   for (it=fps.begin(); it!=fps.end(); ++it)
-    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+    if ( *it == NULL )
+      _string += "[deleted] \n";
+    else {
+      _string += (*it)->name();
+      _string += "\n";
+    }
 
 }
 
@@ -116,7 +136,12 @@ void BaseKernel::mprop_stats( std::string& _string ) const
   PropertyContainer::Properties::const_iterator it;
   const PropertyContainer::Properties& mps = mprops_.properties();
   for (it=mps.begin(); it!=mps.end(); ++it)
-    *it == NULL ? _string += "[deleted] \n" : _string += (*it)->name();
+    if ( *it == NULL )
+      _string += "[deleted] \n";
+    else {
+      _string += (*it)->name();
+      _string += "\n";
+    }
 
 }
 
