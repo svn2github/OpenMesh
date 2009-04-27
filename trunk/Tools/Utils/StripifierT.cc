@@ -54,19 +54,13 @@ StripifierT<Mesh>::
 StripifierT(Mesh& _mesh) :
     mesh_(_mesh)
 {
-  // preprocess:  add new properties
-  mesh_.add_property( processed_ );
-  mesh_.add_property( used_ );
-  mesh_.request_face_status();
+
 }
 
 template <class Mesh>
 StripifierT<Mesh>::
 ~StripifierT() {
-  // postprocess:  remove properties
-  mesh_.remove_property(processed_);
-  mesh_.remove_property(used_);
-  mesh_.release_face_status();
+
 }
 
 template <class Mesh>
@@ -74,9 +68,19 @@ unsigned int
 StripifierT<Mesh>::
 stripify()
 {
+  // preprocess:  add new properties
+  mesh_.add_property( processed_ );
+  mesh_.add_property( used_ );
+  mesh_.request_face_status();
+
   // build strips
   clear();
   build_strips();
+
+  // postprocess:  remove properties
+  mesh_.remove_property(processed_);
+  mesh_.remove_property(used_);
+  mesh_.release_face_status();
 
   return n_strips();
 }
