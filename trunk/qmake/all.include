@@ -17,8 +17,8 @@ QT += opengl
 # TOPDIR has to be specified in a .qmake.cache file in your projects toplevel 
 # directory
 ################################################################################
-INCLUDEPATH = $$quote( $${TOPDIR} )
-DEPENDPATH  = $$quote( $${TOPDIR} )
+INCLUDEPATH = $$quote( $$TOPDIR/src )
+DEPENDPATH  = $$quote( $${TOPDIR}/src )
 
 ################################################################################
 # Define header Extension
@@ -81,39 +81,6 @@ UI_DIR = tmp/$$BUILDDIRECTORY
 ################################################################################
 # type definitions
 ################################################################################
-
-# This function sets all parameters required to build a plugin
-defineTest(Plugin) {
-	unix{
-		TEMPLATE = lib		
-	}	
-	win32 {
-		TEMPLATE = vclib
-		TARGET = $$replace(TARGET, - , _)
-		export(TARGET)
-		QMAKE_INCDIR += $${TOPDIR}/OpenFlipper/BasePlugin
-		export(QMAKE_INCDIR)       
-  		LIBS+= -L$${TOPDIR}/OpenFlipper/$${BUILDDIRECTORY} -lPluginLib		
-		export(LIBS)
-		DEPENDPATH += $${TOPDIR}/OpenFlipper/$${BUILDDIRECTORY} 
-		DEFINES += ACGDLL USEACG
-		export(DEFINES)
-		export(DEPENDPATH)
-		glut()
-	}
-        macx {
- 		glut()
-        }
-	export(TEMPLATE)
-	CONFIG *= plugin
-	export(CONFIG)
-	DESTDIR = $${TOPDIR}/OpenFlipper/Plugins/$${SYSTEMTYPE}/$${ARCHITECTURE}/$${MODE}	
-	export(DESTDIR)	
-	acg()
-	openmesh()
-	glew()
-	defineTargets()
-}
 
 defineTest(Library) {
 	unix{

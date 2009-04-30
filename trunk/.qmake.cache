@@ -1,9 +1,9 @@
 unix {
-	TOPDIR = $$system( pwd )/../
+	TOPDIR = $$system( pwd )/
 }
 
 win32 {
-	TOPDIR = $$system( cd )/../
+	TOPDIR = $$system( cd )/
 }
 
 #use next qmake.cache if it exists

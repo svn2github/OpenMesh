@@ -58,9 +58,18 @@ defineTest( openmp ) {
 
 defineTest( openmesh ) {
   DEFINES += _USE_MATH_DEFINES NOMINMAX
-  QMAKE_LIBDIR += $${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY}
-  LIBS+= -L$${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY} -lCore 
-  LIBS+= -L$${TOPDIR}/OpenMesh/Tools/lib/$${BUILDDIRECTORY} -lTools 
+
+  QMAKE_LIBDIR += $${TOPDIR}/lib/
+  QMAKE_LIBDIR += $${TOPDIR}/lib/
+
+  CONFIG( debug, debug|release ){
+    LIBS+= -L$${TOPDIR}/lib -lOpenMeshCored
+    LIBS+= -L$${TOPDIR}/lib -lOpenMeshToolsd
+  } else {
+    LIBS+= -L$${TOPDIR}/lib -lOpenMeshCore
+    LIBS+= -L$${TOPDIR}/lib -lOpenMeshTools
+  }
+
   export(DEFINES)
   export(QMAKE_LIBDIR)
   export(LIBS)

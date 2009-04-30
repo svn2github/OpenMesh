@@ -6,31 +6,13 @@ contains( OPENFLIPPER , OpenFlipper ){
 
 Subdirs()
 
-addSubdirs( Core )
-addSubdirs( Tools , Core )
-addSubdirs( OpenMesh/Apps/commandlineDecimater , Core Tools)
-addSubdirs( Apps/Decimating/DecimaterGui , Core Tools)
-addSubdirs( Apps/mconvert , Core Tools)
-addSubdirs( Apps/QtViewer , Core Tools)
-addSubdirs( Apps/Smoothing , Core Tools)
-addSubdirs( Apps/Subdivider/commandlineSubdivider , Core Tools)
-addSubdirs( Apps/Subdivider/commandlineAdaptiveSubdivider , Core Tools)
-addSubdirs( Apps/Subdivider/SubdividerGui , Core Tools)
-
-win32 {
-	!ReleaseBuild{
-		!DebugBuild {
-			MAKECMD = c:\qt4\bin\qmake.exe
-
- 			CORELIST += Core Tools Apps/Decimating/commandlineDecimater Apps/Decimating/DecimaterGui 
-                  CORELIST += Apps/mconvert Apps/QtViewer Apps/Smoothing
-			CORELIST += Apps/Subdivider/SubdividerGui Apps/Subdivider/commandlineSubdivider Apps/Subdivider/commandlineAdaptiveSubdivider 
-
-			for(entry, CORELIST ): {
-				message( $$entry )
-				system( cd $$entry && $$MAKECMD  )			
-			}
-		}
-	}
-}
-
+addSubdirs( src/OpenMesh/Core )
+addSubdirs( src/OpenMesh/Tools , src/OpenMesh/Core )
+addSubdirs( src/OpenMesh/Apps/commandlineDecimater , src/OpenMesh/Core src/OpenMesh/Tools)
+addSubdirs( src/OpenMesh/Apps/Decimating/DecimaterGui , src/OpenMesh/Core src/OpenMesh/Tools)
+addSubdirs( src/OpenMesh/Apps/mconvert , src/OpenMesh/Core src/OpenMesh/Tools)
+addSubdirs( src/OpenMesh/Apps/QtViewer , src/OpenMesh/Core src/OpenMesh/Tools)
+addSubdirs( src/OpenMesh/Apps/Smoothing , src/OpenMesh/Core src/OpenMesh/Tools)
+addSubdirs( src/OpenMesh/Apps/Subdivider/commandlineSubdivider , src/OpenMesh/Core src/OpenMesh/Tools)
+addSubdirs( src/OpenMesh/Apps/Subdivider/commandlineAdaptiveSubdivider , src/OpenMesh/Core src/OpenMesh/Tools)
+addSubdirs( src/OpenMesh/Apps/Subdivider/SubdividerGui , src/OpenMesh/Core src/OpenMesh/Tools)
