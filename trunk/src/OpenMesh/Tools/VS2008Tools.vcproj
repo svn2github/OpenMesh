@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="lib\Windows_32_Debug\Tools.lib"
+				OutputFile="$(SolutionDir)\lib\libOpenMeshToolsd.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="lib\Windows_32_Release\Tools.lib"
+				OutputFile="$(SolutionDir)\lib\libOpenMeshTools.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -212,19 +212,19 @@
 				>
 			</File>
 			<File
-				RelativePath="Subdivider\Adaptive\Composite\CompositeT.hh"
-				>
-			</File>
-			<File
 				RelativePath="Subdivider\Uniform\Composite\CompositeT.hh"
 				>
 			</File>
 			<File
-				RelativePath="Subdivider\Adaptive\Composite\CompositeTraits.hh"
+				RelativePath="Subdivider\Adaptive\Composite\CompositeT.hh"
 				>
 			</File>
 			<File
 				RelativePath="Subdivider\Uniform\Composite\CompositeTraits.hh"
+				>
+			</File>
+			<File
+				RelativePath="Subdivider\Adaptive\Composite\CompositeTraits.hh"
 				>
 			</File>
 			<File

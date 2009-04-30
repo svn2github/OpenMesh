@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="lib\Windows_32_Debug\Core.lib"
+				OutputFile="$(SolutionDir)\lib\libOpenMeshCored.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="lib\Windows_32_Release\Core.lib"
+				OutputFile="$(SolutionDir)\lib\libOpenMeshCore.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -348,11 +348,11 @@
 				>
 			</File>
 			<File
-				RelativePath="Geometry\Config.hh"
+				RelativePath="System\config.hh"
 				>
 			</File>
 			<File
-				RelativePath="System\config.hh"
+				RelativePath="Geometry\Config.hh"
 				>
 			</File>
 			<File
