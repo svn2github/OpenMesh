@@ -31,7 +31,7 @@ win32 {
 
 macx {
       # Set library binary header to the correct path
-      QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${TOPDIR}/lib/$${BUILDDIRECTORY}/
+      QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${DESTDIR}/
       export(QMAKE_LFLAGS_SONAME)
 }
 

@@ -27,15 +27,11 @@ CONFIG( debug, debug|release ){
 win32 {
  DEFINES += _USE_MATH_DEFINES NOMINMAX
  CONFIG  += static
- contains( OPENFLIPPER , OpenFlipper ){
-   DESTDIR = $${TOPDIR}/OpenFlipper/$${BUILDDIRECTORY}
-   message(OpenMesh Library is Building for OpenFlipper )
- }
 }
 
 macx {
       # Set library binary header to the correct path
-      QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${TOPDIR}/OpenMesh/Core/lib/$${BUILDDIRECTORY}/
+      QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${DESTDIR}/
       export(QMAKE_LFLAGS_SONAME)
 }
 
