@@ -87,7 +87,7 @@ Open \c OpenMesh\qmake\packages\packages.Windows in a text editor and change the
 for GLEW and GLUT such that they match the installed ones (see comments to find the right path entries).
 <ul>
 <li>In Microsoft Visual Studio 2008 open <tt> Tools->Visual Studio command prompt </tt></li>
-<li>Go to the folder of your application and call \c C:\\qt4\\bin\\qmake.exe</li>
+<li>Go to the folder of your application and call \c C:\\qt4\\bin\\qmake.exe -r</li>
 <li>Open the resulting visual studio solution ( *.sln )</li>
 <li>Choose which build target to use ( Debug/Release )</li>
 <li>Choose \c Build \c solution from the build menu</li>
@@ -110,7 +110,7 @@ the right paths are specified in \c OpenMesh/qmake/packages/packages.Darwin )
 <br><br>
 In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
 <tt>
-qmake -macx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+qmake -spec macx-g++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
 make release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
 </tt>
 
