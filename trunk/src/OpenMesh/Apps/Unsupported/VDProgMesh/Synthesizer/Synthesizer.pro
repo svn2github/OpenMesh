@@ -2,11 +2,7 @@
 #
 ################################################################################
 
-contains( OPENFLIPPER , OpenFlipper ){
-	include( $$TOPDIR/qmake/all.include )
-} else {
-	include( $$TOPDIR/OpenMesh/qmake/all.include )
-}
+include( $$TOPDIR/qmake/all.include )
 
 INCLUDEPATH += ../../../..
 

@@ -2,21 +2,21 @@
 #
 ################################################################################
 
-contains( OPENFLIPPER , OpenFlipper ){
-	include( $$TOPDIR/qmake/all.include )
-} else {
-	include( $$TOPDIR/OpenMesh/qmake/all.include )
-}
+include( $$TOPDIR/qmake/all.include )
 
 Library()
+
+contains( OPENFLIPPER , OpenFlipper ){
+	DESTDIR = $${TOPDIR}/OpenMesh/lib
+} else {
+	DESTDIR = $${TOPDIR}/lib
+}
+
 
 DIRECTORIES = . Geometry IO IO/exporter IO/importer IO/reader IO/writer \
 		Mesh Mesh/gen System Utils
 
 INCLUDEPATH += ../..
-
-
-DESTDIR = $${TOPDIR}/lib
 
 CONFIG( debug, debug|release ){
         TARGET    = OpenMeshCored

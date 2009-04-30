@@ -2,13 +2,15 @@
 #
 ################################################################################
 
-contains( OPENFLIPPER , OpenFlipper ){
-	include( $$TOPDIR/qmake/all.include )
-} else {
-	include( $$TOPDIR/OpenMesh/qmake/all.include )
-}
+include( $$TOPDIR/qmake/all.include )
 
 Library()
+
+contains( OPENFLIPPER , OpenFlipper ){
+        DESTDIR = $${TOPDIR}/OpenMesh/lib
+} else {
+        DESTDIR = $${TOPDIR}/lib
+}
 
 DIRECTORIES = . Decimater Smoother Subdivider/Adaptive/Composite \
         	Subdivider/Uniform/Composite Subdivider/Uniform \
@@ -16,15 +18,11 @@ DIRECTORIES = . Decimater Smoother Subdivider/Adaptive/Composite \
 
 INCLUDEPATH += ../..
 
-DESTDIR = $${TOPDIR}/lib
-
 CONFIG( debug, debug|release ){
         TARGET    = OpenMeshToolsd
 } else {
         TARGET    = OpenMeshTools
 }
-
-
 
 win32 {
  DEFINES += _USE_MATH_DEFINES NOMINMAX
