@@ -15,6 +15,15 @@ DIRECTORIES = . Geometry IO IO/exporter IO/importer IO/reader IO/writer \
 
 INCLUDEPATH += ../..
 
+
+DESTDIR = $${TOPDIR}/lib
+
+CONFIG( debug, debug|release ){
+        TARGET    = OpenMeshCored
+} else {
+	TARGET    = OpenMeshCore
+}
+
 win32 {
  DEFINES += _USE_MATH_DEFINES NOMINMAX
  CONFIG  += static

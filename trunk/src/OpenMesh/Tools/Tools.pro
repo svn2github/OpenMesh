@@ -16,6 +16,16 @@ DIRECTORIES = . Decimater Smoother Subdivider/Adaptive/Composite \
 
 INCLUDEPATH += ../..
 
+DESTDIR = $${TOPDIR}/lib
+
+CONFIG( debug, debug|release ){
+        TARGET    = OpenMeshToolsd
+} else {
+        TARGET    = OpenMeshTools
+}
+
+
+
 win32 {
  DEFINES += _USE_MATH_DEFINES NOMINMAX
  CONFIG  += static
@@ -23,7 +33,7 @@ win32 {
 
 macx {
       # Set library binary header to the correct path
-      QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${TOPDIR}/OpenMesh/Tools/lib/$${BUILDDIRECTORY}/
+      QMAKE_LFLAGS_SONAME = -install_name$${LITERAL_WHITESPACE}$${TOPDIR}/lib/$${BUILDDIRECTORY}/
       export(QMAKE_LFLAGS_SONAME)
 }
 
