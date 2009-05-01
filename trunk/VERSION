@@ -1,2 +1,4 @@
-2-0-RC2
-$Name:  $
+VERSION=2.0-RC2
+MAJOR=2
+MINOR=0
+PATCH=0
