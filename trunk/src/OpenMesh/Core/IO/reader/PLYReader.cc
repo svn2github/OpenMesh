@@ -162,7 +162,6 @@ _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const
 
  _bi.reserve(vertexCount_, 3*vertexCount_, faceCount_);
 
- std::cerr << "Vertices : " << vertexCount_ << std::endl;
  if ( vertexDimension_ != 3 ) {
     omerr() << "[PLYReader] : Only vertex dimension 3 is supported." << std::endl;
     return false;
@@ -372,6 +371,7 @@ _PLYReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
         case COLORRED:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,tmp);
+
             c[0] = tmp * 255.0f;
           }else
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,c[0]);
@@ -491,7 +491,7 @@ _PLYReader_::ValueType get_property_type(std::string _string1 , std::string _str
   else if ( _string1 == "int32"   || _string2 == "float32" )
     return _PLYReader_::ValueTypeINT32;
   else if ( _string1 == "uchar"   || _string2 == "uchar" )
-    return _PLYReader_::ValueTypeINT32;
+    return _PLYReader_::ValueTypeUCHAR;
   else if ( _string1 == "float"   || _string2 == "float" )
     return _PLYReader_::ValueTypeFLOAT;
 
@@ -611,8 +611,6 @@ bool _PLYReader_::can_u_read(std::istream& _is) const
           // As the order seems to be different in some files, autodetect it.
           ValueType valueType = get_property_type(tmp1,tmp2);
           propertyName        = get_property_name(tmp1,tmp2);
-
-          std::cerr << "property " << propertyName << " Type " << valueType << std::endl;
 
           if ( propertyName == "x" ) {
             std::pair< VertexProperty, ValueType>  entry(XCOORD,valueType);
