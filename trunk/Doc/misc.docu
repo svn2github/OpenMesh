@@ -35,7 +35,7 @@ The following naming conventions are used for the OpenMesh code:
 
 \section compilers Tested compilers
 
-%OpenMesh has been tested sucessfully for the following operating
+%OpenMesh has been successfully tested for the following operating
 systems / compilers:
 
 <table>
@@ -51,12 +51,12 @@ gcc 4.3.x<br>
 Microsoft Visual Studio 2008<br>
 </td></tr>
 
-<tr><td> MacOS X <br>(Panther and Tiger)</td><td> 
+<tr><td> MacOS X <br>(Panther, Tiger and Leopard)</td><td> 
 gcc 4.0 <br>
+gcc 4.2 <br>
 </td></tr>
 
 </table>
-
 
 \section sec_compiling_unix Unix
 
@@ -66,17 +66,56 @@ Install the following external libraries / frameworks:<br><br>
 <tr><td>Qt4</td><td><a href="http://www.qtsoftware.com/downloads" target="_blank">http://www.qtsoftware.com/downloads</a></td></tr>
 <tr><td>GLEW</td><td><a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a></td></tr>
 </table><br><br>
-In order to compile and install OpenMesh, enter following commands in OpenMesh's root directory:<br><br>
+
+\section build_systems Chosing build system
+
+OpenMesh can be built either using <b>qmake</b> (that already comes along
+with the qt framework) or <b>cmake</b>. Since both systems work and will be supported
+in future releases, the choice of what build system to use is left to the user.
+
+\subsection linux_using_cmake Compiling OpenMesh using CMake
+
+In order to compile OpenMesh, create a directory named e.g. "build" in
+OpenMesh's root directory. Change to the newly created directory and type
+<br/><br/>
+<tt>
+cmake&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+</tt><br>
+The application will be found under "Build/bin" in the recently created build folder. 
+Build also contains the shared objects needed by the application.
+
+\subsection linux_using_qmake Compiling OpenMesh using QMake
+
+In order to compile OpenMesh, enter following commands in OpenMesh's root directory:<br><br>
 <tt>
 qmake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
 make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
 </tt><br>
-When using the \c qmake command, make sure to use Qt version 4 (some linux distributions<br>
+Make sure to use Qt version 4 (some linux distributions<br>
 use the link \c qmake-qt4 against the executable).
 
 \section sec_compiling_windows Windows
 
-Prerequisites:<br><br>
+\subsection windows_using_cmake Compiling OpenMesh using CMake
+
+If you want to use cmake to build your Visual Studio 2008 solution file,<br>
+download and install CMake from <a href="http://www.cmake.org/cmake/resources/software.html">www.cmake.org</a>.<br>
+(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
+Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
+<br>
+<br>
+<ul>
+<li>In Microsoft Visual Studio 2008 open <tt> Tools->Visual Studio command prompt </tt></li>
+<li>Go to the folder of your application and create a folder named e.g. build and change to it</li>
+<li>Now execute <tt>cmake ..</tt> (make sure PATH contains cmake's binary path)</li>
+<li>Open the resulting visual studio solution ( *.sln ) which is to be found in the recently created build directory</li>
+<li>Choose which build target to use ( Debug/Release )</li>
+<li>Choose \c Build \c solution from the build menu</li>
+</ul>
+
+\subsection windows_using_qmake Compiling OpenMesh using QMake
+
 If you want to use qmake to build your Visual Studio 2008 solution file,<br>
 download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
 (Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
@@ -93,27 +132,40 @@ for GLEW and GLUT such that they match the installed ones (see comments to find 
 <li>Choose \c Build \c solution from the build menu</li>
 </ul>
 
-\section sec_compiling_macosx MacOSX
+\section sec_compiling_macosx MacOS X
 
 Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
 Because some of the examples depend on the GLEW library, it's recommended to install glew via the darwin portage
-system <a href="http://www.finkproject.org" target="_blank">fink</a>.<br>
-If you have not installed fink yet, follow the instructions given on their site in order to install it.<br>
+system <a href="http://darwinports.com/" target="_blank">darwin ports</a>.<br>
+If you have not installed it yet, follow the instructions given on their site in order to install it.<br>
 Type
 <tt>
-sudo fink install glew
+sudo port -v install glew
 </tt>
-to install glew headers and libraries. ( Fink usually installs header files to \c /sw/include and libraries to \c /sw/lib. )<br>
+to install glew headers and libraries. ( Darwin ports usually installs header files to \c /usr/local/include and libraries to \c /usr/local/lib. )<br>
 <br>
-( If you don't want to use fink and install the libraries manually instead -or via darwin ports-, make sure that<br>
-the right paths are specified in \c OpenMesh/qmake/packages/packages.Darwin )
+
+\subsection mac_using_cmake Compiling OpenMesh using CMake
+
+If you're using cmake as preferred build system create a directory
+named e.g. in OpenMesh's root directory and change to it.
+<br/><br/>
+<tt>
+cmake&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+</tt><br>
+The mac application bundle will be found under "Build" in the recently created build folder. 
+It automatically contains all needed shared objects (libs, fonts, textures, etc.).
+
+\subsection mac_using_qmake Compiling OpenMesh using QMake
+
+Adapt the header paths of at least GLEW (optional freetype, FTGL,...) in file <b>OpenMesh/qmake/packages/packages.Darwin</b>.
 <br><br>
 In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
 <tt>
 qmake -spec macx-g++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
-make release&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
 </tt>
-
 
 **/
 
