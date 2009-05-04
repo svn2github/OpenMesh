@@ -13,7 +13,7 @@ OpenMesh 2.0-RC3 ( Rev 112 ):
 - Changed libnames to libOpenMesh and libOpenMeshTools
 - cmake support
 - bugfixes to qmake build system
-- Readd toplevel ACGMakefiles
+- Keep some basic ACGMake files around ( acgmake is deprecated!! We will not provide support for it! Please use cmake or qmake instead. )
 
 * Other
 - Fixed some warnings with latest gcc
