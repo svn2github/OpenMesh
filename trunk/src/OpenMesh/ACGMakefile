@@ -3,7 +3,7 @@ include $(ACGMAKE)/Config
 #==============================================================================
 
 
-SUBDIRS = Core Tools Doc
+SUBDIRS = Core Tools ../Doc
 
 PACKAGES :=
 
