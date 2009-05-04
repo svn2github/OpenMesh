@@ -1,8 +1,9 @@
 
-OpenMesh 2.0-RC3 ( Rev 112 ):
+OpenMesh 2.0-RC3 ( Rev 117 ):
 
 * Readers/Writers
 - PLY writer fix ( thanks to Marc Hugi )
+- PLY reader fix ( wrong parsing of uchar binary data )
 - OBJ reader/writer fixes
 
 * Tools
