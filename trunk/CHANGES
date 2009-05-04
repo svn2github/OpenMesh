@@ -1,10 +1,32 @@
 
-OpenMesh 2.0-RC3:
+OpenMesh 2.0-RC3 ( Rev 112 ):
+
+* Readers/Writers
+- PLY writer fix ( thanks to Marc Hugi )
+- OBJ reader/writer fixes
+
+* Tools
+- Smoother now respects feature primitives
+
+* Build system:
+- Updated directory structure 
+- Changed libnames to libOpenMesh and libOpenMeshTools
+- cmake support
+- bugfixes to qmake build system
 - Readd toplevel ACGMakefiles
 
-OpenMesh 2.0-RC2:
+* Other
+- Fixed some warnings with latest gcc
+- Per halfedge texture coordinates added 
+- Extended functions to get available properties
+
+#============================================================================================
+
+OpenMesh 2.0-RC2 ( Rev. 79 ):
 - Fix for OBJ reader not reading texture coordinates correctly ( Thanks to Kamalneet Singh )
 - Fixed included Visual Studio files
+
+#============================================================================================
 
 OpenMesh 2.0-RC1:
 - Reader / writer have been updated
