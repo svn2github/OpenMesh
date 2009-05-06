@@ -58,20 +58,23 @@ gcc 4.2 <br>
 
 </table>
 
-\section sec_compiling_unix Unix
+\section req_libs Required libraries
 
 Install the following external libraries / frameworks:<br><br>
 <table>
 <tr><td>OpenGL</td><td><a href="http://www.opengl.org" target="_blank">http://www.opengl.org</a></td></tr>
 <tr><td>Qt4</td><td><a href="http://www.qtsoftware.com/downloads" target="_blank">http://www.qtsoftware.com/downloads</a></td></tr>
 <tr><td>GLEW</td><td><a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a></td></tr>
-</table><br><br>
+</table><br>
 
 \section build_systems Chosing build system
 
 OpenMesh can be built either using <b>qmake</b> (that already comes along
 with the qt framework) or <b>cmake</b>. Since both systems work and will be supported
 in future releases, the choice of what build system to use is left to the user.
+<br/>
+
+\section sec_compiling_unix Unix
 
 \subsection linux_using_cmake Compiling OpenMesh using CMake
 
@@ -138,7 +141,7 @@ for GLEW and GLUT such that they match the installed ones (see comments to find 
 
 \section sec_compiling_macosx MacOS X
 
-Download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+Download and install required libraries as stated above.
 Because some of the examples depend on the GLEW library, it's recommended to install glew via the darwin portage
 system <a href="http://darwinports.com/" target="_blank">darwin ports</a>.<br>
 If you have not installed it yet, follow the instructions given on their site in order to install it.<br>
