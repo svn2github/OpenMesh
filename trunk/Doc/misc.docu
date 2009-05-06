@@ -106,12 +106,16 @@ Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.s
 <br>
 <br>
 <ul>
-<li>In Microsoft Visual Studio 2008 open <tt> Tools->Visual Studio command prompt </tt></li>
-<li>Go to the folder of your application and create a folder named e.g. build and change to it</li>
-<li>Now execute <tt>cmake ..</tt> (make sure PATH contains cmake's binary path)</li>
-<li>Open the resulting visual studio solution ( *.sln ) which is to be found in the recently created build directory</li>
-<li>Choose which build target to use ( Debug/Release )</li>
-<li>Choose \c Build \c solution from the build menu</li>
+<li> Get Visual Studio 2008 </li>
+<li> Extract OpenMesh source code. </li>
+<li> Get all required libraries and install them ( including headers! ).</li>
+<li> Get cmake for windows from http://www.cmake.org/cmake/resources/software.html <li>
+<li> Start the cmake gui and open the OpenMesh toplevel directory </li>
+<li> Choose a build directory</li>
+<li> Click on configure .... If any libraries are left unconfigured, you can adjust the path in the ui. Rerun configure until everything is configured correctly</li>
+<li> Click generate to create the visual studio project files </li>
+<li> You can now find a Visual Studio solution file in the <b>build</b> directory you chose in cmake </li>
+<li> Now you can build OpenMesh from within Visual Studio using the newly created project file. </li>
 </ul>
 
 \subsection windows_using_qmake Compiling OpenMesh using QMake
