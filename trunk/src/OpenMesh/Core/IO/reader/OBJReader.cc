@@ -69,8 +69,8 @@ _OBJReader_& OBJReader() { return __OBJReaderInstance; }
 void trimString( std::string& _string) {
   // Trim Both leading and trailing spaces
 
-  size_t start = _string.find_first_not_of(" \t");
-  size_t end   = _string.find_last_not_of(" \t");
+  size_t start = _string.find_first_not_of(" \t\r\n");
+  size_t end   = _string.find_last_not_of(" \t\r\n");
 
   if(( std::string::npos == start ) || ( std::string::npos == end))
     _string = "";
@@ -215,10 +215,12 @@ read_material(std::fstream& _in)
     }
 #endif
     else if (keyWrd == "map_Kd" ) {
-      // Get the rest of the line, removeing leading or trailing spaces
+      // Get the rest of the line, removing leading or trailing spaces
+      // This will define the filename of the texture
       std::getline(stream,textureName);
       trimString(textureName);
-      mat.set_map_Kd( textureName, textureId++ );
+      if ( ! textureName.empty() )
+        mat.set_map_Kd( textureName, textureId++ );
     }
     else if (keyWrd == "Tr") // transparency value
     {
@@ -316,7 +318,6 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
         }
       }
 
-//          mat.has_map_Kd();
     }
 
     // usemtl
