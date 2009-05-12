@@ -290,7 +290,10 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
     {
       std::string matFile;
 
-      stream >> matFile;
+      // Get the rest of the line, removing leading or trailing spaces
+      // This will define the filename of the texture
+      std::getline(stream,matFile);
+      trimString(matFile);
 
       matFile = path_ + matFile;
 
@@ -311,11 +314,9 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
 
       for ( MaterialList::iterator material = materials_.begin(); material != materials_.end(); material++ )
       {
-
-        if ( (*material).second.has_map_Kd() ) {
-          std::string filename = path_ + (*material).second.map_Kd();
-          _bi.add_texture_information( (*material).second.map_Kd_index() , filename );
-        }
+        // Save the texture information in a property
+        if ( (*material).second.has_map_Kd() )
+          _bi.add_texture_information( (*material).second.map_Kd_index() , (*material).second.map_Kd() );
       }
 
     }
@@ -488,7 +489,7 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
       size_t n_faces = _bi.n_faces();
       FaceHandle fh = _bi.add_face(vhandles);
 
-      if( !vhandles.empty() )
+      if( !vhandles.empty() && fh.is_valid() )
 	     _bi.add_face_texcoords( fh, vhandles[0], face_texcoords );
 
       if ( !matname.empty()  )
