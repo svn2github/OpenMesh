@@ -443,19 +443,25 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
           {
             case 0: // vertex
               if ( value < 0 ) {
-//                 std::cerr << "Handling negativ vertex index value" << std::endl;
+                // Calculation of index :
+                // -1 is the last vertex in the list
+                // As obj counts from 1 and not zero add +1
                 value = _bi.n_vertices() + value + 1;
               }
+              // Obj counts from 1 and not zero .. array counts from zero therefore -1
               vhandles.push_back(VertexHandle(value-1));
               break;
 
             case 1: // texture coord
               if ( value < 0 ) {
-//                 std::cerr << "Handling negativ texture coordinate index value)" << std::endl;
-                value = _bi.n_vertices() + value + 1;
+                // Calculation of index :
+                // -1 is the last vertex in the list
+                // As obj counts from 1 and not zero add +1
+                value = texcoords.size() + value + 1;
               }
               assert(!vhandles.empty());
               if ( ! texcoords.empty() && (unsigned int)(value-1) < texcoords.size() ) {
+                // Obj counts from 1 and not zero .. array counts from zero therefore -1
                 _bi.set_texcoord(vhandles.back(), texcoords[value-1]);
                 face_texcoords.push_back( texcoords[value-1] );
               } else {
@@ -466,11 +472,14 @@ read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
 
             case 2: // normal
               if ( value < 0 ) {
-//                 std::cerr << "Handling negativ normal index value)" << std::endl;
-                value = _bi.n_vertices() + value + 1;
+                // Calculation of index :
+                // -1 is the last vertex in the list
+                // As obj counts from 1 and not zero add +1
+                value = normals.size() + value + 1;
               }
               assert(!vhandles.empty());
               assert((unsigned int)(value-1) < normals.size());
+              // Obj counts from 1 and not zero .. array counts from zero therefore -1
               _bi.set_normal(vhandles.back(), normals[value-1]);
               break;
           }
