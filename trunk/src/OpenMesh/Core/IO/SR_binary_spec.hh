@@ -95,10 +95,10 @@ namespace IO {
   }
 
 SIMPLE_BINARY(bool);
-// SIMPLE_BINARY(int);
+//SIMPLE_BINARY(int);
 
 // Why is this needed? Should not be used as not 32 bit compatible
-SIMPLE_BINARY(unsigned long);
+//SIMPLE_BINARY(unsigned long);
 SIMPLE_BINARY(float);
 SIMPLE_BINARY(double);
 SIMPLE_BINARY(long double);
@@ -114,6 +114,43 @@ SIMPLE_BINARY(uint64_t);
 
 #undef SIMPLE_BINARY
 
+// For unsigned long which is of size 64 bit on 64 bit
+// architectures: convert into 32 bit unsigned integer value
+// in order to stay compatible between 32/64 bit architectures.
+// This allows cross reading BUT forbids storing unsigned longs
+// as data type since higher order word (4 bytes) will be truncated.
+// Does not work in case the data type that is to be stored
+// exceeds the value range of unsigned int in size, which is improbable...
+
+#define SIMPLE_BINARY( T ) \
+  template <> struct binary< T > {                           \
+    typedef T value_type;                                    \
+    static const bool is_streamable = true;                  \
+    static size_t size_of(const value_type&) { return sizeof(value_type); }   \
+    static size_t size_of(void) { return sizeof(value_type); }   \
+    static size_t store( std::ostream& _os, const value_type& _val, \
+		         bool _swap=false) {                 \
+      value_type tmp = _val;                                 \
+      if (_swap) reverse_byte_order(tmp);                    \
+      /* Convert unsigned long to unsigned int for compatibility reasons */ \
+      unsigned int t1 = static_cast<unsigned int>(tmp);      \
+      _os.write( (const char*)&t1, sizeof(unsigned int) );   \
+      return _os.good() ? sizeof(unsigned int) : 0;          \
+    }                                                        \
+                                                             \
+    static size_t restore( std::istream& _is, value_type& _val, \
+			 bool _swap=false) {                             \
+    	unsigned int t1;                                     \
+      _is.read( (char*)&t1, sizeof(unsigned int) );          \
+      _val = t1;                                             \
+      if (_swap) reverse_byte_order(_val);                   \
+      return _is.good() ? sizeof(unsigned int) : 0;            \
+    }                                                        \
+  }
+
+SIMPLE_BINARY(unsigned long);
+
+#undef SIMPLE_BINARY
 
 #define VECTORT_BINARY( T ) \
   template <> struct binary< T > {                              \
