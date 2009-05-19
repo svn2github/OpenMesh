@@ -192,25 +192,25 @@ _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const
           break;
         case COLORRED:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
-            _in >> tmp; c[0] = tmp * 255.0f;
+            _in >> tmp; c[0] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             _in >> c[0];
           break;
         case COLORGREEN:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
-            _in >> tmp; c[1] = tmp * 255.0f;
+            _in >> tmp; c[1] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             _in >> c[1];
           break;
         case COLORBLUE:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
-            _in >> tmp; c[2] = tmp * 255.0f;
+            _in >> tmp; c[2] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             _in >> c[2];
           break;
         case COLORALPHA:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
-            _in >> tmp; c[3] = tmp * 255.0f;
+            _in >> tmp; c[3] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             _in >> c[3];
           break;
@@ -372,28 +372,28 @@ _PLYReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,tmp);
 
-            c[0] = tmp * 255.0f;
+            c[0] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,c[0]);
           break;
         case COLORGREEN:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,tmp);
-            c[1] = tmp * 255.0f;
+            c[1] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,c[1]);
           break;
         case COLORBLUE:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,tmp);
-            c[2] = tmp * 255.0f;
+            c[2] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,c[2]);
           break;
         case COLORALPHA:
           if ( vertexPropertyMap_ [ propertyIndex].second == ValueTypeFLOAT32 ){
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,tmp);
-            c[3] = tmp * 255.0f;
+            c[3] = static_cast<OpenMesh::Vec4i::value_type>(tmp * 255.0f);
           }else
             readValue(vertexPropertyMap_ [ propertyIndex].second,_in,c[3]);
           break;
