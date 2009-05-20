@@ -103,14 +103,13 @@ DecimaterT<Mesh>::
   mesh_.remove_property(priority_);
   mesh_.remove_property(heap_position_);
 
-  // dispose modules
+  // dispose of modules
   {
-    typename ModuleList::iterator m_it, m_end = bmodules_.end();
-    for( m_it=bmodules_.begin(); m_it!=m_end; ++m_it)
+    set_uninitialized();
+    typename ModuleList::iterator m_it, m_end = all_modules_.end();
+    for( m_it=all_modules_.begin(); m_it!=m_end; ++m_it)
       delete *m_it;
-    bmodules_.clear();
-    if (cmodule_)
-      delete cmodule_;
+    all_modules_.clear();
   }
 }
 
@@ -123,15 +122,33 @@ void
 DecimaterT<Mesh>::
 info( std::ostream& _os )
 {
-  typename ModuleList::iterator m_it, m_end = bmodules_.end();
-
-  _os << "binary modules: " << bmodules_.size() << std::endl;
-  for( m_it=bmodules_.begin(); m_it!=m_end; ++m_it)
-    _os << "  " << (*m_it)->name() << std::endl;
-
-  _os << "priority module: "
-      << (cmodule_ ? cmodule_->name().c_str() : "<None>") << std::endl;
-  _os << "is initialized : " << (initialized_ ? "yes" : "no") << std::endl;
+  if(initialized_)
+  {
+    _os << "initialized : yes" << std::endl;
+    _os << "binary modules: " << bmodules_.size() << std::endl;
+    for( ModuleListIterator m_it=bmodules_.begin(); m_it!=bmodules_.end(); ++m_it)
+    {
+      _os << "  " << (*m_it)->name() << std::endl;
+    }
+    _os << "priority module: " << cmodule_->name().c_str() << std::endl;
+  }
+  else {
+    _os << "initialized : no" << std::endl;
+    _os << "available modules: " << all_modules_.size() << std::endl;
+    for( ModuleListIterator m_it=all_modules_.begin(); m_it!=all_modules_.end(); ++m_it)
+    {
+      _os << "  " << (*m_it)->name() << " : ";
+      if((*m_it)->is_binary()) {
+        _os << "binary";
+        if((*m_it)->name() == "Quadric") {
+          _os << " and priority (special treatment)";
+        }
+      } else {
+        _os << "priority";
+      }
+      _os << std::endl;
+    }
+  }
 }
 
 
@@ -143,56 +160,64 @@ bool
 DecimaterT<Mesh>::
 initialize()
 {
-  typename ModuleList::iterator m_it, m_end = bmodules_.end();
+  if(initialized_)
+  {
+    return true;
+  }
 
+  // FIXME: quadric module shouldn't be treated specially.
+  // Q: Why?
+  // A: It isn't generic and breaks encapsulation. Also, using string
+  // name comparison is not reliable, since you can't guarantee that
+  // no one else will name their custom module "Quadric".
+  // Q: What should be done instead?
+  // A: ModBaseT API should support modules that can be both binary
+  // and priority, or BETTER YET, let the DecimaterT API specify the
+  // priority module explicitly.
+
+  // find the priority module: either the only non-binary module in the list, or "Quadric"
   Module *quadric=NULL;
-
-  Module* origC = NULL;
-  
-  // If already initialized, remember original cModule (priority module)
-  // if no new cmodule is provided use old one
-  if (initialized_)
-    origC = cmodule_;
-  
-  cmodule_ = NULL;
-  
-  for (m_it=bmodules_.begin(); m_it != m_end; ++m_it)
+  Module *pmodule=NULL;
+  for (ModuleListIterator m_it=all_modules_.begin(), m_end=all_modules_.end(); m_it != m_end; ++m_it)
   {
     if ( (*m_it)->name() == "Quadric")
       quadric = *m_it;
 
-    if ( ! (*m_it)->is_binary() )
+    if ( !(*m_it)->is_binary() )
     {
-      if ( !cmodule_ ) // only one non-binary module allowed!
-        cmodule_ = *m_it;
-      else
+      if(pmodule)
+      {
+        // only one priority module allowed!
+        set_uninitialized();
         return false;
+      }
+      pmodule = *m_it;
     }
-    (*m_it)->initialize();
+  }
+
+  // Quadric is used as default priority module (even if it is set to be binary)
+  if(!pmodule && quadric) {
+    pmodule = quadric;
   }
   
-  // If the decimater has already been initialized and we have no new cmodule, 
-  // use the old cmodule
-  if ( initialized_ && !cmodule_ ) {
-    cmodule_ = origC;
-    cmodule_->initialize(); 
+  if(!pmodule) {
+    // At least one priority module required
+    set_uninitialized();
+    return false;
   }
 
-  if (!cmodule_) // one non-binary module is mandatory!
+  // set pmodule as the current priority module
+  cmodule_ = pmodule;
+
+  for(ModuleListIterator m_it=all_modules_.begin(), m_end=all_modules_.end(); m_it != m_end; ++m_it)
   {
-    if (!quadric)
-      return false;
-    else
-    {
-      cmodule_ = quadric; // let the quadric become the priority module
-    }
-  }
+    // every module gets initialized
+    (*m_it)->initialize();
 
-  // If we do not reuse the original cmodule delete the new cmodule from the 
-  // binary module list
-  if ( !initialized_ || (cmodule_ != origC) ) {
-    m_it = std::find(bmodules_.begin(), bmodules_.end(), cmodule_ );
-    bmodules_.erase( m_it );
+    if(*m_it != pmodule) {
+      // all other modules are binary, and go into bmodules_ list
+      bmodules_.push_back(*m_it);
+    }
   }
 
   return initialized_ = true;
@@ -303,7 +328,7 @@ DecimaterT<Mesh>::collapse_priority(const CollapseInfo& _ci)
   for (m_it = bmodules_.begin(); m_it != m_end; ++m_it)
   {
     if ( (*m_it)->collapse_priority(_ci) < 0.0)
-      return -1.0; // ILLEGAL_COLLAPSE
+      return ModBaseT<DecimaterT<Mesh> >::ILLEGAL_COLLAPSE;
   }
   return cmodule_->collapse_priority(_ci);
 }

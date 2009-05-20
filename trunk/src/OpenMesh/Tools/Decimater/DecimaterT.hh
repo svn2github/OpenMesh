@@ -73,6 +73,7 @@ public: //-------------------------------------------------------- public types
   typedef CollapseInfoT<MeshT>       CollapseInfo;
   typedef ModBaseT<Self>             Module;
   typedef std::vector< Module* >     ModuleList;
+  typedef typename ModuleList::iterator ModuleListIterator;
 
 public: //------------------------------------------------------ public methods
 
@@ -113,9 +114,10 @@ public: //--------------------------------------------------- module management
       return false;
 
     _mh.init( new _Module(*this) );
-    bmodules_.push_back( _mh.module() );
+    all_modules_.push_back( _mh.module() );
 
-    initialized_ = false;
+    set_uninitialized();
+    
     return true;
   }
 
@@ -127,25 +129,18 @@ public: //--------------------------------------------------- module management
     if (!_mh.is_valid())
       return false;
 
-    if ( cmodule_ == _mh.module() ) {
-      cmodule_     = 0;
-      initialized_ = false; // reset initialized state
-      _mh.clear();
-      return true;
-    }
+    typename ModuleList::iterator it = std::find(all_modules_.begin(),
+                                                 all_modules_.end(),
+                                                 _mh.module() );
 
-    typename ModuleList::iterator it = std::find(bmodules_.begin(),
-             bmodules_.end(),
-             _mh.module() );
-
-    if ( it == bmodules_.end() ) // module not found
+    if ( it == all_modules_.end() ) // module not found
       return false;
 
     delete *it;
-    bmodules_.erase( it ); // finally remove from list
+    all_modules_.erase( it ); // finally remove from list
     _mh.clear();
 
-    initialized_ = false; // reset initialized state
+    set_uninitialized();
     return true;
   }
 
@@ -242,7 +237,12 @@ private: //---------------------------------------------------- private methods
   /// Post-process a collapse
   void postprocess_collapse(CollapseInfo& _ci);
 
-
+  // Reset the initialized flag, and clear the bmodules_ and cmodule_
+  void set_uninitialized() {
+    initialized_ = false;
+    cmodule_ = 0;
+    bmodules_.clear();
+  }
 
 
 private: //------------------------------------------------------- private data
@@ -254,10 +254,15 @@ private: //------------------------------------------------------- private data
   // heap
   std::auto_ptr<DeciHeap> heap_;
 
-  // list of modules
+  // list of binary modules
   ModuleList bmodules_;
+
+  // the current priority module
   Module*    cmodule_;
 
+  // list of all allocated modules (including cmodule_ and all of bmodules_)
+  ModuleList all_modules_;
+    
   bool       initialized_;
 
 
