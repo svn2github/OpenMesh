@@ -111,12 +111,13 @@ add_definitions (-DINCLUDE_TEMPLATES)
 # look for selected qt dependencies
 macro (acg_qt4)
   if (NOT QT4_FOUND)
-    find_package (Qt4 ${ARGN})
+    find_package (Qt4 COMPONENTS QtCore QtGui ${ARGN})
 
     set (QT_USE_QTOPENGL 1)
     set (QT_USE_QTNETWORK 1)
     set (QT_USE_QTSCRIPT 1)
     set (QT_USE_QTSQL 1)
+    set (QT_USE_QTXML 1)
     set (QT_USE_QTHELP 1)
     set (QT_USE_QTWEBKIT 1)
     set (QT_USE_QTUITOOLS 1)
@@ -354,20 +355,20 @@ function (acg_add_library _target _type)
     endif ()
   elseif (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE)
     if (${_type} STREQUAL SHARED)
-      add_custom_command (TARGET ${target} POST_BUILD
+      add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.dylib
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/${_target}.dylib)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}.dylib
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.dylib)
     elseif (${_type} STREQUAL MODULE)
       if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
         file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
       endif ()
-      add_custom_command (TARGET ${target} POST_BUILD
+      add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.so
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/${_target}.so)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}.so
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/lib${_target}.so)
     endif ()
   endif ()
   if (NOT ACG_PROJECT_BUNDLE OR NOT APPLE)
