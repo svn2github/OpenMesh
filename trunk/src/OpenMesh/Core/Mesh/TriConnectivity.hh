@@ -30,6 +30,8 @@
 
 namespace OpenMesh {
 
+/** \brief Connectifity Class for Triangle Meshes
+*/
 class TriConnectivity : public PolyConnectivity
 {
 public:
