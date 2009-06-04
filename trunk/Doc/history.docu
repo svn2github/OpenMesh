@@ -6,12 +6,23 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0</b> (2009/01/28)</td><td> 
+<tr valign=top><td><b>2.0-RC2</b> (2009/02/17)</td><td> 
+<ul>
+<li>Fix for OBJ reader not reading texture coordinates correctly ( Thanks to Kamalneet Singh )</li>
+<li>Fixed included Visual Studio files</li>
+</ul>
+</tr>
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>2.0-RC1</b> (2009/01/28)</td><td> 
 <ul>
 <li>Reader / writer have been updated</li>
 <li>Some general bugfixes</li>
+<li>The usage of acgmake has become deprecated since the last release. It has been replaced by qmake</li>
 <li>Improved Documentation</li>
 <li>Dropped support for acgmake which has been entirely replaced by qmake</li>
+<li>Credits to Simon Floery, Canjiang Ren, Johannes Totz, Leon Kos, Jean Pierre Charalambos, Mathieu Gauthier </li>
 </ul>
 </tr>
 
