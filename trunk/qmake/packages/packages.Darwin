@@ -11,7 +11,7 @@ defineTest( qt ) {
 defineTest( glew ) {
   INCLUDEPATH *= /sw/include/GL
   export(INCLUDEPATH)
-  LIBS *= -L/sw/lib -lGLEW
+  LIBS *= -L/opt/local/lib/ -lGLEW
   export(LIBS)
 }
 
@@ -23,8 +23,8 @@ defineTest( glut ) {
 }
 
 defineTest( openmesh ) {
-  QMAKE_LIBDIR += $${TOPDIR}/lib/$${BUILDDIRECTORY}
-  QMAKE_LIBDIR += $${TOPDIR}/lib/$${BUILDDIRECTORY}
+  QMAKE_LIBDIR += $${TOPDIR}/lib
+  QMAKE_LIBDIR += $${TOPDIR}/lib
  
   CONFIG( debug, debug|release ){
     LIBS += -lOpenMeshToolsd
