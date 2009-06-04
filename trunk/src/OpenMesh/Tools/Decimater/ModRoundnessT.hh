@@ -1,32 +1,43 @@
-//=============================================================================
-//                                                                            
-//                               OpenMesh                                     
-//        Copyright (C) 2003 by Computer Graphics Group, RWTH Aachen          
-//                           www.openmesh.org                                 
-//                                                                            
-//-----------------------------------------------------------------------------
-//                                                                            
-//                                License                                     
-//                                                                            
-//   This library is free software; you can redistribute it and/or modify it 
-//   under the terms of the GNU Lesser General Public License as published   
-//   by the Free Software Foundation, version 2.1.                           
-//                                                                             
-//   This library is distributed in the hope that it will be useful, but       
-//   WITHOUT ANY WARRANTY; without even the implied warranty of                
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         
-//   Lesser General Public License for more details.                           
-//                                                                            
-//   You should have received a copy of the GNU Lesser General Public          
-//   License along with this library; if not, write to the Free Software       
-//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 
-//                                                                            
-//-----------------------------------------------------------------------------
-//                                                                            
-//   $Revision$
-//   $Date$
-//                                                                            
-//=============================================================================
+/*===========================================================================*\
+ *                                                                           *
+ *                               OpenMesh                                    *
+ *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
+ *                           www.openmesh.org                                *
+ *                                                                           *
+ *---------------------------------------------------------------------------* 
+ *  This file is part of OpenMesh.                                           *
+ *                                                                           *
+ *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  it under the terms of the GNU Lesser General Public License as           *
+ *  published by the Free Software Foundation, either version 3 of           *
+ *  the License, or (at your option) any later version with the              *
+ *  following exceptions:                                                    *
+ *                                                                           *
+ *  If other files instantiate templates or use macros                       *
+ *  or inline functions from this file, or you compile this file and         *
+ *  link it with other files to produce an executable, this file does        *
+ *  not by itself cause the resulting executable to be covered by the        *
+ *  GNU Lesser General Public License. This exception does not however       *
+ *  invalidate any other reasons why the executable file might be            *
+ *  covered by the GNU Lesser General Public License.                        *
+ *                                                                           *
+ *  OpenMesh is distributed in the hope that it will be useful,              *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of           *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *  GNU Lesser General Public License for more details.                      *
+ *                                                                           *
+ *  You should have received a copy of the GNU LesserGeneral Public          *
+ *  License along with OpenMesh.  If not,                                    *
+ *  see <http://www.gnu.org/licenses/>.                                      *
+ *                                                                           *
+\*===========================================================================*/ 
+
+/*===========================================================================*\
+ *                                                                           *             
+ *   $Revision$                                                         *
+ *   $Date$                   *
+ *                                                                           *
+\*===========================================================================*/
 
 /** \file ModRoundnessT.hh
     
@@ -229,14 +240,14 @@ public: // specific methods
   //      4 *  1/2 * ||cross(B-A,C-A)||  * min( ||a||,||b||,||c|| )
   //
   //                         a'a * b'b * c'c
-  // R² = ----------------------------------------------------------
+  // Rï¿½ = ----------------------------------------------------------
   //       4 * cross(B-A,C-A)'cross(B-A,C-A) * min( a'a, b'b, c'c )
   //
   //                      a'a * b'b * c'c
   // R = 1/2 * sqrt(---------------------------)
   //                 AA * min( a'a, b'b, c'c )
   //
-  // At angle 60° R has it's minimum for all edge lengths = sqrt(1/3)
+  // At angle 60ï¿½ R has it's minimum for all edge lengths = sqrt(1/3)
   //
   // Define normalized roundness 
   //
@@ -250,7 +261,7 @@ public: // specific methods
   {
     const value_type epsilon = value_type(1e-15);
 
-    static const value_type sqrt43 = value_type(sqrt(4.0/3.0)); // 60°,a=b=c, **)    
+    static const value_type sqrt43 = value_type(sqrt(4.0/3.0)); // 60ï¿½,a=b=c, **)    
 
     Vec3f vecAC     = C-A;
     Vec3f vecAB     = B-A;
