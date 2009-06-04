@@ -1,9 +1,9 @@
-1. check files
+1. check files, build on windows,mac,linux with cmake and qmake
 2. check files with release numbers:
    Docu/history.docu
-   Dist/Readme
+   CHANGELOG
    VERSION
-3. cvs export -r OpenMesh-<version> -d OpenMesh-<version> OM_DIST
+3. Tag the current version in the svn (checkout, remove .svn readd as tag)
 4. Create HTML-Documentation in OpenMesh/Docu/ (!)
 5. check for directories acgmake and OpenMeshApps
 6. Create tar-ball and zip-archive
@@ -11,3 +11,5 @@
    > tar cvjf OpenMesh-<version>.tar.bz2 OpenMesh-<version>/
    > zip -9 -r OpenMesh-<version>.zip OpenMesh-<version>/
 7. Release Upload
+8. Upload the Documentation to webserver
+9. Set new links in content management system
