@@ -57,11 +57,11 @@ endmacro ()
 # set directory structures for the different platforms
 if (WIN32)
   set (ACG_PROJECT_DATADIR ".")
-  set (ACG_PROJECT_LIBDIR "bin")
-  set (ACG_PROJECT_BINDIR "bin")
+  set (ACG_PROJECT_LIBDIR "lib")
+  set (ACG_PROJECT_BINDIR ".")
   set (ACG_PROJECT_PLUGINDIR "Plugins")
-  if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR})
-    file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR})
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR})
+    file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR})
   endif ()
 else ()
   set (ACG_PROJECT_DATADIR "share/${CMAKE_PROJECT_NAME}")
@@ -342,7 +342,7 @@ function (acg_add_library _target _type)
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
                             ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.dll
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/${_target}.dll)
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/${_target}.dll)
     elseif (${_type} STREQUAL MODULE)
       if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
         file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
@@ -352,6 +352,13 @@ function (acg_add_library _target _type)
                           copy_if_different
                             ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.dll
                             ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/${_target}.dll)
+    endif ()
+    if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC)
+      add_custom_command (TARGET ${_target} POST_BUILD
+                          COMMAND ${CMAKE_COMMAND} -E
+                          copy_if_different
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.lib
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/${_target}.lib)
     endif ()
   elseif (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE)
     if (${_type} STREQUAL SHARED)
@@ -372,8 +379,11 @@ function (acg_add_library _target _type)
     endif ()
   endif ()
   if (NOT ACG_PROJECT_BUNDLE OR NOT APPLE)
-    if (${_type} STREQUAL SHARED)
-      install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_LIBDIR})
+    if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC)
+      install (TARGETS ${_target}
+               RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
+               LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
+               ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR})
     elseif (${_type} STREQUAL MODULE)
       install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_PLUGINDIR})
     endif ()
