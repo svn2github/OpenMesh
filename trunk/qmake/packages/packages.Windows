@@ -36,7 +36,7 @@ defineTest( glut ) {
   ## Enter here the correct path to GLUT
   #######################################
 
-  GLUT_PATH = c:\libs\glut
+  GLUT_PATH = c:\libs\glut-3.7
 
   ########################################
 
