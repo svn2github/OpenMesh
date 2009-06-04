@@ -24,10 +24,6 @@ set (directories
 acg_append_files (headers "*.hh" ${directories})
 acg_append_files (sources "*.cc" ${directories})
 
-IF(WIN32)
-  acg_append_files (sources "*.c" ${directories})
-ENDIF(WIN32)
-
 if (WIN32)
   # OpenMesh has no dll exports so we have to build a static library on windows
   acg_add_library (OpenMeshCore STATIC ${sources} ${headers})
