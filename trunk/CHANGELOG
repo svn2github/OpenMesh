@@ -1,13 +1,19 @@
 
 OpenMesh 2.0-RC3 ( Rev 117 ):
 
+* License
+- Relicense under LGPL v3 with additional exception for template inclusion
+
 * Readers/Writers
 - PLY writer fix ( thanks to Marc Hugi )
 - PLY reader fix ( wrong parsing of uchar binary data )
+- PLY reader warnings fix ( thanks to Ilya A. Kriveshko )
+- OBJ Reader now stores texture information in additional Mesh properties
 - OBJ reader/writer fixes
 
 * Tools
 - Smoother now respects feature primitives
+- Decimater improvements and fixes ( thanks to Ilya A. Kriveshko )
 
 * Build system:
 - Updated directory structure 
