@@ -4,6 +4,54 @@
 
 <table border=1 cellpadding=4 cellspacing=2>
 
+
+
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>2.0-RC3</b> (2009/06/04)</td><td>
+<b>License</b>
+<ul>
+<li>Relicense under LGPL v3 with additional exception for template inclusion</li>
+</ul>
+
+<b>Readers/Writers</b>
+<ul>
+<li> PLY writer fix ( thanks to Marc Hugi )</li>
+<li> PLY reader fix ( wrong parsing of uchar binary data )</li>
+<li> PLY reader warnings fix ( thanks to Ilya A. Kriveshko )</li>
+<li> OBJ Reader now stores texture information in additional Mesh properties</li>
+<li> OBJ reader/writer fixes</li>
+</ul>
+
+
+<b>Tools</b>
+<ul>
+<li> Smother now respects feature primitives </li>
+<li> Decimater improvements and fixes ( thanks to Ilya A. Kriveshko ) </li>
+</ul>
+
+<b>Build system</b>
+<ul>
+<li> Updated directory structure </li>
+<li> Changed libnames to libOpenMesh and libOpenMeshTools </li>
+<li> cmake support </li>
+<li> bugfixes to qmake build system </li>
+<li> Keep some basic ACGMake files around ( acgmake is deprecated!! We will not provide support for it! Please use cmake or qmake instead. ) </li>
+</ul>
+
+<b>Other</b>
+<ul>
+<li> Fixed some warnings with latest gcc </li>
+<li> Per halfedge texture coordinates added </li>
+<li> Extended functions to get available properties </li>
+</ul>
+
+</tr>
+
+
+
+
+
 <!-- --------------------------------------------------------------------- -->
 
 <tr valign=top><td><b>2.0-RC2</b> (2009/02/17)</td><td> 
