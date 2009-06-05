@@ -10,5 +10,6 @@ OpenMesh, 2-0
 ~~~~~~~~~~~~~~
 Unpack the tar-ball to a suitable place.
 
-A detailed build manual for Mac/Windows/Linux is in the Doc subdirectory.
+A detailed build manual for Mac/Windows/Linux is in the Documentation 
+located at Doc/html/index.html 
 
