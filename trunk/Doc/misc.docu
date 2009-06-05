@@ -70,8 +70,8 @@ Install the following external libraries / frameworks:<br><br>
 \section build_systems Chosing build system
 
 OpenMesh can be built either using <b>qmake</b> (that already comes along
-with the qt framework) or <b>cmake</b>. Since both systems work and will be supported
-in future releases, the choice of what build system to use is left to the user.
+with the qt framework) or <b>cmake</b>. Both systems work and will be supported.
+We recommend the use of the cmake build system.
 <br/>
 
 \section sec_compiling_unix Unix
@@ -79,14 +79,20 @@ in future releases, the choice of what build system to use is left to the user.
 \subsection linux_using_cmake Compiling OpenMesh using CMake
 
 In order to compile OpenMesh, create a directory named e.g. "build" in
-OpenMesh's root directory. Change to the newly created directory and type
+OpenMesh's root directory. <b>Change to the newly created directory</b> and type
 <br/><br/>
 <tt>
 cmake&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
-make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project<br>
 </tt><br>
-The application will be found under "Build/bin" in the recently created build folder. 
-Build also contains the shared objects needed by the application.
+You can choose the build type by using cmake with the flag<br>
+<b>-DCMAKE_BUILD_TYPE=(Debug|Release)</b><br>
+The default is: Debug
+<br>
+
+Everything will then be build in the <b>Build</b> subdirectory containing the libraries in <b>lib</b> and the binaries in <b>bin</b>.
+<br>
+<br>
 
 \subsection linux_using_qmake Compiling OpenMesh using QMake
 
