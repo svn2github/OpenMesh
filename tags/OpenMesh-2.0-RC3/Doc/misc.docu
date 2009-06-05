@@ -1,0 +1,198 @@
+//-----------------------------------------------------------------------------
+
+
+/** \page naming_conventions Naming Conventions
+
+The following naming conventions are used for the OpenMesh code:
+
+<b>Files:</b>
+  \li \c MyClass.cc for C++-Implementation of class \c MyClass
+  \li \c MyClass.hh for C++-Header of class \c MyClass
+
+<b>Classes:</b>
+  \li Class names start with a capital letter: \c MyClass
+  \li Class templates end with \c T: \c MyClassTemplateT
+
+<b>Variables:</b>
+  \li One leading underscore for parameters in function-calls: \c _var
+  \li One trailing underscore for member-variables: \c var_
+  \li Two trailing underscores for static member-variables: \c var__
+
+<b>Functions:</b>
+  \li Words are separated by underscores: \c my_function()
+		 
+<b>Accessing members:</b>
+  \li To get the member \c xxx_ use <tt> const& xxx() const </tt>
+  \li To set the member \c xxx_ use <tt> void set_xxx(arg)  </tt>
+  
+**/
+
+
+//-----------------------------------------------------------------------------
+
+
+/** \page compiling Compiling OpenMesh
+
+\section compilers Tested compilers
+
+%OpenMesh has been successfully tested for the following operating
+systems / compilers:
+
+<table>
+
+<tr><td> Linux </td><td>
+gcc 4.0.x<br>
+gcc 4.1.x<br>
+gcc 4.2.x<br>
+gcc 4.3.x<br>
+</td></tr>
+
+<tr><td> Windows </td><td> 
+Microsoft Visual Studio 2008<br>
+</td></tr>
+
+<tr><td> MacOS X <br>(Panther, Tiger and Leopard)</td><td> 
+gcc 4.0 <br>
+gcc 4.2 <br>
+</td></tr>
+
+</table>
+
+\section req_libs Required libraries
+
+Install the following external libraries / frameworks:<br><br>
+<table>
+<tr><td>OpenGL</td><td><a href="http://www.opengl.org" target="_blank">http://www.opengl.org</a></td></tr>
+<tr><td>Qt4</td><td><a href="http://www.qtsoftware.com/downloads" target="_blank">http://www.qtsoftware.com/downloads</a></td></tr>
+<tr><td>GLEW</td><td><a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a></td></tr>
+</table><br>
+
+\section build_systems Chosing build system
+
+%OpenMesh can be built either using <b>qmake</b> (that already comes along
+with the qt framework) or <b>cmake</b>. Both systems work and will be supported.
+We recommend the use of the <b>cmake</b> build system.
+<br>
+<br>
+<br>
+
+\section sec_compiling_unix Unix
+
+\subsection linux_using_cmake Compiling OpenMesh using CMake
+
+In order to compile OpenMesh, create a directory named e.g. "build" in
+OpenMesh's root directory. <b>Change to the newly created directory</b> and type
+<br/><br/>
+<tt>
+cmake&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project<br>
+</tt><br>
+You can choose the build type by using cmake with the flag<br>
+<b>-DCMAKE_BUILD_TYPE=(Debug|Release)</b><br>
+The default is: Debug
+<br>
+
+Everything will then be build in the <b>Build</b> subdirectory containing the libraries in <b>lib</b> and the binaries in <b>bin</b>.
+<br>
+<br>
+
+\subsection linux_using_qmake Compiling OpenMesh using QMake
+
+In order to compile OpenMesh, enter following commands in OpenMesh's root directory:<br><br>
+<tt>
+qmake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+</tt><br>
+Make sure to use Qt version 4 (some linux distributions<br>
+use the link \c qmake-qt4 against the executable).
+<br>
+<br>
+<br>
+<br>
+
+
+\section sec_compiling_windows Windows
+
+\subsection windows_using_cmake Compiling OpenMesh using CMake
+
+If you want to use cmake to build your Visual Studio 2008 solution file,<br>
+download and install CMake from <a href="http://www.cmake.org/cmake/resources/software.html">www.cmake.org</a>.<br>
+(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
+Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
+<br>
+<br>
+<ul>
+<li> Get Visual Studio 2008 </li>
+<li> Extract OpenMesh source code. </li>
+<li> Get all required libraries and install them ( including headers! ).</li>
+<li> Get cmake for windows from http://www.cmake.org/cmake/resources/software.html <li>
+<li> Start the cmake gui and open the OpenMesh toplevel directory </li>
+<li> Choose a build directory</li>
+<li> Click on configure .... If any libraries are left unconfigured, you can adjust the path in the ui. Rerun configure until everything is configured correctly</li>
+<li> Click generate to create the visual studio project files </li>
+<li> You can now find a Visual Studio solution file in the <b>build</b> directory you chose in cmake </li>
+<li> Now you can build OpenMesh from within Visual Studio using the newly created project file. </li>
+</ul>
+
+\subsection windows_using_qmake Compiling OpenMesh using QMake
+
+If you want to use qmake to build your Visual Studio 2008 solution file,<br>
+download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
+(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
+Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
+<br>
+<br>
+Open \c OpenMesh\qmake\packages\packages.Windows in a text editor and change the include and library paths<br>
+for GLEW and GLUT such that they match the installed ones (see comments to find the right path entries).
+<ul>
+<li>In Microsoft Visual Studio 2008 open <tt> Tools->Visual Studio command prompt </tt></li>
+<li>Go to the folder of your application and call \c C:\\qt4\\bin\\qmake.exe -r</li>
+<li>Open the resulting visual studio solution ( *.sln )</li>
+<li>Choose which build target to use ( Debug/Release )</li>
+<li>Choose \c Build \c solution from the build menu</li>
+</ul>
+
+<br>
+<br>
+<br>
+<br>
+
+\section sec_compiling_macosx MacOS X
+
+Download and install required libraries as stated above.
+Because some of the examples depend on the GLEW library, it's recommended to install glew via the darwin portage
+system <a href="http://darwinports.com/" target="_blank">darwin ports</a>.<br>
+If you have not installed it yet, follow the instructions given on their site in order to install it.<br>
+Type
+<tt>
+sudo port -v install glew
+</tt>
+to install glew headers and libraries. ( Darwin ports usually installs header files to \c /usr/local/include and libraries to \c /usr/local/lib. )<br>
+<br>
+
+\subsection mac_using_cmake Compiling OpenMesh using CMake
+
+If you're using cmake as preferred build system create a directory
+named e.g. in OpenMesh's root directory and change to it.
+<br/><br/>
+<tt>
+cmake&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+</tt><br>
+The mac application bundle will be found under "Build" in the recently created build folder. 
+It automatically contains all needed shared objects (libs, fonts, textures, etc.).
+
+\subsection mac_using_qmake Compiling OpenMesh using QMake
+
+Adapt the header paths of at least GLEW (optional freetype, FTGL,...) in file <b>OpenMesh/qmake/packages/packages.Darwin</b>.
+<br><br>
+In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
+<tt>
+qmake -spec macx-g++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
+</tt>
+
+**/
+
+
+//-----------------------------------------------------------------------------

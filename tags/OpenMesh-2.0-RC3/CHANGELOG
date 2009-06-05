@@ -1,0 +1,47 @@
+
+
+#============================================================================================
+
+OpenMesh 2.0-RC3 ( Rev 138 ):
+
+* License
+- Relicense under LGPL v3 with additional exception for template inclusion
+
+* Readers/Writers
+- PLY writer fix ( thanks to Marc Hugi )
+- PLY reader fix ( wrong parsing of uchar binary data )
+- PLY reader warnings fix ( thanks to Ilya A. Kriveshko )
+- OBJ Reader now stores texture information in additional Mesh properties
+- OBJ reader/writer fixes
+
+* Tools
+- Smoother now respects feature primitives
+- Decimater improvements and fixes ( thanks to Ilya A. Kriveshko )
+
+* Build system:
+- Updated directory structure 
+- Changed libnames to libOpenMesh and libOpenMeshTools
+- cmake support
+- bugfixes to qmake build system
+- Keep some basic ACGMake files around ( acgmake is deprecated!! We will not provide support for it! Please use cmake or qmake instead. )
+
+* Other
+- Fixed some warnings with latest gcc
+- Per halfedge texture coordinates added 
+- Extended functions to get available properties
+
+#============================================================================================
+
+OpenMesh 2.0-RC2 ( Rev. 79 ):
+- Fix for OBJ reader not reading texture coordinates correctly ( Thanks to Kamalneet Singh )
+- Fixed included Visual Studio files
+
+#============================================================================================
+
+OpenMesh 2.0-RC1:
+- Reader / writer have been updated
+- Some general bugfixes
+- The usage of acgmake has become deprecated since the last release.
+  It has been entirely replaced by qmake.
+- Credits to Simon Floery, Canjiang Ren, Johannes Totz, Leon Kos,
+  Jean Pierre Charalambos, Mathieu Gauthier
