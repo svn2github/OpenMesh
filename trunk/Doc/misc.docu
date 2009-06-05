@@ -69,10 +69,12 @@ Install the following external libraries / frameworks:<br><br>
 
 \section build_systems Chosing build system
 
-OpenMesh can be built either using <b>qmake</b> (that already comes along
+%OpenMesh can be built either using <b>qmake</b> (that already comes along
 with the qt framework) or <b>cmake</b>. Both systems work and will be supported.
-We recommend the use of the cmake build system.
-<br/>
+We recommend the use of the <b>cmake</b> build system.
+<br>
+<br>
+<br>
 
 \section sec_compiling_unix Unix
 
@@ -103,6 +105,11 @@ make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
 </tt><br>
 Make sure to use Qt version 4 (some linux distributions<br>
 use the link \c qmake-qt4 against the executable).
+<br>
+<br>
+<br>
+<br>
+
 
 \section sec_compiling_windows Windows
 
@@ -144,6 +151,11 @@ for GLEW and GLUT such that they match the installed ones (see comments to find 
 <li>Choose which build target to use ( Debug/Release )</li>
 <li>Choose \c Build \c solution from the build menu</li>
 </ul>
+
+<br>
+<br>
+<br>
+<br>
 
 \section sec_compiling_macosx MacOS X
 
