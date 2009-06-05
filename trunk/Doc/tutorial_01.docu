@@ -1,4 +1,4 @@
-/** \page tutorial_01 First Steps
+/** \page tutorial_01 First Steps - Building a cude
 
 This small example shows:
 \li How to declare your type \c MyMesh,
