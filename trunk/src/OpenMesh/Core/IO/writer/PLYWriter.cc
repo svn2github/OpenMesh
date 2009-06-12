@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -125,9 +125,9 @@ write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
 
   unsigned int i, j, nV, nF;
   Vec3f v, n;
-  Vec2f t;
   OpenMesh::Vec3f c;
   OpenMesh::Vec4f cA;
+  OpenMesh::Vec2f t;
   VertexHandle vh;
   std::vector<VertexHandle> vhandles;
 
@@ -139,6 +139,11 @@ write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
   _out << "property float32 x" << std::endl;
   _out << "property float32 y" << std::endl;
   _out << "property float32 z" << std::endl;
+
+  if ( _opt.vertex_has_texcoord() ){
+    _out << "property float32 u" << std::endl;
+    _out << "property float32 v" << std::endl;
+  }
 
   if ( _opt.vertex_has_color() ){
     _out << "property int32 red" << std::endl;
@@ -162,6 +167,12 @@ write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
     //Vertex
     _out << v[0] << " " << v[1] << " " << v[2];
 
+    // Vertex TexCoords
+    if ( _opt.vertex_has_texcoord() ) {
+    	t = _be.texcoord(vh);
+    	_out << " " << t[0] << " " << t[1];
+    }
+
     // VertexColor
     if ( _opt.vertex_has_color() ) {
       //with alpha
@@ -177,16 +188,16 @@ write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
 
     _out << "\n";
   }
-  
+
   // faces (indices starting at 0)
   if (_be.is_triangle_mesh())
   {
     for (i=0, nF=_be.n_faces(); i<nF; ++i)
     {
       _be.get_vhandles(FaceHandle(i), vhandles);
-      _out << 3 << " "; 
+      _out << 3 << " ";
       _out << vhandles[0].idx()  << " ";
-      _out << vhandles[1].idx()  << " "; 
+      _out << vhandles[1].idx()  << " ";
       _out << vhandles[2].idx();
 
 //       //face color
@@ -297,7 +308,7 @@ void _PLYWriter_::writeValue(ValueType _type, std::fstream& _out, float value) c
   }
 }
 
-bool 
+bool
 _PLYWriter_::
 write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
 {
@@ -309,7 +320,6 @@ write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
   OpenMesh::Vec4f c;
   VertexHandle vh;
   std::vector<VertexHandle> vhandles;
-
 
   //writing header
   _out << "ply" << std::endl;
@@ -328,6 +338,11 @@ write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
   _out << "property float32 y" << std::endl;
   _out << "property float32 z" << std::endl;
 
+  if ( _opt.vertex_has_texcoord() ){
+    _out << "property float32 u" << std::endl;
+    _out << "property float32 v" << std::endl;
+  }
+
   if ( _opt.vertex_has_color() ){
     _out << "property int32 red" << std::endl;
     _out << "property int32 green" << std::endl;
@@ -340,18 +355,25 @@ write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
   _out << "element face " << _be.n_faces() << std::endl;
   _out << "property list uchar int32 vertex_indices" << std::endl;
   _out << "end_header" << std::endl;
-  
+
   // vertex data (point, normals, texcoords)
   for (i=0, nV=_be.n_vertices(); i<nV; ++i)
   {
     vh = VertexHandle(i);
     v  = _be.point(vh);
-    
+
     //vertex
     writeValue(ValueTypeFLOAT, _out, v[0]);
     writeValue(ValueTypeFLOAT, _out, v[1]);
     writeValue(ValueTypeFLOAT, _out, v[2]);
-    
+
+    // Vertex TexCoords
+    if ( _opt.vertex_has_texcoord() ) {
+    	t = _be.texcoord(vh);
+    	writeValue(ValueTypeFLOAT, _out, t[0]);
+    	writeValue(ValueTypeFLOAT, _out, t[1]);
+    }
+
     // vertex color
     if ( _opt.vertex_has_color() ) {
         c  = _be.colorA(vh);
@@ -382,7 +404,7 @@ write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
 //         writeValue(_out, c[0]);
 //         writeValue(_out, c[1]);
 //         writeValue(_out, c[2]);
-// 
+//
 //         if ( _opt.color_has_alpha() )
 //           writeValue(_out, c[3]);
 //       }
@@ -404,7 +426,7 @@ write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
 //         writeValue(_out, c[0]);
 //         writeValue(_out, c[1]);
 //         writeValue(_out, c[2]);
-// 
+//
 //         if ( _opt.color_has_alpha() )
 //           writeValue(_out, c[3]);
 //       }
@@ -427,7 +449,7 @@ binary_size(BaseExporter& _be, Options _opt) const
   size_t _3floats(3*sizeof(float));
   size_t _3ui(3*sizeof(unsigned int));
   size_t _4ui(4*sizeof(unsigned int));
-  
+
   if ( !_opt.is_binary() )
     return 0;
   else
@@ -442,7 +464,7 @@ binary_size(BaseExporter& _be, Options _opt) const
     header += 1; // N
     data   += _be.n_vertices() * _3floats;
   }
-  
+
   if ( _opt.vertex_has_color() && _be.has_vertex_colors() )
   {
     header += 1; // C
@@ -473,7 +495,7 @@ binary_size(BaseExporter& _be, Options _opt) const
 
     }
   }
-  
+
   // face colors
   if ( _opt.face_has_color() && _be.has_face_colors() ){
     if ( _opt.color_has_alpha() )

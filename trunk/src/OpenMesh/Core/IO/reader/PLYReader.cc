@@ -113,16 +113,21 @@ bool _PLYReader_::read(std::fstream& _in, BaseImporter& _bi, Options& _opt) cons
 	// build options to be returned
 	_opt.clear();
 
-	if (options_.vertex_has_normal() && userOptions_.vertex_has_normal())
+	if (options_.vertex_has_normal() && userOptions_.vertex_has_normal()) {
 		_opt += Options::VertexNormal;
-	if (options_.vertex_has_texcoord() && userOptions_.vertex_has_texcoord())
+	}
+	if (options_.vertex_has_texcoord() && userOptions_.vertex_has_texcoord()) {
 		_opt += Options::VertexTexCoord;
-	if (options_.vertex_has_color() && userOptions_.vertex_has_color())
+	}
+	if (options_.vertex_has_color() && userOptions_.vertex_has_color()) {
 		_opt += Options::VertexColor;
-	if (options_.face_has_color() && userOptions_.face_has_color())
+	}
+	if (options_.face_has_color() && userOptions_.face_has_color()) {
 		_opt += Options::FaceColor;
-	if (options_.is_binary())
+	}
+	if (options_.is_binary()) {
 		_opt += Options::Binary;
+	}
 
 	//    //force user-choice for the alpha value when reading binary
 	//    if ( options_.is_binary() && userOptions_.color_has_alpha() )
@@ -148,7 +153,7 @@ bool _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const {
 	unsigned int nV;
 	OpenMesh::Vec3f v;
 	std::string trash;
-	//   OpenMesh::Vec2f         t;
+	OpenMesh::Vec2f t;
 	OpenMesh::Vec4i c;
 	float tmp;
 	BaseImporter::VHandles vhandles;
@@ -167,6 +172,9 @@ bool _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const {
 		v[1] = 0.0;
 		v[2] = 0.0;
 
+		t[0] = 0.0;
+		t[1] = 0.0;
+
 		c[0] = 0;
 		c[1] = 0;
 		c[2] = 0;
@@ -182,6 +190,12 @@ bool _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const {
 				break;
 			case ZCOORD:
 				_in >> v[2];
+				break;
+			case TEXX:
+				_in >> t[0];
+				break;
+			case TEXY:
+				_in >> t[1];
 				break;
 			case COLORRED:
 				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
@@ -218,6 +232,7 @@ bool _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const {
 		}
 
 		vh = _bi.add_vertex(v);
+		_bi.set_texcoord(vh, t);
 		_bi.set_color(vh, Vec4uc(c));
 	}
 
@@ -253,6 +268,131 @@ bool _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const {
 }
 
 //-----------------------------------------------------------------------------
+
+bool _PLYReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) const {
+
+	omlog() << "[PLYReader] : read binary file format\n";
+
+	// Reparse the header
+	if (!can_u_read(_in)) {
+		omerr() << "[PLYReader] : Unable to parse header\n";
+		return false;
+	}
+
+	unsigned int i, j, k, l, idx;
+	unsigned int nV;
+	OpenMesh::Vec3f v;  // Vertex
+	OpenMesh::Vec2f t;  // TexCoords
+	BaseImporter::VHandles vhandles;
+	VertexHandle vh;
+	OpenMesh::Vec4i c;  // Color
+	float tmp;
+
+	_bi.reserve(vertexCount_, 3* vertexCount_ , faceCount_);
+
+	// read vertices:
+	for (i = 0; i < vertexCount_ && !_in.eof(); ++i) {
+		v[0] = 0.0;
+		v[1] = 0.0;
+		v[2] = 0.0;
+
+		t[0] = 0.0;
+		t[1] = 0.0;
+
+		c[0] = 0;
+		c[1] = 0;
+		c[2] = 0;
+		c[3] = 255;
+
+		for (uint propertyIndex = 0; propertyIndex < vertexPropertyCount_; ++propertyIndex) {
+			switch (vertexPropertyMap_[propertyIndex].first) {
+			case XCOORD:
+				readValue(vertexPropertyMap_[propertyIndex].second, _in, v[0]);
+				break;
+			case YCOORD:
+				readValue(vertexPropertyMap_[propertyIndex].second, _in, v[1]);
+				break;
+			case ZCOORD:
+				readValue(vertexPropertyMap_[propertyIndex].second, _in, v[2]);
+				break;
+			case TEXX:
+				readValue(vertexPropertyMap_[propertyIndex].second, _in, t[0]);
+				break;
+			case TEXY:
+				readValue(vertexPropertyMap_[propertyIndex].second, _in, t[1]);
+				break;
+			case COLORRED:
+				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+
+					c[0] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
+				} else
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[0]);
+				break;
+			case COLORGREEN:
+				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+					c[1] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
+				} else
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[1]);
+				break;
+			case COLORBLUE:
+				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+					c[2] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
+				} else
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[2]);
+				break;
+			case COLORALPHA:
+				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+					c[3] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
+				} else
+					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[3]);
+				break;
+			default:
+				break;
+			}
+
+		}
+
+		vh = _bi.add_vertex(v);
+		_bi.set_texcoord(vh, t);
+		_bi.set_color(vh, Vec4uc(c));
+	}
+
+	for (i = 0; i < faceCount_; ++i) {
+		// Read number of vertices for the current face
+		readValue(faceIndexType_, _in, nV);
+
+		if (nV == 3) {
+			vhandles.resize(3);
+			readValue(faceEntryType_, _in, j);
+			readValue(faceEntryType_, _in, k);
+			readValue(faceEntryType_, _in, l);
+
+			vhandles[0] = VertexHandle(j);
+			vhandles[1] = VertexHandle(k);
+			vhandles[2] = VertexHandle(l);
+		} else {
+			vhandles.clear();
+			for (j = 0; j < nV; ++j) {
+				readValue(faceEntryType_, _in, idx);
+				vhandles.push_back(VertexHandle(idx));
+			}
+		}
+
+		FaceHandle fh = _bi.add_face(vhandles);
+	}
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+
 
 void _PLYReader_::readValue(ValueType _type, std::fstream& _in, float& _value) const {
 
@@ -314,120 +454,12 @@ void _PLYReader_::readValue(ValueType _type, std::fstream& _in, int& _value) con
 	}
 }
 
-bool _PLYReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) const {
-
-	omlog() << "[PLYReader] : read binary file format\n";
-
-	// Reparse the header
-	if (!can_u_read(_in)) {
-		omerr() << "[PLYReader] : Unable to parse header\n";
-		return false;
-	}
-
-	unsigned int i, j, k, l, idx;
-	unsigned int nV;
-	OpenMesh::Vec3f v;
-	BaseImporter::VHandles vhandles;
-	VertexHandle vh;
-	OpenMesh::Vec4i c;
-	float tmp;
-
-	_bi.reserve(vertexCount_, 3* vertexCount_ , faceCount_);
-
-	// read vertices:
-	for (i = 0; i < vertexCount_ && !_in.eof(); ++i) {
-		v[0] = 0.0;
-		v[1] = 0.0;
-		v[2] = 0.0;
-
-		c[0] = 0;
-		c[1] = 0;
-		c[2] = 0;
-		c[3] = 255;
-
-		for (uint propertyIndex = 0; propertyIndex < vertexPropertyCount_; ++propertyIndex) {
-			switch (vertexPropertyMap_[propertyIndex].first) {
-			case XCOORD:
-				readValue(vertexPropertyMap_[propertyIndex].second, _in, v[0]);
-				break;
-			case YCOORD:
-				readValue(vertexPropertyMap_[propertyIndex].second, _in, v[1]);
-				break;
-			case ZCOORD:
-				readValue(vertexPropertyMap_[propertyIndex].second, _in, v[2]);
-				break;
-			case COLORRED:
-				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
-
-					c[0] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
-				} else
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[0]);
-				break;
-			case COLORGREEN:
-				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
-					c[1] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
-				} else
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[1]);
-				break;
-			case COLORBLUE:
-				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
-					c[2] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
-				} else
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[2]);
-				break;
-			case COLORALPHA:
-				if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
-					c[3] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
-				} else
-					readValue(vertexPropertyMap_[propertyIndex].second, _in, c[3]);
-				break;
-			default:
-				break;
-			}
-
-		}
-
-		vh = _bi.add_vertex(v);
-		_bi.set_color(vh, Vec4uc(c));
-	}
-
-	for (i = 0; i < faceCount_; ++i) {
-		// Read number of vertices for the current face
-		readValue(faceIndexType_, _in, nV);
-
-		if (nV == 3) {
-			vhandles.resize(3);
-			readValue(faceEntryType_, _in, j);
-			readValue(faceEntryType_, _in, k);
-			readValue(faceEntryType_, _in, l);
-
-			vhandles[0] = VertexHandle(j);
-			vhandles[1] = VertexHandle(k);
-			vhandles[2] = VertexHandle(l);
-		} else {
-			vhandles.clear();
-			for (j = 0; j < nV; ++j) {
-				readValue(faceEntryType_, _in, idx);
-				vhandles.push_back(VertexHandle(idx));
-			}
-		}
-
-		FaceHandle fh = _bi.add_face(vhandles);
-	}
-
-	return true;
-}
-
-//-----------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 
 bool _PLYReader_::can_u_read(const std::string& _filename) const {
 	// !!! Assuming BaseReader::can_u_parse( std::string& )
 	// does not call BaseReader::read_magic()!!!
+
 	if (BaseReader::can_u_read(_filename)) {
 		std::ifstream ifs(_filename.c_str());
 		if (ifs.is_open() && can_u_read(ifs)) {
@@ -595,6 +627,14 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
 						std::pair<VertexProperty, ValueType> entry(ZCOORD, valueType);
 						vertexPropertyMap_[vertexPropertyCount_] = entry;
 						vertexDimension_++;
+					} else if (propertyName == "u" || propertyName == "s") {
+						std::pair<VertexProperty, ValueType> entry(TEXX, valueType);
+						vertexPropertyMap_[vertexPropertyCount_] = entry;
+						options_ += Options::VertexTexCoord;
+					} else if (propertyName == "v" || propertyName == "t") {
+						std::pair<VertexProperty, ValueType> entry(TEXY, valueType);
+						vertexPropertyMap_[vertexPropertyCount_] = entry;
+						options_ += Options::VertexTexCoord;
 					} else if (propertyName == "red") {
 						std::pair<VertexProperty, ValueType> entry(COLORRED, valueType);
 						vertexPropertyMap_[vertexPropertyCount_] = entry;
