@@ -33,3 +33,25 @@ endif ()
 
 target_link_libraries (OpenMeshTools OpenMeshCore)
 
+# Install Header Files
+install(DIRECTORY .
+        DESTINATION include/OpenMesh/Tools
+        FILES_MATCHING
+        PATTERN "*.hh"
+        PATTERN "CVS" EXCLUDE
+        PATTERN ".svn" EXCLUDE
+        PATTERN "tmp" EXCLUDE
+        PATTERN "Templates" EXCLUDE
+        PATTERN "Debian*" EXCLUDE)
+
+#install Template cc files (required by headers)
+install(DIRECTORY .
+        DESTINATION include/OpenMesh/Tools
+        FILES_MATCHING
+        PATTERN "*T.cc"
+        PATTERN "CVS" EXCLUDE
+        PATTERN ".svn" EXCLUDE
+        PATTERN "tmp" EXCLUDE
+        PATTERN "Templates" EXCLUDE
+        PATTERN "Debian*" EXCLUDE)
+

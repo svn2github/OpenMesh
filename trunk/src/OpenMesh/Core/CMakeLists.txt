@@ -32,3 +32,43 @@ else ()
 endif ()
 
 
+# Install Header Files
+install(DIRECTORY . 
+	DESTINATION include/OpenMesh/Core
+        FILES_MATCHING 
+	PATTERN "*.hh"
+        PATTERN "CVS" EXCLUDE
+        PATTERN ".svn" EXCLUDE
+        PATTERN "tmp" EXCLUDE
+	PATTERN "Templates" EXCLUDE
+        PATTERN "Debian*" EXCLUDE)
+
+#install Template cc files (required by headers)
+install(DIRECTORY . 
+	DESTINATION include/OpenMesh/Core
+        FILES_MATCHING 
+	PATTERN "*T.cc"
+        PATTERN "CVS" EXCLUDE
+        PATTERN ".svn" EXCLUDE
+	PATTERN "tmp" EXCLUDE
+	PATTERN "Templates" EXCLUDE
+        PATTERN "Debian*" EXCLUDE)
+
+#install the config file
+install(FILES System/config.h DESTINATION include/OpenMesh/Core/System)
+
+#install inlined Files from IO
+install(DIRECTORY IO/ 
+	DESTINATION include/OpenMesh/Core/IO
+	FILES_MATCHING
+	PATTERN "*.inl"         
+	PATTERN "CVS" EXCLUDE
+        PATTERN ".svn" EXCLUDE
+        PATTERN "reader" EXCLUDE
+        PATTERN "writer" EXCLUDE
+        PATTERN "importer" EXCLUDE
+        PATTERN "exporter" EXCLUDE
+        PATTERN "tmp" EXCLUDE
+        PATTERN "Debian*" EXCLUDE )
+
+
