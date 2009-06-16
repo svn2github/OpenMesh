@@ -14,11 +14,15 @@ add_subdirectory (Subdivider/commandlineAdaptiveSubdivider)
 add_subdirectory (mconvert)
 
 # check for OpenGL, GLEW and GLUT as our required dependencies
-if (QT4_FOUND AND OPENGL_FOUND AND GLEW_FOUND AND GLUT_FOUND)
+if (QT4_FOUND AND OPENGL_FOUND AND GLEW_FOUND AND GLUT_FOUND AND NOT BUILD_APPS STREQUAL OFF  )
   add_subdirectory (Decimating/DecimaterGui)
   add_subdirectory (QtViewer)
   add_subdirectory (Subdivider/SubdividerGui)
 else ()
+  if ( BUILD_APPS STREQUAL OFF )
+    message ("Building Apps disabled by user.")
+  endif ()
+
   if (NOT QT4_FOUND)
     message ("QT 4 not found! Skipping some apps.")
   endif ()
