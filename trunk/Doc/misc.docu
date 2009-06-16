@@ -91,6 +91,14 @@ You can choose the build type by using cmake with the flag<br>
 <b>-DCMAKE_BUILD_TYPE=(Debug|Release)</b><br>
 The default is: Debug
 <br>
+Other flags are:<br/>
+<b>-DBUILD_APPS=OFF</b> to disable build of applications and<br/>
+<b>-DCMAKE_INSTALL_PREFIX=<path></b> to specify the install path.
+<br/>
+When calling <b>make install</b> cmake will install OpenMesh into this
+directory using the subdirectories lib/include/bin.
+
+CMake builds both shared and static under Linux.
 
 Everything will then be build in the <b>Build</b> subdirectory containing the libraries in <b>lib</b> and the binaries in <b>bin</b>.
 <br>
@@ -181,6 +189,8 @@ make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
 </tt><br>
 The mac application bundle will be found under "Build" in the recently created build folder. 
 It automatically contains all needed shared objects (libs, fonts, textures, etc.).
+
+CMake builds both shared and static under MacOS X.
 
 \subsection mac_using_qmake Compiling OpenMesh using QMake
 
