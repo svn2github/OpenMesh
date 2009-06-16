@@ -16,7 +16,7 @@ The class SmootherT has two functors, one that computes the barycenter
 for a given vertex, and a second that sets the vertex position to the
 corresponding barycenter. A functor is simply a class with a function
 <tt>operator()(...)</tt>. The first functor \c ComputeCOG
-computes the barycenter and store it in a custom vertex property \c
+computes the barycenter and stores it in a custom vertex property \c
 cog_:
 
 \skipline operator

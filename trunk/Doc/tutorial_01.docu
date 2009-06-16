@@ -1,4 +1,4 @@
-/** \page tutorial_01 First Steps - Building a cude
+/** \page tutorial_01 First Steps - Building a cube
 
 This small example shows:
 \li How to declare your type \c MyMesh,
@@ -16,7 +16,7 @@ vertices, edges, and faces are stored internally (see also \ref
 mesh_kernels_group). However, the storage must provide an array like interface.
 For the tutorial we use the supplied ArrayKernel. The predefined
 combinations of TriMesh/PolyMesh and the kernel are
-contained in \c %OpenMesh/Core/Mesh/Types/, we use the
+contained in \c %OpenMesh/src/OpenMesh/Core/Mesh, we use the
 <tt>PolyMesh_ArrayKernelT</tt>. 
 
 \dontinclude build_cube.cc

@@ -15,7 +15,7 @@ dynamically to the mesh.
 mesh entity (vertex, face, edge, halfedge, and the mesh itself). We
 distinguish between custom and standard properties. A custom property
 is any user-defined property and is accessed via the member function
-\c property(..), a handle and an entity handle
+\c property(..) via a handle and an entity handle
 (e.g. VertexHandle). Whereas the standard properties are accessed via
 special member functions, e.g. the vertex position is accessed with \c
 point(..) and a vertex handle.
