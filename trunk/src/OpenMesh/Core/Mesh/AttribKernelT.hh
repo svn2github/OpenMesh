@@ -58,13 +58,14 @@ namespace OpenMesh {
 
 //== CLASS DEFINITION =========================================================
 
-/// This class adds the standard properties to the mesh type.
-///
-/// The attribute kernel adds all standard properties to the kernel. Therefore
-/// the functions/types defined here provide a subset of the kernel
-/// interface as described in Concepts::KernelT.
-///
-/// \see Concepts::KernelT
+/** \class AttribKernelT AttribKernelT.hh <OpenMesh/Mesh/AttribKernelT.hh>
+
+ The attribute kernel adds all standard properties to the kernel. Therefore
+ the functions/types defined here provide a subset of the kernel
+ interface as described in Concepts::KernelT.
+
+ \see Concepts::KernelT
+*/
 template <class MeshItems, class Connectivity>
 class AttribKernelT : public Connectivity
 {
