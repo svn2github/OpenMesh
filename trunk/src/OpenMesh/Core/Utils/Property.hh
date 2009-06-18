@@ -169,6 +169,12 @@ public: // data access interface
     return &data_[0]; 
   }
 
+  /// Get reference to property vector (be careful, improper usage, e.g. resizing, may crash OpenMesh!!!)
+  vector_type& data_vector() { 
+
+    return data_; 
+  }
+
   /// Access the i'th element. No range check is performed!
   reference operator[](int _idx)
   {
