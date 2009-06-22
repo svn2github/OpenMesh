@@ -32,7 +32,10 @@ else ()
 endif ()
 
 target_link_libraries (OpenMeshTools OpenMeshCore)
-target_link_libraries (OpenMeshToolsStatic OpenMeshCoreStatic)
+
+IF( NOT WIN32 )
+  target_link_libraries (OpenMeshToolsStatic OpenMeshCoreStatic)
+ENDIF(NOT WIN32)
 
 if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
 # Install Header Files
