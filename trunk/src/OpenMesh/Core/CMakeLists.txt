@@ -28,12 +28,13 @@ if (WIN32)
   # OpenMesh has no dll exports so we have to build a static library on windows
   acg_add_library (OpenMeshCore STATIC ${sources} ${headers})
 else ()
-  acg_add_library (OpenMeshCore  SHARED ${sources} ${headers})
-  acg_add_library (OpenMeshCores STATIC ${sources} ${headers})
+  acg_add_library (OpenMeshCore SHAREDANDSTATIC ${sources} ${headers})
 endif ()
 
 
 # Install Header Files
+
+if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
 install(DIRECTORY . 
 	DESTINATION include/OpenMesh/Core
         FILES_MATCHING 
@@ -71,5 +72,6 @@ install(DIRECTORY IO/
         PATTERN "exporter" EXCLUDE
         PATTERN "tmp" EXCLUDE
         PATTERN "Debian*" EXCLUDE )
+endif ()
 
 

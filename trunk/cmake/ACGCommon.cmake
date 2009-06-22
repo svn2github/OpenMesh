@@ -321,17 +321,42 @@ function (acg_add_executable _target)
                           ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}
                           ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/${_target})
   endif ()
-  if (NOT ACG_PROJECT_BUNDLE OR NOT APPLE)
+  if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
     install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_BINDIR})
   endif ()
 endfunction ()
 
 # extended version of add_library that also copies output to out Build directory
-function (acg_add_library _target _type)
+function (acg_add_library _target _libtype)
+
+  if (${_libtype} STREQUAL SHAREDANDSTATIC)
+    set (_type SHARED)
+    if (NOT WIN32)
+      set (_and_static 1)
+    else ()
+      set (_and_static 0)
+    endif ()    
+  else ()
+    set (_type ${_libtype})
+    set (_and_static 0)
+  endif ()
+
   add_library (${_target} ${_type} ${ARGN})
 
   # set common target properties defined in common.cmake
   acg_set_target_props (${_target})
+
+  if (_and_static)
+    add_library (${_target}Static STATIC ${ARGN})
+
+    # set common target properties defined in common.cmake
+    acg_set_target_props (${_target}Static)
+    
+    if (NOT APPLE)
+      set_target_properties (${_target}Static PROPERTIES 
+                             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+    endif ()
+  endif ()
 
   if (WIN32)
     # copy exe file to "Build" directory
@@ -376,9 +401,31 @@ function (acg_add_library _target _type)
                           copy_if_different
                             ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}.so
                             ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/lib${_target}.so)
+    elseif (${_type} STREQUAL STATIC)
+      add_custom_command (TARGET ${_target} POST_BUILD
+                          COMMAND ${CMAKE_COMMAND} -E
+                          copy_if_different
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}.a
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.a)
     endif ()
+    if (_and_static)
+      add_custom_command (TARGET ${_target}Static POST_BUILD
+                          COMMAND ${CMAKE_COMMAND} -E
+                          copy_if_different
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.a)
+    endif ()
+
+  elseif (NOT APPLE AND _and_static)
+      add_custom_command (TARGET ${_target}Static POST_BUILD
+                          COMMAND ${CMAKE_COMMAND} -E
+                          copy_if_different
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.a)
+
   endif ()
-  if (NOT ACG_PROJECT_BUNDLE OR NOT APPLE)
+  
+  if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
     if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC)
       install (TARGETS ${_target}
                RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
