@@ -29,6 +29,9 @@ if (WIN32)
   acg_add_library (OpenMeshCore STATIC ${sources} ${headers})
 else ()
   acg_add_library (OpenMeshCore SHAREDANDSTATIC ${sources} ${headers})
+  set_target_properties (OpenMeshCore PROPERTIES VERSION ${OPENMESH_VERSION_MAJOR}.${OPENMESH_VERSION_MINOR}
+                                               SOVERSION ${OPENMESH_VERSION_MAJOR}.${OPENMESH_VERSION_MINOR} )
+
 endif ()
 
 

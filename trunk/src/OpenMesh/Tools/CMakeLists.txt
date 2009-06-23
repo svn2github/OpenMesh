@@ -29,6 +29,8 @@ if (WIN32)
   acg_add_library (OpenMeshTools STATIC ${sources} ${headers})
 else ()
   acg_add_library (OpenMeshTools SHAREDANDSTATIC ${sources} ${headers})
+  set_target_properties (OpenMeshTools PROPERTIES VERSION ${OPENMESH_VERSION_MAJOR}.${OPENMESH_VERSION_MINOR}
+                                                SOVERSION ${OPENMESH_VERSION_MAJOR}.${OPENMESH_VERSION_MINOR} )
 endif ()
 
 target_link_libraries (OpenMeshTools OpenMeshCore)

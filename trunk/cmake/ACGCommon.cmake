@@ -359,12 +359,6 @@ function (acg_add_library _target _libtype)
 
   add_library (${_target} ${_type} ${ARGN} )
 
-#  acg_get_version()
-#
-#  set_target_properties (${_target} PROPERTIES VERSION    ${VERSION-MAJOR}.${VERSION-MINOR} 
-#                                               SOVERSION  ${VERSION-MAJOR}.${VERSION-MINOR} )
-#
-
   # set common target properties defined in common.cmake
   acg_set_target_props (${_target})
 
