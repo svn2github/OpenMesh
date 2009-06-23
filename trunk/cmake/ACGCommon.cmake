@@ -341,7 +341,13 @@ function (acg_add_library _target _libtype)
     set (_and_static 0)
   endif ()
 
-  add_library (${_target} ${_type} ${ARGN})
+  add_library (${_target} ${_type} ${ARGN} )
+
+#  acg_get_version()
+#
+#  set_target_properties (${_target} PROPERTIES VERSION    ${VERSION-MAJOR}.${VERSION-MINOR} 
+#                                               SOVERSION  ${VERSION-MAJOR}.${VERSION-MINOR} )
+#
 
   # set common target properties defined in common.cmake
   acg_set_target_props (${_target})
@@ -353,8 +359,17 @@ function (acg_add_library _target _libtype)
     acg_set_target_props (${_target}Static)
     
     if (NOT APPLE)
+# todo : create correct so names
       set_target_properties (${_target}Static PROPERTIES 
-                             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+                             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+                            )
+
+# todo : rename the lib to omit the static name extension
+      install (TARGETS ${_target}Static
+               RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
+               LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
+               ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR} )
+
     endif ()
   endif ()
 
@@ -426,7 +441,7 @@ function (acg_add_library _target _libtype)
   endif ()
   
   if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
-    if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC)
+    if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC )
       install (TARGETS ${_target}
                RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
                LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
