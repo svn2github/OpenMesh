@@ -60,3 +60,8 @@ install(DIRECTORY .
         PATTERN "Templates" EXCLUDE
         PATTERN "Debian*" EXCLUDE)
 endif ()
+
+#install the config file
+install(FILES Utils/getopt.h DESTINATION include/OpenMesh/Tools/Utils)
+
+
