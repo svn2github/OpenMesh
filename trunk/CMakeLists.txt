@@ -21,6 +21,7 @@ endif ()
 add_subdirectory (src/OpenMesh/Core)
 add_subdirectory (src/OpenMesh/Tools)
 add_subdirectory (src/OpenMesh/Apps)
+add_subdirectory (Doc)
 
 # display results
-acg_print_configure_header ("OpenMesh")
+acg_print_configure_header (OPENMESH "OpenMesh")

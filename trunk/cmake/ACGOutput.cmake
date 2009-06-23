@@ -21,9 +21,9 @@ function (acg_color_message _str)
 endfunction ()
 
 # info header
-function (acg_print_configure_header _name)
+function (acg_print_configure_header _id _name)
     acg_format_string ("${_name}" 40 _project)
-    acg_format_string ("${VERSION}" 40 _version)
+    acg_format_string ("${${_id}_VERSION}" 40 _version)
     acg_color_message ("\n${_escape}[40;37m************************************************************${_escape}[0m")
     acg_color_message ("${_escape}[40;37m* ${_escape}[1;31mACG ${_escape}[0;40;34mBuildsystem${_escape}[0m${_escape}[40;37m                                          *${_escape}[0m")
     acg_color_message ("${_escape}[40;37m*                                                          *${_escape}[0m")

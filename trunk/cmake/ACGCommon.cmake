@@ -26,7 +26,17 @@ endif ()
 
 # read version from file
 macro (acg_get_version)
-    file (READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" _file)
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${ARGN}/VERSION")
+      file (READ "${CMAKE_CURRENT_SOURCE_DIR}/${ARGN}/VERSION" _file)
+    else ()
+      file (READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" _file)
+    endif ()
+
+    string (
+        REGEX REPLACE
+        "^.*ID=([^\n]*).*$" "\\1"
+        _id ${_file}
+    )
     string (
         REGEX REPLACE
         "^.*VERSION=([^\n]*).*$" "\\1"
@@ -47,10 +57,11 @@ macro (acg_get_version)
         "^.*PATCH=([^\n]*).*$" "\\1"
         _patch ${_file}
     )
-    set (VERSION ${_version})
-    set (VERSION_MAJOR ${_major})
-    set (VERSION_MINOR ${_minor})
-    set (VERSION_PATCH ${_patch})
+
+    set (${_id}_VERSION ${_version})
+    set (${_id}_VERSION_MAJOR ${_major})
+    set (${_id}_VERSION_MINOR ${_minor})
+    set (${_id}_VERSION_PATCH ${_patch})
 endmacro ()
 
 
@@ -74,6 +85,11 @@ endif ()
 if (COMMAND acg_modify_project_dirs)
   acg_modify_project_dirs ()
 endif ()
+
+if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_DATADIR})
+ file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_DATADIR})
+endif ()
+
 
 # sets default build properties
 macro (acg_set_target_props target)
