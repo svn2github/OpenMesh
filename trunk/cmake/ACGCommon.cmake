@@ -448,6 +448,12 @@ function (acg_add_library _target _libtype)
                RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
                LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
                ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR})
+      if (_and_static)
+        install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
+                 DESTINATION ${ACG_PROJECT_LIBDIR}
+                 RENAME lib${_target}.a
+                 PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+      endif ()
     elseif (${_type} STREQUAL MODULE)
       install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_PLUGINDIR})
     endif ()
