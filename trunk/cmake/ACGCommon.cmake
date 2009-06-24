@@ -369,17 +369,9 @@ function (acg_add_library _target _libtype)
     acg_set_target_props (${_target}Static)
     
     if (NOT APPLE)
-# todo : create correct so names
       set_target_properties (${_target}Static PROPERTIES 
                              LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
                             )
-
-# todo : rename the lib to omit the static name extension
-      install (TARGETS ${_target}Static
-               RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
-               LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
-               ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR} )
-
     endif ()
   endif ()
 
