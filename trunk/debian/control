@@ -2,7 +2,7 @@ Source: openmesh
 Section: libs
 Priority: optional
 Maintainer: Jean Pierre Charalambos <nakednous@gmail.com>
-Build-Depends: cdbs, debhelper (>= 7), cmake, libglew1.5-dev, libqt4-dev, libqt4-opengl-dev, libqwt5-qt4-dev, freeglut3-dev, libfreetype6-dev, libgomp1
+Build-Depends: cdbs, debhelper (>= 7), cmake, libglew1.5-dev, libqt4-dev, libqt4-opengl-dev, libqwt5-qt4-dev, freeglut3-dev, libfreetype6-dev, libgomp1, doxygen
 Standards-Version: 3.8.0
 Homepage: http://www.openmesh.org
 
@@ -49,3 +49,19 @@ Description: OpenMesh is a generic and efficient data structure for representing
  .
  This package contains some binary applications that show some features of the
  OpenMesh library.
+
+Package: libopenmesh-doc
+Architecture: all
+Depends: ${misc:Depends}
+Section: doc
+Suggests: libopenmesh-dev (= ${binary:Version}), libopenmesh-apps (= ${binary:Version})
+Description:  OpenMesh is a generic and efficient data structure for representing
+ and manipulating polygonal meshes. OpenMesh provides the following features:
+ .
+  * Representation of arbitrary polygonal and pure triangle meshes.
+  * Explicit representation of vertices, halfedges, edges and faces.
+  * Fast neighborhood access, especially the one-ring neighborhood.
+  * Highly customizable.
+ .
+ This package constains the API documentation of the OpenMesh library in HTML
+ format.

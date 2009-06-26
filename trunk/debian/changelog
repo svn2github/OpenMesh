@@ -1,3 +1,9 @@
+openmesh (2.0~svn177-0~ppa2~jaunty1) jaunty; urgency=low
+
+  * Adding the documentation package.
+
+ -- Jean Pierre Charalambos <nakednous@gmail.com>  Thu, 25 Jun 2009 20:07:43 -0500
+
 openmesh (2.0~svn177-0~ppa1~jaunty1) jaunty; urgency=low
 
   * New upstream SVN snapshot.

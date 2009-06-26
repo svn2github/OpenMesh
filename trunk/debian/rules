@@ -20,6 +20,11 @@ get-orig-source:
 	rm -rf get-orig-source
 	echo "  "$(TARBALL)" created; move it to the right destination to build the package"
 
+build/libopenmesh-doc::
+	cd $(DEB_BUILDDIR) && $(MAKE) doc
+	mkdir -p debian/tmp/usr/share/doc/
+	cp -r $(DEB_BUILDDIR)/Build/share/OpenMesh/Doc/html debian/tmp/usr/share/doc/OpenMesh
+
 install/libopenmesh::
 	#dh_install -libopenmesh --autodest debian/tmp/usr/lib/OpenMesh/lib*.so.*
 	ln -sf libOpenMeshCore.so.2.0 debian/tmp/usr/lib/OpenMesh/libOpenMeshCore.so.2
@@ -35,3 +40,6 @@ install/libopenmesh-dev::
 
 install/libopenmesh-apps::
 	dh_install -plibopenmesh-apps debian/tmp/usr/bin/* /usr/lib/OpenMesh/Apps
+
+install/libopenmesh-doc::
+	dh_install -plibopenmesh-doc debian/tmp/usr/share/doc/*
