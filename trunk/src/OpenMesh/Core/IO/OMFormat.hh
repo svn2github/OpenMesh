@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -122,7 +122,7 @@ namespace OMFormat {
   {
     uchar  magic_[2]; // OM
     uchar  mesh_;    // [T]riangles, [Q]uads, [P]olygonals
-    uint8  version_;    
+    uint8  version_;
     uint32 n_vertices_;
     uint32 n_faces_;
     uint32 n_edges_;
@@ -186,7 +186,7 @@ namespace OMFormat {
       Dim_8D = 0x07
     };
 
-    enum Integer_Size {  
+    enum Integer_Size {
       Integer_8   = 0x00, // 1 byte for (unsigned) char
       Integer_16  = 0x01, // 2 bytes for short
       Integer_32  = 0x02, // 4 bytes for long
@@ -228,9 +228,9 @@ namespace OMFormat {
     {
       unsigned reserved_: SIZE_RESERVED;
       unsigned name_    : SIZE_NAME;   // 1 named property, 0 anonymous
-      unsigned entity_  : SIZE_ENTITY; // 0 vertex, 1 mesh, 2 edge, 
+      unsigned entity_  : SIZE_ENTITY; // 0 vertex, 1 mesh, 2 edge,
                                        // 4 halfedge, 6 face
-      unsigned type_    : SIZE_TYPE;   // 0 pos, 1 normal, 2 texcoord, 
+      unsigned type_    : SIZE_TYPE;   // 0 pos, 1 normal, 2 texcoord,
                                        // 3 status, 4 color 6 custom 7 topology
       unsigned signed_  : SIZE_SIGNED; // bool
       unsigned float_   : SIZE_FLOAT;  // bool
@@ -295,7 +295,7 @@ namespace OMFormat {
 
   /// Return the dimension of the vector in a chunk
   inline size_t dimensions(const Chunk::Header& _chdr) { return _chdr.dim_+1; }
-  
+
 
   /// Return the size of a vector in bytes.
   inline size_t vector_size( const Chunk::Header& _chdr )
@@ -337,30 +337,30 @@ namespace OMFormat {
 
   // -------------------- type information
 
-  template <typename T> bool is_float(const T&) 
-  { 
+  template <typename T> bool is_float(const T&)
+  {
 #if defined(OM_MISSING_HEADER_LIMITS)
     return !Utils::NumLimitsT<T>::is_integer();
 #else
-    return !std::numeric_limits<T>::is_integer; 
+    return !std::numeric_limits<T>::is_integer;
 #endif
   }
 
-  template <typename T> bool is_integer(const T) 
-  { 
+  template <typename T> bool is_integer(const T)
+  {
 #if defined(OM_MISSING_HEADER_LIMITS)
     return Utils::NumLimitsT<T>::is_integer();
 #else
-    return std::numeric_limits<T>::is_integer; 
+    return std::numeric_limits<T>::is_integer;
 #endif
   }
 
-  template <typename T> bool is_signed(const T&) 
-  { 
+  template <typename T> bool is_signed(const T&)
+  {
 #if defined(OM_MISSING_HEADER_LIMITS)
     return Utils::NumLimitsT<T>::is_signed();
 #else
-    return std::numeric_limits<T>::is_signed; 
+    return std::numeric_limits<T>::is_signed;
 #endif
   }
 
@@ -374,7 +374,7 @@ namespace OMFormat {
     return static_cast<Chunk::Dim>(vector_traits< VecType >::size() - 1);
   }
 
-  template <>
+  template <typename VecType>
   inline
   Chunk::Dim dim( const Chunk::Header& _hdr )
   {
@@ -386,11 +386,11 @@ namespace OMFormat {
 
 
   // Return the storage type (Chunk::Header::bits_)
-  template <typename T> 
+  template <typename T>
   inline
   unsigned int bits(const T& val)
   {
-    return is_integer(val) 
+    return is_integer(val)
       ? (static_cast<unsigned int>(integer_size(val)))
       : (static_cast<unsigned int>(float_size(val)));
   }
@@ -415,7 +415,7 @@ namespace OMFormat {
   }
 
 
-  // Convert size of type to FLoat_Size 
+  // Convert size of type to FLoat_Size
 #ifdef NDEBUG
   template <typename T> Chunk::Float_Size float_size(const T&)
 #else
@@ -439,11 +439,11 @@ namespace OMFormat {
   { return (major & 0x07) << 5 | (minor & 0x1f); }
 
 
-  inline uint16 major_version(const uint8 version) 
+  inline uint16 major_version(const uint8 version)
   { return (version >> 5) & 0x07; }
 
 
-  inline uint16 minor_version(const uint8 version) 
+  inline uint16 minor_version(const uint8 version)
   { return (version & 0x001f); }
 
 
@@ -475,7 +475,7 @@ namespace OMFormat {
   // -------------------- (re-)store chunk header
 
   template <> inline
-  size_t 
+  size_t
   store( std::ostream& _os, const OMFormat::Chunk::Header& _hdr, bool _swap)
   {
     OMFormat::uint16 val; val << _hdr;
@@ -483,14 +483,14 @@ namespace OMFormat {
   }
 
   template <> inline
-  size_t 
+  size_t
   restore( std::istream& _is, OMFormat::Chunk::Header& _hdr, bool _swap )
   {
     OMFormat::uint16 val;
     size_t bytes = binary<uint16_t>::restore( _is, val, _swap );
 
     _hdr << val;
-    
+
     return bytes;
   }
 
@@ -500,32 +500,32 @@ namespace OMFormat {
   typedef GenProg::False t_unsigned;
 
   // helper to store a an integer
-  template< typename T > 
-  size_t 
-  store( std::ostream& _os, 
-	 const T& _val, 
-	 OMFormat::Chunk::Integer_Size _b, 
+  template< typename T >
+  size_t
+  store( std::ostream& _os,
+	 const T& _val,
+	 OMFormat::Chunk::Integer_Size _b,
 	 bool _swap,
 	 t_signed);
 
   // helper to store a an unsigned integer
-  template< typename T > 
-  size_t 
-  store( std::ostream& _os, 
-	 const T& _val, 
-	 OMFormat::Chunk::Integer_Size _b, 
+  template< typename T >
+  size_t
+  store( std::ostream& _os,
+	 const T& _val,
+	 OMFormat::Chunk::Integer_Size _b,
 	 bool _swap,
 	 t_unsigned);
 
   /// Store an integer with a wanted number of bits
-  template< typename T > 
+  template< typename T >
   inline
-  size_t 
-  store( std::ostream& _os, 
-	 const T& _val, 
-	 OMFormat::Chunk::Integer_Size _b, 
+  size_t
+  store( std::ostream& _os,
+	 const T& _val,
+	 OMFormat::Chunk::Integer_Size _b,
 	 bool _swap)
-  {    
+  {
     assert( OMFormat::is_integer( _val ) );
 
     if ( OMFormat::is_signed( _val ) )
@@ -535,41 +535,41 @@ namespace OMFormat {
 
   // helper to store a an integer
   template< typename T > inline
-  size_t restore( std::istream& _is, 
-		  T& _val, 
-		  OMFormat::Chunk::Integer_Size _b, 
+  size_t restore( std::istream& _is,
+		  T& _val,
+		  OMFormat::Chunk::Integer_Size _b,
 		  bool _swap,
 		  t_signed);
 
   // helper to store a an unsigned integer
   template< typename T > inline
-  size_t restore( std::istream& _is, 
-		  T& _val, 
-		  OMFormat::Chunk::Integer_Size _b, 
+  size_t restore( std::istream& _is,
+		  T& _val,
+		  OMFormat::Chunk::Integer_Size _b,
 		  bool _swap,
 		  t_unsigned);
 
   /// Restore an integer with a wanted number of bits
-  template< typename T > 
+  template< typename T >
   inline
-  size_t 
-  restore( std::istream& _is, 
-	   T& _val, 
-	   OMFormat::Chunk::Integer_Size _b, 
+  size_t
+  restore( std::istream& _is,
+	   T& _val,
+	   OMFormat::Chunk::Integer_Size _b,
 	   bool _swap)
-  {    
+  {
     assert( OMFormat::is_integer( _val ) );
-    
+
     if ( OMFormat::is_signed( _val ) )
       return restore( _is, _val, _b, _swap, t_signed() );
-    return restore( _is, _val, _b, _swap, t_unsigned() );    
+    return restore( _is, _val, _b, _swap, t_unsigned() );
   }
 
 
-  // 
+  //
   // ---------------------------------------- storing vectors
   template <typename VecT> inline
-  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<2>, 
+  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<2>,
 		bool _swap )
   {
     size_t bytes =  store( _os, _vec[0], _swap );
@@ -578,7 +578,7 @@ namespace OMFormat {
   }
 
   template <typename VecT> inline
-  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<3>, 
+  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<3>,
 		bool _swap )
   {
     size_t bytes =  store( _os, _vec[0], _swap );
@@ -588,7 +588,7 @@ namespace OMFormat {
   }
 
   template <typename VecT> inline
-  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<4>, 
+  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<4>,
 		bool _swap )
   {
     size_t bytes =  store( _os, _vec[0], _swap );
@@ -599,17 +599,17 @@ namespace OMFormat {
   }
 
   template <typename VecT> inline
-  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<1>, 
+  size_t store( std::ostream& _os, const VecT& _vec, GenProg::Int2Type<1>,
 		bool _swap )
   {
     return store( _os, _vec[0], _swap );
   }
-  
+
   /// storing a vector type
   template <typename VecT> inline
   size_t vector_store( std::ostream& _os, const VecT& _vec, bool _swap )
   {
-    return store( _os, _vec, 
+    return store( _os, _vec,
 		  GenProg::Int2Type< vector_traits<VecT>::size_ >(),
 		  _swap );
   }
@@ -618,7 +618,7 @@ namespace OMFormat {
   template <typename VecT>
   inline
   size_t
-  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<2>, 
+  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<2>,
 	 bool _swap )
   {
     size_t bytes =  restore( _is, _vec[0], _swap );
@@ -629,7 +629,7 @@ namespace OMFormat {
   template <typename VecT>
   inline
   size_t
-  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<3>, 
+  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<3>,
 	 bool _swap )
   {
     typedef typename vector_traits<VecT>::value_type scalar_type;
@@ -644,7 +644,7 @@ namespace OMFormat {
   template <typename VecT>
   inline
   size_t
-  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<4>, 
+  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<4>,
 	   bool _swap )
   {
     typedef typename vector_traits<VecT>::value_type scalar_type;
@@ -656,11 +656,11 @@ namespace OMFormat {
     bytes += binary<scalar_type>::restore( _is, _vec[3], _swap );
     return bytes;
   }
-  
+
   template <typename VecT>
-  inline 
+  inline
   size_t
-  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<1>, 
+  restore( std::istream& _is, VecT& _vec, GenProg::Int2Type<1>,
 	 bool _swap )
   {
     return restore( _is, _vec[0], _swap );
@@ -672,17 +672,17 @@ namespace OMFormat {
   size_t
   vector_restore( std::istream& _is, VecT& _vec, bool _swap )
   {
-    return restore( _is, _vec, 
+    return restore( _is, _vec,
 		    GenProg::Int2Type< vector_traits<VecT>::size_ >(),
 		    _swap );
   }
 
 
   // ---------------------------------------- storing property names
-  
+
   template <>
   inline
-  size_t store( std::ostream& _os, const OMFormat::Chunk::PropertyName& _pn, 
+  size_t store( std::ostream& _os, const OMFormat::Chunk::PropertyName& _pn,
 		bool _swap )
   {
     store( _os, _pn.size(), OMFormat::Chunk::Integer_8, _swap ); // 1 byte
@@ -693,9 +693,9 @@ namespace OMFormat {
 
   template <>
   inline
-  size_t restore( std::istream& _is, OMFormat::Chunk::PropertyName& _pn, 
+  size_t restore( std::istream& _is, OMFormat::Chunk::PropertyName& _pn,
 		  bool _swap )
-  {    
+  {
     size_t size;
 
     restore( _is, size, OMFormat::Chunk::Integer_8, _swap); // 1 byte
