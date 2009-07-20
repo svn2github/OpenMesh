@@ -329,9 +329,9 @@ private:
     
     vhl = _m.add_vertex(zero);
     vhr = _m.add_vertex(zero);
-
-    _m.property(vp_pos_, vhl ) = (P1 + 16.0f*P2 + 10.0f*P3) * _1over27;
-    _m.property(vp_pos_, vhr ) = (10.0f*P2 + 16.0f*P3 + P4) * _1over27;
+ 
+    _m.property(vp_pos_, vhl ) = (P1 + real_t(16.0f) * P2 + real_t(10.0f) * P3) * _1over27;
+    _m.property(vp_pos_, vhr ) = ( real_t(10.0f) * P2 + real_t(16.0f) * P3 + P4) * _1over27;
     _m.property(ep_nv_, _eh).first  = vhl;
     _m.property(ep_nv_, _eh).second = vhr; 
   }
