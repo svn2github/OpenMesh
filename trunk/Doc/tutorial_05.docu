@@ -60,7 +60,7 @@ entity for which it can be used.
 </table>
 
 To add a standard property to an entity simply use the appropriate
-request method, e.g. \c  request_face_normal(). The only exception is
+request method, e.g. \c request_face_normals(). The only exception is
 the position <sup>(*)</sup>. It cannot be added because it is
 permanently available, hence it cannot be removed as well.
 
@@ -101,6 +101,55 @@ one will remove it.  The standard properties have a reference counter,
 which is incremented by one for each request and decremented by one
 for each release. If the counter reaches 0 the property will be
 removed from memory.
+
+As we have seen in the table above, we have 9 dynamically requestable properties.
+The request functions as defined in OpenMesh::Concepts::KernelT
+are:
+
+<ul>
+<li>request_edge_status()</li>
+<li>request_face_colors()</li>
+<li>request_face_normals()</li>
+<li>request_face_status()</li>
+<li>request_halfedge_status()</li>
+<li>request_vertex_colors()</li>
+<li>request_vertex_normals()</li>
+<li>request_vertex_status()</li>
+<li>request_vertex_texcoords()</li>
+</ul>
+
+Added properties can be released by the following functions:
+
+<ul>
+<li>release_edge_status()</li>
+<li>release_face_colors()</li>
+<li>release_face_normals()</li>
+<li>release_face_status()</li>
+<li>release_halfedge_status()</li>
+<li>release_vertex_colors()</li>
+<li>release_vertex_normals()</li>
+<li>release_vertex_status()</li>
+<li>release_vertex_texcoords()</li>
+</ul>
+
+A properties existance can be tested with
+
+<ul>
+<li>has_edge_status()</li>
+<li>has_face_colors()</li>
+<li>has_face_normals()</li>
+<li>has_face_status()</li>
+<li>has_halfedge_status()</li>
+<li>has_vertex_colors()</li>
+<li>has_vertex_normals()</li>
+<li>has_vertex_status()</li>
+<li>has_vertex_texcoords()</li>
+</ul>
+
+which return true if a property has been requested before and is available.
+
+The status property is used for marking geometry elements i.e. as selected or deleted.
+See \ref tutorial_07b for further information.
 
 Now we know how to add and remove standard properties, but how do we
 access them?  Again we need the mesh object. Unlike the custom
