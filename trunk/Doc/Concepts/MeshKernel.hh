@@ -1,31 +1,31 @@
 //=============================================================================
-//                                                                            
-//                               OpenMesh                                     
-//      Copyright (C) 2001-2005 by Computer Graphics Group, RWTH Aachen       
-//                           www.openmesh.org                                 
-//                                                                            
+//
+//                               OpenMesh
+//      Copyright (C) 2001-2005 by Computer Graphics Group, RWTH Aachen
+//                           www.openmesh.org
+//
 //-----------------------------------------------------------------------------
-//                                                                            
-//                                License                                     
-//                                                                            
-//   This library is free software; you can redistribute it and/or modify it 
-//   under the terms of the GNU Library General Public License as published  
-//   by the Free Software Foundation, version 2.                             
-//                                                                             
-//   This library is distributed in the hope that it will be useful, but       
-//   WITHOUT ANY WARRANTY; without even the implied warranty of                
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         
-//   Library General Public License for more details.                          
-//                                                                            
-//   You should have received a copy of the GNU Library General Public         
-//   License along with this library; if not, write to the Free Software       
-//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                 
-//                                                                            
+//
+//                                License
+//
+//   This library is free software; you can redistribute it and/or modify it
+//   under the terms of the GNU Library General Public License as published
+//   by the Free Software Foundation, version 2.
+//
+//   This library is distributed in the hope that it will be useful, but
+//   WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//   Library General Public License for more details.
+//
+//   You should have received a copy of the GNU Library General Public
+//   License along with this library; if not, write to the Free Software
+//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
 //-----------------------------------------------------------------------------
-//                                                                            
+//
 //   $Revision$
 //   $Date$
-//                                                                            
+//
 //=============================================================================
 
 
@@ -50,7 +50,7 @@ namespace Concepts {
 
 
 /** \ingroup mesh_concepts_group
-    This class describes the minimum interface a mesh kernel 
+    This class describes the minimum interface a mesh kernel
     has to implement (because the resulting mesh will rely on
     this interface).
 
@@ -64,7 +64,7 @@ namespace Concepts {
 template <class FinalMeshItems> class KernelT
 {
 public:
-  
+
   /// \name Mesh Items
   //@{
 
@@ -78,10 +78,10 @@ public:
   typedef typename FinalMeshItems::Normal             Normal;
   typedef typename FinalMeshItems::Color              Color;
   typedef typename FinalMeshItems::TexCoord           TexCoord;
-  typedef typename FinalMeshItems::VertexHandle       VertexHandle;    
-  typedef typename FinalMeshItems::HalfedgeHandle     HalfedgeHandle;  
-  typedef typename FinalMeshItems::EdgeHandle         EdgeHandle;      
-  typedef typename FinalMeshItems::FaceHandle         FaceHandle;      
+  typedef typename FinalMeshItems::VertexHandle       VertexHandle;
+  typedef typename FinalMeshItems::HalfedgeHandle     HalfedgeHandle;
+  typedef typename FinalMeshItems::EdgeHandle         EdgeHandle;
+  typedef typename FinalMeshItems::FaceHandle         FaceHandle;
 
   //@}
 
@@ -110,7 +110,7 @@ public:
   KernelT& operator=(const KernelT& _rhs);
 
 
-  /** Reserve memory for vertices, edges, faces.  
+  /** Reserve memory for vertices, edges, faces.
    *
    *  Reserve memory for the mesh items vertices, edges, faces.  Use
    *  this method if you can estimate the memory consumption, for
@@ -125,9 +125,9 @@ public:
   void reserve( unsigned int _n_vertices,
 		unsigned int _n_edges,
 		unsigned int _n_faces );
-  
 
-  /// \name Handle -> Item. 
+
+  /// \name Handle -> Item.
   //@{
   /// Translate handle to item (see also OpenMesh::PolyMeshT::deref())
   const Vertex& vertex(VertexHandle _h) const { return deref(_h); }
@@ -173,7 +173,7 @@ public:
   void garbage_collection();
 
   /** Remove the last vertex imidiately, i.e. call pop_back() for the
-      VertexContainer. 
+      VertexContainer.
   */
   void remove_last_vertex() { vertices_.pop_back(); }
   /** Remove the last edge imidiately, i.e. call pop_back() for the
@@ -227,7 +227,7 @@ public:
   /// Set the coordinate of a vertex
   void set_point(Vertex& _v, const Point& _p);
   //@}
- 
+
 
 
 
@@ -293,7 +293,7 @@ public: // Standard Property Management
   const Point& point(VertexHandle _vh) const; ///< Get position
   void set_point(VertexHandle _vh, const Point& _p); ///< Set position
   Point& point(VertexHandle _vh); ///< Convenience function
-  
+
   const Normal& normal(VertexHandle _vh) const; ///< Get normal
   void set_normal(VertexHandle _vh, const Normal& _n); ///< Set normal
 
@@ -331,16 +331,22 @@ public: // Standard Property Management
   /// Request property
   void request_vertex_normals();
   void request_vertex_colors();
-  void request_vertex_texcoords();
+  void request_vertex_texcoords1D();
+  void request_vertex_texcoords2D();
+  void request_vertex_texcoords3D();
   void request_vertex_status();
 
   void request_halfedge_status();
+  void request_halfedge_texcoords1D();
+  void request_halfedge_texcoords2D();
+  void request_halfedge_texcoords3D();
 
   void request_edge_status();
 
   void request_face_normals();
   void request_face_colors();
   void request_face_status();
+  void request_face_texture_index();
   //@}
 
   /// \name Remove standard properties
@@ -348,30 +354,45 @@ public: // Standard Property Management
   /// Remove property
   void release_vertex_normals();
   void release_vertex_colors();
-  void release_vertex_texcoords();
+  void release_vertex_texcoords1D();
+  void release_vertex_texcoords2D();
+  void release_vertex_texcoords3D();
   void release_vertex_status();
 
   void release_halfedge_status();
+  void release_halfedge_texcoords1D();
+  void release_halfedge_texcoords2D();
+  void release_halfedge_texcoords3D();
 
   void release_edge_status();
 
   void release_face_normals();
   void release_face_colors();
   void release_face_status();
+  void release_face_texture_index();
   //@}
 
   /// \name Check availability of standard properties
   //@{
   /// Is property available?
-  bool has_vertex_normals()   const;
-  bool has_vertex_colors()    const;
-  bool has_vertex_texcoords() const;
-  bool has_vertex_status()    const;
-  bool has_edge_status()      const;
-  bool has_halfedge_status()  const;
-  bool has_face_normals()     const;
-  bool has_face_colors()      const;
-  bool has_face_status()      const;
+  bool has_vertex_normals() const;
+  bool has_vertex_colors() const;
+  bool has_vertex_texcoords1D() const;
+  bool has_vertex_texcoords2D() const;
+  bool has_vertex_texcoords3D() const;
+  bool has_vertex_status() const;
+
+  bool has_halfedge_status() const;
+  bool has_halfedge_texcoords1D() const;
+  bool has_halfedge_texcoords2D() const;
+  bool has_halfedge_texcoords3D() const;
+
+  bool has_edge_status() const;
+
+  bool has_face_normals() const;
+  bool has_face_colors() const;
+  bool has_face_status() const;
+  bool has_face_texture_index() const;
   //@}
 
 public: // Property Management
@@ -382,7 +403,7 @@ public: // Property Management
   //@{
   /// Add property.
   /// @copydoc OpenMesh::BaseKernel::add_property()
-  template <typename T> bool add_property( [VEHFM]PropHandleT<T>& _ph, 
+  template <typename T> bool add_property( [VEHFM]PropHandleT<T>& _ph,
                                            const std::string& _name = "" );
   //@}
 
@@ -393,9 +414,9 @@ public: // Property Management
   //@}
 
   /// \name Property management - get property by name
-  //@{ 
+  //@{
   /// Get property handle by name
-  template <typename T> 
+  template <typename T>
   bool get_property_handle( [VEHFM]PropHandleT<T>& ph, const std::string& _n ) const;
   //@}
 
@@ -412,29 +433,29 @@ public: // Property Management
   //@{
 
   /// Get value for item represented by the handle.
-  template <typename T> 
+  template <typename T>
   T& property( VPropHandleT<T> _ph, VertexHandle _vh );
-  template <typename T> 
+  template <typename T>
   const T& property( VPropHandleT<T> _ph, VertexHandle _vh ) const;
 
-  template <typename T> 
+  template <typename T>
   T& property( EPropHandleT<T> _ph, EdgeHandle _vh );
-  template <typename T> 
+  template <typename T>
   const T& property( EPropHandleT<T> _ph, EdgeHandle _vh ) const;
 
-  template <typename T> 
+  template <typename T>
   T& property( HPropHandleT<T> _ph, HalfedgeHandle _vh );
-  template <typename T> 
+  template <typename T>
   const T& property( HPropHandleT<T> _ph, HalfedgeHandle _vh ) const;
 
-  template <typename T> 
+  template <typename T>
   T& property( FPropHandleT<T> _ph, FaceHandle _vh );
-  template <typename T> 
+  template <typename T>
   const T& property( FPropHandleT<T> _ph, FaceHandle _vh ) const;
 
-  template <typename T> 
+  template <typename T>
   T& property( MPropHandleT<T> _ph );
-  template <typename T> 
+  template <typename T>
   const T& property( MPropHandleT<T> _ph ) const;
 
   //@}
@@ -447,10 +468,10 @@ public:
   /** Add a new (default) vertex.
       \internal */
   VertexHandle new_vertex();
-  /** Add a new vertex with a given point coordinate. 
+  /** Add a new vertex with a given point coordinate.
       \internal */
   VertexHandle new_vertex(const Point& _p);
-  /** Add a new vertex (copied from the given one). 
+  /** Add a new vertex (copied from the given one).
       \internal */
   VertexHandle new_vertex(const Vertex& _v);
   /** Add a new edge from \c _start_vertex_handle to \c _end_vertex_handle.
@@ -458,10 +479,10 @@ public:
       the corresponding vertex handles of these halfedges.
       \internal
    */
-  HalfedgeHandle new_edge(VertexHandle _start_vertex_handle, 
+  HalfedgeHandle new_edge(VertexHandle _start_vertex_handle,
 			  VertexHandle _end_vertex_handle);
 
-  /** Adding a new face 
+  /** Adding a new face
       \internal
   */
   FaceHandle new_face();

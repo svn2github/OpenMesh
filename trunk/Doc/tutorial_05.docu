@@ -111,11 +111,17 @@ are:
 <li>request_face_colors()</li>
 <li>request_face_normals()</li>
 <li>request_face_status()</li>
+<li>request_face_texture_index()</li>
 <li>request_halfedge_status()</li>
+<li>request_halfedge_texcoords1D()</li>
+<li>request_halfedge_texcoords2D()</li>
+<li>request_halfedge_texcoords3D()</li>
 <li>request_vertex_colors()</li>
 <li>request_vertex_normals()</li>
 <li>request_vertex_status()</li>
-<li>request_vertex_texcoords()</li>
+<li>request_vertex_texcoords1D()</li>
+<li>request_vertex_texcoords2D()</li>
+<li>request_vertex_texcoords3D()</li>
 </ul>
 
 Added properties can be released by the following functions:
@@ -125,11 +131,17 @@ Added properties can be released by the following functions:
 <li>release_face_colors()</li>
 <li>release_face_normals()</li>
 <li>release_face_status()</li>
+<li>release_face_texture_index()</li>
 <li>release_halfedge_status()</li>
+<li>release_halfedge_texcoords1D()</li>
+<li>release_halfedge_texcoords2D()</li>
+<li>release_halfedge_texcoords3D()</li>
 <li>release_vertex_colors()</li>
 <li>release_vertex_normals()</li>
 <li>release_vertex_status()</li>
-<li>release_vertex_texcoords()</li>
+<li>release_vertex_texcoords1D()</li>
+<li>release_vertex_texcoords2D()</li>
+<li>release_vertex_texcoords3D()</li>
 </ul>
 
 A property's existance can be tested with
@@ -139,11 +151,17 @@ A property's existance can be tested with
 <li>has_face_colors()</li>
 <li>has_face_normals()</li>
 <li>has_face_status()</li>
+<li>has_face_texture_index()</li>
 <li>has_halfedge_status()</li>
+<li>has_halfedge_texcoords1D()</li>
+<li>has_halfedge_texcoords2D()</li>
+<li>has_halfedge_texcoords3D()</li>
 <li>has_vertex_colors()</li>
 <li>has_vertex_normals()</li>
 <li>has_vertex_status()</li>
-<li>has_vertex_texcoords()</li>
+<li>has_vertex_texcoords1D()</li>
+<li>has_vertex_texcoords2D()</li>
+<li>has_vertex_texcoords3D()</li>
 </ul>
 
 which return true if a property has been requested before and is available.
