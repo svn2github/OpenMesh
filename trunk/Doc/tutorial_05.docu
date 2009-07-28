@@ -132,7 +132,7 @@ Added properties can be released by the following functions:
 <li>release_vertex_texcoords()</li>
 </ul>
 
-A properties existance can be tested with
+A property's existance can be tested with
 
 <ul>
 <li>has_edge_status()</li>
