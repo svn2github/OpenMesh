@@ -3,9 +3,7 @@
 // -------------------- OpenMesh
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
-
-
-#ifndef DOXY_IGNORE_THIS
+#include <OpenMesh/Core/Mesh/Traits.hh>
 
 struct MyTraits : public OpenMesh::DefaultTraits
 {
@@ -23,8 +21,6 @@ struct MyTraits : public OpenMesh::DefaultTraits
   };
 };
 
-#endif
-
 typedef OpenMesh::TriMesh_ArrayKernelT<MyTraits>  MyMesh;
 typedef OpenMesh::TriMesh_ArrayKernelT<>          MyMesh2;
 
@@ -38,10 +34,10 @@ template <typename Mesh>
 void print_size(const std::string& _prefix = "")
 {
   size_t total=0;
-  SIZEOF(Mesh::Vertex, total);
-  SIZEOF(Mesh::Halfedge, total);
-  SIZEOF(Mesh::Edge, total);
-  SIZEOF(Mesh::Face, total);
+  SIZEOF(typename Mesh::Vertex, total);
+  SIZEOF(typename Mesh::Halfedge, total);
+  SIZEOF(typename Mesh::Edge, total);
+  SIZEOF(typename Mesh::Face, total);
   std::cout << _prefix << "total: " << total << std::endl;
 }
 
@@ -106,16 +102,16 @@ int main(int argc, char **argv)
       
       for (vv_it=mesh.vv_iter(v_it.handle()); vv_it; ++vv_it)
       {
-	cog += mesh.point( vv_it.handle() );
-	++valence;
+        cog += mesh.point( vv_it.handle() );
+        ++valence;
       }
 
-      v_it->set_cog(cog / valence);
+      mesh.data(v_it).set_cog(cog / valence);
     }
     
     for (v_it=mesh.vertices_begin(); v_it!=v_end; ++v_it)
       if (!mesh.is_boundary(v_it.handle()))
-	mesh.set_point( v_it.handle(), v_it->cog());
+        mesh.set_point( v_it.handle(), mesh.data(v_it).cog());
   }
 
 
@@ -129,4 +125,3 @@ int main(int argc, char **argv)
   }
   return 1;
 }
-
