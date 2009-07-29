@@ -29,11 +29,11 @@ the get/set-method pair to access the new member.
 As before we compute in a first loop the barycenters for all vertices
 and store the information at the vertices
 
-\skipline v_it->set_cog
+\skipline mesh.data(v_it).set_cog
 
 In the second pass we set the new position of each vertex
 
-\skipline set_point
+\skipline mesh.data(v_it).cog
 
 It looks neat, but on the other hand we can't remove the data anymore
 as we could do with properties!  By using traits one creates a 'static'
