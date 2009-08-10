@@ -93,7 +93,12 @@ class BaseKernel
 public: //-------------------------------------------- constructor / destructor
 
   BaseKernel() {}
-  virtual ~BaseKernel() {}
+  virtual ~BaseKernel() {
+	vprops_.clear();
+	eprops_.clear();
+	hprops_.clear();
+	fprops_.clear();
+  }
 
 
 public: //-------------------------------------------------- add new properties
@@ -504,29 +509,44 @@ protected: //------------------------------------------- synchronize properties
 
   void vprops_reserve(unsigned int _n) const { vprops_.reserve(_n); }
   void vprops_resize(unsigned int _n) const { vprops_.resize(_n); }
+  void vprops_clear() {
+    vprops_.clear();
+  }
   void vprops_swap(unsigned int _i0, unsigned int _i1) const {
     vprops_.swap(_i0, _i1);
   }
 
   void hprops_reserve(unsigned int _n) const { hprops_.reserve(_n); }
   void hprops_resize(unsigned int _n) const { hprops_.resize(_n); }
+  void hprops_clear() {
+    hprops_.clear();
+  }
   void hprops_swap(unsigned int _i0, unsigned int _i1) const {
     hprops_.swap(_i0, _i1);
   }
 
   void eprops_reserve(unsigned int _n) const { eprops_.reserve(_n); }
   void eprops_resize(unsigned int _n) const { eprops_.resize(_n); }
+  void eprops_clear() {
+    eprops_.clear();
+  }
   void eprops_swap(unsigned int _i0, unsigned int _i1) const {
     eprops_.swap(_i0, _i1);
   }
 
   void fprops_reserve(unsigned int _n) const { fprops_.reserve(_n); }
   void fprops_resize(unsigned int _n) const { fprops_.resize(_n); }
+  void fprops_clear() {
+    fprops_.clear();
+  }
   void fprops_swap(unsigned int _i0, unsigned int _i1) const {
     fprops_.swap(_i0, _i1);
   }
 
   void mprops_resize(unsigned int _n) const { mprops_.resize(_n); }
+  void mprops_clear() {
+    mprops_.clear();
+  }
 
 public:
 

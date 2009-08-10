@@ -64,7 +64,7 @@ public:
   //-------------------------------------------------- constructor / destructor
 
   PropertyContainer() {}
-  virtual ~PropertyContainer() { clear(); }
+  virtual ~PropertyContainer() { std::for_each(properties_.begin(), properties_.end(), Delete()); }
 
 
   //------------------------------------------------------------- info / access
@@ -177,7 +177,16 @@ public:
 
   void clear()
   {
-    std::for_each(properties_.begin(), properties_.end(), Delete());
+	// Clear properties vector:
+	// Replaced the old version with new one
+	// which performs a swap to clear values and
+	// deallocate memory.
+
+	// Old version (changed 22.07.09) {
+	// std::for_each(properties_.begin(), properties_.end(), Delete());
+    // }
+
+	std::for_each(properties_.begin(), properties_.end(), ClearAll());
   }
 
 
@@ -254,6 +263,12 @@ private:
     Resize(size_t _n) : n_(_n) {}
     void operator()(BaseProperty* _p) const { if (_p) _p->resize(n_); }
     size_t n_;
+  };
+
+  struct ClearAll
+  {
+    ClearAll() {}
+    void operator()(BaseProperty* _p) const { if (_p) _p->clear(); }
   };
 
   struct Swap

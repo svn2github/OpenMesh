@@ -109,6 +109,7 @@ public: // inherited from BaseProperty
 
   virtual void reserve(size_t _n) { data_.reserve(_n);    }
   virtual void resize(size_t _n)  { data_.resize(_n);     }
+  virtual void clear()  { data_.clear(); vector_type().swap(data_);    }
   virtual void push_back()        { data_.push_back(T()); }
   virtual void swap(size_t _i0, size_t _i1)
   { std::swap(data_[_i0], data_[_i1]); }
@@ -161,18 +162,18 @@ public:
 public: // data access interface
 
   /// Get pointer to array (does not work for T==bool)
-  const T* data() const { 
+  const T* data() const {
 
     if( data_.empty() )
       return 0;
 
-    return &data_[0]; 
+    return &data_[0];
   }
 
   /// Get reference to property vector (be careful, improper usage, e.g. resizing, may crash OpenMesh!!!)
-  vector_type& data_vector() { 
+  vector_type& data_vector() {
 
-    return data_; 
+    return data_;
   }
 
   /// Access the i'th element. No range check is performed!
@@ -230,6 +231,7 @@ public: // inherited from BaseProperty
 
   virtual void reserve(size_t _n) { data_.reserve(_n);    }
   virtual void resize(size_t _n)  { data_.resize(_n);     }
+  virtual void clear()  { data_.clear(); vector_type().swap(data_);    }
   virtual void push_back()        { data_.push_back(bool()); }
   virtual void swap(size_t _i0, size_t _i1)
   { bool t(data_[_i0]); data_[_i0]=data_[_i1]; data_[_i1]=t; }
@@ -387,6 +389,7 @@ public: // inherited from BaseProperty
 
   virtual void reserve(size_t _n) { data_.reserve(_n);    }
   virtual void resize(size_t _n)  { data_.resize(_n);     }
+  virtual void clear()  { data_.clear(); vector_type().swap(data_);    }
   virtual void push_back()        { data_.push_back(std::string()); }
   virtual void swap(size_t _i0, size_t _i1) {
     std::swap(data_[_i0], data_[_i1]);

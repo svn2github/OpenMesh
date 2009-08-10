@@ -97,6 +97,9 @@ public: // synchronized array interface
   /// Resize storage to hold n elements.
   virtual void resize(size_t _n) = 0;
 
+  /// Clear all elements and free memory.
+  virtual void clear() = 0;
+
   /// Extend the number of elements by one.
   virtual void push_back() = 0;
 
