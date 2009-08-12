@@ -98,7 +98,7 @@ public:
     VAttribs = MeshItems::VAttribs,
     HAttribs = MeshItems::HAttribs,
     EAttribs = MeshItems::EAttribs,
-    FAttribs = MeshItems::FAttribs,
+    FAttribs = MeshItems::FAttribs
   };
 
   typedef VPropHandleT<VertexData>              DataVPropHandle;
