@@ -155,6 +155,7 @@ read_material(std::fstream& _in)
   int         textureId = 1;
 
 
+  materials_.clear();
   mat.cleanup();
 
   while( _in && !_in.eof() )
