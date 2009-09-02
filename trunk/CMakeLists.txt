@@ -8,7 +8,7 @@ set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 # include our cmake files
 include (ACGCommon)
 
-include(package)
+include(OpenMeshPackage)
 
 acg_get_version ()
 
