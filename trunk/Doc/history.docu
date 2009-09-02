@@ -5,6 +5,40 @@
 <table border=1 cellpadding=4 cellspacing=2>
 
 
+<!-- --------------------------------------------------------------------- -->
+
+<tr valign=top><td><b>2.0-RC4</b> (2009/?/?)</td><td>
+<b>Core</b>
+<li> Added function for direct access to property vectors</li>
+<li> Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.</li>
+
+<b>Readers/Writers</b>
+<li> Fixed reading ply files with unknown properties</li>
+<li> Added support for texture coordinates in ply files</li>
+<li> OMFromat -> Fixed empty template parameter issue under msvc</li>
+<li> OBJReader -> fixed loading multiple objs with material files</li>
+
+
+<b>Build system</b>
+<li> Added missing c files</li>
+<li> Build shared and static version under linux (cmake)</li>
+<li> Added -DBUILD_APPS=OFF cmake flag to skip building of apps (cmake)</li>
+<li> Added install target (cmake)</li>
+<li> Added doc target (cmake)</li>
+<li> Added doc-install target (cmake)</li>
+<li> Generate sonames under linux (cmake)</li>
+<li> Debian build dir for building Debian packages (Thanks to Jean Pierre Charalambos)</li>
+<li> Package generator for windows. Builds an setup file containing precompiled static libs and includes for windows.</li>
+
+
+<b>Documentation</b>
+<li> Updated properties tutorial to include all request_... functions</li>
+<li> Updates for build instructions</li>
+<li> Added Tutorial on deleting geometry</li>
+<li> Fixed Traits example</li>
+<li> Other minor fixes</li>
+
+</tr>
 
 <!-- --------------------------------------------------------------------- -->
 

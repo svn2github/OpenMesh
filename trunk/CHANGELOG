@@ -2,6 +2,38 @@
 
 #============================================================================================
 
+OpenMesh 2.0-RC4 ( Rev 202 ):
+* Core
+- Added function for direct access to property vectors
+- Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.
+
+* Readers/Writers
+- Fixed reading ply files with unknown properties
+- Added support for texture coordinates in ply files
+- OMFromat -> Fixed empty template parameter issue under msvc
+- OBJReader -> fixed loading multiple objs with material files
+
+
+* Build system
+- Added missing c files
+- Build shared and static version under linux (cmake)
+- Added -DBUILD_APPS=OFF cmake flag to skip building of apps (cmake)
+- Added install target (cmake)
+- Added doc target (cmake)
+- Added doc-install target (cmake)
+- Generate sonames under linux (cmake)
+- Debian build dir for building Debian packages (Thanks to Jean Pierre Charalambos)
+- Package generator for windows. Builds an setup file containing precompiled static libs and includes for windows.
+
+
+* Documentation
+- Updated properties tutorial to include all request_... functions
+- Updates for build instructions
+- Added Tutorial on deleting geometry
+- Fixed Traits example
+- Other minor fixes
+
+
 OpenMesh 2.0-RC3 ( Rev 138 ):
 
 * License
