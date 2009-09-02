@@ -117,7 +117,7 @@ if (WIN32)
   # apple Drag'n'Drop installer package
   #set (CPACK_GENERATOR "DragNDrop;TGZ")
   #set (CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/OpenFlipper/Icons/OpenFlipper_Icon.icns")
-  #endif ()
+endif ()
 
 # has to be last
 if (WIN32)
