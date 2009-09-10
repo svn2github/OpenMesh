@@ -46,12 +46,12 @@
 //== INCLUDES =================================================================
 
 #include <OpenMesh/Core/Utils/GenProg.hh>
-#include <OpenMesh/Core/Attributes/Attributes.hh>
+#include <OpenMesh/Core/Mesh/Attributes.hh>
 // --------------------
 #include <OpenMesh/Tools/Kernel_OSG/PropertyT.hh>
 #include <OpenMesh/Tools/Kernel_OSG/PropertyKernel.hh>
 // --------------------
-#include <OpenSG/OSGGeometry.h>
+#include <osg/Geometry>
 
 
 //== NAMESPACES ===============================================================

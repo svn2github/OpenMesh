@@ -58,16 +58,16 @@
 // --------------------
 #include <OpenMesh/Core/Mesh/TriMeshT.hh>
 #include <OpenMesh/Core/Mesh/Traits.hh>
-#include <OpenMesh/Core/Mesh/Kernels/ArrayKernel/ArrayKernelT.hh>
-#include <OpenMesh/Core/Mesh/Kernels/ArrayKernel/ArrayItems.hh>
-#include <OpenMesh/Core/Mesh/Kernels/Common/Handles.hh>
-#include <OpenMesh/Core/Mesh/Kernels/Common/FinalMeshItemsT.hh>
+#include <OpenMesh/Core/Mesh/ArrayKernel.hh>
+//#include <OpenMesh/Core/Mesh/ArrayItems.hh>
+#include <OpenMesh/Core/Mesh/Handles.hh>
+#include <OpenMesh/Core/Mesh/FinalMeshItemsT.hh>
 // --------------------
 #include <OpenMesh/Tools/Kernel_OSG/VectorAdapter.hh>
 #include <OpenMesh/Tools/Kernel_OSG/Traits.hh>
 #include <OpenMesh/Tools/Kernel_OSG/ArrayKernelT.hh>
 // --------------------
-#include <OpenSG/OSGGeometry.h>
+#include <osg/Geometry>
 
 
 //== NAMESPACES ===============================================================

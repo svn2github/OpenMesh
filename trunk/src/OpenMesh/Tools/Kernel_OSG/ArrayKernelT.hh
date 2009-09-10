@@ -57,7 +57,7 @@
 // --------------------
 #include <OpenMesh/Core/System/config.h>
 #include <OpenMesh/Core/Utils/GenProg.hh>
-#include <OpenMesh/Core/Mesh/Kernels/ArrayKernel/ArrayKernelT.hh>
+#include <OpenMesh/Core/Mesh/ArrayKernel.hh>
 // --------------------
 #include <OpenMesh/Tools/Kernel_OSG/AttribKernelT.hh>
 

@@ -61,7 +61,7 @@
 #include <OpenMesh/Core/Mesh/Traits.hh>
 #include <OpenMesh/Tools/Kernel_OSG/VectorAdapter.hh>
 //
-#include <OpenSG/OSGGeometry.h>
+#include <osg/Geometry>
 
 //== NAMESPACES ===============================================================
 

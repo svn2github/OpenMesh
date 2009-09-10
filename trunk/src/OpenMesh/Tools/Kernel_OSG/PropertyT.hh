@@ -45,12 +45,12 @@
 
 //== INCLUDES =================================================================
 
-#include <OpenMesh/Core/Attributes/Attributes.hh>
-#include <OpenMesh/Core/Mesh/Kernels/Common/BaseKernel.hh>
+#include <OpenMesh/Core/Mesh/Attributes.hh>
+#include <OpenMesh/Core/Mesh/BaseKernel.hh>
 #include <OpenMesh/Core/Utils/GenProg.hh>
 #include <OpenMesh/Core/Utils/Property.hh>
 //
-#include <OpenSG/OSGGeometry.h>
+#include <osg/Geometry>
 //
 #include <stdexcept>
 #include <vector>

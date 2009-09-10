@@ -46,7 +46,7 @@
 //== INCLUDES =================================================================
 
 #include <OpenMesh/Core/Utils/Property.hh>
-#include <OpenMesh/Core/Mesh/Kernels/Common/BaseKernel.hh>
+#include <OpenMesh/Core/Mesh/BaseKernel.hh>
 // --------------------
 #include <OpenMesh/Tools/Kernel_OSG/PropertyT.hh>
 

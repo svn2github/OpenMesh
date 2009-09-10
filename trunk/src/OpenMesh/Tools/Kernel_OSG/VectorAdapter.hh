@@ -47,7 +47,7 @@
 
 //== INCLUDES =================================================================
 
-#include <OpenSG/OSGGeometry.h>
+#include <osg/Geometry>
 #include <OpenMesh/Core/Utils/vector_cast.hh>
 
 //== NAMESPACES ===============================================================
