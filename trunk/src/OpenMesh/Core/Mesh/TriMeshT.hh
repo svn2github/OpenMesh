@@ -96,7 +96,7 @@ public:
   typedef PolyMeshT<Kernel>                     PolyMesh;
 
   //@{
-  /// Determine whether this is a PolyMeshT or TriMeshT
+  /// Determine whether this is a PolyMeshT or TriMeshT ( This function does not check the per face vertex count! It only checks if the datatype is PolyMeshT or TriMeshT )
   enum { IsPolyMesh = 0 };
   enum { IsTriMesh  = 1 };
   static bool is_polymesh() { return false; }
