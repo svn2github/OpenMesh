@@ -117,7 +117,11 @@ public:
 
   HalfedgeHandle handle(const Halfedge& _he) const
   {
-    uint eh(((char*)&edges_.front() - (char*)&_he) % sizeof(Edge));
+    // Calculate edge belonging to given halfedge
+    // There are two halfedges stored per edge
+    // Get memory position inside edge vector and devide by size of an edge
+    // to get the corresponding edge for the requested halfedge
+    uint eh = ( (char*)&_he - (char*)&edges_.front() ) /  sizeof(Edge)  ;
     assert((&_he == &edges_[eh].halfedges_[0]) ||
            (&_he == &edges_[eh].halfedges_[1]));
     return ((&_he == &edges_[eh].halfedges_[0]) ?
