@@ -2,10 +2,11 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC4 ( Rev 202 ):
+OpenMesh 2.0-RC4 ( Rev 211 ):
 * Core
 - Added function for direct access to property vectors
 - Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.
+- Fixed bug in handle() function when getting handle from given Halfedge (Thanks to Rob Patro)
 
 * Readers/Writers
 - Fixed reading ply files with unknown properties
@@ -32,6 +33,7 @@ OpenMesh 2.0-RC4 ( Rev 202 ):
 - Added Tutorial on deleting geometry
 - Fixed Traits example
 - Other minor fixes
+- Added tutorials as compileable source code
 
 
 OpenMesh 2.0-RC3 ( Rev 138 ):

@@ -12,6 +12,7 @@
 <ul>
 <li> Added function for direct access to property vectors</li>
 <li> Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.</li>
+<li> Fixed bug in handle() function when getting handle from given Halfedge (Thanks to Rob Patro) </li>
 </ul>
 
 <b>Readers/Writers</b>
@@ -42,6 +43,7 @@
 <li> Added Tutorial on deleting geometry</li>
 <li> Fixed Traits example</li>
 <li> Other minor fixes</li>
+<li> Added tutorials as compileable source code</li>
 </ul>
 
 </tr>
