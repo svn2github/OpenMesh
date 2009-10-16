@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC4 ( Rev 211 ):
+OpenMesh 2.0-RC4 ( Rev 213 ):
 * Core
 - Added function for direct access to property vectors
 - Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.
@@ -25,6 +25,7 @@ OpenMesh 2.0-RC4 ( Rev 211 ):
 - Generate sonames under linux (cmake)
 - Debian build dir for building Debian packages (Thanks to Jean Pierre Charalambos)
 - Package generator for windows. Builds an setup file containing precompiled static libs and includes for windows.
+- Throw warning if a min or max macro is defined under windows and suggest NOMINMAX (Thanks to Ingo Esser)
 
 
 * Documentation

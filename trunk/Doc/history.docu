@@ -34,6 +34,7 @@
 <li> Generate sonames under linux (cmake)</li>
 <li> Debian build dir for building Debian packages (Thanks to Jean Pierre Charalambos)</li>
 <li> Package generator for windows. Builds an setup file containing precompiled static libs and includes for windows.</li>
+<li> Throw warning if a min or max macro is defined under windows and suggest NOMINMAX (Thanks to Ingo Esser)</li>
 </ul>
 
 <b>Documentation</b>
