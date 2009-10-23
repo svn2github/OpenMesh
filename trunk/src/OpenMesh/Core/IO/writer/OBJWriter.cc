@@ -259,7 +259,7 @@ write(std::fstream& _out, BaseExporter& _be, Options _opt) const
     _out << "v " << v[0] <<" "<< v[1] <<" "<< v[2] << std::endl;
 
     if (_opt.check(Options::VertexNormal))
-      _out << "n " << n[0] <<" "<< n[1] <<" "<< n[2] << std::endl;
+      _out << "vn " << n[0] <<" "<< n[1] <<" "<< n[2] << std::endl;
 
     if (_opt.check(Options::VertexTexCoord))
       _out << "vt " << t[0] <<" "<< t[1] << std::endl;
@@ -299,11 +299,15 @@ write(std::fstream& _out, BaseExporter& _be, Options _opt) const
       idx = vhandles[j].idx() + 1;
       _out << " " << idx;
 
+      _out << "/" ;
+      
       if (_opt.check(Options::VertexTexCoord))
-        _out << "/" << idx;
+        _out  << idx;
+      
+      _out << "/" ;
 
       if ( _opt.check(Options::VertexNormal) )
-        _out << "/" << idx;
+        _out << idx;
     }
 
     _out << std::endl;
