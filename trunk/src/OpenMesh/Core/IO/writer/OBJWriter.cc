@@ -284,6 +284,7 @@ write(std::fstream& _out, BaseExporter& _be, Options _opt) const
         material = getMaterial(c);
       }
 
+      // if we are ina a new material block, specify in the file which material to use
       if(lastMat != material) {
         _out << "usemtl mat" << material << std::endl;
 	lastMat = material;
@@ -296,16 +297,22 @@ write(std::fstream& _out, BaseExporter& _be, Options _opt) const
 
     for (j=0; j< vhandles.size(); ++j)
     {
+      
+      // Write vertex index
       idx = vhandles[j].idx() + 1;
       _out << " " << idx;
 
+      // write separator
       _out << "/" ;
       
+      // write vertex texture coordinate index
       if (_opt.check(Options::VertexTexCoord))
         _out  << idx;
       
+      // write separator
       _out << "/" ;
 
+      // write vertex normal index
       if ( _opt.check(Options::VertexNormal) )
         _out << idx;
     }
