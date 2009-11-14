@@ -81,7 +81,8 @@ public:
 
   PropertyContainer& operator=(const PropertyContainer& _rhs)
   {
-    clear();
+    // The assignment below relies on all previous BaseProperty* elements having been deleted
+    std::for_each(properties_.begin(), properties_.end(), Delete());
     properties_ = _rhs.properties_;
     Properties::iterator p_it=properties_.begin(), p_end=properties_.end();
     for (; p_it!=p_end; ++p_it)
