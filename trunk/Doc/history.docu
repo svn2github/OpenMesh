@@ -12,7 +12,8 @@
 <ul>
 <li> Added function for direct access to property vectors</li>
 <li> Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.</li>
-<li> Fixed bug in handle() function when getting handle from given Halfedge (Thanks to Rob Patro) </li>
+<li> Fixed bug in handle() function when getting handle from given Halfedge (Reported by Rob Patro)</li>
+<li> Memory leak in assignment Operator (Reported by Meng Luan, Thanks to Ilya A. Kriveshko for the patch)</li>
 </ul>
 
 <b>Readers/Writers</b>
