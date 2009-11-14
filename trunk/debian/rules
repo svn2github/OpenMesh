@@ -2,11 +2,9 @@
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/cmake.mk
-#include /usr/share/cdbs/1/class/qmake.mk
-#include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
 # Add here any variable or target overrides you need.
-PACKAGE = libopenmesh
+PACKAGE = openmesh
 SRC_VERSION := $(shell dpkg-parsechangelog | sed -ne 's/^Version: \(\([0-9]\+\):\)\?\(.*\)-.*/\3/p')
 SVN_REVISION := $(shell echo $(SRC_VERSION) | awk -F"+" '{ print $$2 }' | sed 's/svn//' )
 TARBALL = $(PACKAGE)_$(SRC_VERSION).orig.tar.gz
@@ -16,6 +14,8 @@ get-orig-source:
 	mkdir get-orig-source
 	svn export -r $(SVN_REVISION) --username anonymous --password anonymous http://openmesh.org/svnrepo/OpenMesh/trunk/ \
 	 get-orig-source/$(PACKAGE)-$(SRC_VERSION).orig
+	# need to delete debian directory here:
+	rm -rf get-orig-source/$(PACKAGE)-$(SRC_VERSION).orig/debian
 	GZIP=--best tar czf $(TARBALL) -C get-orig-source $(PACKAGE)-$(SRC_VERSION).orig
 	rm -rf get-orig-source
 	echo "  "$(TARBALL)" created; move it to the right destination to build the package"
@@ -26,14 +26,11 @@ build/libopenmesh-doc::
 	cp -r $(DEB_BUILDDIR)/Build/share/OpenMesh/Doc/html debian/tmp/usr/share/doc/OpenMesh
 
 install/libopenmesh::
-	#dh_install -libopenmesh --autodest debian/tmp/usr/lib/OpenMesh/lib*.so.*
 	ln -sf libOpenMeshCore.so.2.0 debian/tmp/usr/lib/OpenMesh/libOpenMeshCore.so.2
 	ln -sf libOpenMeshTools.so.2.0 debian/tmp/usr/lib/OpenMesh/libOpenMeshTools.so.2
 	dh_install -plibopenmesh debian/tmp/usr/lib/OpenMesh/lib*.so.* /usr/lib/
 
 install/libopenmesh-dev::
-	#dh_install -plibopenmesh-dev --autodest debian/tmp/usr/lib/OpenMesh/lib*.so
-	#dh_install -plibopenmesh-dev debian/tmp/usr/lib/OpenMesh/lib*.prl /usr/lib/
 	dh_install -plibopenmesh-dev debian/tmp/usr/lib/OpenMesh/lib*.so /usr/lib/
 	dh_install -plibopenmesh-dev debian/tmp/usr/lib/OpenMesh/lib*.a /usr/lib/
 	dh_install -plibopenmesh-dev --autodest debian/tmp/usr/include/OpenMesh
