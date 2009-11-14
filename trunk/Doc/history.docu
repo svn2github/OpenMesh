@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC4</b> (2009/?/?)</td><td>
+<tr valign=top><td><b>2.0-RC4</b> (2009/?/?,Rev.218)</td><td>
 <b>Core</b>
 <ul>
 <li> Added function for direct access to property vectors</li>
@@ -21,6 +21,7 @@
 <li> Added support for texture coordinates in ply files</li>
 <li> OMFromat -> Fixed empty template parameter issue under msvc</li>
 <li> OBJReader -> fixed loading multiple objs with material files</li>
+<li> OBJWriter -> Fixed writing of normals, Missing / when skipping texture coordinates</li>
 </ul>
 
 <b>Build system</b>
@@ -46,6 +47,12 @@
 <li> Other minor fixes</li>
 <li> Added tutorials as compileable source code</li>
 </ul>
+
+<b>Misc</b>
+<ul>
+<li> Updated debian dir to build debs (Thanks to Jean Pierre Charalambos)</li>
+</ul>
+
 
 </tr>
 

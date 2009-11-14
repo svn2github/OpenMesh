@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC4 ( Rev 213 ):
+OpenMesh 2.0-RC4 ( Rev 218 ):
 * Core
 - Added function for direct access to property vectors
 - Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.
@@ -11,8 +11,9 @@ OpenMesh 2.0-RC4 ( Rev 213 ):
 * Readers/Writers
 - Fixed reading ply files with unknown properties
 - Added support for texture coordinates in ply files
-- OMFromat -> Fixed empty template parameter issue under msvc
-- OBJReader -> fixed loading multiple objs with material files
+- OMFromat  -> Fixed empty template parameter issue under msvc
+- OBJReader -> Fixed loading multiple objs with material files
+- OBJWriter -> Fixed writing of normals, Missing / when skipping texture coordinates
 
 
 * Build system
@@ -35,6 +36,9 @@ OpenMesh 2.0-RC4 ( Rev 213 ):
 - Fixed Traits example
 - Other minor fixes
 - Added tutorials as compileable source code
+
+* Misc
+- Updated debian dir to build debs (Thanks to Jean Pierre Charalambos)
 
 
 OpenMesh 2.0-RC3 ( Rev 138 ):
