@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -112,7 +112,7 @@ read(const std::string& _filename, BaseImporter& _bi, Options& _opt)
 {
   std::fstream in( _filename.c_str(), std::ios_base::in );
 
-  if (!in)
+  if (!in.is_open() || !in.good())
   {
     omerr() << "[OBJReader] : cannot not open file "
           << _filename
@@ -136,7 +136,6 @@ read(const std::string& _filename, BaseImporter& _bi, Options& _opt)
   in.close();
   return result;
 }
-
 
 //-----------------------------------------------------------------------------
 
@@ -264,7 +263,7 @@ read_material(std::fstream& _in)
 
 bool
 _OBJReader_::
-read(std::fstream& _in, BaseImporter& _bi, Options& _opt)
+read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 {
   omlog() << "[OBJReader] : read file\n";
 

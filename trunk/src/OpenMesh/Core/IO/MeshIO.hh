@@ -107,6 +107,23 @@ read_mesh(Mesh&               _mesh,
 }
 
 
+/** Read a mesh from file open std::istream. The file format is determined by
+    parameter _ext. _ext has to include ".[format]" in order to work properly */
+template <class Mesh>
+bool 
+read_mesh(Mesh&               _mesh, 
+	  std::istream&  _is,
+	  const std::string& _ext,
+	  Options&            _opt, 
+	  bool                _clear = true) 
+{
+  if (_clear) _mesh.clear();
+  ImporterT<Mesh> importer(_mesh);
+  return IOManager().read(_is,_ext, importer, _opt); 
+}
+
+
+
 //-----------------------------------------------------------------------------
 
 
@@ -118,6 +135,22 @@ bool write_mesh(const Mesh& _mesh, const std::string& _filename,
 { 
   ExporterT<Mesh> exporter(_mesh);
   return IOManager().write(_filename, exporter, _opt); 
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+/** Write a mesh to an open std::ostream. The file format is determined
+    by _ext. */
+template <class Mesh>
+bool write_mesh(const Mesh& _mesh, 
+		std::ostream& _os,
+		const std::string& _ext,
+                Options _opt = Options::Default) 
+{ 
+  ExporterT<Mesh> exporter(_mesh);
+  return IOManager().write(_os,_ext, exporter, _opt); 
 }
 
 

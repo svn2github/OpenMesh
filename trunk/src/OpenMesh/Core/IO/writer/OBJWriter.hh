@@ -90,6 +90,8 @@ public:
   std::string get_extensions()  const  { return "obj"; }
 
   bool write(const std::string&, BaseExporter&, Options) const;
+  
+  bool write(std::ostream&, BaseExporter&, Options) const;
 
   size_t binary_size(BaseExporter&, Options) const { return 0; }
 
@@ -105,9 +107,9 @@ private:
 
   int getMaterial(OpenMesh::Vec4f _color) const;
 
-  bool writeMaterial(std::fstream& _out, BaseExporter&, Options) const;
+  bool writeMaterial(std::ostream& _out, BaseExporter&, Options) const;
 
-  bool write(std::fstream& _out, BaseExporter&, Options) const;
+
 };
 
 

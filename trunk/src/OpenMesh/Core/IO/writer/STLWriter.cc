@@ -113,6 +113,17 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
   return false;
 }
 
+//-----------------------------------------------------------------------------
+
+
+bool
+_STLWriter_::
+write(std::ostream& _os, BaseExporter& _be, Options _opt) const
+{
+  omerr() << "[STLWriter] : STL Streams are not supported " << std::endl;
+}
+
+
 
 //-----------------------------------------------------------------------------
 

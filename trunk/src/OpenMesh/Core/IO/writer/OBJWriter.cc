@@ -149,7 +149,7 @@ int _OBJWriter_::getMaterial(OpenMesh::Vec4f _color) const
 
 bool
 _OBJWriter_::
-writeMaterial(std::fstream& _out, BaseExporter& _be, Options _opt) const
+writeMaterial(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
   OpenMesh::Vec3f c;
   OpenMesh::Vec4f cA;
@@ -196,7 +196,7 @@ writeMaterial(std::fstream& _out, BaseExporter& _be, Options _opt) const
 
 bool
 _OBJWriter_::
-write(std::fstream& _out, BaseExporter& _be, Options _opt) const
+write(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
   unsigned int i, j, nV, nF, idx;
   Vec3f v, n;

@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -76,17 +76,17 @@ _STLReader_&  STLReader() { return __STLReaderInstance; }
 
 
 _STLReader_::
-_STLReader_() 
+_STLReader_()
   : eps_(FLT_MIN)
 {
-  IOManager().register_module(this); 
+  IOManager().register_module(this);
 }
 
 
 //-----------------------------------------------------------------------------
 
 
-bool 
+bool
 _STLReader_::
 read(const std::string& _filename, BaseImporter& _bi, Options& _opt)
 {
@@ -118,15 +118,15 @@ read(const std::string& _filename, BaseImporter& _bi, Options& _opt)
       _opt -= Options::Binary;
       break;
     }
-    
+
     case STLB:
     {
       result = read_stlb(_filename, _bi);
       _opt += Options::Binary;
       break;
     }
-    
-    default: 
+
+    default:
     {
       result = false;
       break;
@@ -135,6 +135,17 @@ read(const std::string& _filename, BaseImporter& _bi, Options& _opt)
 
 
   return result;
+}
+
+bool
+_STLReader_::read(std::istream& _is,
+		 BaseImporter& _bi,
+		 Options& _opt)
+{
+
+    omerr() << "[OMReader] : STL Streams are not supported " << std::endl;
+
+  return false;
 }
 
 
@@ -151,9 +162,9 @@ public:
 
   bool operator()( const Vec3f& _v0, const Vec3f& _v1 ) const
   {
-    if (fabs(_v0[0] - _v1[0]) <= eps_) 
+    if (fabs(_v0[0] - _v1[0]) <= eps_)
     {
-      if (fabs(_v0[1] - _v1[1]) <= eps_) 
+      if (fabs(_v0[1] - _v1[1]) <= eps_)
       {
 	return (_v0[2] < _v1[2] - eps_);
       }
@@ -172,17 +183,16 @@ private:
 //-----------------------------------------------------------------------------
 
 
-bool 
+bool
 _STLReader_::
 read_stla(const std::string& _filename, BaseImporter& _bi) const
 {
   omlog() << "[STLReader] : read ascii file\n";
 
-
   FILE*  in = fopen(_filename.c_str(), "r");
   if (!in)
   {
-    omerr() << "[STLReader] : cannot not open file " 
+    omerr() << "[STLReader] : cannot not open file "
 	  << _filename
 	  << std::endl;
     return false;
@@ -200,15 +210,15 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
   std::map<Vec3f, VertexHandle, CmpVec>            vMap(comp);
   std::map<Vec3f, VertexHandle, CmpVec>::iterator  vMapIt;
 
-  
+
   while (in && !feof(in) && fgets(line, 100, in))
   {
     for (p=line; isspace(*p) && *p!='\0'; ++p) {}; // skip white-space
 
     if ((strncmp(p, "outer", 5) == 0) || (strncmp(p, "OUTER", 5) == 0))
-    { 
+    {
       vhandles.clear();
-      
+
       for (i=0; i<3; ++i)
       {
  	fgets(line, 100, in);
@@ -223,7 +233,7 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
 	  vhandles.push_back(VertexHandle(cur_idx));
 	  vMap[v] = VertexHandle(cur_idx++);
 	}
-	else 
+	else
 	  // Yes : get index from map
 	  vhandles.push_back(vMapIt->second);
       }
@@ -248,17 +258,16 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
 //-----------------------------------------------------------------------------
 
 
-bool 
+bool
 _STLReader_::
 read_stlb(const std::string& _filename, BaseImporter& _bi) const
 {
   omlog() << "[STLReader] : read binary file\n";
 
-
   FILE*  in = fopen(_filename.c_str(), "rb");
   if (!in)
   {
-    omerr() << "[STLReader] : cannot not open file " 
+    omerr() << "[STLReader] : cannot not open file "
 	  << _filename
 	  << std::endl;
     return false;
@@ -275,7 +284,7 @@ read_stlb(const std::string& _filename, BaseImporter& _bi) const
   std::map<Vec3f, VertexHandle, CmpVec>  vMap;
   std::map<Vec3f, VertexHandle, CmpVec>::iterator vMapIt;
 
- 
+
   // check size of types
   if ((sizeof(float) != 4) || (sizeof(int) != 4)) {
     omerr() << "[STLReader] : wrong type size\n";
@@ -286,11 +295,11 @@ read_stlb(const std::string& _filename, BaseImporter& _bi) const
   union { unsigned int i; unsigned char c[4]; } endian_test;
   endian_test.i = 1;
   swapFlag = (endian_test.c[3] == 1);
-    
+
   // read number of triangles
   fread(dummy, 1, 80, in);
   nT = read_int(in, swapFlag);
-        
+
   // read triangles
   while (nT)
   {
@@ -314,18 +323,18 @@ read_stlb(const std::string& _filename, BaseImporter& _bi) const
 	vhandles.push_back(VertexHandle(cur_idx));
 	vMap[v] = VertexHandle(cur_idx++);
       }
-      else 
+      else
 	// Yes : get index from map
 	vhandles.push_back(vMapIt->second);
     }
-    
+
 
     // Add face only if it is not degenerated
     if ((vhandles[0] != vhandles[1]) &&
 	(vhandles[0] != vhandles[2]) &&
 	(vhandles[1] != vhandles[2]))
       _bi.add_face(vhandles);
-    
+
     fread(dummy, 1, 2, in);
     --nT;
   }
@@ -355,7 +364,7 @@ check_stl_type(const std::string& _filename) const
   endian_test.i = 1;
   bool swapFlag = (endian_test.c[3] == 1);
 
-    
+
   // read number of triangles
   char dummy[100];
   fread(dummy, 1, 80, in);

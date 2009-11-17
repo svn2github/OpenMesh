@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -86,10 +86,10 @@ public:
 
   /// Destructor
   virtual ~BaseWriter() {};
-   
+
   /// Return short description of the supported file format.
   virtual std::string get_description() const = 0;
-  
+
   /// Return file format's extension.
   virtual std::string get_extensions() const = 0;
 
@@ -97,9 +97,14 @@ public:
   virtual bool can_u_write(const std::string& _filename) const;
 
   /// Write to file _filename. Data source specified by BaseExporter _be.
-  virtual bool write(const std::string& _filename, 
+  virtual bool write(const std::string& _filename,
 		     BaseExporter& _be,
-                     Options _opt) const = 0;
+             Options _opt) const = 0;
+
+  /// Write to std::ostream  _os. Data source specified by BaseExporter _be.
+  virtual bool write(std::ostream& _os,
+		     BaseExporter& _be,
+             Options _opt) const = 0;
 
   /// Returns expected size of file if binary format is supported else 0.
   virtual size_t binary_size(BaseExporter&, Options) const { return 0; }

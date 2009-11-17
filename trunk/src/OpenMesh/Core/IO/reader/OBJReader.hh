@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -93,6 +93,10 @@ public:
   bool read(const std::string& _filename,
 	    BaseImporter& _bi,
 	    Options& _opt);
+
+  bool read(std::istream& _in,
+          BaseImporter& _bi,
+          Options& _opt);
 
 private:
 
@@ -162,8 +166,6 @@ private:
   bool read_material( std::fstream& _in );
 
 private:
-
-  bool read(std::fstream& _in, BaseImporter& _bi, Options& _opt);
 
   std::string path_;
 

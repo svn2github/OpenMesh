@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -83,8 +83,8 @@ class BaseImporter;
 //== IMPLEMENTATION ===========================================================
 
 
-/** 
-    Implementation of the OFF format reader. This class is singleton'ed by 
+/**
+    Implementation of the OFF format reader. This class is singleton'ed by
     SingletonT to OFFReader.
 
     By passing Options to the read function you can manipulate the reading behavoir.
@@ -123,29 +123,28 @@ public:
   std::string get_description() const { return "Object File Format"; }
   std::string get_extensions()  const { return "off"; }
   std::string get_magic()       const { return "OFF"; }
-   
-  bool read(const std::string& _filename, 
-	    BaseImporter& _bi, 
+
+  bool read(const std::string& _filename,
+	    BaseImporter& _bi,
 	    Options& _opt);
 
   bool can_u_read(const std::string& _filename) const;
 
-
+  bool read(std::istream& _in, BaseImporter& _bi, Options& _opt );
 
 private:
 
   bool can_u_read(std::istream& _is) const;
 
-  bool read(std::fstream& _in, BaseImporter& _bi, Options& _opt ) const;
-  bool read_ascii(std::fstream& _in, BaseImporter& _bi) const;
-  bool read_binary(std::fstream& _in, BaseImporter& _bi, bool swap) const;
-   
-  void readValue(std::fstream& _in, float& _value) const;
-  void readValue(std::fstream& _in, int& _value) const;
-  void readValue(std::fstream& _in, unsigned int& _value) const;
+  bool read_ascii(std::istream& _in, BaseImporter& _bi) const;
+  bool read_binary(std::istream& _in, BaseImporter& _bi, bool swap) const;
+
+  void readValue(std::istream& _in, float& _value) const;
+  void readValue(std::istream& _in, int& _value) const;
+  void readValue(std::istream& _in, unsigned int& _value) const;
 
   int getColorType(std::string & _line, bool _texCoordsAvailable) const;
-  
+
   //available options for reading
   mutable Options options_;
   //options that the user wants to read

@@ -103,6 +103,10 @@ public:
 	    BaseImporter& _bi,
 	    Options& _opt);
 
+  bool read(std::istream& _is,
+		    BaseImporter& _bi,
+		    Options& _opt);
+
   bool can_u_read(const std::string& _filename) const;
 
   enum ValueType {
@@ -116,15 +120,14 @@ private:
 
   bool can_u_read(std::istream& _is) const;
 
-  bool read(std::fstream& _in, BaseImporter& _bi, Options& _opt ) const;
-  bool read_ascii(std::fstream& _in, BaseImporter& _bi) const;
-  bool read_binary(std::fstream& _in, BaseImporter& _bi, bool swap) const;
+  bool read_ascii(std::istream& _in, BaseImporter& _bi) const;
+  bool read_binary(std::istream& _in, BaseImporter& _bi, bool swap) const;
 
   float readToFloatValue(ValueType _type , std::fstream& _in) const;
 
-  void readValue(ValueType _type , std::fstream& _in, float& _value) const;
-  void readValue(ValueType _type , std::fstream& _in, unsigned int& _value) const;
-  void readValue(ValueType _type , std::fstream& _in, int& _value) const;
+  void readValue(ValueType _type , std::istream& _in, float& _value) const;
+  void readValue(ValueType _type , std::istream& _in, unsigned int& _value) const;
+  void readValue(ValueType _type , std::istream& _in, int& _value) const;
 
   //available options for reading
   mutable Options options_;

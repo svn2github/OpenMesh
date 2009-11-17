@@ -97,6 +97,8 @@ public:
 
   bool write(const std::string&, BaseExporter&, Options) const;
 
+  bool write(std::ostream&, BaseExporter&, Options) const;
+  
   size_t binary_size(BaseExporter& _be, Options _opt) const;
 
   enum ValueType {
@@ -110,12 +112,12 @@ private:
   mutable Options options_;
 
 protected:
-  void writeValue(ValueType _type, std::fstream& _out, int value) const;
-  void writeValue(ValueType _type, std::fstream& _out, unsigned int value) const;
-  void writeValue(ValueType _type, std::fstream& _out, float value) const;
+  void writeValue(ValueType _type, std::ostream& _out, int value) const;
+  void writeValue(ValueType _type, std::ostream& _out, unsigned int value) const;
+  void writeValue(ValueType _type, std::ostream& _out, float value) const;
 
-  bool write_ascii(std::fstream& _in, BaseExporter&, Options) const;
-  bool write_binary(std::fstream& _in, BaseExporter&, Options) const;
+  bool write_ascii(std::ostream& _in, BaseExporter&, Options) const;
+  bool write_binary(std::ostream& _in, BaseExporter&, Options) const;
 };
 
 

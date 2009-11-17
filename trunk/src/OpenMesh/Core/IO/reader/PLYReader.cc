@@ -87,10 +87,11 @@ _PLYReader_::_PLYReader_() {
 
 
 bool _PLYReader_::read(const std::string& _filename, BaseImporter& _bi, Options& _opt) {
+
 	std::fstream in(_filename.c_str(), (options_.is_binary() ? std::ios_base::binary | std::ios_base::in
 			: std::ios_base::in));
 
-	if (!in) {
+	if (!in.is_open() || !in.good()) {
 		omerr() << "[PLYReader] : cannot not open file " << _filename << std::endl;
 		return false;
 	}
@@ -104,7 +105,13 @@ bool _PLYReader_::read(const std::string& _filename, BaseImporter& _bi, Options&
 //-----------------------------------------------------------------------------
 
 
-bool _PLYReader_::read(std::fstream& _in, BaseImporter& _bi, Options& _opt) const {
+bool _PLYReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt) {
+
+    if (!_in.good()) {
+        omerr() << "[PLYReader] : cannot not use stream" << std::endl;
+        return false;
+    }
+
 	// filter relevant options for reading
 	bool swap = _opt.check(Options::Swap);
 
@@ -137,9 +144,11 @@ bool _PLYReader_::read(std::fstream& _in, BaseImporter& _bi, Options& _opt) cons
 
 }
 
+
+
 //-----------------------------------------------------------------------------
 
-bool _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const {
+bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
 
 	omlog() << "[PLYReader] : read ascii file\n";
 
@@ -269,7 +278,7 @@ bool _PLYReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const {
 
 //-----------------------------------------------------------------------------
 
-bool _PLYReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) const {
+bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) const {
 
 	omlog() << "[PLYReader] : read binary file format\n";
 
@@ -394,7 +403,7 @@ bool _PLYReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap
 //-----------------------------------------------------------------------------
 
 
-void _PLYReader_::readValue(ValueType _type, std::fstream& _in, float& _value) const {
+void _PLYReader_::readValue(ValueType _type, std::istream& _in, float& _value) const {
 
 	switch (_type) {
 	case ValueTypeFLOAT32:
@@ -410,7 +419,7 @@ void _PLYReader_::readValue(ValueType _type, std::fstream& _in, float& _value) c
 	}
 }
 
-void _PLYReader_::readValue(ValueType _type, std::fstream& _in, unsigned int& _value) const {
+void _PLYReader_::readValue(ValueType _type, std::istream& _in, unsigned int& _value) const {
 
 	int32_t tmp_int32_t;
 	uint8_t tmp_uchar;
@@ -432,7 +441,7 @@ void _PLYReader_::readValue(ValueType _type, std::fstream& _in, unsigned int& _v
 	}
 }
 
-void _PLYReader_::readValue(ValueType _type, std::fstream& _in, int& _value) const {
+void _PLYReader_::readValue(ValueType _type, std::istream& _in, int& _value) const {
 
 	int32_t tmp_int32_t;
 	uint8_t tmp_uchar;

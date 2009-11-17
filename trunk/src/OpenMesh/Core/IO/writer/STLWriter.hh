@@ -95,6 +95,8 @@ public:
   
   bool write(const std::string&, BaseExporter&, Options) const;
   
+  bool write(std::ostream&, BaseExporter&, Options) const;
+  
   size_t binary_size(BaseExporter&, Options) const;
 
 private:

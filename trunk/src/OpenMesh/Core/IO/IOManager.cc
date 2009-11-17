@@ -102,6 +102,31 @@ read(const std::string& _filename, BaseImporter& _bi, Options& _opt)
 //-----------------------------------------------------------------------------
 
 
+bool 
+_IOManager_::
+read(std::istream& _is, const std::string& _ext, BaseImporter& _bi, Options& _opt)
+{      
+  std::set<BaseReader*>::const_iterator it     =  reader_modules_.begin();
+  std::set<BaseReader*>::const_iterator it_end =  reader_modules_.end();
+    
+  // Try all registered modules
+  for(; it != it_end; ++it)
+    if ((*it)->BaseReader::can_u_read(_ext))  //Use the extension check only (no file existence)
+    {
+      _bi.prepare();
+      bool ok = (*it)->read(_is, _bi, _opt);
+      _bi.finish();
+      return ok;
+    }
+  
+  // All modules failed to read
+  return false;
+}
+
+
+//-----------------------------------------------------------------------------
+
+
 bool
 _IOManager_::
 write(const std::string& _filename, BaseExporter& _be, Options _opt)
@@ -128,6 +153,34 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt)
   return false;
 }
 
+//-----------------------------------------------------------------------------
+
+
+bool
+_IOManager_::
+write(std::ostream& _os,const std::string &_ext, BaseExporter& _be, Options _opt)
+{
+  std::set<BaseWriter*>::const_iterator it     = writer_modules_.begin();
+  std::set<BaseWriter*>::const_iterator it_end = writer_modules_.end();
+  
+  if ( it == it_end )
+  {
+    omerr() << "[OpenMesh::IO::_IOManager_] No writing modules available!\n";
+    return false;
+  }
+
+  // Try all registered modules
+  for(; it != it_end; ++it)
+  {
+    if ((*it)->BaseWriter::can_u_write(_ext)) //Restrict test to the extension check
+    {
+      return (*it)->write(_os, _be, _opt); 
+    }
+  }
+  
+  // All modules failed to save
+  return false;
+}
 
 //-----------------------------------------------------------------------------
 

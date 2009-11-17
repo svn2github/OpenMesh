@@ -121,13 +121,56 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
   return result;
 }
 
+//-----------------------------------------------------------------------------
+
+
+bool
+_OFFWriter_::
+write(std::ostream& _os, BaseExporter& _be, Options _opt) const
+{
+  // check exporter features
+  if ( !check( _be, _opt ) )
+    return false;
+
+
+  // check writer features
+  if ( _opt.check(Options::FaceNormal) ) // not supported by format
+    return false;
+     
+  
+  if (!_os.good())
+  {
+    omerr() << "[OFFWriter] : cannot write to stream "
+	  << std::endl;
+    return false;
+  }
+
+
+  // write header line
+  if (_opt.check(Options::VertexTexCoord)) _os << "ST";
+  if (_opt.check(Options::VertexColor) || _opt.check(Options::FaceColor))    _os << "C";
+  if (_opt.check(Options::VertexNormal))   _os << "N";
+  _os << "OFF";
+  if (_opt.check(Options::Binary)) _os << " BINARY";
+  _os << "\n";
+
+
+  // write to file
+  bool result = (_opt.check(Options::Binary) ?
+		 write_binary(_os, _be, _opt) :
+		 write_ascii(_os, _be, _opt));
+
+
+  // return result
+  return result;
+}
 
 //-----------------------------------------------------------------------------
 
 
 bool
 _OFFWriter_::
-write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
+write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
   omlog() << "[OFFWriter] : write ascii file\n";
 
@@ -244,19 +287,19 @@ write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
 
 //-----------------------------------------------------------------------------
 
-void _OFFWriter_::writeValue(std::fstream& _out, int value) const {
+void _OFFWriter_::writeValue(std::ostream& _out, int value) const {
 
   uint32_t tmp = value;
   store(_out, tmp, false);
 }
 
-void _OFFWriter_::writeValue(std::fstream& _out, unsigned int value) const {
+void _OFFWriter_::writeValue(std::ostream& _out, unsigned int value) const {
 
   uint32_t tmp = value;
   store(_out, tmp, false);
 }
 
-void _OFFWriter_::writeValue(std::fstream& _out, float value) const {
+void _OFFWriter_::writeValue(std::ostream& _out, float value) const {
 
   float32_t tmp = value;
   store(_out, tmp, false);
@@ -264,7 +307,7 @@ void _OFFWriter_::writeValue(std::fstream& _out, float value) const {
 
 bool 
 _OFFWriter_::
-write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
+write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
   omlog() << "[OFFWriter] : write ascii file\n";
 

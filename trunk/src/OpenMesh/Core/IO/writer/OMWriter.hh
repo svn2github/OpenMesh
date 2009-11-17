@@ -103,6 +103,7 @@ public:
   { return "om"; }
 
   bool write(std::ostream&, BaseExporter&, Options) const;
+  
 
 
   size_t binary_size(BaseExporter& _be, Options _opt) const;
@@ -116,6 +117,7 @@ protected:
   bool write(const std::string&, BaseExporter&, Options) const;
 
   bool write_binary(std::ostream&, BaseExporter&, Options) const;
+ 
 
   size_t store_binary_custom_chunk( std::ostream&, const BaseProperty&,
 				    OMFormat::Chunk::Entity, bool) const;

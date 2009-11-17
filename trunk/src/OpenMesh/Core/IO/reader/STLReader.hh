@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -79,8 +79,8 @@ class BaseImporter;
 //== IMPLEMENTATION ===========================================================
 
 
-/** 
-    Implementation of the STL format reader. This class is singleton'ed by 
+/**
+    Implementation of the STL format reader. This class is singleton'ed by
     SingletonT to STLReader.
 */
 class _STLReader_ : public BaseReader
@@ -94,14 +94,17 @@ public:
   virtual ~_STLReader_() {};
 
 
-  std::string get_description() const 
+  std::string get_description() const
   { return "Stereolithography Interface Format"; }
   std::string get_extensions() const { return "stl stla stlb"; }
 
-  bool read(const std::string& _filename, 
+  bool read(const std::string& _filename,
 	    BaseImporter& _bi,
             Options& _opt);
 
+  bool read(std::istream& _in,
+		    BaseImporter& _bi,
+            Options& _opt);
 
   /** Set the threshold to be used for considering two point to be equal.
       Can be used to merge small gaps */
@@ -111,7 +114,7 @@ public:
   float epsilon() const { return eps_; }
 
 
-  
+
 private:
 
   enum STL_Type { STLA, STLB, NONE };

@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -57,6 +57,8 @@
 #include <OpenMesh/Core/IO/SR_store.hh>
 
 //STL
+#include <iostream>
+#include <ios>
 #include <fstream>
 #include <memory>
 
@@ -84,48 +86,55 @@ _OFFReader_&  OFFReader() { return __OFFReaderInstance; }
 
 
 
-_OFFReader_::_OFFReader_() 
-{ 
-  IOManager().register_module(this); 
+_OFFReader_::_OFFReader_()
+{
+  IOManager().register_module(this);
 }
 
 
 //-----------------------------------------------------------------------------
 
 
-bool 
-_OFFReader_::read(const std::string& _filename, BaseImporter& _bi, 
+bool
+_OFFReader_::read(const std::string& _filename, BaseImporter& _bi,
                   Options& _opt)
 {
-  std::fstream in(_filename.c_str(), (options_.is_binary() ? std::ios_base::binary | std::ios_base::in
-                                                           : std::ios_base::in) );
+  std::ifstream ifile(_filename.c_str(), (options_.is_binary() ? std::ios::binary | std::ios::in
+                                                           : std::ios::in) );
 
-  if (!in)
+  if (!ifile.is_open() || !ifile.good())
   {
-    omerr() << "[OFFReader] : cannot not open file " 
+    omerr() << "[OFFReader] : cannot not open file "
 	  << _filename
 	  << std::endl;
+
     return false;
   }
 
+  assert(ifile);
 
-  bool result = read(in, _bi, _opt);
+  bool result = read(ifile, _bi, _opt);
 
-
-  in.close();
+  ifile.close();
   return result;
 }
-
 
 //-----------------------------------------------------------------------------
 
 
-bool 
-_OFFReader_::read(std::fstream& _in, BaseImporter& _bi, Options& _opt ) const
+bool
+_OFFReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt )
 {
+   if (!_in.good())
+   {
+     omerr() << "[OMReader] : cannot not use stream "
+       << std::endl;
+     return false;
+   }
+
    // filter relevant options for reading
    bool swap = _opt.check( Options::Swap );
-  
+
 
    userOptions_ = _opt;
 
@@ -152,13 +161,13 @@ _OFFReader_::read(std::fstream& _in, BaseImporter& _bi, Options& _opt ) const
 
 //-----------------------------------------------------------------------------
 
-bool 
-_OFFReader_::read_ascii(std::fstream& _in, BaseImporter& _bi) const
+bool
+_OFFReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const
 {
 
 
 omlog() << "[OFFReader] : read ascii file\n";
-   
+
   unsigned int            i, j, k, l, idx;
   unsigned int            nV, nF, dummy;
   OpenMesh::Vec3f         v, n;
@@ -186,9 +195,9 @@ omlog() << "[OFFReader] : read ascii file\n";
   {
     // Always read VERTEX
     _in >> v[0]; _in >> v[1]; _in >> v[2];
-    
+
     vh = _bi.add_vertex(v);
-    
+
     //perhaps read NORMAL
     if ( options_.vertex_has_normal() ){
 
@@ -236,7 +245,7 @@ omlog() << "[OFFReader] : read ascii file\n";
               _bi.set_color( vh, color_cast<Vec4uc, Vec4f>(c4f) );
             break;
 
-        default: 
+        default:
             std::cerr << "Error in file format (colorType = " << colorType << ")\n";
       }
     }
@@ -266,7 +275,7 @@ omlog() << "[OFFReader] : read ascii file\n";
       vhandles[1] = VertexHandle(k);
       vhandles[2] = VertexHandle(l);
     }
-    else 
+    else
     {
       vhandles.clear();
       for (j=0; j<nV; ++j)
@@ -275,7 +284,7 @@ omlog() << "[OFFReader] : read ascii file\n";
          vhandles.push_back(VertexHandle(idx));
       }
     }
-    
+
     FaceHandle fh = _bi.add_face(vhandles);
 
     //perhaps read face COLOR
@@ -287,7 +296,7 @@ omlog() << "[OFFReader] : read ascii file\n";
 
       int colorType = getColorType(line, false );
 
-      std::stringstream stream( line );      
+      std::stringstream stream( line );
 
       std::string trash;
 
@@ -316,7 +325,7 @@ omlog() << "[OFFReader] : read ascii file\n";
               _bi.set_color( fh, color_cast<Vec4uc, Vec4f>(c4f) );
             break;
 
-        default: 
+        default:
             std::cerr << "Error in file format (colorType = " << colorType << ")\n";
       }
     }
@@ -369,7 +378,7 @@ int _OFFReader_::getColorType(std::string& _line, bool _texCoordsAvailable) cons
       //get first item
       found = _line.find(" ");
       std::string c1 = _line.substr (0,found);
-  
+
       if (c1.find(".") != std::string::npos){
         if (count == 3)
           count = 5;
@@ -380,32 +389,32 @@ int _OFFReader_::getColorType(std::string& _line, bool _texCoordsAvailable) cons
   return count;
 }
 
-void _OFFReader_::readValue(std::fstream& _in, float& _value) const{
+void _OFFReader_::readValue(std::istream& _in, float& _value) const{
   float32_t tmp;
 
   restore( _in , tmp, false ); //assuming LSB byte order
   _value = tmp;
 }
 
-void _OFFReader_::readValue(std::fstream& _in, int& _value) const{
+void _OFFReader_::readValue(std::istream& _in, int& _value) const{
   uint32_t tmp;
 
   restore( _in , tmp, false ); //assuming LSB byte order
   _value = tmp;
 }
 
-void _OFFReader_::readValue(std::fstream& _in, unsigned int& _value) const{
+void _OFFReader_::readValue(std::istream& _in, unsigned int& _value) const{
   uint32_t tmp;
 
   restore( _in , tmp, false ); //assuming LSB byte order
   _value = tmp;
 }
 
-bool 
-_OFFReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) const
+bool
+_OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) const
 {
   omlog() << "[OFFReader] : read binary file\n";
-   
+
   unsigned int            i, j, k, l, idx;
   unsigned int            nV, nF, dummy;
   OpenMesh::Vec3f         v, n;
@@ -426,16 +435,16 @@ _OFFReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
 
   _bi.reserve(nV, 3*nV, nF);
 
-  // read vertices: coord [hcoord] [normal] [color] [texcoord] 
+  // read vertices: coord [hcoord] [normal] [color] [texcoord]
   for (i=0; i<nV && !_in.eof(); ++i)
   {
     // Always read Vertex
     readValue(_in, v[0]);
     readValue(_in, v[1]);
     readValue(_in, v[2]);
-    
+
     vh = _bi.add_vertex(v);
-    
+
     if ( options_.vertex_has_normal() ) {
       readValue(_in, n[0]);
       readValue(_in, n[1]);
@@ -444,7 +453,7 @@ _OFFReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
       if ( userOptions_.vertex_has_normal() )
         _bi.set_normal(vh, n);
     }
-    
+
     if ( options_.vertex_has_color() ) {
       //with alpha
       if ( options_.color_has_alpha() ){
@@ -465,7 +474,7 @@ _OFFReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
           _bi.set_color( vh, Vec3uc( c ) );
       }
     }
-    
+
     if ( options_.vertex_has_texcoord()) {
       readValue(_in, t[0]);
       readValue(_in, t[1]);
@@ -474,7 +483,7 @@ _OFFReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
         _bi.set_texcoord(vh, t);
     }
   }
-  
+
   // faces
   // #N <v1> <v2> .. <v(n-1)> [color spec]
   // So far color spec is unsupported!
@@ -494,7 +503,7 @@ _OFFReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
       vhandles[1] = VertexHandle(k);
       vhandles[2] = VertexHandle(l);
     }
-    else 
+    else
     {
       vhandles.clear();
       for (j=0; j<nV; ++j)
@@ -503,7 +512,7 @@ _OFFReader_::read_binary(std::fstream& _in, BaseImporter& _bi, bool /*_swap*/) c
          vhandles.push_back(VertexHandle(idx));
       }
     }
-    
+
     FaceHandle fh = _bi.add_face(vhandles);
 
     //face color
@@ -550,7 +559,7 @@ bool _OFFReader_::can_u_read(const std::string& _filename) const
     {
       ifs.close();
       return true;
-    }      
+    }
   }
   return false;
 }
@@ -558,7 +567,7 @@ bool _OFFReader_::can_u_read(const std::string& _filename) const
 
 //-----------------------------------------------------------------------------
 
-  
+
 bool _OFFReader_::can_u_read(std::istream& _is) const
 {
   options_.cleanup();
@@ -589,7 +598,7 @@ bool _OFFReader_::can_u_read(std::istream& _is) const
 
   if ( ( remainingChars > 0 ) && ( p[0] == 'n') )
   { vertexDimensionTooHigh = true; ++p; --remainingChars; }
-  
+
   if ( ( remainingChars < 3 ) || (!(p[0] == 'O' && p[1] == 'F' && p[2] == 'F')  ) )
     return false;
 

@@ -118,6 +118,16 @@ public:
 	    BaseImporter& _bi, 
 	    Options& _opt);
 
+/**
+     Read a mesh from open std::istream _is. The target data structure is specified
+     by the given BaseImporter. The \c sread method consecutively queries all
+     of its reader modules. True is returned upon success, false if all 
+     reader modules failed to use _is.
+  */
+  bool read(std::istream& _filename,
+	    const std::string& _ext,
+	    BaseImporter& _bi, 
+	    Options& _opt);
 
 
   /** Write a mesh to file _filename. The source data structure is specified
@@ -129,7 +139,17 @@ public:
   bool write(const std::string& _filename, 
 	     BaseExporter& _be,
 	     Options _opt=Options::Default);
-
+	     
+/** Write a mesh to open std::ostream _os. The source data structure is specified
+      by the given BaseExporter. The \c save method consecutively queries all
+      of its writer modules. True is returned upon success, false if all 
+      writer modules failed to write the requested format.
+      Options is determined by _filename's extension.
+  */
+  bool write(std::ostream& _filename, 
+	     const std::string& _ext,
+	     BaseExporter& _be,
+	     Options _opt=Options::Default);
    
 
   /// Returns true if the format is supported by one of the reader modules.

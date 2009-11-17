@@ -95,6 +95,11 @@ public:
 	    BaseImporter& _bi, 
 	    Options& _opt );
 
+//!  Stream Reader for std::istream input in binary format
+  bool read(std::istream& _is, 
+	    BaseImporter& _bi, 
+	    Options& _opt );
+	    
   virtual bool can_u_read(const std::string& _filename) const;
   virtual bool can_u_read(std::istream& _is) const;
 
@@ -103,7 +108,6 @@ private:
 
   bool supports( const OMFormat::uint8 version ) const;
 
-  bool read(std::istream& _is, BaseImporter& _bi, Options& _opt ) const;
   bool read_ascii(std::istream& _is, BaseImporter& _bi, Options& _opt) const;
   bool read_binary(std::istream& _is, BaseImporter& _bi, Options& _opt) const;
 

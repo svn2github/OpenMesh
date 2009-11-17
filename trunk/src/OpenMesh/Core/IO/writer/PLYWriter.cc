@@ -112,13 +112,47 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
   return result;
 }
 
+//-----------------------------------------------------------------------------
+
+
+bool
+_PLYWriter_::
+write(std::ostream& _os, BaseExporter& _be, Options _opt) const
+{
+  // check exporter features
+  if ( !check( _be, _opt ) )
+    return false;
+
+
+  // check writer features
+  if ( _opt.check(Options::FaceNormal) || _opt.check(Options::FaceColor) ) // not supported yet
+    return false;
+
+  options_ = _opt;
+
+                                                        
+  if (!_os.good())
+  {
+    omerr() << "[PLYWriter] : cannot write to stream "
+    << std::endl;
+    return false;
+  }
+
+  // write to file
+  bool result = (_opt.check(Options::Binary) ?
+     write_binary(_os, _be, _opt) :
+     write_ascii(_os, _be, _opt));
+
+  return result;
+}
+
 
 //-----------------------------------------------------------------------------
 
 
 bool
 _PLYWriter_::
-write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
+write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
   omlog() << "[PLYWriter] : write ascii file\n";
 
@@ -248,7 +282,7 @@ write_ascii(std::fstream& _out, BaseExporter& _be, Options _opt) const
 
 //-----------------------------------------------------------------------------
 
-void _PLYWriter_::writeValue(ValueType _type, std::fstream& _out, int value) const {
+void _PLYWriter_::writeValue(ValueType _type, std::ostream& _out, int value) const {
 
   uint32_t tmp32;
   uint8_t tmp8;
@@ -270,7 +304,7 @@ default :
   }
 }
 
-void _PLYWriter_::writeValue(ValueType _type, std::fstream& _out, unsigned int value) const {
+void _PLYWriter_::writeValue(ValueType _type, std::ostream& _out, unsigned int value) const {
 
   uint32_t tmp32;
   uint8_t tmp8;
@@ -292,7 +326,7 @@ default :
   }
 }
 
-void _PLYWriter_::writeValue(ValueType _type, std::fstream& _out, float value) const {
+void _PLYWriter_::writeValue(ValueType _type, std::ostream& _out, float value) const {
 
   float32_t tmp;
 
@@ -310,7 +344,7 @@ void _PLYWriter_::writeValue(ValueType _type, std::fstream& _out, float value) c
 
 bool
 _PLYWriter_::
-write_binary(std::fstream& _out, BaseExporter& _be, Options _opt) const
+write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
   omlog() << "[PLYWriter] : write binary file\n";
 
