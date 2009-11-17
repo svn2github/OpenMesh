@@ -1,10 +1,46 @@
 /** \mainpage OpenMesh Documentation
 
+Welcome to the %OpenMesh documentation. %OpenMesh is a generic and efficient library
+that offers data structures for representing and manipulating polygonal meshes.
+Here you can find information on how to build projects using the %OpenMesh library
+as well as further information on mesh handling and based on %OpenMesh.
+The tutorials explain how to use %OpenMesh by demonstrating real code examples.
+
+\section iov Introduction
+In this section all necessary information on how to build projects using %OpenMesh
+is given. Additionally you can read about the internal naming conventions
+to facilitate understanding the %OpenMesh source code. Changes to %OpenMesh are
+logged in the Version history.
+
 \li \ref compiling
 \li \ref naming_conventions
-\li \ref tutorial
 \li \ref history
-\li \ref mesh_docu
+
+\section mesh_docu Using and understanding OpenMesh
+We provided a short overview over the functionality of the %OpenMesh
+library and some additional concepts in \ref tutorial, and
+will now explain the most important topics of %OpenMesh in more
+detail.
+
+\li \ref mesh_first_to_read
+\li \ref mesh_features
+\li \ref mesh_cpp
+\li \ref mesh_hds
+\li \ref mesh_iterators
+\li \ref mesh_io
+\li \ref mesh_type
+\li \ref mesh_hierarchy
+\li \ref mesh_members
+
+The %OpenMeshTools library that contains some useful tools
+for i.e. mesh processing:
+
 \li \ref tools_docu
+
+\section tov Tutorials
+This section offers some useful code examples in order to show
+how to use the provided mesh structures.
+
+\li \ref tutorial
 
 **/
