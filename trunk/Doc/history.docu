@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC4</b> (2009/?/?,Rev.218)</td><td>
+<tr valign=top><td><b>2.0-RC4</b> (2009/?/?,Rev.224)</td><td>
 <b>Core</b>
 <ul>
 <li> Added function for direct access to property vectors</li>
@@ -20,6 +20,7 @@
 <ul>
 <li> Fixed reading ply files with unknown properties</li>
 <li> Added support for texture coordinates in ply files</li>
+<li> Add additional interface to readers/writers to use streams directly (allows direct writing to a streams)</li>
 <li> OMFromat -> Fixed empty template parameter issue under msvc</li>
 <li> OBJReader -> fixed loading multiple objs with material files</li>
 <li> OBJWriter -> Fixed writing of normals, Missing / when skipping texture coordinates</li>
@@ -41,6 +42,7 @@
 
 <b>Documentation</b>
 <ul>
+<li> Updated Documentation Mainpage</li>
 <li> Updated properties tutorial to include all request_... functions</li>
 <li> Updates for build instructions</li>
 <li> Added Tutorial on deleting geometry</li>
