@@ -1,30 +1,7 @@
 //-----------------------------------------------------------------------------
 
 
-/** \page mesh_docu OpenMesh Documentation
-
-We provided a short overview over the functionality of the %OpenMesh
-library and some additional concepts in \ref tutorial, and
-will now explain the most important topics of %OpenMesh in more
-detail.
-
--# \ref mesh_first_to_read
--# \ref mesh_features
--# \ref mesh_cpp
--# \ref mesh_hds
--# \ref mesh_type
--# \ref mesh_hierarchy
--# \ref mesh_members
--# \ref mesh_io
--# \ref mesh_iterators
-
-*/
-
-
-//-----------------------------------------------------------------------------
-
-
-/** \page mesh_first_to_read Read me first!!!  
+/** \page mesh_first_to_read Start here (Notes about template programming)!
 
 Please note, that %OpenMesh makes heavily use of C++ templates,
 generic programming and all that stuff (see \ref mesh_cpp).  Therefore
