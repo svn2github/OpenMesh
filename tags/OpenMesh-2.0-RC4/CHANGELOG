@@ -1,0 +1,89 @@
+
+
+#============================================================================================
+
+OpenMesh 2.0-RC4 ( Rev 227 ):
+* Core
+- Added function for direct access to property vectors
+- Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.
+- Fixed bug in handle() function when getting handle from given Halfedge (Reported by Rob Patro)
+- Memory leak in assignment Operator (Reported by Meng Luan, Thanks to Ilya A. Kriveshko for the patch)
+
+* Readers/Writers
+- Fixed reading ply files with unknown properties
+- Added support for texture coordinates in ply files
+- Add additional interface to readers/writers to use streams directly (allows direct writing to a streams)
+- OMFromat  -> Fixed empty template parameter issue under msvc
+- OBJReader -> Fixed loading multiple objs with material files
+- OBJWriter -> Fixed writing of normals, Missing / when skipping texture coordinates
+
+
+* Build system
+- Added missing c files
+- Build shared and static version under linux (cmake)
+- Added -DBUILD_APPS=OFF cmake flag to skip building of apps (cmake)
+- Added install target (cmake)
+- Added doc target (cmake)
+- Added doc-install target (cmake)
+- Generate sonames under linux (cmake)
+- Debian build dir for building Debian packages (Thanks to Jean Pierre Charalambos)
+- Package generator for windows. Builds an setup file containing precompiled static libs and includes for windows.
+- Throw warning if a min or max macro is defined under windows and suggest NOMINMAX (Thanks to Ingo Esser)
+
+
+* Documentation
+- Updated Documentation Mainpage
+- Updated properties tutorial to include all request_... functions
+- Updates for build instructions
+- Added Tutorial on deleting geometry
+- Fixed Traits example
+- Other minor fixes
+- Added tutorials as compileable source code
+
+* Misc
+- Updated debian dir to build debs (Thanks to Jean Pierre Charalambos)
+
+
+OpenMesh 2.0-RC3 ( Rev 138 ):
+
+* License
+- Relicense under LGPL v3 with additional exception for template inclusion
+
+* Readers/Writers
+- PLY writer fix ( thanks to Marc Hugi )
+- PLY reader fix ( wrong parsing of uchar binary data )
+- PLY reader warnings fix ( thanks to Ilya A. Kriveshko )
+- OBJ Reader now stores texture information in additional Mesh properties
+- OBJ reader/writer fixes
+
+* Tools
+- Smoother now respects feature primitives
+- Decimater improvements and fixes ( thanks to Ilya A. Kriveshko )
+
+* Build system:
+- Updated directory structure 
+- Changed libnames to libOpenMesh and libOpenMeshTools
+- cmake support
+- bugfixes to qmake build system
+- Keep some basic ACGMake files around ( acgmake is deprecated!! We will not provide support for it! Please use cmake or qmake instead. )
+
+* Other
+- Fixed some warnings with latest gcc
+- Per halfedge texture coordinates added 
+- Extended functions to get available properties
+
+#============================================================================================
+
+OpenMesh 2.0-RC2 ( Rev. 79 ):
+- Fix for OBJ reader not reading texture coordinates correctly ( Thanks to Kamalneet Singh )
+- Fixed included Visual Studio files
+
+#============================================================================================
+
+OpenMesh 2.0-RC1:
+- Reader / writer have been updated
+- Some general bugfixes
+- The usage of acgmake has become deprecated since the last release.
+  It has been entirely replaced by qmake.
+- Credits to Simon Floery, Canjiang Ren, Johannes Totz, Leon Kos,
+  Jean Pierre Charalambos, Mathieu Gauthier
