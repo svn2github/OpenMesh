@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC4 ( Rev 224 ):
+OpenMesh 2.0-RC4 ( Rev 227 ):
 * Core
 - Added function for direct access to property vectors
 - Fixed clear functions to swap vectors. This frees OpenMesh memory when clear is invoked.

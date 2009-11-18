@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC4</b> (2009/?/?,Rev.224)</td><td>
+<tr valign=top><td><b>2.0-RC4</b> (2009/11/18,Rev.227)</td><td>
 <b>Core</b>
 <ul>
 <li> Added function for direct access to property vectors</li>
