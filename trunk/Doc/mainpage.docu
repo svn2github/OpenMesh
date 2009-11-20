@@ -26,6 +26,7 @@ most important topics of %OpenMesh in the following sections:
 \li \ref mesh_cpp
 \li \ref mesh_hds
 \li \ref mesh_iterators
+\li \ref mesh_navigation
 \li \ref mesh_io
 \li \ref mesh_type
 \li \ref mesh_hierarchy
