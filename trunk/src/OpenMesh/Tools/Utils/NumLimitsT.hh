@@ -72,7 +72,7 @@ namespace Utils { // BEGIN_NS_UTILS
 /** \class NumLimitsT NumLimitsT.hh <OpenMesh/Utils/NumLimitsT.hh
 
     This class provides the maximum and minimum values a certain
-    scalar type (\cint, \c float, or \double) can store. You can
+    scalar type (\c int, \c float, or \c double) can store. You can
     use it like this:
     \code
     #include <OpenMesh/Utils/NumLimitsT.hh>
