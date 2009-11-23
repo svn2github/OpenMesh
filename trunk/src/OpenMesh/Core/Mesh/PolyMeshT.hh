@@ -239,11 +239,11 @@ public:
   Normal calc_vertex_normal(VertexHandle _vh) const;
 
   /** Different methods for calculation of the normal at _vh:
-      - -"-_fast    - the default one - the same as calc vertex_normal()
+      - ..._fast    - the default one - the same as calc vertex_normal()
                     - needs the Attributes::Normal attribute for faces
-      - -"-_correct - works properly for non-triangular meshes
+      - ..._correct - works properly for non-triangular meshes
                     - does not need any attributes
-      - -"-_loop    - calculates loop surface normals
+      - ..._loop    - calculates loop surface normals
                     - does not need any attributes */
   void calc_vertex_normal_fast(VertexHandle _vh, Normal& _n) const;
   void calc_vertex_normal_correct(VertexHandle _vh, Normal& _n) const;
