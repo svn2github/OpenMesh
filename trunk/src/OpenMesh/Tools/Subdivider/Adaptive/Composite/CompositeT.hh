@@ -95,7 +95,7 @@ template <typename M> class  RuleInterfaceT;
  *  For details on the transition from uniform to adaptive composite
  *  subdivision please refer to
  *  - <a
- *  href="http://www.eg.org/EG/DL/PE/OPENSG03/04sovakar.pdf>A. von Studnitz,
+ *  href='http://www.eg.org/EG/DL/PE/OPENSG03/04sovakar.pdf'>A. von Studnitz,
  *  A. Sovakar, L. Kobbelt "API Design for Adaptive Subdivision
  *  Schemes" OpenSG Symposium 2003</a>
  *
