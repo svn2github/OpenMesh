@@ -67,18 +67,20 @@ The goals/features of the C++ implementation are:
     <ul>
     <li>  Choose suitable types for scalars and coordinates (e.g. float,
 	  double, exact arithmetic and two-, three-, or n-dimensional
-	  points).
+	  points).</li>
     <li>  Enhance each item type by your own attributes/properties, like
           e.g. adding a normal vector or a \c FaceHandle to class \c
-          Vertex.
+          Vertex.</li>
     </ul>
+</li>
 <li> Efficiency: 
     <ul>
-    <li>  Avoid the overhead of virtual inheritance and virtual function calls.
+    <li>  Avoid the overhead of virtual inheritance and virtual function calls.</li>
     <li>  Resolve as many type/attribute dependencies as possible at
           compile-time instead of testing for attributes at run-time
-          (e.g. normal vectors for faces).
+          (e.g. normal vectors for faces).</li>
     </ul>
+</li>
 <li> Type-safety for handles, <b>no type-casting (*)</b>: Vertices,
      (Half-)Edges, Faces know each other and their corresponding
      handles.
@@ -89,7 +91,7 @@ The goals/features of the C++ implementation are:
      Though under the hood void pointers are used, the casting is done
      within the mesh, and the user transparently uses his handles as before.<br>
      As soon as the compiler adheres to the C++ standard the type-safe version
-     will be restored.
+     will be restored.</li>
 </ul>
 */
 
@@ -798,7 +800,9 @@ To make use of these constant circulators just add the prefix<br />
 "Const" to the type specifier and add the prefix "c" to the function used to request
 the circulator of an item. Example:<br/>
 
-<code>ConstVertexVertexIter cvvit = mesh.cvv_iter(some_vertex_handle);</code>
+\code
+ConstVertexVertexIter cvvit = mesh.cvv_iter(some_vertex_handle);
+\endcode
 
 The following code example now shows how to enumerate the 1-ring of each vertex:
 
