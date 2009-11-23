@@ -90,6 +90,10 @@ return the red halfedge:
 
 \image html mesh.opp.png
 
+Use this function as described in the example below:
+
+\include nav_code4a.cc
+
 There are also a few more functions that offer easy access to opposing structures:
 
 \include nav_code4.cc
