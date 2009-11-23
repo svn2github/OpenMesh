@@ -717,7 +717,6 @@ MyMesh::VertexIter instead of \c
 OpenMesh::Iterators::VertexIterT<MyMesh>. 
 
 
-
 \subsection subsec_iterators Linear Iterators
 
 The linear iterators are used to enumerate all mesh items, e.g. for
@@ -782,14 +781,26 @@ i.e. it takes a mesh and the handle of the item to iterate
 around.
 
 All circulators provide the operations listed in
-OpenMesh::Concepts::CirculatorT, which are basically the same as the
+CirculatorT<Mesh>, which are basically the same as the
 iterator funtions.
 
 Furthermore, circulators provide \c operator \c bool(), which returns
 true, as long as the circulator hasn't reached the end of the
 sequence.
 
-Example: The following code enumerates the 1-ring of each vertex:
+%OpenMesh provides the following functions (defined in OpenMesh::PolyConnectivity)
+to get circulators around a specified center item:
+
+\include circulator_functions.cc
+
+Note that for every circulator there also exists a constant version.
+To make use of these constant circulators just add the prefix<br />
+"Const" to the type specifier and add the prefix "c" to the function used to request
+the circulator of an item. Example:<br/>
+
+<code>ConstVertexVertexIter cvvit = mesh.cvv_iter(some_vertex_handle);</code>
+
+The following code example now shows how to enumerate the 1-ring of each vertex:
 
 \include circulators.cc
 
