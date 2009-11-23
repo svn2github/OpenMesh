@@ -92,7 +92,7 @@ The default is: Debug
 <br>
 Other flags are:<br/>
 <b>-DBUILD_APPS=OFF</b> to disable build of applications and<br/>
-<b>-DCMAKE_INSTALL_PREFIX=<path></b> to specify the install path.
+<b>-DCMAKE_INSTALL_PREFIX=&lt;path&gt;</b> to specify the install path.
 <br/>
 When calling <b>make install</b> cmake will install OpenMesh into this
 directory using the subdirectories lib/include/bin.
