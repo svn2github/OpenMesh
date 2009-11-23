@@ -454,7 +454,7 @@ public:
 
       \attention A halfedge collapse may lead to topological inconsistencies.
       Therefore you should check this using is_collapse_ok().  
-      TODO: implement is_collapse_ok() const for polygonal/triangle meshes
+      \todo Implement is_collapse_ok() const for polygonal/triangle meshes
   */
   void collapse(HalfedgeHandle _heh);
   /** return true if the this the only link between the faces adjacent to _eh.
@@ -471,7 +471,7 @@ public:
       adjacent faces are set deleted. The handle of the remaining face is 
       returned (InvalidFaceHandle is returned if _eh is a boundary edge).
       
-      Precondition is_simple_link(_eh). This ensures that there are no hole faces
+      \pre is_simple_link(_eh). This ensures that there are no hole faces
       or isolated vertices appearing in result of the operation.
       
       \attention Needs the Attributes::Status attribute for edges and faces.
