@@ -367,7 +367,9 @@ public:
       \attention Needs the Attributes::Normal attribute for faces */
   Scalar calc_dihedral_angle_fast(HalfedgeHandle _heh) const
   {
-    CHECK(Kernel::has_face_normals());
+    // Make sure that we have face normals on the mesh
+    assert(Kernel::has_face_normals());
+
     if (is_boundary(edge_handle(_heh)))
     {//the dihedral angle at a boundary edge is 0
       return 0;
