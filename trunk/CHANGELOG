@@ -2,6 +2,19 @@
 
 #============================================================================================
 
+OpenMesh 2.0-RC5 ( Rev  243 ):
+
+* Core
+- Fixed build error in function calc_dihedral_angle_fast
+
+* Readers/Writers
+- Fixed build error in STL writer
+
+* Documentation
+- Added mesh navigation tutorial
+- Added iterator tutorial
+- Fixed a lot of doxygen warnings
+
 OpenMesh 2.0-RC4 ( Rev 227 ):
 * Core
 - Added function for direct access to property vectors

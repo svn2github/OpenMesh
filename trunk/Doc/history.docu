@@ -7,6 +7,28 @@
 
 <!-- --------------------------------------------------------------------- -->
 
+<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.243)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Fixed build error in function calc_dihedral_angle_fast</li>
+</ul>
+
+<b>Readers/Writers</b>
+<ul>
+<li>Fixed build error in STL writer</li>
+</ul>
+
+<b>Documentation</b>
+<ul>
+<li>Added mesh navigation tutorial</li>
+<li>Added iterator tutorial</li>
+<li>Fixed a lot of doxygen warnings</li>
+</ul>
+
+</tr>
+
+
 <tr valign=top><td><b>2.0-RC4</b> (2009/11/18,Rev.227)</td><td>
 <b>Core</b>
 <ul>
