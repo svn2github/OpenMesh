@@ -16,9 +16,9 @@ The struct which defines the mesh traits then looks like this:
 \until };
 
 After having created the geometry of the cube one can delete faces and vertices
-by simply calling delete_vertices() (delete_faces() or delete_edges() respectiely).
+by simply calling delete_vertices() (delete_faces() or delete_edges() respectively).
 
-In this example we delete all faces excpet one and the corresponding vertices.
+In this example we delete all faces except one and the corresponding vertices.
 The code looks like this
 
 \dontinclude delete_geometry.cc
