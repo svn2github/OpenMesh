@@ -16,14 +16,12 @@ might ask: "What the heck is that?" It means, a parent class is passed
 as a template argument to another class:
 
 \code
-
 class P1 { }
 class P2 { }
 template <typename Parent> class B : public Parent {}
 
 typedef B<P1> fooB1;
 typedef B<P2> fooB2;
-
 \endcode
 
 Voila, we have created two different types of B. Depending on the
@@ -244,7 +242,7 @@ shows the overall concept.
 
 \image html class-hierarchy2.png
 
-\subsection ch_kernel Building the kernel
+\section ch_kernel Building the kernel
 
 -# The BaseKernel defines the basic operations on properties like
 add/remove/access. 
@@ -255,7 +253,7 @@ the mesh items vertices, (half-)edges, and faces. The base class is passed
 as a template parameter, since depending on the underlying storage type the
 AttribKernel might change.
 
-\subsection ch_complete Building the mesh
+\section ch_complete Building the mesh
 
 -# The PolyMeshT inherits from the kernel and provide all necessary methods
 to work with polygonal meshes.
