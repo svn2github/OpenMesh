@@ -110,10 +110,15 @@ public:
   bool can_u_read(const std::string& _filename) const;
 
   enum ValueType {
-    Unsupported ,
+    Unsupported,
+    ValueTypeINT8, ValueTypeCHAR,
+    ValueTypeUINT8, ValueTypeUCHAR,
+    ValueTypeINT16, ValueTypeSHORT,
+    ValueTypeUINT16, ValueTypeUSHORT,
+    ValueTypeINT32, ValueTypeINT,
+    ValueTypeUINT32, ValueTypeUINT,
     ValueTypeFLOAT32, ValueTypeFLOAT,
-    ValueTypeUINT8, ValueTypeINT32, ValueTypeINT ,
-    ValueTypeUCHAR
+    ValueTypeFLOAT64, ValueTypeDOUBLE,
   };
 
 private:
@@ -126,12 +131,24 @@ private:
   float readToFloatValue(ValueType _type , std::fstream& _in) const;
 
   void readValue(ValueType _type , std::istream& _in, float& _value) const;
+  void readValue(ValueType _type, std::istream& _in, double& _value) const;
   void readValue(ValueType _type , std::istream& _in, unsigned int& _value) const;
   void readValue(ValueType _type , std::istream& _in, int& _value) const;
 
-  //available options for reading
+  void readInteger(ValueType _type, std::istream& _in, int& _value) const;
+  void readInteger(ValueType _type, std::istream& _in, unsigned int& _value) const;
+
+  /// Read unsupported properties in PLY file 
+  void consume_input(std::istream& _in, int _count) const {
+	  _in.read(reinterpret_cast<char*>(&buff[0]), _count);
+  }
+
+  mutable unsigned char buff[8];
+
+  /// Available options for reading
   mutable Options options_;
-  //options that the user wants to read
+
+  /// Options that the user wants to read
   mutable Options userOptions_;
 
   mutable unsigned int vertexCount_;
@@ -150,8 +167,10 @@ private:
     UNSUPPORTED
   };
 
+  /// Stores sizes of property types
+  mutable std::map<ValueType, int> scalar_size_;
 
-  // number of vertex properties
+  // Number of vertex properties
   mutable unsigned int vertexPropertyCount_;
   mutable std::map< int , std::pair< VertexProperty, ValueType> > vertexPropertyMap_;
 

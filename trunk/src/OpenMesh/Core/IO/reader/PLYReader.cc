@@ -81,6 +81,25 @@ _PLYReader_& PLYReader() {
 
 _PLYReader_::_PLYReader_() {
     IOManager().register_module(this);
+
+    // Store sizes in byte of each property type
+    scalar_size_[ValueTypeINT8] = 1;
+    scalar_size_[ValueTypeUINT8] = 1;
+    scalar_size_[ValueTypeINT16] = 2;
+    scalar_size_[ValueTypeUINT16] = 2;
+    scalar_size_[ValueTypeINT32] = 4;
+    scalar_size_[ValueTypeUINT32] = 4;
+    scalar_size_[ValueTypeFLOAT32] = 4;
+    scalar_size_[ValueTypeFLOAT64] = 8;
+
+    scalar_size_[ValueTypeCHAR] = 1;
+    scalar_size_[ValueTypeUCHAR] = 1;
+    scalar_size_[ValueTypeSHORT] = 2;
+    scalar_size_[ValueTypeUSHORT] = 2;
+    scalar_size_[ValueTypeINT] = 4;
+    scalar_size_[ValueTypeUINT] = 4;
+    scalar_size_[ValueTypeFLOAT] = 4;
+    scalar_size_[ValueTypeDOUBLE] = 8;
 }
 
 //-----------------------------------------------------------------------------
@@ -207,28 +226,32 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
                 _in >> t[1];
                 break;
             case COLORRED:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[0] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
                     _in >> c[0];
                 break;
             case COLORGREEN:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[1] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
                     _in >> c[1];
                 break;
             case COLORBLUE:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[2] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
                     _in >> c[2];
                 break;
             case COLORALPHA:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[3] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
@@ -331,35 +354,45 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
                 readValue(vertexPropertyMap_[propertyIndex].second, _in, t[1]);
                 break;
             case COLORRED:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
 
                     c[0] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, c[0]);
+                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[0]);
+
                 break;
             case COLORGREEN:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
                     c[1] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, c[1]);
+                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[1]);
+
                 break;
             case COLORBLUE:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
                     c[2] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, c[2]);
+                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[2]);
+
                 break;
             case COLORALPHA:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32) {
+                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
                     readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
                     c[3] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, c[3]);
+                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[3]);
+
                 break;
             default:
+                // Read unsupported property
+                consume_input(_in, scalar_size_[vertexPropertyMap_[propertyIndex].second]);
                 break;
             }
 
@@ -376,9 +409,9 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
 
         if (nV == 3) {
             vhandles.resize(3);
-            readValue(faceEntryType_, _in, j);
-            readValue(faceEntryType_, _in, k);
-            readValue(faceEntryType_, _in, l);
+            readInteger(faceEntryType_, _in, j);
+            readInteger(faceEntryType_, _in, k);
+            readInteger(faceEntryType_, _in, l);
 
             vhandles[0] = VertexHandle(j);
             vhandles[1] = VertexHandle(k);
@@ -386,7 +419,7 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
         } else {
             vhandles.clear();
             for (j = 0; j < nV; ++j) {
-                readValue(faceEntryType_, _in, idx);
+                readInteger(faceEntryType_, _in, idx);
                 vhandles.push_back(VertexHandle(idx));
             }
         }
@@ -396,8 +429,6 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
 
     return true;
 }
-
-//-----------------------------------------------------------------------------
 
 
 //-----------------------------------------------------------------------------
@@ -419,53 +450,251 @@ void _PLYReader_::readValue(ValueType _type, std::istream& _in, float& _value) c
     }
 }
 
-void _PLYReader_::readValue(ValueType _type, std::istream& _in, unsigned int& _value) const {
 
-    int32_t tmp_int32_t;
-    uint8_t tmp_uchar;
+//-----------------------------------------------------------------------------
+
+
+void _PLYReader_::readValue(ValueType _type, std::istream& _in, double& _value) const {
 
     switch (_type) {
-    case ValueTypeINT:
-    case ValueTypeINT32:
-        restore(_in, tmp_int32_t, options_.check(Options::MSB));
-        _value = tmp_int32_t;
-        break;
-    case ValueTypeUCHAR:
-        restore(_in, tmp_uchar, options_.check(Options::MSB));
-        _value = tmp_uchar;
-        break;
+        
+        case ValueTypeFLOAT64:
+
+        case ValueTypeDOUBLE:
+
+            float64_t tmp;
+            restore(_in, tmp, options_.check(Options::MSB));
+            _value = tmp;
+
+            break;
+
     default:
-        _value = 0;
-        std::cerr << "unsupported conversion type to int: " << _type << std::endl;
+
+        _value = 0.0;
+        std::cerr << "unsupported conversion type to double: " << _type << std::endl;
+
         break;
     }
 }
+
+
+//-----------------------------------------------------------------------------
+
+
+void _PLYReader_::readValue(ValueType _type, std::istream& _in, unsigned int& _value) const {
+
+    uint32_t tmp_uint32_t;
+    uint16_t tmp_uint16_t;
+    uint8_t tmp_uchar;
+
+    switch (_type) {
+
+        case ValueTypeUINT:
+
+        case ValueTypeUINT32:
+    
+            restore(_in, tmp_uint32_t, options_.check(Options::MSB));
+            _value = tmp_uint32_t;
+
+        break;
+
+        case ValueTypeUSHORT:
+
+        case ValueTypeUINT16:
+
+            restore(_in, tmp_uint16_t, options_.check(Options::MSB));
+            _value = tmp_uint16_t;
+
+            break;
+
+        case ValueTypeUCHAR:
+
+        case ValueTypeUINT8:
+
+            restore(_in, tmp_uchar, options_.check(Options::MSB));
+            _value = tmp_uchar;
+
+            break;
+
+        default:
+
+            _value = 0;
+            std::cerr << "unsupported conversion type to unsigned int: " << _type << std::endl;
+
+            break;
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+
 
 void _PLYReader_::readValue(ValueType _type, std::istream& _in, int& _value) const {
 
     int32_t tmp_int32_t;
-    uint8_t tmp_uchar;
+    int16_t tmp_int16_t;
+    int8_t tmp_char;
 
     switch (_type) {
-    case ValueTypeINT:
-    case ValueTypeINT32:
-        restore(_in, tmp_int32_t, options_.check(Options::MSB));
-        _value = tmp_int32_t;
-        break;
-    case ValueTypeUCHAR:
-        restore(_in, tmp_uchar, options_.check(Options::MSB));
-        _value = tmp_uchar;
-        break;
-    default:
-        _value = 0;
-        std::cerr << "unsupported conversion type to int: " << _type << std::endl;
-        break;
+
+        case ValueTypeINT:
+
+        case ValueTypeINT32:
+
+            restore(_in, tmp_int32_t, options_.check(Options::MSB));
+            _value = tmp_int32_t;
+
+            break;
+
+        case ValueTypeSHORT:
+
+        case ValueTypeINT16:
+
+            restore(_in, tmp_int16_t, options_.check(Options::MSB));
+            _value = tmp_int16_t;
+
+            break;
+
+        case ValueTypeCHAR:
+
+        case ValueTypeINT8:
+
+            restore(_in, tmp_char, options_.check(Options::MSB));
+            _value = tmp_char;
+
+            break;
+
+        default:
+
+            _value = 0;
+            std::cerr << "unsupported conversion type to int: " << _type << std::endl;
+
+            break;
     }
 }
 
+
+//-----------------------------------------------------------------------------
+
+
+void _PLYReader_::readInteger(ValueType _type, std::istream& _in, int& _value) const {
+
+    int32_t tmp_int32_t;
+    uint32_t tmp_uint32_t;
+    int8_t tmp_char;
+    uint8_t tmp_uchar;
+
+    switch (_type) {
+
+        case ValueTypeINT:
+
+        case ValueTypeINT32:
+
+            restore(_in, tmp_int32_t, options_.check(Options::MSB));
+            _value = tmp_int32_t;
+
+            break;
+
+        case ValueTypeUINT:
+
+        case ValueTypeUINT32:
+
+            restore(_in, tmp_uint32_t, options_.check(Options::MSB));
+            _value = tmp_uint32_t;
+    
+            break;
+
+        case ValueTypeCHAR:
+
+        case ValueTypeINT8:
+
+            restore(_in, tmp_char, options_.check(Options::MSB));
+            _value = tmp_char;
+
+            break;
+
+        case ValueTypeUCHAR:
+
+        case ValueTypeUINT8:
+
+            restore(_in, tmp_uchar, options_.check(Options::MSB));
+            _value = tmp_uchar;
+
+            break;
+
+        default:
+
+            _value = 0;
+            std::cerr << "unsupported conversion type to int: " << _type << std::endl;
+
+            break;
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+void _PLYReader_::readInteger(ValueType _type, std::istream& _in, unsigned int& _value) const {
+
+    int32_t tmp_int32_t;
+    uint32_t tmp_uint32_t;
+    int8_t tmp_char;
+    uint8_t tmp_uchar;
+
+    switch (_type) {
+
+        case ValueTypeUINT:
+
+        case ValueTypeUINT32:
+
+            restore(_in, tmp_uint32_t, options_.check(Options::MSB));
+            _value = tmp_uint32_t;
+
+            break;
+
+        case ValueTypeINT:
+
+        case ValueTypeINT32:
+
+            restore(_in, tmp_int32_t, options_.check(Options::MSB));
+            _value = tmp_int32_t;
+
+            break;
+
+        case ValueTypeUCHAR:
+
+        case ValueTypeUINT8:
+
+            restore(_in, tmp_uchar, options_.check(Options::MSB));
+            _value = tmp_uchar;
+
+            break;
+
+        case ValueTypeCHAR:
+
+        case ValueTypeINT8:
+
+            restore(_in, tmp_char, options_.check(Options::MSB));
+            _value = tmp_char;
+
+            break;
+
+        default:
+
+            _value = 0;
+            std::cerr << "unsupported conversion type to unsigned int: " << _type << std::endl;
+
+            break;
+    }
+}
+
+
 //------------------------------------------------------------------------------
 
+
 bool _PLYReader_::can_u_read(const std::string& _filename) const {
+    
     // !!! Assuming BaseReader::can_u_parse( std::string& )
     // does not call BaseReader::read_magic()!!!
 
@@ -479,16 +708,24 @@ bool _PLYReader_::can_u_read(const std::string& _filename) const {
     return false;
 }
 
+
+
 //-----------------------------------------------------------------------------
 
 std::string get_property_name(std::string _string1, std::string _string2) {
-    if (_string1 == "float32" || _string1 == "uint8" || _string1 == "uchar" || _string1 == "float" || _string1
-            == "int32")
+    
+    if (_string1 == "float32" || _string1 == "float64" || _string1 == "float" || _string1 == "double" ||
+        _string1 == "int8" || _string1 == "uint8" || _string1 == "char" || _string1 == "uchar" ||
+        _string1 == "int32" || _string1 == "uint32" || _string1 == "int" || _string1 == "uint" ||
+        _string1 == "int16" || _string1 == "uint16" || _string1 == "short" || _string1 == "ushort")
         return _string2;
 
-    if (_string2 == "float32" || _string2 == "uint8" || _string2 == "uchar" || _string2 == "float" || _string2
-            == "int32")
+    if (_string2 == "float32" || _string2 == "float64" || _string2 == "float" || _string2 == "double" ||
+        _string2 == "int8" || _string2 == "uint8" || _string2 == "char" || _string2 == "uchar" ||
+        _string2 == "int32" || _string2 == "uint32" || _string2 == "int" || _string2 == "uint" ||
+        _string2 == "int16" || _string2 == "uint16" || _string2 == "short" || _string2 == "ushort")
         return _string1;
+
 
     std::cerr << "Unsupported entry type" << std::endl;
     return "Unsupported";
@@ -497,23 +734,80 @@ std::string get_property_name(std::string _string1, std::string _string2) {
 //-----------------------------------------------------------------------------
 
 _PLYReader_::ValueType get_property_type(std::string _string1, std::string _string2) {
+
     if (_string1 == "float32" || _string2 == "float32")
+
         return _PLYReader_::ValueTypeFLOAT32;
-    else if (_string1 == "uint8" || _string2 == "float32")
-        return _PLYReader_::ValueTypeUINT8;
-    else if (_string1 == "int32" || _string2 == "float32")
-        return _PLYReader_::ValueTypeINT32;
-    else if (_string1 == "uchar" || _string2 == "uchar")
-        return _PLYReader_::ValueTypeUCHAR;
+
+    else if (_string1 == "float64" || _string2 == "float64")
+
+        return _PLYReader_::ValueTypeFLOAT64;
+
     else if (_string1 == "float" || _string2 == "float")
+
         return _PLYReader_::ValueTypeFLOAT;
+
+    else if (_string1 == "double" || _string2 == "double")
+
+        return _PLYReader_::ValueTypeDOUBLE;
+
+    else if (_string1 == "int8" || _string2 == "int8")
+
+        return _PLYReader_::ValueTypeINT8;
+
+    else if (_string1 == "uint8" || _string2 == "uint8")
+
+        return _PLYReader_::ValueTypeUINT8;
+
+    else if (_string1 == "char" || _string2 == "char")
+
+        return _PLYReader_::ValueTypeCHAR;
+
+    else if (_string1 == "uchar" || _string2 == "uchar")
+
+        return _PLYReader_::ValueTypeUCHAR;
+
+    else if (_string1 == "int32" || _string2 == "int32")
+
+        return _PLYReader_::ValueTypeINT32;
+
+    else if (_string1 == "uint32" || _string2 == "uint32")
+
+        return _PLYReader_::ValueTypeUINT32;
+
+    else if (_string1 == "int" || _string2 == "int")
+
+        return _PLYReader_::ValueTypeINT;
+
+    else if (_string1 == "uint" || _string2 == "uint")
+
+        return _PLYReader_::ValueTypeUINT;
+
+    else if (_string1 == "int16" || _string2 == "int16")
+
+        return _PLYReader_::ValueTypeINT16;
+
+    else if (_string1 == "uint16" || _string2 == "uint16")
+
+        return _PLYReader_::ValueTypeUINT16;
+
+    else if (_string1 == "short" || _string2 == "short")
+
+        return _PLYReader_::ValueTypeSHORT;
+
+    else if (_string1 == "ushort" || _string2 == "ushort")
+
+        return _PLYReader_::ValueTypeUSHORT;
 
     return _PLYReader_::Unsupported;
 }
 
+
 //-----------------------------------------------------------------------------
 
+
 bool _PLYReader_::can_u_read(std::istream& _is) const {
+
     // Clear per file options
     options_.cleanup();
 
@@ -558,9 +852,15 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
     } else if (fileType == "binary_little_endian") {
         options_ += Options::Binary;
         options_ += Options::LSB;
+        //if (Endian::local() == Endian::MSB)
+
+        //  options_ += Options::Swap;
     } else if (fileType == "binary_big_endian") {
         options_ += Options::Binary;
         options_ += Options::MSB;
+        //if (Endian::local() == Endian::LSB)
+
+        //  options_ += Options::Swap;
     } else {
         omerr() << "Unsupported PLY format: " << fileType << std::endl;
         return false;
