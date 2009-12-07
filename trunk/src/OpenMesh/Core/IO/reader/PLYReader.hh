@@ -100,12 +100,12 @@ public:
   std::string get_magic()       const { return "PLY"; }
 
   bool read(const std::string& _filename,
-	    BaseImporter& _bi,
-	    Options& _opt);
+        BaseImporter& _bi,
+        Options& _opt);
 
   bool read(std::istream& _is,
-		    BaseImporter& _bi,
-		    Options& _opt);
+            BaseImporter& _bi,
+            Options& _opt);
 
   bool can_u_read(const std::string& _filename) const;
 
