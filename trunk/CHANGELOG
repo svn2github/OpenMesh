@@ -2,18 +2,22 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  243 ):
+OpenMesh 2.0-RC5 ( Rev  253 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
+- Made iterators/circulators stl compliant
 
 * Readers/Writers
 - Fixed build error in STL writer
+- Fixed and enhanced PLY reader to better handling of unknown properties (Thanks to Michal Nociar for the patch)
 
 * Documentation
 - Added mesh navigation tutorial
 - Added iterator tutorial
+- Examples for flipping and collapsing edges
 - Fixed a lot of doxygen warnings
+- Fixed some spellings
 
 OpenMesh 2.0-RC4 ( Rev 227 ):
 * Core
