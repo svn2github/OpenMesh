@@ -127,24 +127,24 @@ class VertexVertexIterT
 
 
   /// Default constructor
-  VertexVertexIterT() : mesh_(0), active_(false) {}
+  VertexVertexIterT() : mesh_(0), lap_counter_(0) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  VertexVertexIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  VertexVertexIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  VertexVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  VertexVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -153,7 +153,7 @@ class VertexVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -163,7 +163,7 @@ class VertexVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -174,7 +174,7 @@ class VertexVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -184,7 +184,7 @@ class VertexVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -197,7 +197,7 @@ class VertexVertexIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -210,8 +210,8 @@ class VertexVertexIterT
   /// Pre-Increment (next cw target)
   VertexVertexIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -219,8 +219,8 @@ class VertexVertexIterT
   /// Pre-Decrement (next ccw target)
   VertexVertexIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -269,7 +269,7 @@ class VertexVertexIterT
       have completed the first round.
    */
   operator bool() const {
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -277,7 +277,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -321,24 +321,24 @@ class ConstVertexVertexIterT
 
 
   /// Default constructor
-  ConstVertexVertexIterT() : mesh_(0), active_(false) {}
+  ConstVertexVertexIterT() : mesh_(0), lap_counter_(0) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  ConstVertexVertexIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  ConstVertexVertexIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  ConstVertexVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstVertexVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -347,7 +347,7 @@ class ConstVertexVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -357,7 +357,7 @@ class ConstVertexVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -368,7 +368,7 @@ class ConstVertexVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -378,7 +378,7 @@ class ConstVertexVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -391,7 +391,7 @@ class ConstVertexVertexIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -404,8 +404,8 @@ class ConstVertexVertexIterT
   /// Pre-Increment (next cw target)
   ConstVertexVertexIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -413,8 +413,8 @@ class ConstVertexVertexIterT
   /// Pre-Decrement (next ccw target)
   ConstVertexVertexIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -463,7 +463,7 @@ class ConstVertexVertexIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -471,7 +471,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -515,24 +515,24 @@ class VertexOHalfedgeIterT
 
 
   /// Default constructor
-  VertexOHalfedgeIterT() : mesh_(0), active_(false) {}
+  VertexOHalfedgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  VertexOHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  VertexOHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  VertexOHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  VertexOHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -541,7 +541,7 @@ class VertexOHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -551,7 +551,7 @@ class VertexOHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -562,7 +562,7 @@ class VertexOHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -572,7 +572,7 @@ class VertexOHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -585,7 +585,7 @@ class VertexOHalfedgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -598,8 +598,8 @@ class VertexOHalfedgeIterT
   /// Pre-Increment (next cw target)
   VertexOHalfedgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -607,8 +607,8 @@ class VertexOHalfedgeIterT
   /// Pre-Decrement (next ccw target)
   VertexOHalfedgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -657,7 +657,7 @@ class VertexOHalfedgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -665,7 +665,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -709,24 +709,24 @@ class ConstVertexOHalfedgeIterT
 
 
   /// Default constructor
-  ConstVertexOHalfedgeIterT() : mesh_(0), active_(false) {}
+  ConstVertexOHalfedgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  ConstVertexOHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  ConstVertexOHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  ConstVertexOHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstVertexOHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -735,7 +735,7 @@ class ConstVertexOHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -745,7 +745,7 @@ class ConstVertexOHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -756,7 +756,7 @@ class ConstVertexOHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -766,7 +766,7 @@ class ConstVertexOHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -779,7 +779,7 @@ class ConstVertexOHalfedgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -792,8 +792,8 @@ class ConstVertexOHalfedgeIterT
   /// Pre-Increment (next cw target)
   ConstVertexOHalfedgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -801,8 +801,8 @@ class ConstVertexOHalfedgeIterT
   /// Pre-Decrement (next ccw target)
   ConstVertexOHalfedgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -851,7 +851,7 @@ class ConstVertexOHalfedgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -859,7 +859,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -903,24 +903,24 @@ class VertexIHalfedgeIterT
 
 
   /// Default constructor
-  VertexIHalfedgeIterT() : mesh_(0), active_(false) {}
+  VertexIHalfedgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  VertexIHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  VertexIHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  VertexIHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  VertexIHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -929,7 +929,7 @@ class VertexIHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -939,7 +939,7 @@ class VertexIHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -950,7 +950,7 @@ class VertexIHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -960,7 +960,7 @@ class VertexIHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -973,7 +973,7 @@ class VertexIHalfedgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -986,8 +986,8 @@ class VertexIHalfedgeIterT
   /// Pre-Increment (next cw target)
   VertexIHalfedgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -995,8 +995,8 @@ class VertexIHalfedgeIterT
   /// Pre-Decrement (next ccw target)
   VertexIHalfedgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -1045,7 +1045,7 @@ class VertexIHalfedgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -1053,7 +1053,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -1097,24 +1097,24 @@ class ConstVertexIHalfedgeIterT
 
 
   /// Default constructor
-  ConstVertexIHalfedgeIterT() : mesh_(0), active_(false) {}
+  ConstVertexIHalfedgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  ConstVertexIHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  ConstVertexIHalfedgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  ConstVertexIHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstVertexIHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -1123,7 +1123,7 @@ class ConstVertexIHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -1133,7 +1133,7 @@ class ConstVertexIHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -1144,7 +1144,7 @@ class ConstVertexIHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -1154,7 +1154,7 @@ class ConstVertexIHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -1167,7 +1167,7 @@ class ConstVertexIHalfedgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -1180,8 +1180,8 @@ class ConstVertexIHalfedgeIterT
   /// Pre-Increment (next cw target)
   ConstVertexIHalfedgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -1189,8 +1189,8 @@ class ConstVertexIHalfedgeIterT
   /// Pre-Decrement (next ccw target)
   ConstVertexIHalfedgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -1239,7 +1239,7 @@ class ConstVertexIHalfedgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -1247,7 +1247,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -1291,24 +1291,24 @@ class VertexEdgeIterT
 
 
   /// Default constructor
-  VertexEdgeIterT() : mesh_(0), active_(false) {}
+  VertexEdgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  VertexEdgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  VertexEdgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  VertexEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  VertexEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -1317,7 +1317,7 @@ class VertexEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -1327,7 +1327,7 @@ class VertexEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -1338,7 +1338,7 @@ class VertexEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -1348,7 +1348,7 @@ class VertexEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -1361,7 +1361,7 @@ class VertexEdgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -1374,8 +1374,8 @@ class VertexEdgeIterT
   /// Pre-Increment (next cw target)
   VertexEdgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -1383,8 +1383,8 @@ class VertexEdgeIterT
   /// Pre-Decrement (next ccw target)
   VertexEdgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -1433,7 +1433,7 @@ class VertexEdgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -1441,7 +1441,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -1485,24 +1485,24 @@ class ConstVertexEdgeIterT
 
 
   /// Default constructor
-  ConstVertexEdgeIterT() : mesh_(0), active_(false) {}
+  ConstVertexEdgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  ConstVertexEdgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  ConstVertexEdgeIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  ConstVertexEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstVertexEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -1511,7 +1511,7 @@ class ConstVertexEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -1521,7 +1521,7 @@ class ConstVertexEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -1532,7 +1532,7 @@ class ConstVertexEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -1542,7 +1542,7 @@ class ConstVertexEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -1555,7 +1555,7 @@ class ConstVertexEdgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -1568,8 +1568,8 @@ class ConstVertexEdgeIterT
   /// Pre-Increment (next cw target)
   ConstVertexEdgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->cw_rotated_halfedge_handle(heh_);;
+    heh_=mesh_->cw_rotated_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -1577,8 +1577,8 @@ class ConstVertexEdgeIterT
   /// Pre-Decrement (next ccw target)
   ConstVertexEdgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->ccw_rotated_halfedge_handle(heh_);
     return *this;
   }
 
@@ -1627,7 +1627,7 @@ class ConstVertexEdgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -1635,7 +1635,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -1679,24 +1679,24 @@ class VertexFaceIterT
 
 
   /// Default constructor
-  VertexFaceIterT() : mesh_(0), active_(false) {}
+  VertexFaceIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  VertexFaceIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  VertexFaceIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
   /// Construct with mesh and start halfedge
-  VertexFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  VertexFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -1705,7 +1705,7 @@ class VertexFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -1715,7 +1715,7 @@ class VertexFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -1726,7 +1726,7 @@ class VertexFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -1736,7 +1736,7 @@ class VertexFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -1749,7 +1749,7 @@ class VertexFaceIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -1762,8 +1762,7 @@ class VertexFaceIterT
   /// Pre-Increment (next cw target)
   VertexFaceIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    do heh_=mesh_->cw_rotated_halfedge_handle(heh_);  while ((*this) && (!handle().is_valid()));;
+    do { heh_=mesh_->cw_rotated_halfedge_handle(heh_); if(heh_ == start_) lap_counter_++; } while ((*this) && (!handle().is_valid()));;
     return *this;
   }
 
@@ -1771,8 +1770,7 @@ class VertexFaceIterT
   /// Pre-Decrement (next ccw target)
   VertexFaceIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    do	heh_=mesh_->ccw_rotated_halfedge_handle(heh_); while ((*this) && (!handle().is_valid()));;
+    do { if(heh_ == start_) lap_counter_--; heh_=mesh_->ccw_rotated_halfedge_handle(heh_); } while ((*this) && (!handle().is_valid()));;
     return *this;
   }
 
@@ -1821,7 +1819,7 @@ class VertexFaceIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -1829,7 +1827,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -1873,24 +1871,24 @@ class ConstVertexFaceIterT
 
 
   /// Default constructor
-  ConstVertexFaceIterT() : mesh_(0), active_(false) {}
+  ConstVertexFaceIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::VertexHandle
-  ConstVertexFaceIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start) :
+  ConstVertexFaceIterT(mesh_ref _mesh, typename Mesh::VertexHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
   /// Construct with mesh and start halfedge
-  ConstVertexFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstVertexFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -1899,7 +1897,7 @@ class ConstVertexFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -1909,7 +1907,7 @@ class ConstVertexFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -1920,7 +1918,7 @@ class ConstVertexFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -1930,7 +1928,7 @@ class ConstVertexFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -1943,7 +1941,7 @@ class ConstVertexFaceIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -1956,8 +1954,7 @@ class ConstVertexFaceIterT
   /// Pre-Increment (next cw target)
   ConstVertexFaceIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    do heh_=mesh_->cw_rotated_halfedge_handle(heh_);  while ((*this) && (!handle().is_valid()));;
+    do { heh_=mesh_->cw_rotated_halfedge_handle(heh_); if(heh_ == start_) lap_counter_++; }  while ((*this) && (!handle().is_valid()));;
     return *this;
   }
 
@@ -1965,8 +1962,7 @@ class ConstVertexFaceIterT
   /// Pre-Decrement (next ccw target)
   ConstVertexFaceIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    do	heh_=mesh_->ccw_rotated_halfedge_handle(heh_); while ((*this) && (!handle().is_valid()));;
+    do { if(heh_ == start_) lap_counter_--; heh_=mesh_->ccw_rotated_halfedge_handle(heh_); } while ((*this) && (!handle().is_valid()));;
     return *this;
   }
 
@@ -2015,7 +2011,7 @@ class ConstVertexFaceIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -2023,7 +2019,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -2067,24 +2063,24 @@ class FaceVertexIterT
 
 
   /// Default constructor
-  FaceVertexIterT() : mesh_(0), active_(false) {}
+  FaceVertexIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  FaceVertexIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  FaceVertexIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  FaceVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  FaceVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -2093,7 +2089,7 @@ class FaceVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2103,7 +2099,7 @@ class FaceVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -2114,7 +2110,7 @@ class FaceVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2124,7 +2120,7 @@ class FaceVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -2137,7 +2133,7 @@ class FaceVertexIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -2150,8 +2146,8 @@ class FaceVertexIterT
   /// Pre-Increment (next cw target)
   FaceVertexIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->next_halfedge_handle(heh_);;
+    heh_=mesh_->next_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -2159,8 +2155,8 @@ class FaceVertexIterT
   /// Pre-Decrement (next ccw target)
   FaceVertexIterT& operator--() {
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->prev_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->prev_halfedge_handle(heh_);
     return *this;
   }
 
@@ -2209,7 +2205,7 @@ class FaceVertexIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -2217,7 +2213,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -2261,24 +2257,24 @@ class ConstFaceVertexIterT
 
 
   /// Default constructor
-  ConstFaceVertexIterT() : mesh_(0), active_(false) {}
+  ConstFaceVertexIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  ConstFaceVertexIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  ConstFaceVertexIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  ConstFaceVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstFaceVertexIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -2287,7 +2283,7 @@ class ConstFaceVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2297,7 +2293,7 @@ class ConstFaceVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -2308,7 +2304,7 @@ class ConstFaceVertexIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2318,7 +2314,7 @@ class ConstFaceVertexIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -2331,7 +2327,7 @@ class ConstFaceVertexIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -2344,8 +2340,8 @@ class ConstFaceVertexIterT
   /// Pre-Increment (next cw target)
   ConstFaceVertexIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->next_halfedge_handle(heh_);;
+    heh_=mesh_->next_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -2353,8 +2349,8 @@ class ConstFaceVertexIterT
   /// Pre-Decrement (next ccw target)
   ConstFaceVertexIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->prev_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->prev_halfedge_handle(heh_);
     return *this;
   }
 
@@ -2403,7 +2399,7 @@ class ConstFaceVertexIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -2411,7 +2407,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -2455,24 +2451,24 @@ class FaceHalfedgeIterT
 
 
   /// Default constructor
-  FaceHalfedgeIterT() : mesh_(0), active_(false) {}
+  FaceHalfedgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  FaceHalfedgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  FaceHalfedgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  FaceHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  FaceHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -2481,7 +2477,7 @@ class FaceHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2491,7 +2487,7 @@ class FaceHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -2502,7 +2498,7 @@ class FaceHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2512,7 +2508,7 @@ class FaceHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -2525,7 +2521,7 @@ class FaceHalfedgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -2538,8 +2534,8 @@ class FaceHalfedgeIterT
   /// Pre-Increment (next cw target)
   FaceHalfedgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->next_halfedge_handle(heh_);;
+    heh_=mesh_->next_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -2547,8 +2543,8 @@ class FaceHalfedgeIterT
   /// Pre-Decrement (next ccw target)
   FaceHalfedgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->prev_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->prev_halfedge_handle(heh_);
     return *this;
   }
 
@@ -2597,7 +2593,7 @@ class FaceHalfedgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -2605,7 +2601,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -2649,24 +2645,24 @@ class ConstFaceHalfedgeIterT
 
 
   /// Default constructor
-  ConstFaceHalfedgeIterT() : mesh_(0), active_(false) {}
+  ConstFaceHalfedgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  ConstFaceHalfedgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  ConstFaceHalfedgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  ConstFaceHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstFaceHalfedgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -2675,7 +2671,7 @@ class ConstFaceHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2685,7 +2681,7 @@ class ConstFaceHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -2696,7 +2692,7 @@ class ConstFaceHalfedgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2706,7 +2702,7 @@ class ConstFaceHalfedgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -2719,7 +2715,7 @@ class ConstFaceHalfedgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -2732,8 +2728,8 @@ class ConstFaceHalfedgeIterT
   /// Pre-Increment (next cw target)
   ConstFaceHalfedgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->next_halfedge_handle(heh_);;
+    heh_=mesh_->next_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -2741,8 +2737,8 @@ class ConstFaceHalfedgeIterT
   /// Pre-Decrement (next ccw target)
   ConstFaceHalfedgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->prev_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->prev_halfedge_handle(heh_);
     return *this;
   }
 
@@ -2791,7 +2787,7 @@ class ConstFaceHalfedgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -2799,7 +2795,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -2843,24 +2839,24 @@ class FaceEdgeIterT
 
 
   /// Default constructor
-  FaceEdgeIterT() : mesh_(0), active_(false) {}
+  FaceEdgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  FaceEdgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  FaceEdgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  FaceEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  FaceEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -2869,7 +2865,7 @@ class FaceEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2879,7 +2875,7 @@ class FaceEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -2890,7 +2886,7 @@ class FaceEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -2900,7 +2896,7 @@ class FaceEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -2913,7 +2909,7 @@ class FaceEdgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -2926,8 +2922,8 @@ class FaceEdgeIterT
   /// Pre-Increment (next cw target)
   FaceEdgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->next_halfedge_handle(heh_);;
+    heh_=mesh_->next_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -2935,8 +2931,8 @@ class FaceEdgeIterT
   /// Pre-Decrement (next ccw target)
   FaceEdgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->prev_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->prev_halfedge_handle(heh_);
     return *this;
   }
 
@@ -2985,7 +2981,7 @@ class FaceEdgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -2993,7 +2989,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -3037,24 +3033,24 @@ class ConstFaceEdgeIterT
 
 
   /// Default constructor
-  ConstFaceEdgeIterT() : mesh_(0), active_(false) {}
+  ConstFaceEdgeIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  ConstFaceEdgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  ConstFaceEdgeIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
   /// Construct with mesh and start halfedge
-  ConstFaceEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstFaceEdgeIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   {  ; }
 
 
@@ -3063,7 +3059,7 @@ class ConstFaceEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -3073,7 +3069,7 @@ class ConstFaceEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -3084,7 +3080,7 @@ class ConstFaceEdgeIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   {  ; }
 
 
@@ -3094,7 +3090,7 @@ class ConstFaceEdgeIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -3107,7 +3103,7 @@ class ConstFaceEdgeIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -3120,8 +3116,8 @@ class ConstFaceEdgeIterT
   /// Pre-Increment (next cw target)
   ConstFaceEdgeIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->next_halfedge_handle(heh_);;
+    heh_=mesh_->next_halfedge_handle(heh_);
+    if(heh_ == start_) lap_counter_++;
     return *this;
   }
 
@@ -3129,8 +3125,8 @@ class ConstFaceEdgeIterT
   /// Pre-Decrement (next ccw target)
   ConstFaceEdgeIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    heh_=mesh_->prev_halfedge_handle(heh_);;
+    if(heh_ == start_) lap_counter_--;
+    heh_=mesh_->prev_halfedge_handle(heh_);
     return *this;
   }
 
@@ -3179,7 +3175,7 @@ class ConstFaceEdgeIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -3187,7 +3183,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -3231,24 +3227,24 @@ class FaceFaceIterT
 
 
   /// Default constructor
-  FaceFaceIterT() : mesh_(0), active_(false) {}
+  FaceFaceIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  FaceFaceIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  FaceFaceIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
   /// Construct with mesh and start halfedge
-  FaceFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  FaceFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -3257,7 +3253,7 @@ class FaceFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -3267,7 +3263,7 @@ class FaceFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -3278,7 +3274,7 @@ class FaceFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -3288,7 +3284,7 @@ class FaceFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -3301,7 +3297,7 @@ class FaceFaceIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -3314,8 +3310,7 @@ class FaceFaceIterT
   /// Pre-Increment (next cw target)
   FaceFaceIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    do heh_=mesh_->next_halfedge_handle(heh_); while ((*this) && (!handle().is_valid()));;
+    do { heh_=mesh_->next_halfedge_handle(heh_); if(heh_ == start_) lap_counter_++; } while ((*this) && (!handle().is_valid()));
     return *this;
   }
 
@@ -3323,8 +3318,7 @@ class FaceFaceIterT
   /// Pre-Decrement (next ccw target)
   FaceFaceIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    do heh_=mesh_->prev_halfedge_handle(heh_); while ((*this) && (!handle().is_valid()));;
+    do { if(heh_ == start_) lap_counter_--; heh_=mesh_->prev_halfedge_handle(heh_); } while ((*this) && (!handle().is_valid()));
     return *this;
   }
 
@@ -3373,7 +3367,7 @@ class FaceFaceIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -3381,7 +3375,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 
@@ -3425,24 +3419,24 @@ class ConstFaceFaceIterT
 
 
   /// Default constructor
-  ConstFaceFaceIterT() : mesh_(0), active_(false) {}
+  ConstFaceFaceIterT() : mesh_(0), lap_counter_(false) {}
 
 
   /// Construct with mesh and a typename Mesh::FaceHandle
-  ConstFaceFaceIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start) :
+  ConstFaceFaceIterT(mesh_ref _mesh, typename Mesh::FaceHandle _start, bool _end = false) :
     mesh_(&_mesh), 
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
   /// Construct with mesh and start halfedge
-  ConstFaceFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh) :
+  ConstFaceFaceIterT(mesh_ref _mesh, HalfedgeHandle _heh, bool _end = false) :
     mesh_(&_mesh),
     start_(_heh),
     heh_(_heh),
-    active_(false)
+    lap_counter_(_end)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -3451,7 +3445,7 @@ class ConstFaceFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -3461,7 +3455,7 @@ class ConstFaceFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 
@@ -3472,7 +3466,7 @@ class ConstFaceFaceIterT
     mesh_(_rhs.mesh_),
     start_(_rhs.start_),
     heh_(_rhs.heh_),
-    active_(_rhs.active_)
+    lap_counter_(_rhs.lap_counter_)
   { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
 
 
@@ -3482,7 +3476,7 @@ class ConstFaceFaceIterT
     mesh_   = _rhs.mesh_;
     start_  = _rhs.start_;
     heh_    = _rhs.heh_;
-    active_ = _rhs.active_;
+    lap_counter_ = _rhs.lap_counter_;
     return *this;
   }
 #else
@@ -3495,7 +3489,7 @@ class ConstFaceFaceIterT
     return ((mesh_   == _rhs.mesh_) &&
 	    (start_  == _rhs.start_) &&
 	    (heh_    == _rhs.heh_) &&
-	    (active_ == _rhs.active_));
+	    (lap_counter_ == _rhs.lap_counter_));
   }
 
 
@@ -3508,8 +3502,7 @@ class ConstFaceFaceIterT
   /// Pre-Increment (next cw target)
   ConstFaceFaceIterT& operator++() { 
     assert(mesh_);
-    active_ = true;
-    do heh_=mesh_->next_halfedge_handle(heh_); while ((*this) && (!handle().is_valid()));;
+    do { heh_=mesh_->next_halfedge_handle(heh_); if(heh_ == start_) lap_counter_++; } while ((*this) && (!handle().is_valid()));;
     return *this;
   }
 
@@ -3517,8 +3510,7 @@ class ConstFaceFaceIterT
   /// Pre-Decrement (next ccw target)
   ConstFaceFaceIterT& operator--() { 
     assert(mesh_);
-    active_ = true;
-    do heh_=mesh_->prev_halfedge_handle(heh_); while ((*this) && (!handle().is_valid()));;
+    do { if(heh_ == start_) lap_counter_--; heh_=mesh_->prev_halfedge_handle(heh_); } while ((*this) && (!handle().is_valid()));;
     return *this;
   }
 
@@ -3567,7 +3559,7 @@ class ConstFaceFaceIterT
       have completed the first round.
    */
   operator bool() const { 
-    return heh_.is_valid() && ((start_ != heh_) || (!active_));
+    return heh_.is_valid() && ((start_ != heh_) || (lap_counter_ == 0));
   }
 
 
@@ -3575,7 +3567,7 @@ protected:
 
   mesh_ptr         mesh_;
   HalfedgeHandle   start_, heh_;
-  bool             active_;
+  int              lap_counter_;
 };
 
 

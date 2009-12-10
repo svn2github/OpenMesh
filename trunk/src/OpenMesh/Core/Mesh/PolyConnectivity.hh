@@ -333,8 +333,8 @@ public:
   //@{
 
   /// vertex - vertex circulator
-  VertexVertexIter vv_iter(VertexHandle _vh) {
-    return VertexVertexIter(*this, _vh); }
+  VertexVertexIter vv_iter(VertexHandle _vh)
+  { return VertexVertexIter(*this, _vh); }
   /// vertex - incoming halfedge circulator
   VertexIHalfedgeIter vih_iter(VertexHandle _vh)
   { return VertexIHalfedgeIter(*this, _vh); }
@@ -389,6 +389,126 @@ public:
   /// const face - face circulator
   ConstFaceFaceIter cff_iter(FaceHandle _fh) const
   { return ConstFaceFaceIter(*this, _fh); }
+  
+  // 'begin' circulators
+  
+  /// vertex - vertex circulator
+  VertexVertexIter vv_begin(VertexHandle _vh)
+  { return VertexVertexIter(*this, _vh); }
+  /// vertex - incoming halfedge circulator
+  VertexIHalfedgeIter vih_begin(VertexHandle _vh)
+  { return VertexIHalfedgeIter(*this, _vh); }
+  /// vertex - outgoing halfedge circulator
+  VertexOHalfedgeIter voh_begin(VertexHandle _vh)
+  { return VertexOHalfedgeIter(*this, _vh); }
+  /// vertex - edge circulator
+  VertexEdgeIter ve_begin(VertexHandle _vh)
+  { return VertexEdgeIter(*this, _vh); }
+  /// vertex - face circulator
+  VertexFaceIter vf_begin(VertexHandle _vh)
+  { return VertexFaceIter(*this, _vh); }
+
+  /// const vertex circulator
+  ConstVertexVertexIter cvv_begin(VertexHandle _vh) const
+  { return ConstVertexVertexIter(*this, _vh); }
+  /// const vertex - incoming halfedge circulator
+  ConstVertexIHalfedgeIter cvih_begin(VertexHandle _vh) const
+  { return ConstVertexIHalfedgeIter(*this, _vh); }
+  /// const vertex - outgoing halfedge circulator
+  ConstVertexOHalfedgeIter cvoh_begin(VertexHandle _vh) const
+  { return ConstVertexOHalfedgeIter(*this, _vh); }
+  /// const vertex - edge circulator
+  ConstVertexEdgeIter cve_begin(VertexHandle _vh) const
+  { return ConstVertexEdgeIter(*this, _vh); }
+  /// const vertex - face circulator
+  ConstVertexFaceIter cvf_begin(VertexHandle _vh) const
+  { return ConstVertexFaceIter(*this, _vh); }
+
+  /// face - vertex circulator
+  FaceVertexIter fv_begin(FaceHandle _fh)
+  { return FaceVertexIter(*this, _fh); }
+  /// face - halfedge circulator
+  FaceHalfedgeIter fh_begin(FaceHandle _fh)
+  { return FaceHalfedgeIter(*this, _fh); }
+  /// face - edge circulator
+  FaceEdgeIter fe_begin(FaceHandle _fh)
+  { return FaceEdgeIter(*this, _fh); }
+  /// face - face circulator
+  FaceFaceIter ff_begin(FaceHandle _fh)
+  { return FaceFaceIter(*this, _fh); }
+
+  /// const face - vertex circulator
+  ConstFaceVertexIter cfv_begin(FaceHandle _fh) const
+  { return ConstFaceVertexIter(*this, _fh); }
+  /// const face - halfedge circulator
+  ConstFaceHalfedgeIter cfh_begin(FaceHandle _fh) const
+  { return ConstFaceHalfedgeIter(*this, _fh); }
+  /// const face - edge circulator
+  ConstFaceEdgeIter cfe_begin(FaceHandle _fh) const
+  { return ConstFaceEdgeIter(*this, _fh); }
+  /// const face - face circulator
+  ConstFaceFaceIter cff_begin(FaceHandle _fh) const
+  { return ConstFaceFaceIter(*this, _fh); }
+  
+  // 'end' circulators
+  
+  /// vertex - vertex circulator
+  VertexVertexIter vv_end(VertexHandle _vh)
+  { return VertexVertexIter(*this, _vh, true); }
+  /// vertex - incoming halfedge circulator
+  VertexIHalfedgeIter vih_end(VertexHandle _vh)
+  { return VertexIHalfedgeIter(*this, _vh, true); }
+  /// vertex - outgoing halfedge circulator
+  VertexOHalfedgeIter voh_end(VertexHandle _vh)
+  { return VertexOHalfedgeIter(*this, _vh, true); }
+  /// vertex - edge circulator
+  VertexEdgeIter ve_end(VertexHandle _vh)
+  { return VertexEdgeIter(*this, _vh, true); }
+  /// vertex - face circulator
+  VertexFaceIter vf_end(VertexHandle _vh)
+  { return VertexFaceIter(*this, _vh, true); }
+
+  /// const vertex circulator
+  ConstVertexVertexIter cvv_end(VertexHandle _vh) const
+  { return ConstVertexVertexIter(*this, _vh, true); }
+  /// const vertex - incoming halfedge circulator
+  ConstVertexIHalfedgeIter cvih_end(VertexHandle _vh) const
+  { return ConstVertexIHalfedgeIter(*this, _vh, true); }
+  /// const vertex - outgoing halfedge circulator
+  ConstVertexOHalfedgeIter cvoh_end(VertexHandle _vh) const
+  { return ConstVertexOHalfedgeIter(*this, _vh, true); }
+  /// const vertex - edge circulator
+  ConstVertexEdgeIter cve_end(VertexHandle _vh) const
+  { return ConstVertexEdgeIter(*this, _vh, true); }
+  /// const vertex - face circulator
+  ConstVertexFaceIter cvf_end(VertexHandle _vh) const
+  { return ConstVertexFaceIter(*this, _vh, true); }
+
+  /// face - vertex circulator
+  FaceVertexIter fv_end(FaceHandle _fh)
+  { return FaceVertexIter(*this, _fh, true); }
+  /// face - halfedge circulator
+  FaceHalfedgeIter fh_end(FaceHandle _fh)
+  { return FaceHalfedgeIter(*this, _fh, true); }
+  /// face - edge circulator
+  FaceEdgeIter fe_end(FaceHandle _fh)
+  { return FaceEdgeIter(*this, _fh, true); }
+  /// face - face circulator
+  FaceFaceIter ff_end(FaceHandle _fh)
+  { return FaceFaceIter(*this, _fh, true); }
+
+  /// const face - vertex circulator
+  ConstFaceVertexIter cfv_end(FaceHandle _fh) const
+  { return ConstFaceVertexIter(*this, _fh, true); }
+  /// const face - halfedge circulator
+  ConstFaceHalfedgeIter cfh_end(FaceHandle _fh) const
+  { return ConstFaceHalfedgeIter(*this, _fh, true); }
+  /// const face - edge circulator
+  ConstFaceEdgeIter cfe_end(FaceHandle _fh) const
+  { return ConstFaceEdgeIter(*this, _fh, true); }
+  /// const face - face circulator
+  ConstFaceFaceIter cff_end(FaceHandle _fh) const
+  { return ConstFaceFaceIter(*this, _fh, true); }
   //@}
 
   /** \name Boundary and manifold tests
