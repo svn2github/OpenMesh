@@ -2,11 +2,12 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  253 ):
+OpenMesh 2.0-RC5 ( Rev  255 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
 - Made iterators/circulators stl compliant
+- Provide begin/end functions for circulators
 
 * Readers/Writers
 - Fixed build error in STL writer

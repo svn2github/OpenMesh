@@ -7,12 +7,13 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.253)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.255)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Fixed build error in function calc_dihedral_angle_fast</li>
 <li>Made iterators/circulators stl compliant</li>
+<li>Provide begin/end functions for circulators</li>
 </ul>
 
 <b>Readers/Writers</b>
