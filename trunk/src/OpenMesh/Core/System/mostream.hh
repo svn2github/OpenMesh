@@ -180,7 +180,7 @@ protected:
     if (!buffer_.empty())
     {
       if (enabled_) multiplex();
-#if defined(OM_CC_GCC) || OM_CC_VERSION < 30000
+#if defined( OM_CC_GCC ) && OM_CC_VERSION < 30000
       buffer_ = ""; // member clear() not available!
 #else
       buffer_.clear();

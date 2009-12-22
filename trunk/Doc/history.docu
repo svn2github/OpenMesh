@@ -7,19 +7,20 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.255)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.256)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Fixed build error in function calc_dihedral_angle_fast</li>
 <li>Made iterators/circulators stl compliant</li>
 <li>Provide begin/end functions for circulators</li>
+<li>mostream crash fixed (Thanks to Adrian Secord for providing the patch)</li>
 </ul>
 
 <b>Readers/Writers</b>
 <ul>
 <li>Fixed build error in STL writer</li>
-<li>Fixed and enhanced PLY reader to better handling of unknown properties (Thanks to Michal Nociar for the patch)</li>
+<li>Fixed and enhanced PLY reader to improve handling of unknown properties (Thanks to Michal Nociar for the patch)</li>
 </ul>
 
 <b>Documentation</b>
