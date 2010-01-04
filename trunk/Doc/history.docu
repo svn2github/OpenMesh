@@ -21,6 +21,7 @@
 <ul>
 <li>Fixed build error in STL writer</li>
 <li>Fixed and enhanced PLY reader to improve handling of unknown properties (Thanks to Michal Nociar for the patch)</li>
+<li>Fixed crash in Offreader with DOS line endings. (Thanks to Adrian Secord for the patch)</li>
 </ul>
 
 <b>Documentation</b>

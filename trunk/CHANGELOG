@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  256 ):
+OpenMesh 2.0-RC5 ( Rev  258 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
@@ -13,6 +13,7 @@ OpenMesh 2.0-RC5 ( Rev  256 ):
 * Readers/Writers
 - Fixed build error in STL writer
 - Fixed and enhanced PLY reader to improve handling of unknown properties (Thanks to Michal Nociar for the patch)
+- Fixed crash in Offreader with DOS line endings. (Thanks to Adrian Secord for the patch)
 
 * Documentation
 - Added mesh navigation tutorial
