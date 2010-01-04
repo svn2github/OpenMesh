@@ -355,10 +355,10 @@ int _OFFReader_::getColorType(std::string& _line, bool _texCoordsAvailable) cons
 		return 0;
 
     //first remove spaces at start/end of the line
-    while (_line[0] == ' ')
+    while (std::isspace(_line[0]))
       _line = _line.substr(1);
-    while (_line[ _line.length()-1 ] == ' ')
-      _line = _line.substr(0, _line.length()-2);
+    while (std::isspace(_line[ _line.length()-1 ]))
+      _line = _line.substr(0, _line.length()-1);
 
     //count the remaining items in the line
     size_t found;
@@ -370,7 +370,7 @@ int _OFFReader_::getColorType(std::string& _line, bool _texCoordsAvailable) cons
       found=_line.find_first_of(" ",found+1);
     }
 
-    if (_line != "") count++;
+    if (!_line.empty()) count++;
 
     if (_texCoordsAvailable) count -= 2;
 
