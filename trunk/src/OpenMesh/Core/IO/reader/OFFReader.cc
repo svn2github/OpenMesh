@@ -62,6 +62,16 @@
 #include <fstream>
 #include <memory>
 
+#if defined(OM_CC_MIPS)
+#  include <ctype.h>
+/// \bug Workaround for STLPORT 4.6: isspace seems not to be in namespace std!
+#elif defined(_STLPORT_VERSION) && (_STLPORT_VERSION==0x460)
+#  include <cctype>
+#else
+#  include <cctype>
+using std::isspace;
+#endif
+
 #ifndef WIN32
 #include <string.h>
 #endif
