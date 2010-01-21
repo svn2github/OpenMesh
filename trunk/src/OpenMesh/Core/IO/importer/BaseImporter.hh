@@ -114,6 +114,12 @@ public:
   // set vertex texture coordinate
   virtual void set_texcoord(HalfedgeHandle _heh, const Vec2f& _texcoord) = 0;
 
+  // set edge color
+  virtual void set_color(EdgeHandle _eh, const Vec3uc& _color) = 0;
+  
+  // set edge color
+  virtual void set_color(EdgeHandle _eh, const Vec4uc& _color) = 0;
+  
   // set face normal
   virtual void set_normal(FaceHandle _fh, const Vec3f& _normal) = 0;
 

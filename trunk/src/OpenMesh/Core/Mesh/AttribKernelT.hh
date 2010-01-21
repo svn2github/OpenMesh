@@ -119,6 +119,7 @@ public:
     refcount_htexcoords1D_(0),
     refcount_htexcoords2D_(0),
     refcount_htexcoords3D_(0),
+    refcount_ecolors_(0),
     refcount_fnormals_(0),
     refcount_fcolors_(0),
     refcount_ftextureIndex_(0)
@@ -157,6 +158,9 @@ public:
 
     if (EAttribs & Attributes::Status)
       Connectivity::request_edge_status();
+    
+    if (EAttribs & Attributes::Color)
+      request_edge_colors();
 
     if (FAttribs & Attributes::Normal)
       request_face_normals();
@@ -378,6 +382,17 @@ public:
   void set_texcoord3D(HalfedgeHandle _heh, const TexCoord3D& _t) {
     property(halfedge_texcoords3D_, _heh) = _t;
   }
+  
+  //------------------------------------------------------------- edge colors
+  
+  const Color* edge_colors() const
+  { return property(edge_colors_).data(); }
+  
+  const Color& color(EdgeHandle _eh) const
+  { return property(edge_colors_, _eh); }
+  
+  void set_color(EdgeHandle _eh, const Color& _c)
+  { property(edge_colors_, _eh) = _c; }
 
   //-------------------------------------------------------------- face normals
 
@@ -452,6 +467,12 @@ public:
     if (!refcount_htexcoords3D_++)
       add_property( halfedge_texcoords3D_, "h:texcoords3D" );
   }
+  
+  void request_edge_colors()
+  {
+    if (!refcount_ecolors_++)
+      add_property( edge_colors_, "e:colors" );
+  }
 
   void request_face_normals()
   {
@@ -514,6 +535,12 @@ public:
     if ((refcount_htexcoords3D_ > 0) && (! --refcount_htexcoords3D_))
       remove_property(halfedge_texcoords3D_);
   }
+  
+  void release_edge_colors()
+  {
+      if ((refcount_ecolors_ > 0) && (! --refcount_ecolors_))
+          remove_property(edge_colors_);
+  }
 
   void release_face_normals()
   {
@@ -543,6 +570,7 @@ public:
   bool has_halfedge_texcoords1D() const { return halfedge_texcoords1D_.is_valid();}
   bool has_halfedge_texcoords2D() const { return halfedge_texcoords2D_.is_valid();}
   bool has_halfedge_texcoords3D() const { return halfedge_texcoords3D_.is_valid();}
+  bool has_edge_colors()          const { return edge_colors_.is_valid();         }
   bool has_face_normals()         const { return face_normals_.is_valid();        }
   bool has_face_colors()          const { return face_colors_.is_valid();         }
   bool has_face_texture_index()   const { return face_texture_index_.is_valid();  }
@@ -558,6 +586,7 @@ public:
   typedef HPropHandleT<TexCoord1D>          HalfedgeTexCoords1DPropertyHandle;
   typedef HPropHandleT<TexCoord2D>          HalfedgeTexCoords2DPropertyHandle;
   typedef HPropHandleT<TexCoord3D>          HalfedgeTexCoords3DPropertyHandle;
+  typedef EPropHandleT<Color>               EdgeColorsPropertyHandle;
   typedef FPropHandleT<Normal>              FaceNormalsPropertyHandle;
   typedef FPropHandleT<Color>               FaceColorsPropertyHandle;
   typedef FPropHandleT<TextureIndex>        FaceTextureIndexPropertyHandle;
@@ -591,6 +620,10 @@ public:
 
   HalfedgeTexCoords3DPropertyHandle           halfedge_texcoords3D_pph() const
   { return halfedge_texcoords3D_; }
+  
+  // standard edge properties
+  EdgeColorsPropertyHandle                  edge_colors_pph() const
+  { return edge_colors_; }
 
 	//standard face properties
   FaceNormalsPropertyHandle                 face_normals_pph() const
@@ -638,6 +671,8 @@ private:
   HalfedgeTexCoords1DPropertyHandle         halfedge_texcoords1D_;
   HalfedgeTexCoords2DPropertyHandle         halfedge_texcoords2D_;
   HalfedgeTexCoords3DPropertyHandle         halfedge_texcoords3D_;
+  // standard edge properties
+  EdgeColorsPropertyHandle                  edge_colors_;
   //standard face properties
   FaceNormalsPropertyHandle                 face_normals_;
   FaceColorsPropertyHandle                  face_colors_;
@@ -656,6 +691,7 @@ private:
   unsigned int                              refcount_htexcoords1D_;
   unsigned int                              refcount_htexcoords2D_;
   unsigned int                              refcount_htexcoords3D_;
+  unsigned int                              refcount_ecolors_;
   unsigned int                              refcount_fnormals_;
   unsigned int                              refcount_fcolors_;
   unsigned int                              refcount_ftextureIndex_;

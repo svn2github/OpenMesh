@@ -126,6 +126,7 @@ public:
     refcount_vtexcoords_(0),
     refcount_vstatus_(0),
     refcount_estatus_(0),
+    refcount_ecolors_(0),
     refcount_hstatus_(0),
     refcount_fnormals_(0),
     refcount_fcolors_(0),
@@ -152,6 +153,9 @@ public:
 
     if (EAttribs & Attributes::Status)
       request_edge_status();
+    
+    if (EAttribs & Attributes::Color)
+      request_edge_colors();
 
     if (FAttribs & Attributes::Normal)
       request_face_normals();
@@ -188,6 +192,7 @@ public:
     remove_property(vertex_status_);
     remove_property(halfedge_status_);
     remove_property(edge_status_);
+    remove_property(edge_colors_);
     remove_property(face_normals_);
     remove_property(face_colors_);
     remove_property(face_status_);
@@ -203,6 +208,7 @@ public:
     vertex_status_     = _rhs.vertex_status_;
     halfedge_status_   = _rhs.halfedge_status_;
     edge_status_       = _rhs.edge_status_;
+    edge_colors_       = _rhs.edge_colors_;
     face_normals_      = _rhs.face_normals_;
     face_colors_       = _rhs.face_colors_;
     face_status_       = _rhs.face_status_;
@@ -214,6 +220,7 @@ public:
     refcount_vstatus_    = _rhs.refcount_vstatus_;
     refcount_hstatus_    = _rhs.refcount_hstatus_;
     refcount_estatus_    = _rhs.refcount_estatus_;
+    refcount_ecolors_    = _rhs.refcount_ecolors_;
     refcount_fnormals_   = _rhs.refcount_fnormals_;
     refcount_fcolors_    = _rhs.refcount_fcolors_;
     refcount_fstatus_    = _rhs.refcount_fstatus_;
@@ -236,6 +243,11 @@ public:
 
   typename GeoTexCoords::property_ptr_t osg_vtexcoords() 
   { return vtexcoords(vertex_texcoords_).osg_ptr(); }
+  
+  //------------------------------ edge property
+  
+  typename GeoColors::property_ptr_t osg_ecolors() 
+  { return ecolors(edge_colors_).osg_ptr(); }
 
   //------------------------------ face property
 
@@ -333,7 +345,7 @@ public:
   }
 
 
-  //---------------------------------------- edge status
+  //---------------------------------------- halfedge status
 
   const StatusInfo& status(HalfedgeHandle _eh) const {
     return property(halfedge_status_, _eh);
@@ -352,6 +364,20 @@ public:
 
   StatusInfo& status(EdgeHandle _eh) {
     return property(edge_status_, _eh);
+  }
+  
+  //---------------------------------------- edge colors
+  
+  const Color* edge_colors() const {
+      return ecolors(edge_colors_).data(); 
+  }
+  
+  const Color& color(EdgeHandle _eh) const {
+      return ecolors(edge_colors_, _eh);
+  }
+  
+  void set_color(EdgeHandle _eh, const Color& _c) {
+      ecolors(edge_colors_, _eh) = _c;
   }
 
 
@@ -420,6 +446,11 @@ public:
     if (!refcount_estatus_++)
       add_property( edge_status_, "e:status" );
   }
+  
+  void request_edge_colors() {
+    if (!refcount_ecolors_++)
+      edge_colors_ = add_ecolors( Color(), "e:colors" );
+  }
 
   void request_face_normals() {
     if (!refcount_fnormals_++)
@@ -468,6 +499,11 @@ public:
   void release_edge_status() {
     if ((refcount_estatus_ > 0) && (! --refcount_estatus_))
       remove_property(edge_status_);
+  }
+  
+  void release_edge_colors() {
+    if ((refcount_ecolors_ > 0) && (! --refcount_ecolors_))
+      remove_property(edge_colors_);
   }
 
   void release_face_normals() {
@@ -518,6 +554,10 @@ public:
   GenProg::Bool2Type<(bool)(EAttribs & Attributes::Status)> 
   HasEdgeStatus;
 
+  typedef 
+  GenProg::Bool2Type<(bool)(EAttribs & Attributes::Color)> 
+  HasEdgeColors;
+  
 
   typedef 
   GenProg::Bool2Type<(bool)(FAttribs & Attributes::Normal)> 
@@ -540,6 +580,7 @@ public:
   bool has_vertex_status()    const { return vertex_status_.is_valid();    }
   bool has_edge_status()      const { return edge_status_.is_valid();      }
   bool has_halfedge_status()  const { return halfedge_status_.is_valid();  }
+  bool has_edge_colors()      const { return edge_colors_.is_valid();      }
   bool has_face_normals()     const { return face_normals_.is_valid();     }
   bool has_face_colors()      const { return face_colors_.is_valid();      }
   bool has_face_status()      const { return face_status_.is_valid();      }
@@ -626,6 +667,7 @@ private:
   FIndicesHandle              face_indices_;
 
   EPropHandleT<StatusInfo>    edge_status_;
+  EPropHandleT<StatusInfo>    edge_colors_;
   HPropHandleT<StatusInfo>    halfedge_status_;
 
   FPropHandleT<Normal>        face_normals_;
@@ -637,6 +679,7 @@ private:
   unsigned int  refcount_vtexcoords_;
   unsigned int  refcount_vstatus_;
   unsigned int  refcount_estatus_;
+  unsigned int  refcount_ecolors_;
   unsigned int  refcount_hstatus_;
   unsigned int  refcount_fnormals_;
   unsigned int  refcount_fcolors_;

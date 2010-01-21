@@ -94,17 +94,18 @@ public:
   /// Definitions of %Options for reading and writing. The options can be
   /// or'ed.
   enum Flag {
-    Default        = 0x0000, ///< No options
-    Binary         = 0x0001, ///< Set binary mode for r/w
-    MSB            = 0x0002, ///< Assume big endian byte ordering
-    LSB            = 0x0004, ///< Assume little endian byte ordering
-    Swap           = 0x0006, ///< Swap byte order in binary mode
-    VertexNormal   = 0x0010, ///< Has (r) / store (w) vertex normals
-    VertexColor    = 0x0020, ///< Has (r) / store (w) vertex colors
-    VertexTexCoord = 0x0040, ///< Has (r) / store (w) texture coordinates
-    FaceNormal     = 0x0100, ///< Has (r) / store (w) face normals
-    FaceColor      = 0x0200, ///< Has (r) / store (w) face colors
-    ColorAlpha     = 0x0400  ///< Has (r) / store (w) alpha values for colors
+    Default        = 0x00000, ///< No options
+    Binary         = 0x00001, ///< Set binary mode for r/w
+    MSB            = 0x00002, ///< Assume big endian byte ordering
+    LSB            = 0x00004, ///< Assume little endian byte ordering
+    Swap           = 0x00006, ///< Swap byte order in binary mode
+    VertexNormal   = 0x00010, ///< Has (r) / store (w) vertex normals
+    VertexColor    = 0x00020, ///< Has (r) / store (w) vertex colors
+    VertexTexCoord = 0x00040, ///< Has (r) / store (w) texture coordinates
+    EdgeColor      = 0x00100, ///< Has (r) / store (w) texture coordinates
+    FaceNormal     = 0x01000, ///< Has (r) / store (w) face normals
+    FaceColor      = 0x02000, ///< Has (r) / store (w) face colors
+    ColorAlpha     = 0x04000  ///< Has (r) / store (w) alpha values for colors
   };
 
 public:
@@ -195,6 +196,7 @@ public:
   bool vertex_has_normal()   const { return check(VertexNormal); }
   bool vertex_has_color()    const { return check(VertexColor); }
   bool vertex_has_texcoord() const { return check(VertexTexCoord); }
+  bool edge_has_color()      const { return check(EdgeColor); }
   bool face_has_normal()     const { return check(FaceNormal); }
   bool face_has_color()      const { return check(FaceColor); }
   bool color_has_alpha()     const { return check(ColorAlpha); }

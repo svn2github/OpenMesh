@@ -101,6 +101,10 @@ public:
   virtual Vec3f  normal(FaceHandle _fh)      const = 0;
   virtual Vec3uc color (FaceHandle _fh)      const = 0;
   virtual Vec4uc colorA(FaceHandle _fh)      const = 0;  
+  
+  // get edge data
+  virtual Vec3uc color(EdgeHandle _eh)    const = 0;
+  virtual Vec4uc colorA(EdgeHandle _eh)   const = 0;
 
   // get reference to base kernel
   virtual const BaseKernel* kernel() { return 0; }
@@ -116,7 +120,8 @@ public:
   virtual bool is_triangle_mesh()     const { return false; }
   virtual bool has_vertex_normals()   const { return false; }
   virtual bool has_vertex_colors()    const { return false; }
-  virtual bool has_vertex_texcoords() const { return false; }      
+  virtual bool has_vertex_texcoords() const { return false; }
+  virtual bool has_edge_colors()      const { return false; }      
   virtual bool has_face_normals()     const { return false; }
   virtual bool has_face_colors()      const { return false; }
 };

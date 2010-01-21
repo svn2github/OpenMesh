@@ -128,6 +128,22 @@ public:
 	    : Vec2f(0.0f, 0.0f));
 #endif
   }
+  
+  // get edge data
+  
+  Vec3uc color(EdgeHandle _eh)    const
+  {
+      return (mesh_.has_edge_colors() 
+      ? color_cast<Vec3uc>(mesh_.color(_eh)) 
+      : Vec3uc(0, 0, 0));
+  }
+  
+  Vec4uc colorA(EdgeHandle _eh)   const
+  {
+      return (mesh_.has_edge_colors() 
+      ? color_cast<Vec4uc>(mesh_.color(_eh)) 
+      : Vec4uc(0, 0, 0, 0));
+  }
 
   
   // get face data
@@ -182,6 +198,7 @@ public:
   bool has_vertex_normals()   const { return mesh_.has_vertex_normals();   }
   bool has_vertex_colors()    const { return mesh_.has_vertex_colors();    }
   bool has_vertex_texcoords() const { return mesh_.has_vertex_texcoords2D(); }
+  bool has_edge_colors()      const { return mesh_.has_edge_colors();      }
   bool has_face_normals()     const { return mesh_.has_face_normals();     }
   bool has_face_colors()      const { return mesh_.has_face_colors();      }
 

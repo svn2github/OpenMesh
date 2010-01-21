@@ -169,6 +169,19 @@ public:
       mesh_.set_texcoord2D(_heh, vector_cast<TexCoord2D>(_texcoord));
   }
 
+  // edge attributes
+  
+  virtual void set_color(EdgeHandle _eh, const Vec4uc& _color)
+  {
+      if (mesh_.has_edge_colors())
+          mesh_.set_color(_eh, color_cast<Color>(_color));
+  }
+  
+  virtual void set_color(EdgeHandle _eh, const Vec3uc& _color)
+  {
+      if (mesh_.has_edge_colors())
+          mesh_.set_color(_eh, color_cast<Color>(_color));
+  }
 
   // face attributes
 
