@@ -102,7 +102,7 @@ public:
     VertexNormal   = 0x00010, ///< Has (r) / store (w) vertex normals
     VertexColor    = 0x00020, ///< Has (r) / store (w) vertex colors
     VertexTexCoord = 0x00040, ///< Has (r) / store (w) texture coordinates
-    EdgeColor      = 0x00100, ///< Has (r) / store (w) texture coordinates
+    EdgeColor      = 0x00100, ///< Has (r) / store (w) edge colors
     FaceNormal     = 0x01000, ///< Has (r) / store (w) face normals
     FaceColor      = 0x02000, ///< Has (r) / store (w) face colors
     ColorAlpha     = 0x04000  ///< Has (r) / store (w) alpha values for colors
