@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.256)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.263)</td><td>
 
 <b>Core</b>
 <ul>
@@ -15,6 +15,7 @@
 <li>Made iterators/circulators stl compliant</li>
 <li>Provide begin/end functions for circulators</li>
 <li>mostream crash fixed (Thanks to Adrian Secord for providing the patch)</li>
+<li>added colors to status flags for edges ( request_edge_color ... )</li>
 </ul>
 
 <b>Readers/Writers</b>
@@ -28,6 +29,7 @@
 <ul>
 <li>Added mesh navigation tutorial</li>
 <li>Added iterator tutorial</li>
+<li>Updated tutorial and docu for mesh circulators</li>
 <li>Examples for flipping and collapsing edges</li>
 <li>Fixed a lot of doxygen warnings</li>
 <li>Fixed some spellings</li>
