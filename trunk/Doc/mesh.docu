@@ -703,24 +703,25 @@ provided by %OpenMesh which can be found in the IO subdirectory.
 
 /** \page mesh_iterators Mesh Iterators and Circulators
 
+- \ref it_iters
+- \ref it_iters_h
+- \ref it_circs
+- \ref it_circs_h
+
+\section it_iters Iterators
+
 The mesh provides linear iterators (that enumerate vertices,
-halfedges, edges, and faces) and so called circulators (to iterate \em
-around a vertex or a face). These can be used to easily navigate
+halfedges, edges, and faces). These can be used to easily navigate
 through a mesh. Each iterator \c XYZIter also exists in a const
 version \c ConstXYZIter. 
 
-All iterators and circulators are defined in the namespace
+All iterators are defined in the namespace
 OpenMesh::Iterators. They are template classes that expect a mesh as
 template argument to be fully specified. You should use the
-iterator/circulator types provided by the mesh itself, i.e. \c
-MyMesh::VertexIter instead of \c
-OpenMesh::Iterators::VertexIterT<MyMesh>. 
+iterator types provided by the mesh itself, i.e. \c MyMesh::VertexIter instead of \c
+OpenMesh::Iterators::VertexIterT<MyMesh>.
 
-
-\subsection subsec_iterators Linear Iterators
-
-The linear iterators are used to enumerate all mesh items, e.g. for
-rendering purposes. The iterators and their \c const counterparts are:
+The iterators are:
 
 \include iterators.cc
 
@@ -737,6 +738,8 @@ description of their interface see OpenMesh::Concepts::IteratorT.
 
 For efficiency reasons the \c operation++(int) (post-increment)
 and \c operation--(int) (post-decrement) are not implemented.
+Hence, when using iterators, use the pre-increment operation
+(++it).
 Additionally to the standard operations, each linear iterator
 provides a method \c handle(), which returns the handle of the
 item referred to by the iterator.
@@ -746,19 +749,39 @@ handle of an item. To store many references to an item, it is
 therefore better to use handles.
 
 
-<br><br>
-\subsection subsec_circulators Circulators
+\section it_iters_h How to use iterators in OpenMesh
 
-Circulators provide means to enumerate items adjacent to
-another item of the same or another type. For example,
-a \c VertexVertexIter allows to enumerate all vertices
+This example shows how to iterate over all faces of a mesh:
+
+\code
+
+MyMesh mesh;
+
+for(MyMesh::FaceIter f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it) {
+    std::cout << "The face's valence is " << mesh.valence( f_it.handle() ) << std::endl;
+}
+
+\endcode
+
+
+\section it_circs Circulators
+
+%OpenMesh also provides so called Circulators that
+provide means to enumerate items adjacent to
+another item of the same or another type.
+For example, a \c VertexVertexIter allows to enumerate all vertices
 immediately adjacent to a (center) vertex (i.e. it allows
 to enumerate the so-called 1-ring of the center vertex).
 Analogously, a \c FaceHalfedgeIter enumerates all the
 halfedges belonging to a face.
 In general, \c CenterItem_AuxiliaryInformation_TargetItem_Iter
-designates a circulator that enumarates all the target items
+designates a circulator that enumerates all the target items
 around a given center item.
+
+The constructor of a circulator is of the form
+\c Circulator(MeshType mesh, TargetHandle center_handle),
+i.e. it takes a mesh and the handle of the item to circulate
+around.
 
 The circulators around a vertex are:
 
@@ -774,11 +797,6 @@ The circulators around a face are:
 \arg \c FaceHalfedgeIter: iterate over the face's halfedges.
 \arg \c FaceEdgeIter: iterate over the face's edges.
 \arg \c FaceFaceIter: iterate over all edge-neighboring faces.
-
-The constructor of a circulator is of the form
-\c Circulator(MeshType mesh, TargetHandle center_handle),
-i.e. it takes a mesh and the handle of the item to iterate
-around.
 
 All circulators provide the operations listed in
 CirculatorT<Mesh>, which are basically the same as the
@@ -802,9 +820,32 @@ the circulator of an item. Example:<br/>
 ConstVertexVertexIter cvvit = mesh.cvv_iter(some_vertex_handle);
 \endcode
 
+\section it_circs_h How to use circulators in OpenMesh
+
 The following code example now shows how to enumerate the 1-ring of each vertex:
 
 \include circulators.cc
+
+Enumerating all halfedges adjacent to a certain face (the inner halfedges) is accomplished
+as follows:
+
+\code
+
+MyMesh mesh;
+
+...
+
+// Assuming faceHandle contains the face handle of the target face
+
+MyMesh::FaceHalfedgeIter fh_it = mesh.fh_iter(faceHandle);
+
+for(; fh_it; ++fh_it) {
+    std::cout << "Halfedge has handle " << fh_it.handle() << std::endl;
+}
+
+\endcode
+
+
 
 */
 

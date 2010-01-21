@@ -342,6 +342,7 @@ public: // Standard Property Management
   void request_halfedge_texcoords3D();
 
   void request_edge_status();
+  void request_edge_colors();
 
   void request_face_normals();
   void request_face_colors();
@@ -365,6 +366,7 @@ public: // Standard Property Management
   void release_halfedge_texcoords3D();
 
   void release_edge_status();
+  void release_edge_colors();
 
   void release_face_normals();
   void release_face_colors();
@@ -388,6 +390,7 @@ public: // Standard Property Management
   bool has_halfedge_texcoords3D() const;
 
   bool has_edge_status() const;
+  bool has_edge_colors() const;
 
   bool has_face_normals() const;
   bool has_face_colors() const;

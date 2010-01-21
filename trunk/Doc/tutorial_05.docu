@@ -26,7 +26,7 @@ entity for which it can be used.
     <td>Color</td>
     <td>X</td>
     <td>X</td>
-    <td>&nbsp;</td>
+    <td>X</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -108,6 +108,7 @@ are:
 
 <ul>
 <li>request_edge_status()</li>
+<li>request_edge_colors()</li>
 <li>request_face_colors()</li>
 <li>request_face_normals()</li>
 <li>request_face_status()</li>
@@ -128,6 +129,7 @@ Added properties can be released by the following functions:
 
 <ul>
 <li>release_edge_status()</li>
+<li>release_edge_colors()</li>
 <li>release_face_colors()</li>
 <li>release_face_normals()</li>
 <li>release_face_status()</li>
@@ -148,6 +150,7 @@ A property's existance can be tested with
 
 <ul>
 <li>has_edge_status()</li>
+<li>has_edge_colors()</li>
 <li>has_face_colors()</li>
 <li>has_face_normals()</li>
 <li>has_face_status()</li>
