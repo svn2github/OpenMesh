@@ -94,18 +94,18 @@ public:
   /// Definitions of %Options for reading and writing. The options can be
   /// or'ed.
   enum Flag {
-    Default        = 0,      ///< No options
-    Binary         = 1,      ///< Set binary mode for r/w
-    MSB            = 1 << 1, ///< Assume big endian byte ordering
-    LSB            = 1 << 2, ///< Assume little endian byte ordering
-    Swap           = 1 << 3, ///< Swap byte order in binary mode
-    VertexNormal   = 1 << 4, ///< Has (r) / store (w) vertex normals
-    VertexColor    = 1 << 5, ///< Has (r) / store (w) vertex colors
-    VertexTexCoord = 1 << 6, ///< Has (r) / store (w) texture coordinates
-    EdgeColor      = 1 << 7, ///< Has (r) / store (w) edge colors
-    FaceNormal     = 1 << 8, ///< Has (r) / store (w) face normals
-    FaceColor      = 1 << 9, ///< Has (r) / store (w) face colors
-    ColorAlpha     = 1 << 10 ///< Has (r) / store (w) alpha values for colors
+      Default        = 0x0000, ///< No options
+      Binary         = 0x0001, ///< Set binary mode for r/w
+      MSB            = 0x0002, ///< Assume big endian byte ordering
+      LSB            = 0x0004, ///< Assume little endian byte ordering
+      Swap           = 0x0006, ///< Swap byte order in binary mode
+      VertexNormal   = 0x0010, ///< Has (r) / store (w) vertex normals
+      VertexColor    = 0x0020, ///< Has (r) / store (w) vertex colors
+      VertexTexCoord = 0x0040, ///< Has (r) / store (w) texture coordinates
+      EdgeColor      = 0x0080, ///< Has (r) / store (w) texture coordinates
+      FaceNormal     = 0x0100, ///< Has (r) / store (w) face normals
+      FaceColor      = 0x0200, ///< Has (r) / store (w) face colors
+      ColorAlpha     = 0x0400  ///< Has (r) / store (w) alpha values for colors
   };
 
 public:
