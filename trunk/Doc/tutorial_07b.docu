@@ -18,7 +18,7 @@ The struct which defines the mesh traits then looks like this:
 After having created the geometry of the cube one can delete faces and vertices
 by simply calling delete_vertices() (delete_faces() or delete_edges() respectively).
 
-Note that there is actually no way to delete halfedges directly since they are automatically
+Note that there is actually no way to directly delete halfedges since they are automatically
 affected when the parent edge is marked as deleted!
 
 The status whether an element is marked as deleted can be requested by
