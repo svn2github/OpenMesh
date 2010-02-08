@@ -127,7 +127,7 @@ calc_face_normal(const Point& _p0,
   // The expression ((n *= (1.0/norm)),n) is used because the OpenSG
   // vector class does not return self after component-wise
   // self-multiplication with a scalar!!!
-  return (norm != Scalar(0)) ? ((n *= (Scalar(1)/norm)),n) : Normal(0,0,0);
+  return (norm != typename Normal::value_type(0)) ? ((n *= (typename Normal::value_type(1)/norm)),n) : Normal(0,0,0);
 #else
   Point p1p0 = _p0;  p1p0 -= _p1;
   Point p1p2 = _p2;  p1p2 -= _p1;
