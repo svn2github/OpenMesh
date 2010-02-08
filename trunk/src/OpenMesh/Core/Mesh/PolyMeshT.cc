@@ -118,11 +118,11 @@ calc_face_normal(const Point& _p0,
   // The OpenSG <Vector>::operator -= () does not support the type Point
   // as rhs. Therefore use vector_cast at this point!!!
   // Note! OpenSG distinguishes between Normal and Point!!!
-  Normal p1p0(_p0);  p1p0 -= vector_cast<Normal>(_p1);
-  Normal p1p2(_p2);  p1p2 -= vector_cast<Normal>(_p1);
+  Normal p1p0(vector_cast<Normal>(_p0));  p1p0 -= vector_cast<Normal>(_p1);
+  Normal p1p2(vector_cast<Normal>(_p2));  p1p2 -= vector_cast<Normal>(_p1);
 
   Normal n    = cross(p1p2, p1p0);
-  Scalar norm = n.length();
+  typename Normal::value_type norm = n.length();
 
   // The expression ((n *= (1.0/norm)),n) is used because the OpenSG
   // vector class does not return self after component-wise
@@ -133,7 +133,7 @@ calc_face_normal(const Point& _p0,
   Point p1p2 = _p2;  p1p2 -= _p1;
 
   Normal n = vector_cast<Normal>(cross(p1p2, p1p0));
-  Scalar norm = n.length();
+  typename Normal::value_type norm = n.length();
 
   return (norm != 0.0) ? n *= (1.0/norm) : Normal(0,0,0);
 #endif
