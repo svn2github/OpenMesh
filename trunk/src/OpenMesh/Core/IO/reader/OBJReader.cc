@@ -172,7 +172,7 @@ read_material(std::fstream& _in)
 
     stream >> keyWrd;
 
-    if( isspace(line[0]) || line[0] == '#' )
+    if( ( isspace(line[0]) && line[0] != 0x09 /*tab*/ ) || line[0] == '#' )
     {
       if (indef && !key.empty() && mat.is_valid())
       {
