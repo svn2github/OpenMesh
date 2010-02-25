@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.263)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.273)</td><td>
 
 <b>Core</b>
 <ul>
@@ -16,6 +16,7 @@
 <li>Provide begin/end functions for circulators</li>
 <li>mostream crash fixed (Thanks to Adrian Secord for providing the patch)</li>
 <li>added colors to status flags for edges ( request_edge_color ... )</li>
+<li>Fixed issue with wrong normal scalar type when using integer points and float normals ( Thanks to Clement Courbet for reporting this bug)</li>
 </ul>
 
 <b>Readers/Writers</b>
@@ -23,6 +24,7 @@
 <li>Fixed build error in STL writer</li>
 <li>Fixed and enhanced PLY reader to improve handling of unknown properties (Thanks to Michal Nociar for the patch)</li>
 <li>Fixed crash in Offreader with DOS line endings. (Thanks to Adrian Secord for the patch)</li>
+<li>Fixed obj readers for some files containing tabs</li>
 </ul>
 
 <b>Documentation</b>
@@ -30,6 +32,7 @@
 <li>Added mesh navigation tutorial</li>
 <li>Added iterator tutorial</li>
 <li>Updated tutorial and docu for mesh circulators</li>
+<li>Updated tutorial on deleting geometry</li>
 <li>Examples for flipping and collapsing edges</li>
 <li>Fixed a lot of doxygen warnings</li>
 <li>Fixed some spellings</li>

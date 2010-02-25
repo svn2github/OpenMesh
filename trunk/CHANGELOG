@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  263 ):
+OpenMesh 2.0-RC5 ( Rev  273 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
@@ -10,16 +10,19 @@ OpenMesh 2.0-RC5 ( Rev  263 ):
 - Provide begin/end functions for circulators
 - mostream crash fixed (Thanks to Adrian Secord for providing the patch)
 - added colors to status flags for edges ( request_edge_color ... )
+- Fixed issue with wrong normal scalar type when using integer points and float normals (Thanks to Clement Courbet for reporting this bug)
 
 * Readers/Writers
 - Fixed build error in STL writer
 - Fixed and enhanced PLY reader to improve handling of unknown properties (Thanks to Michal Nociar for the patch)
 - Fixed crash in Offreader with DOS line endings. (Thanks to Adrian Secord for the patch)
+- Fixed obj readers for some files containing tabs
 
 * Documentation
 - Added mesh navigation tutorial
 - Added iterator tutorial
 - Updated tutorial and docu for mesh circulators
+- Updated tutorial on deleting geometry
 - Examples for flipping and collapsing edges
 - Fixed a lot of doxygen warnings
 - Fixed some spellings
