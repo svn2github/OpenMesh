@@ -638,7 +638,8 @@ EXAMPLE_PATH           = Examples \
 # blank all files are included.
 
 EXAMPLE_PATTERNS       = *.cc \
-                         *.hh
+                         *.hh \
+                         *.txt
 
 # If the EXAMPLE_RECURSIVE tag is set to YES then subdirectories will be 
 # searched for input files to be used with the \include or \dontinclude 

@@ -1,4 +1,4 @@
-/** \page mesh_operations Some basic operations on a mesh
+/** \page mesh_operations Some basic operations: Flipping and collapsing edges
 
 In this section you will learn about some basic operations on a mes that %OpenMesh
 already provides. Comprising the flipping of edges in a triangle mesh as well as

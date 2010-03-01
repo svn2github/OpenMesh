@@ -2,46 +2,83 @@
 
 Welcome to the %OpenMesh documentation. %OpenMesh is a generic and efficient library
 that offers data structures for representing and manipulating polygonal meshes.
+It is a powerful tool for handling polygonal
+meshes. Due to its inherent generative structure it allows the user to
+create mesh types which are custom tailored to the specific needs of
+the application. The user can either supply his own data structures
+for representing vertices, edges and faces or he can conveniently use
+the predefined structures of %OpenMesh.
+Additionally %OpenMesh offers dynamic properties allowing the user to attach
+and detach data to the mesh during runtime.
+    
 Here you can find information on how to build projects using the %OpenMesh library
 as well as further information on mesh handling in %OpenMesh.
 The tutorials explain how to use %OpenMesh by demonstrating real code examples.
 
-\section iov Introduction
+\section iov Building OpenMesh
 In this section all necessary information on how to build projects using %OpenMesh
-is given. Additionally you can read about the internal naming conventions
-to facilitate understanding the %OpenMesh source code. Changes to %OpenMesh are
-logged in the Version history.
+is given.
 
 \li \ref compiling
-\li \ref naming_conventions
-\li \ref history
+
+\section tutorial Tutorials (code examples)
+
+This section is supposed to introduce the basic concepts of
+%OpenMesh. <!--For detailed information, consult the online documentation
+(\ref mesh_docu).-->
+
+<!--In this tutorial we will introduce the %OpenMesh library by means of
+simple examples. The first one just builds a polygonal mesh
+representing a cube and writes the result to standard output. The
+following examples develop a simple mesh smoother: Recall that the
+immediate neighbors of a vertex are called the 1-ring of this
+vertex. It is well known that a polygonal mesh can be smoothed by
+repeatedly replacing each vertex' position by the center of gravity
+(cog) of its 1-ring. The basic smoother will
+
+\li read a polygonal mesh from standard input,
+\li compute the cog of the 1-ring of each vertex,
+\li replace each vertex' position by its cog and finally,
+\li write the mesh to standard output.-->
+
+\li \ref mesh_type
+\li \ref tutorial_01
+\li \ref tutorial_build
+\li \ref tutorial_02
+\li \ref tutorial_03
+\li \ref tutorial_04
+\li \ref tutorial_05
+\li \ref tutorial_06
+\li \ref tutorial_07
+\li \ref tutorial_07b
+\li \ref tutorial_08
+\li \ref tutorial_09
 
 \section mesh_docu Using and understanding OpenMesh
+
 We provide a short overview over the functionality of the %OpenMesh
-library and some additional concepts in \ref tutorial. Additionally we explain the 
+library and some additional concepts in \ref tutorial. Additionally, we explain the 
 most important topics of %OpenMesh in the following sections:
 
 \li \ref mesh_first_to_read
 \li \ref mesh_features
 \li \ref mesh_cpp
+\li \ref mesh_hierarchy
 \li \ref mesh_hds
 \li \ref mesh_iterators
 \li \ref mesh_navigation
 \li \ref mesh_io
-\li \ref mesh_type
 \li \ref mesh_operations
-\li \ref mesh_hierarchy
-\li \ref mesh_members
 
 The %OpenMeshTools library that contains some useful tools
 for i.e. mesh processing:
-
+    
 \li \ref tools_docu
 
-\section tov Tutorials
-This section offers some useful code examples in order to show
-how to use the provided mesh structures.
+\section background Additional information on OpenMesh
 
-\li \ref tutorial
+\li \ref mesh_members
+\li \ref naming_conventions
+\li \ref history
 
 **/
