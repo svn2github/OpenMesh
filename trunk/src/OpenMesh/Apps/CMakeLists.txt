@@ -12,6 +12,8 @@ add_subdirectory (Smoothing)
 add_subdirectory (Subdivider/commandlineSubdivider)
 add_subdirectory (Subdivider/commandlineAdaptiveSubdivider)
 add_subdirectory (mconvert)
+add_subdirectory (VDProgMesh/mkbalancedpm)
+add_subdirectory (VDProgMesh/Analyzer)
 
 # check for OpenGL, GLEW and GLUT as our required dependencies
 if (QT4_FOUND AND OPENGL_FOUND AND GLEW_FOUND AND GLUT_FOUND AND NOT BUILD_APPS STREQUAL OFF  )
