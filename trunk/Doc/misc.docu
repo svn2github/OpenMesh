@@ -70,9 +70,7 @@ Install the following external libraries / frameworks if you want to use the inc
 
 \section build_systems Chosing build system
 
-%OpenMesh can be built either using <b>cmake</b> or <b>qmake</b> (that already comes along
-with the qt framework) . We strongly recommend use of the <b>cmake</b> build system.
-<br>
+%OpenMesh can be built using the <b>cmake</b> build system.
 <br>
 <br>
 
@@ -108,21 +106,6 @@ There are some additional targets:<br>
 <br>
 <br>
 
-\subsection linux_using_qmake Compiling OpenMesh using QMake
-
-In order to compile OpenMesh, enter following commands in OpenMesh's root directory:<br><br>
-<tt>
-qmake&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
-make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
-</tt><br>
-Make sure to use Qt version 4 (some linux distributions<br>
-use the link \c qmake-qt4 against the executable).
-<br>
-<br>
-<br>
-<br>
-
-
 \section sec_compiling_windows Windows
 
 \subsection windows_using_cmake Compiling OpenMesh using CMake
@@ -146,26 +129,6 @@ Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.s
 <li> Now you can build OpenMesh from within Visual Studio using the newly created project file. </li>
 </ul>
 
-\subsection windows_using_qmake Compiling OpenMesh using QMake
-
-If you want to use qmake to build your Visual Studio 2008 solution file,<br>
-download and install the Qt4 framework from <a href="http://www.qtsoftware.com/downloads" target="_blank">Trolltech</a>.<br>
-(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
-Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
-<br>
-<br>
-Open \c OpenMesh\qmake\packages\packages.Windows in a text editor and change the include and library paths<br>
-for GLEW and GLUT such that they match the installed ones (see comments to find the right path entries).
-<ul>
-<li>In Microsoft Visual Studio 2008 open <tt> Tools->Visual Studio command prompt </tt></li>
-<li>Go to the folder of your application and call \c C:\\qt4\\bin\\qmake.exe -r</li>
-<li>Open the resulting visual studio solution ( *.sln )</li>
-<li>Choose which build target to use ( Debug/Release )</li>
-<li>Choose \c Build \c solution from the build menu</li>
-</ul>
-
-<br>
-<br>
 <br>
 <br>
 
@@ -195,16 +158,6 @@ The mac application bundle will be found under "Build" in the recently created b
 It automatically contains all needed shared objects (libs, fonts, textures, etc.).
 
 CMake builds both shared and static under MacOS X.
-
-\subsection mac_using_qmake Compiling OpenMesh using QMake
-
-Adapt the header paths of at least GLEW (optional freetype, FTGL,...) in file <b>OpenMesh/qmake/packages/packages.Darwin</b>.
-<br><br>
-In order to compile and install OpenMesh, open a Terminal window and enter following commands in OpenMesh's root directory:<br><br>
-<tt>
-qmake -spec macx-g++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
-make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
-</tt>
 
 **/
 
