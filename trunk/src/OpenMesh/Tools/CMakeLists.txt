@@ -14,6 +14,7 @@ set (directories
   Subdivider/Uniform/Composite 
   Subdivider/Uniform
   Utils
+  VDPM
 )
 
 # collect all header and source files
