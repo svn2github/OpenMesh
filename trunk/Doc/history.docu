@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.273)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.278)</td><td>
 
 <b>Core</b>
 <ul>
@@ -29,6 +29,7 @@
 
 <b>Documentation</b>
 <ul>
+<li>Updated Documentation front page</li>
 <li>Added mesh navigation tutorial</li>
 <li>Added iterator tutorial</li>
 <li>Updated tutorial and docu for mesh circulators</li>

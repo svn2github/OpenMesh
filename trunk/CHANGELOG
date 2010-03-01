@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  273 ):
+OpenMesh 2.0-RC5 ( Rev  278 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
@@ -19,6 +19,7 @@ OpenMesh 2.0-RC5 ( Rev  273 ):
 - Fixed obj readers for some files containing tabs
 
 * Documentation
+- Updated Documentation front page
 - Added mesh navigation tutorial
 - Added iterator tutorial
 - Updated tutorial and docu for mesh circulators
