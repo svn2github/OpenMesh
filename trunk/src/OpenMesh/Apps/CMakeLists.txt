@@ -18,6 +18,7 @@ if (QT4_FOUND AND OPENGL_FOUND AND GLEW_FOUND AND GLUT_FOUND AND NOT BUILD_APPS 
   add_subdirectory (Decimating/DecimaterGui)
   add_subdirectory (QtViewer)
   add_subdirectory (Subdivider/SubdividerGui)
+  add_subdirectory (ProgViewer)
 else ()
   if ( BUILD_APPS STREQUAL OFF )
     message ("Building Apps disabled by user.")
