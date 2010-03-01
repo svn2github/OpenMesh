@@ -298,11 +298,26 @@ public: // Standard Property Management
   void set_normal(VertexHandle _vh, const Normal& _n); ///< Set normal
 
   const Color& color(VertexHandle _vh) const; ///< Get color
-  void set_color(VertexHandle _vh, const Color& _c) ///< Set color
+  void set_color(VertexHandle _vh, const Color& _c); ///< Set color
 
-  const TexCoord& texcoord(VertexHandle _vh) const; ///< Get texture coordinate.
-  void set_texcoord(VertexHandle _vh, const TexCoord& _t); ///< Set texture coordinate.
+  const TexCoord1D& texcoord1D(VertexHandle _vh) const; ///< Get texture coordinate.
+  void set_texcoord1D(VertexHandle _vh, const TexCoord1D& _t); ///< Set texture coordinate.
 
+  const TexCoord2D& texcoord2D(VertexHandle _vh) const; ///< Get texture coordinate.
+  void set_texcoord2D(VertexHandle _vh, const TexCoord2D& _t); ///< Set texture coordinate.
+  
+  const TexCoord3D& texcoord3D(VertexHandle _vh) const; ///< Get texture coordinate.
+  void set_texcoord3D(VertexHandle _vh, const TexCoord3D& _t); ///< Set texture coordinate.
+  
+  const TexCoord1D& texcoord1D(HalfedgeHandle _hh) const; ///< Get texture coordinate.
+  void set_texcoord1D(HalfedgeHandle _hh, const TexCoord1D& _t); ///< Set texture coordinate.
+
+  const TexCoord2D& texcoord2D(HalfedgeHandle _hh) const; ///< Get texture coordinate.
+  void set_texcoord2D(HalfedgeHandle _hh, const TexCoord2D& _t); ///< Set texture coordinate.
+  
+  const TexCoord3D& texcoord3D(HalfedgeHandle _hh) const; ///< Get texture coordinate.
+  void set_texcoord3D(HalfedgeHandle _hh, const TexCoord3D& _t); ///< Set texture coordinate.
+  
   const StatusInfo& status(VertexHandle _vh) const; ///< Get status
   StatusInfo& status(VertexHandle _vh); ///< Get status
 
