@@ -116,7 +116,7 @@ public:
   VDPMSynthesizerViewerWidget(QWidget* _parent=0, const char* _name=0)
     : MeshViewerWidget(_parent)
   {
-    adaptive_mode_ = false;
+    adaptive_mode_ = true;
   }
 
   ~VDPMSynthesizerViewerWidget()

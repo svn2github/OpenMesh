@@ -545,8 +545,6 @@ open_vd_prog_mesh(const char* _filename)
 }
 
 
-
-
 void VDPMSynthesizerViewerWidget::keyPressEvent(QKeyEvent* _event)
 {
   switch (_event->key())
@@ -559,14 +557,14 @@ void VDPMSynthesizerViewerWidget::keyPressEvent(QKeyEvent* _event)
       updateGL();
       break;
       
-    case Key_Plus:
+    case Key_Minus:
       viewing_parameters_.increase_tolerance();
       std::cout << "Scree-space error tolerance^2 is increased by " 
 		<< viewing_parameters_.tolerance_square() << std::endl;
       updateGL();
       break;
-      
-    case Key_Minus:
+    
+    case Key_Plus:
       viewing_parameters_.decrease_tolerance();
       std::cout << "Screen-space error tolerance^2 is decreased by " 
 		<< viewing_parameters_.tolerance_square() << std::endl;

@@ -88,6 +88,7 @@ int main(int argc, char **argv)
 	    << "       Plus  : Refine mesh\n"
 	    << "       Home  : Coarsen down to base mesh\n"
 	    << "       End   : Refine up to finest mesh\n"
+	    << "       a     : Switch off / on adaptive refinement\n"
 	    << "\n";
 	    
   return app.exec();
