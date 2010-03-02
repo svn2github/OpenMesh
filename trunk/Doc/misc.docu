@@ -121,13 +121,18 @@ Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.s
 <li> Extract OpenMesh source code. </li>
 <li> Get all required libraries and install them ( including headers! ).</li>
 <li> Get cmake for windows from http://www.cmake.org/cmake/resources/software.html <li>
-<li> Start the cmake gui and open the OpenMesh toplevel directory </li>
-<li> Choose a build directory</li>
-<li> Click on configure .... If any libraries are left unconfigured, you can adjust the path in the ui. Rerun configure until everything is configured correctly</li>
+<li> Start the cmake gui and open the OpenMesh toplevel directory as source directory </li>
+<li> Choose a build directory (e.g. create a directory called "build" in OpenMesh's root folder) </li>
+<li> Click on configure .... If any libraries are left unconfigured, you can adjust the path manually. Rerun configure until everything is configured correctly.
+     Attention: Some build variables are only visible in advanced view mode. Select Visual Studio 9 2008 as
+     generator. </li>
 <li> Click generate to create the visual studio project files </li>
-<li> You can now find a Visual Studio solution file in the <b>build</b> directory you chose in cmake </li>
+<li> You can now find a Visual Studio solution file (OpenMesh.sln) in the <b>build</b> directory you chose in cmake </li>
 <li> Now you can build OpenMesh from within Visual Studio using the newly created project file. </li>
 </ul>
+
+Note: Set the CMAKE_BUILD_TYPE variable to "Release" if you want OpenMesh to be built as release.
+In Visual Studio 2008 choose "Release" in the appropriate select box and build the solution afterwards.
 
 <br>
 <br>
