@@ -202,7 +202,7 @@ void usage_and_exit(int xcode)
   using namespace std;
 
   cout << endl
-       << "Usage: mkbalancedpm [-n <decimation-steps>] [-o <output>] "
+       << "Usage: mkbalancedpm [-n <decimation-steps>] [-o <output>] [-N <max. normal deviation>]"
        << "<input.ext>\n"
        << endl
        << "  Create a balanced progressive mesh from an input file.\n"
@@ -219,7 +219,7 @@ void usage_and_exit(int xcode)
        << "  -o <output>\n"
        << "\tWrite resulting progressive mesh to the file named <output>\n"
        << endl
-       << "  -N\n"
+       << "  -N <max. normal Deviation>\n"
        << "\tEnable Normal Flipping\n"
        << endl
        << "  -I\n"
@@ -237,16 +237,18 @@ int main(int argc, char **argv)
   int  c;
   std::string ifname, ofname;
   size_t      decstep=0;
+  float       normalDev=90.0;
   bool enable_modNF = false;
   bool enable_modIS = false;
 
-  while ((c=getopt(argc, argv, "n:o:NIh"))!=-1)
+  while ((c=getopt(argc, argv, "n:o:N:Ih"))!=-1)
   {
     switch (c)
     {
       case 'o': ofname = optarg; break;
       case 'n': { std::stringstream str; str << optarg; str >> decstep; } break;
-      case 'N': enable_modNF = true; break;
+      case 'N': { enable_modNF = true; 
+                  std::stringstream str; str << optarg; str >> normalDev; } break;
       case 'I': enable_modIS = true; break;
       case 'h':
         usage_and_exit(0);
@@ -283,9 +285,12 @@ int main(int argc, char **argv)
     std::cout << "w/  balancer module\n";
 
     if ( enable_modNF )
+    {
       decimater.add(modNF);
+      decimater.module(modNF).set_max_normal_deviation(normalDev);
+    }
     std::cout << "w/" << (modNF.is_valid() ? ' ' : 'o')
-              << " normal flipping module\n";
+              << " normal flipping module (max. normal deviation: " << normalDev << ")\n";
 
     if ( enable_modIS )
       decimater.add(modIS);
