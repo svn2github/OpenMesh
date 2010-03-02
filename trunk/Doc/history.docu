@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.287)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (?/?/?,Rev.291)</td><td>
 
 <b>Core</b>
 <ul>
@@ -32,6 +32,7 @@
 <li>OpenMesh progressive mesh generator readded</li>
 <li>OpenMesh progressive mesh viewer readded</li>
 <li>OpenMesh progressive mesh analyzer readded</li>
+<li>OpenMesh progressive mesh synthesizer readded</li>
 </ul>
 
 <b>Documentation</b>

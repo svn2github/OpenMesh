@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  287 ):
+OpenMesh 2.0-RC5 ( Rev  291 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
@@ -22,6 +22,7 @@ OpenMesh 2.0-RC5 ( Rev  287 ):
 - OpenMesh progressive mesh generator readded
 - OpenMesh progressive mesh viewer readded
 - OpenMesh progressive mesh analyzer readded
+- OpenMesh progressive mesh synthesizer readded
 
 * Documentation
 - Updated Documentation front page
