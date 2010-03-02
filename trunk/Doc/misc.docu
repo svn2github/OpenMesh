@@ -3,7 +3,7 @@
 
 /** \page naming_conventions Naming Conventions
 
-The following naming conventions are used for the OpenMesh code:
+The following naming conventions are used for the %OpenMesh code:
 
 <b>Files:</b>
   \li \c MyClass.cc for C++-Implementation of class \c MyClass
@@ -31,7 +31,7 @@ The following naming conventions are used for the OpenMesh code:
 //-----------------------------------------------------------------------------
 
 
-/** \page compiling Compiling OpenMesh
+/** \page compiling Compiling %OpenMesh
 
 \section compilers Tested compilers
 
@@ -76,9 +76,9 @@ Install the following external libraries / frameworks if you want to use the inc
 
 \section sec_compiling_unix Unix
 
-\subsection linux_using_cmake Compiling OpenMesh using CMake
+\subsection linux_using_cmake Compiling %OpenMesh using CMake
 
-In order to compile OpenMesh, create a directory named e.g. "build" in
+In order to compile %OpenMesh, create a directory named e.g. "build" in
 OpenMesh's root directory. <b>Change to the newly created directory</b> and type
 <br/><br/>
 <tt>
@@ -93,7 +93,7 @@ Other flags are:<br/>
 <b>-DBUILD_APPS=OFF</b> to disable build of applications and<br/>
 <b>-DCMAKE_INSTALL_PREFIX=&lt;path&gt;</b> to specify the install path.
 <br/>
-When calling <b>make install</b> cmake will install OpenMesh into this
+When calling <b>make install</b> cmake will install %OpenMesh into this
 directory using the subdirectories lib/include/bin.
 
 CMake builds both shared and static under Linux.
@@ -108,30 +108,30 @@ There are some additional targets:<br>
 
 \section sec_compiling_windows Windows
 
-\subsection windows_using_cmake Compiling OpenMesh using CMake
+\subsection windows_using_cmake Compiling %OpenMesh using CMake
 
 If you want to use cmake to build your Visual Studio 2008 solution file,<br>
 download and install CMake from <a href="http://www.cmake.org/cmake/resources/software.html">www.cmake.org</a>.<br>
-(Note: This is not mandatory since there are already VS2008 solution files included in OpenMesh).<br><br>
+(Note: This is not mandatory since there are already VS2008 solution files included in %OpenMesh).<br><br>
 Install the OpenGL Extension Wrangler Library (GLEW) from <a href="http://glew.sourceforge.net" target="_blank">http://glew.sourceforge.net</a>.
 <br>
 <br>
 <ul>
 <li> Get Visual Studio 2008 </li>
-<li> Extract OpenMesh source code. </li>
+<li> Extract %OpenMesh source code. </li>
 <li> Get all required libraries and install them ( including headers! ).</li>
 <li> Get cmake for windows from http://www.cmake.org/cmake/resources/software.html <li>
-<li> Start the cmake gui and open the OpenMesh toplevel directory as source directory </li>
+<li> Start the cmake gui and open the %OpenMesh toplevel directory as source directory </li>
 <li> Choose a build directory (e.g. create a directory called "build" in OpenMesh's root folder) </li>
 <li> Click on configure .... If any libraries are left unconfigured, you can adjust the path manually. Rerun configure until everything is configured correctly.
      Attention: Some build variables are only visible in advanced view mode. Select Visual Studio 9 2008 as
      generator. </li>
 <li> Click generate to create the visual studio project files </li>
 <li> You can now find a Visual Studio solution file (OpenMesh.sln) in the <b>build</b> directory you chose in cmake </li>
-<li> Now you can build OpenMesh from within Visual Studio using the newly created project file. </li>
+<li> Now you can build %OpenMesh from within Visual Studio using the newly created project file. </li>
 </ul>
 
-Note: Set the CMAKE_BUILD_TYPE variable to "Release" if you want OpenMesh to be built as release.
+Note: Set the CMAKE_BUILD_TYPE variable to "Release" if you want %OpenMesh to be built as release.
 In Visual Studio 2008 choose "Release" in the appropriate select box and build the solution afterwards.
 
 <br>
@@ -150,10 +150,10 @@ sudo port -v install glew
 to install glew headers and libraries. ( Darwin ports usually installs header files to \c /usr/local/include and libraries to \c /usr/local/lib. )<br>
 <br>
 
-\subsection mac_using_cmake Compiling OpenMesh using CMake
+\subsection mac_using_cmake Compiling %OpenMesh using CMake
 
 If you're using cmake as preferred build system create a directory
-named e.g. in OpenMesh's root directory and change to it.
+named e.g. in %OpenMesh's root directory and change to it.
 <br/><br/>
 <tt>
 cmake&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
