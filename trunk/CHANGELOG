@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  278 ):
+OpenMesh 2.0-RC5 ( Rev  287 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
@@ -17,6 +17,11 @@ OpenMesh 2.0-RC5 ( Rev  278 ):
 - Fixed and enhanced PLY reader to improve handling of unknown properties (Thanks to Michal Nociar for the patch)
 - Fixed crash in Offreader with DOS line endings. (Thanks to Adrian Secord for the patch)
 - Fixed obj readers for some files containing tabs
+
+* Apps
+- OpenMesh progressive mesh generator readded
+- OpenMesh progressive mesh viewer readded
+- OpenMesh progressive mesh analyzer readded
 
 * Documentation
 - Updated Documentation front page
