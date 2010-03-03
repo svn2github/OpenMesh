@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (2010/03/03,Rev.296)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (2010/03/03,Rev.299)</td><td>
 
 <b>Core</b>
 <ul>
@@ -45,6 +45,11 @@
 <li>Examples for flipping and collapsing edges</li>
 <li>Fixed a lot of doxygen warnings</li>
 <li>Fixed some spellings</li>
+</ul>
+
+<b>Build System</b>
+<ul>
+<li>Fixed rpath issue when building and installing on MacOS</li>
 </ul>
 
 </tr>
