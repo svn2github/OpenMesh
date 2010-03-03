@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  291 ):
+OpenMesh 2.0-RC5 ( Rev  296 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
