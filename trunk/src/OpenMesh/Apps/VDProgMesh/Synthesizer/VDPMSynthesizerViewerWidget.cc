@@ -59,7 +59,12 @@
 #include <QDateTime>
 #include <QFileDialog>
 #include <QDataStream>
-#include <GL/glut.h>
+
+#ifdef ARCH_DARWIN
+ #include <glut.h>
+#else
+ #include <GL/glut.h>
+#endif
 
 
 #include <OpenMesh/Core/IO/MeshIO.hh>
