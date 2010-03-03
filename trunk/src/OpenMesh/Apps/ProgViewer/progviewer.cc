@@ -51,7 +51,11 @@
 #include <QApplication>
 #include <QGLWidget>
 
+#ifdef ARCH_DARWIN
+#include <glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 int main(int argc, char **argv)
 {
