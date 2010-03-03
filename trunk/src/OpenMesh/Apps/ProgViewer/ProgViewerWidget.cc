@@ -59,8 +59,9 @@
 #include <OpenMesh/Core/Utils/Endian.hh>
 #include <OpenMesh/Tools/Utils/Timer.hh>
 // --------------------
+
 #ifdef ARCH_DARWIN
-#  include <gl.h>
+ #include <OpenGL/gl.h>
 #else
 #  include <GL/gl.h>
 #endif
