@@ -102,8 +102,9 @@ macro (acg_set_target_props target)
   elseif (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE)
     set_target_properties (
       ${target} PROPERTIES
-      INSTALL_NAME_DIR "@executable_path/../lib/${CMAKE_PROJECT_NAME}"
-      BUILD_WITH_INSTALL_RPATH 1
+      #INSTALL_NAME_DIR "@executable_path/../lib/${CMAKE_PROJECT_NAME}"
+      INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_PROJECT_NAME}"
+#      BUILD_WITH_INSTALL_RPATH 1
       SKIP_BUILD_RPATH 0
     )
   elseif (NOT APPLE)
