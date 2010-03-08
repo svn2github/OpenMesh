@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0-RC5 ( Rev  299 ):
+OpenMesh 2.0-RC5 ( Rev  306 ):
 
 * Core
 - Fixed build error in function calc_dihedral_angle_fast
@@ -36,6 +36,7 @@ OpenMesh 2.0-RC5 ( Rev  299 ):
 
 * Build System
 - Fixed rpath issue when building and installing on MacOS
+- Fixed install target for MacOS (headers where not copied due to bug in cmake)
 
 OpenMesh 2.0-RC4 ( Rev 227 ):
 * Core

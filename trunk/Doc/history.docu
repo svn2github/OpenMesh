@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC5</b> (2010/03/03,Rev.299)</td><td>
+<tr valign=top><td><b>2.0-RC5</b> (2010/03/08,Rev.305)</td><td>
 
 <b>Core</b>
 <ul>
@@ -50,6 +50,7 @@
 <b>Build System</b>
 <ul>
 <li>Fixed rpath issue when building and installing on MacOS</li>
+<li>Fixed install target for MacOS (headers where not copied due to bug in cmake)</li>
 </ul>
 
 </tr>
