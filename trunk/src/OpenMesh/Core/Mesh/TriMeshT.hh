@@ -184,13 +184,20 @@ public:
   { PolyMesh::split(_eh, _vh); }
 
   /// Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
-
-  /// Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
   inline void split(FaceHandle _fh, const Point& _p)
   { PolyMesh::split(_fh, _p); }
 
   inline void split(FaceHandle _fh, VertexHandle _vh)
   { PolyMesh::split(_fh, _vh); }
+  
+  /** \name Normal vector computation
+  */
+  //@{
+
+  /** Calculate normal vector for face _fh (specialized for TriMesh). */
+  Normal calc_face_normal(FaceHandle _fh) const;
+
+  //@}
 };
 
 

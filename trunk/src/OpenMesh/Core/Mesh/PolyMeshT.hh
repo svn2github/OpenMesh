@@ -218,7 +218,7 @@ public:
   void update_face_normals();
 
   /** Calculate normal vector for face _fh. */
-  Normal calc_face_normal(FaceHandle _fh) const;
+  virtual Normal calc_face_normal(FaceHandle _fh) const;
 
   /** Calculate normal vector for face (_p0, _p1, _p2). */
   Normal calc_face_normal(const Point& _p0, const Point& _p1,

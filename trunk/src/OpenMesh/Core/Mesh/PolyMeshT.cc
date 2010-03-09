@@ -95,14 +95,36 @@ calc_face_normal(FaceHandle _fh) const
 {
   assert(halfedge_handle(_fh).is_valid());
   ConstFaceVertexIter fv_it(cfv_iter(_fh));
+  
+  Point p0 = point(fv_it);
+  Point p0i = p0; //save point of vertex 0
+  ++fv_it;
+  Point p1 = point(fv_it);
+  Point p1i = p1; //save point of vertex 1
+  ++fv_it;
+  Point p2;
+  
+  //calculate area-weighted average normal of polygon's ears
+  Normal n(0,0,0);
+  for(; fv_it; ++fv_it)
+  {
+    p2 = point(fv_it);
+    n += vector_cast<Normal>((p2-p1)%(p0-p1)); 
+    p0 = p1;
+    p1 = p2;
+  }
+  
+  //two additional steps since we started at vertex 2, not 0
+  n += vector_cast<Normal>((p0i-p1)%(p0-p1)); 
+  n += vector_cast<Normal>((p1i-p0i)%(p1-p0i));
 
-  const Point& p0(point(fv_it));  ++fv_it;
-  const Point& p1(point(fv_it));  ++fv_it;
-  const Point& p2(point(fv_it));
-
-  return calc_face_normal(p0, p1, p2);
+  typename Normal::value_type norm = n.length();
+  
+  // The expression ((n *= (1.0/norm)),n) is used because the OpenSG
+  // vector class does not return self after component-wise
+  // self-multiplication with a scalar!!!
+  return (norm != typename Normal::value_type(0)) ? ((n *= (typename Normal::value_type(1)/norm)),n) : Normal(0,0,0);
 }
-
 
 //-----------------------------------------------------------------------------
 

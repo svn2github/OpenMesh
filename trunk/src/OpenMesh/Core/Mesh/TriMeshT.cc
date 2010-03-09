@@ -66,6 +66,21 @@ namespace OpenMesh {
 
 //== IMPLEMENTATION ==========================================================
 
+template <class Kernel>
+typename TriMeshT<Kernel>::Normal
+TriMeshT<Kernel>::
+calc_face_normal(FaceHandle _fh) const
+{
+  assert(halfedge_handle(_fh).is_valid());
+  ConstFaceVertexIter fv_it(cfv_iter(_fh));
+
+  const Point& p0(point(fv_it));  ++fv_it;
+  const Point& p1(point(fv_it));  ++fv_it;
+  const Point& p2(point(fv_it));
+
+  return PolyMesh::calc_face_normal(p0, p1, p2);
+}
+
 //=============================================================================
 } // namespace OpenMesh
 //=============================================================================
