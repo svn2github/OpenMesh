@@ -7,7 +7,12 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.306)</td><td>
+<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.310)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)</li>
+</ul>
 
 </tr>
 

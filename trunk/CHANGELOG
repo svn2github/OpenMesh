@@ -3,7 +3,10 @@
 #============================================================================================
 
 
-OpenMesh 2.0-RC6 ( Rev  307 ):
+OpenMesh 2.0-RC6 ( Rev  310 ):
+
+* Core
+- Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)
 
 
 OpenMesh 2.0-RC5 ( Rev  306 ):
