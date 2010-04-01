@@ -71,14 +71,15 @@ namespace Attributes {
  */
 enum StatusBits {
 
-  DELETED  = 1,   ///< Item has been deleted
-  LOCKED   = 2,   ///< Item is locked.
-  SELECTED = 4,   ///< Item is selected.
-  HIDDEN   = 8,   ///< Item is hidden.
-  FEATURE  = 16,  ///< Item is a feature or belongs to a feature.
-  TAGGED   = 32,  ///< Item is tagged.
-  TAGGED2  = 64,  ///< Alternate bit for tagging an item.
-  UNUSED   = 128  ///<
+  DELETED       = 1,    ///< Item has been deleted
+  LOCKED        = 2,    ///< Item is locked.
+  SELECTED      = 4,    ///< Item is selected.
+  HIDDEN        = 8,    ///< Item is hidden.
+  FEATURE       = 16,   ///< Item is a feature or belongs to a feature.
+  TAGGED        = 32,   ///< Item is tagged.
+  TAGGED2       = 64,   ///< Alternate bit for tagging an item.
+  NONMANIFOLD   = 128,  ///< Item is isolated and thus non-manifold
+  UNUSED        = 256   ///< Unused
 };
 
 
@@ -136,6 +137,12 @@ public:
   bool tagged2() const  { return is_bit_set(TAGGED2); }
   /// set tagged
   void set_tagged2(bool _b) { change_bit(TAGGED2, _b); }
+  
+  
+  /// is non-manifold ?
+  bool nonmanifold() const  { return is_bit_set(NONMANIFOLD); }
+  /// set non-manifold
+  void set_nonmanifold(bool _b) { change_bit(NONMANIFOLD, _b); }
 
 
   /// return whole status
