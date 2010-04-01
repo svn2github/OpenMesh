@@ -103,7 +103,7 @@ public:
     {
       VHandles::const_iterator it, it2, end(_indices.end());
 
-
+      
       // test for valid vertex indices
       for (it=_indices.begin(); it!=end; ++it)
         if (! mesh_.is_valid_handle(*it))
@@ -267,19 +267,36 @@ public:
 
       for (unsigned int i=0; i<failed_faces_.size(); ++i)
       {
-	VHandles&  vhandles = failed_faces_[i];
+        VHandles&  vhandles = failed_faces_[i];
 
-	// double vertices
-	for (unsigned int j=0; j<vhandles.size(); ++j)
-	{
-	  Point p = mesh_.point(vhandles[j]);
-	  vhandles[j] = mesh_.add_vertex(p);
-	  // DO STORE p, reference may not work since vertex array
-	  // may be relocated after adding a new vertex !
-	}
+        // double vertices
+        for (unsigned int j=0; j<vhandles.size(); ++j)
+        {
+          Point p = mesh_.point(vhandles[j]);
+          vhandles[j] = mesh_.add_vertex(p);
+          // DO STORE p, reference may not work since vertex array
+          // may be relocated after adding a new vertex !
+          
+          // Mark vertices of failed face as non-manifold
+          if (mesh_.has_vertex_status()) {
+              mesh_.status(vhandles[j]).set_fixed_nonmanifold(true);
+          }
+        }
 
-	// add face
-	mesh_.add_face(vhandles);
+        // add face
+        FaceHandle fh = mesh_.add_face(vhandles);
+        
+        // Mark failed face as non-manifold
+        if (mesh_.has_face_status())
+            mesh_.status(fh).set_fixed_nonmanifold(true);
+        
+        // Mark edges of failed face as non-two-manifold
+        if (mesh_.has_edge_status()) {
+            typename Mesh::FaceEdgeIter fe_it = mesh_.fe_iter(fh);
+            for(; fe_it; ++fe_it) {
+                mesh_.status(fe_it).set_fixed_nonmanifold(true);
+            }
+        }
       }
 
       failed_faces_.clear();
