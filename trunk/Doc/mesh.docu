@@ -602,7 +602,7 @@ provides the pubic member functions of
 //-----------------------------------------------------------------------------
 
 
-/** \page mesh_io Mesh Read and write files
+/** \page mesh_io Read and write meshes from files
 
 This section explains the methods used to read a mesh from a file or
 write it to a file. The corresponding functions are defined in the
@@ -614,6 +614,10 @@ finally step three will show you how to add your own modules to IOManager.
 \section mesh_io_quick Step 1 - IOManager quick start
 
 For a quick start you can copy the following code directly to your project.
+
+Note: IOManager uses the filename extension to determine which reader/writer
+to use. I.e. if passing "inputmesh.obj" as filename parameter, the OBJ-File
+reader/writer will be used to parse/write the file.
 
 \include mesh_io.cc
 
