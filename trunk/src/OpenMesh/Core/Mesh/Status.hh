@@ -78,7 +78,7 @@ enum StatusBits {
   FEATURE       = 16,   ///< Item is a feature or belongs to a feature.
   TAGGED        = 32,   ///< Item is tagged.
   TAGGED2       = 64,   ///< Alternate bit for tagging an item.
-  NONMANIFOLD   = 128,  ///< Item is isolated and thus non-manifold
+  NONMANIFOLD   = 128,  ///< Item is non-two-manifold
   UNUSED        = 256   ///< Unused
 };
 
