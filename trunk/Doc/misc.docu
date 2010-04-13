@@ -63,7 +63,6 @@ gcc 4.2 <br>
 
 Install the following external libraries / frameworks if you want to use the included Applications:<br><br>
 <table>
-<tr><td>OpenGL</td><td><a href="http://www.opengl.org" target="_blank">http://www.opengl.org</a></td></tr>
 <tr><td>Qt4</td><td><a href="http://www.qtsoftware.com/downloads" target="_blank">http://www.qtsoftware.com/downloads</a></td></tr>
 <tr><td>GLEW</td><td><a href="http://glew.sourceforge.net/" target="_blank">http://glew.sourceforge.net/</a></td></tr>
 </table><br>
