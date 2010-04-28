@@ -7,6 +7,7 @@ find_package (GLEW)
 
 acg_qt4 ()
 
+add_subdirectory (Dualizer)
 add_subdirectory (Decimating/commandlineDecimater)
 add_subdirectory (Smoothing)
 add_subdirectory (Subdivider/commandlineSubdivider)
