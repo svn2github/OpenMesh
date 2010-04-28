@@ -9,6 +9,7 @@ include_directories (
 set (directories 
   . 
   Decimater
+  Dualizer
   Smoother
   Subdivider/Adaptive/Composite
   Subdivider/Uniform/Composite 
@@ -44,6 +45,7 @@ if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
 
 if ( APPLE )
  FILE(GLOB files_install_Decimater                       "${CMAKE_CURRENT_SOURCE_DIR}/Decimater/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Decimater/*T.cc" )
+ FILE(GLOB files_install_Dualizer                        "${CMAKE_CURRENT_SOURCE_DIR}/Dualizer/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Dualizer/*T.cc" )
  FILE(GLOB files_install_KERNEL_OSG                      "${CMAKE_CURRENT_SOURCE_DIR}/Kernel_OSG/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Kernel_OSG/*T.cc" )
  FILE(GLOB files_install_Smoother                        "${CMAKE_CURRENT_SOURCE_DIR}/Smoother/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Decimater/*T.cc" )
  FILE(GLOB files_install_Subdivider_Adaptive             "${CMAKE_CURRENT_SOURCE_DIR}/Subdivider/Adaptive/Composite/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Subdivider/Adaptive/Composite/*T.cc" )
@@ -52,6 +54,7 @@ if ( APPLE )
  FILE(GLOB files_install_Utils                           "${CMAKE_CURRENT_SOURCE_DIR}/Utils/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Utils/*T.cc"  "${CMAKE_CURRENT_SOURCE_DIR}/Utils/getopt.h" )
  FILE(GLOB files_install_VDPM                            "${CMAKE_CURRENT_SOURCE_DIR}/VDPM/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/VDPM/*T.cc" )
  INSTALL(FILES ${files_install_Decimater}                       DESTINATION include/OpenMesh/Tools/Decimater )
+ INSTALL(FILES ${files_install_Dualizer}                        DESTINATION include/OpenMesh/Tools/Dualizer )
  INSTALL(FILES ${files_install_KERNEL_OSG}                      DESTINATION include/OpenMesh/Tools/Kernel_OSG )
  INSTALL(FILES ${files_install_Smoother}                        DESTINATION include/OpenMesh/Tools/Smoother )
  INSTALL(FILES ${files_install_Subdivider_Adaptive}             DESTINATION include/OpenMesh/Tools/Subdivider/Adaptive/Composite )
