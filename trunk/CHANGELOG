@@ -3,11 +3,17 @@
 #============================================================================================
 
 
-OpenMesh 2.0-RC6 ( Rev  310 ):
+OpenMesh 2.0-RC6 ( Rev  318 ):
 
 * Core
 - Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)
+- Added status flag indicating that mesh reader duplicated primitives to avoid non-manifold configurations</li>
 
+* Tools
+- OpenMesh mesh dual generator added (Thanks to Clement Courbet for providing the code)</li>
+
+* Apps<
+- OpenMesh mesh dual generator application added (Thanks to Clement Courbet for providing the code)</li>
 
 OpenMesh 2.0-RC5 ( Rev  306 ):
 

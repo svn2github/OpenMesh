@@ -7,11 +7,22 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.310)</td><td>
+<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.318)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)</li>
+<li>Added status flag indicating that mesh reader duplicated primitives to avoid non-manifold configurations</li>
+</ul>
+
+<b>Tools</b>
+<ul>
+<li>OpenMesh mesh dual generator added (Thanks to Clement Courbet for providing the code)</li>
+</ul>
+
+<b>Apps</b>
+<ul>
+<li>OpenMesh mesh dual generator application added (Thanks to Clement Courbet for providing the code)</li>
 </ul>
 
 </tr>
