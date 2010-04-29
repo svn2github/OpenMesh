@@ -638,7 +638,8 @@ EXAMPLE_PATH           = @CMAKE_CURRENT_SOURCE_DIR@/Examples \
 # blank all files are included.
 
 EXAMPLE_PATTERNS       = *.cc \
-                         *.hh
+                         *.hh \
+                         *.txt
 
 # If the EXAMPLE_RECURSIVE tag is set to YES then subdirectories will be 
 # searched for input files to be used with the \include or \dontinclude 
@@ -800,7 +801,7 @@ HTML_FOOTER            = @CMAKE_CURRENT_SOURCE_DIR@/html/acg_footer.html
 # the style sheet file to the HTML output directory, so don't put your own 
 # stylesheet in the HTML output directory as well, or it will be erased!
 
-HTML_STYLESHEET        = 
+HTML_STYLESHEET        = @CMAKE_CURRENT_SOURCE_DIR@/html/acg_style.css
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes, 
 # files or namespaces will be aligned in HTML using tables. If set to 
@@ -961,13 +962,13 @@ ENUM_VALUES_PER_LINE   = 4
 # releases of Doxygen, the values YES and NO are equivalent to FRAME and NONE 
 # respectively.
 
-GENERATE_TREEVIEW      = NONE
+GENERATE_TREEVIEW      = ALL
 
 # If the treeview is enabled (see GENERATE_TREEVIEW) then this tag can be 
 # used to set the initial width (in pixels) of the frame in which the tree 
 # is shown.
 
-TREEVIEW_WIDTH         = 250
+TREEVIEW_WIDTH         = 300
 
 # Use this tag to change the font size of Latex formulas included 
 # as images in the HTML documentation. The default is 10. Note that 
@@ -1522,4 +1523,4 @@ DOT_CLEANUP            = YES
 # The SEARCHENGINE tag specifies whether or not a search engine should be 
 # used. If set to NO the values of all tags below this one will be ignored.
 
-SEARCHENGINE           = NO
+SEARCHENGINE           = YES

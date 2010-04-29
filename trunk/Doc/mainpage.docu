@@ -22,7 +22,8 @@ is given.
 \li \ref compiling
 
 <br /><br />
-\section mesh_docu Using and understanding OpenMesh
+
+\subpage mesh_docu
 
 We provide a short overview over the functionality of the %OpenMesh
 library and some additional concepts in \ref tutorial. Additionally, we explain the 
@@ -39,14 +40,14 @@ most important topics of %OpenMesh in the following sections:
 The %OpenMeshTools library that contains some useful tools
 for i.e. mesh processing:
     
-    \li \ref tools_docu
+    \li \subpage tools_docu
     
 <br /><br />
-\section tutorial Tutorials (code examples)
+\subpage tutorial
 
 This section is supposed to introduce the basic concepts of
 %OpenMesh. <!--For detailed information, consult the online documentation
-(\ref mesh_docu).-->
+(\subpage mesh_docu ).-->
 
 <!--In this tutorial we will introduce the %OpenMesh library by means of
 simple examples. The first one just builds a polygonal mesh
@@ -76,12 +77,30 @@ repeatedly replacing each vertex' position by the center of gravity
 \li \ref tutorial_09
 
 <br /><br />
-\section background Additional information on OpenMesh
+\subpage additional_information
 
 \li \ref mesh_first_to_read
 \li \ref mesh_cpp
 \li \ref mesh_members
 \li \ref naming_conventions
 \li \ref history
+
+\page mesh_docu Using and understanding OpenMesh
+\li \subpage mesh_features
+\li \subpage mesh_hds
+\li \subpage mesh_iterators
+\li \subpage mesh_navigation
+\li \subpage mesh_io
+\li \subpage mesh_operations
+\li \subpage mesh_hierarchy
+\li \subpage mesh_type
+
+\page additional_information Additional Information on OpenMesh
+\li \subpage mesh_first_to_read
+\li \subpage mesh_cpp
+\li \subpage mesh_members
+\li \subpage naming_conventions
+\li \subpage history
+
 
 **/

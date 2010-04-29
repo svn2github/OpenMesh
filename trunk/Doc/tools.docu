@@ -2,11 +2,11 @@
 
 /** \page tools_docu OpenMesh Tools Documentation
 
-- \ref decimater_docu
-- \ref subdivider_docu
-- \ref vdpm_docu
-- Miscellaneous
-  - \ref OpenMesh::StripifierT
+\li \subpage decimater_docu
+\li \subpage subdivider_docu
+\li \subpage vdpm_docu
+\li Miscellaneous
+    OpenMesh::StripifierT
 
 */
 

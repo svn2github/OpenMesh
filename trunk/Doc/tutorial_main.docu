@@ -28,16 +28,17 @@ repeatedly replacing each vertex' position by the center of gravity
 \li write the mesh to standard output.
 
 <ol>
-<li> \ref tutorial_01
-<li> \ref tutorial_02
-<li> \ref tutorial_03
-<li> \ref tutorial_04
-<li> \ref tutorial_05
-<li> \ref tutorial_06
-<li> \ref tutorial_07
-<li> \ref tutorial_07b
-<li> \ref tutorial_08
-<li> \ref tutorial_09
+<li> \subpage tutorial_build
+<li> \subpage tutorial_01
+<li> \subpage tutorial_02
+<li> \subpage tutorial_03
+<li> \subpage tutorial_04
+<li> \subpage tutorial_05
+<li> \subpage tutorial_06
+<li> \subpage tutorial_07
+<li> \subpage tutorial_07b
+<li> \subpage tutorial_08
+<li> \subpage tutorial_09
 </ol>
 
 */
