@@ -25,6 +25,18 @@
 <li>OpenMesh mesh dual generator application added (Thanks to Clement Courbet for providing the code)</li>
 </ul>
 
+<b>Documentation</b>
+<ul>
+<li>Added search engine</li>
+<li>Added reeview on the left</li>
+<li>Generate subpage structure to make treeview more organized</li>
+</ul>
+
+<b>Build System</b>
+<ul>
+<li>Updated glew and glut finders</li>
+</ul>
+
 </tr>
 
 <tr valign=top><td><b>2.0-RC5</b> (2010/03/08,Rev.305)</td><td>

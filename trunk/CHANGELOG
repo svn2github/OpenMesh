@@ -3,7 +3,7 @@
 #============================================================================================
 
 
-OpenMesh 2.0-RC6 ( Rev  318 ):
+OpenMesh 2.0-RC6 ( Rev  322 ):
 
 * Core
 - Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)
@@ -12,8 +12,16 @@ OpenMesh 2.0-RC6 ( Rev  318 ):
 * Tools
 - OpenMesh mesh dual generator added (Thanks to Clement Courbet for providing the code)</li>
 
-* Apps<
+* Apps
 - OpenMesh mesh dual generator application added (Thanks to Clement Courbet for providing the code)</li>
+
+* Documentation
+- Added search engine
+- Added reeview on the left
+- Generate subpage structure to make treeview more organized 
+
+* Build System
+- Updated glew and glut finders
 
 OpenMesh 2.0-RC5 ( Rev  306 ):
 
