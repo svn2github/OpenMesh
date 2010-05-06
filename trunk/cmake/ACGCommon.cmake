@@ -81,6 +81,15 @@ else ()
   set (ACG_PROJECT_BINDIR "bin")
 endif ()
 
+if( NOT APPLE )
+  # check 64 bit
+  if( CMAKE_SIZEOF_VOID_P MATCHES 4 )
+    set( HAVE_64_BIT 0 )
+  else( CMAKE_SIZEOF_VOID_P MATCHES 4 )
+    set( HAVE_64_BIT 1 )
+  endif( CMAKE_SIZEOF_VOID_P MATCHES 4 )
+endif (  NOT APPLE )
+
 # allow a project to modify the directories
 if (COMMAND acg_modify_project_dirs)
   acg_modify_project_dirs ()
@@ -108,6 +117,7 @@ macro (acg_set_target_props target)
       SKIP_BUILD_RPATH 0
     )
   elseif (NOT APPLE)
+
     set_target_properties (
       ${target} PROPERTIES
       INSTALL_RPATH "$ORIGIN/../lib/${CMAKE_PROJECT_NAME}"
@@ -278,6 +288,36 @@ macro (acg_qt4_autouic uic_SRCS)
         add_file_dependencies (${_source} ${_outfile})
         set (${uic_SRCS} ${${uic_SRCS}} ${_outfile})
             
+     endif ()
+  endforeach ()
+endmacro ()
+
+
+# generate qrc targets for sources in list
+macro (acg_qt4_autoqrc qrc_SRCS)
+
+  set (_matching_FILES )
+  foreach (_current_FILE ${ARGN})
+
+     get_filename_component (_abs_FILE ${_current_FILE} ABSOLUTE)
+
+     if ( EXISTS ${_abs_FILE} )
+
+        file (READ ${_abs_FILE} _contents)
+
+        get_filename_component (_abs_PATH ${_abs_FILE} PATH)
+
+        get_filename_component (_basename ${_current_FILE} NAME_WE)
+        set (_outfile ${CMAKE_CURRENT_BINARY_DIR}/qrc_${_basename}.cpp)
+        
+        add_custom_command (OUTPUT ${_outfile}
+            COMMAND ${QT_RCC_EXECUTABLE}
+            ARGS -o ${_outfile}  ${_abs_FILE}
+            DEPENDS ${_abs_FILE}) 
+
+        add_file_dependencies (${_source} ${_outfile})
+        set (${qrc_SRCS} ${${qrc_SRCS}} ${_outfile})
+
      endif ()
   endforeach ()
 endmacro ()
@@ -458,5 +498,61 @@ function (acg_add_library _target _libtype)
     elseif (${_type} STREQUAL MODULE)
       install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_PLUGINDIR})
     endif ()
+  endif ()
+
+endfunction ()
+
+#generates qt translations
+function (acg_add_translations _target _languages _sources)
+
+  string (TOUPPER ${_target} _TARGET)
+  # generate/use translation files
+  # run with UPDATE_TRANSLATIONS set to on to build qm files
+  option (UPDATE_TRANSLATIONS_${_TARGET} "Update source translation *.ts files (WARNING: make clean will delete the source .ts files! Danger!)")
+
+  set (_new_ts_files)
+  set (_ts_files)
+
+  foreach (lang ${_languages})
+    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/translations/${_target}_${lang}.ts" OR UPDATE_TRANSLATIONS_${_TARGET})
+      list (APPEND _new_ts_files "translations/${_target}_${lang}.ts")
+    else ()
+      list (APPEND _ts_files "translations/${_target}_${lang}.ts")
+    endif ()
+  endforeach ()
+
+
+  set (_qm_files)
+  if ( _new_ts_files )
+    qt4_create_translation(_qm_files ${_sources} ${_new_ts_files})
+  endif ()
+
+  if ( _ts_files )
+    qt4_add_translation(_qm_files2 ${_ts_files})
+    list (APPEND _qm_files ${_qm_files2})
+  endif ()
+
+  # create a target for the translation files ( and object files )
+  # Use this target, to update only the translations
+  add_custom_target (translations_target_${_target} DEPENDS ${_qm_files})
+
+  # Build translations with the application
+  add_dependencies(${_target} translations_target_${_target} )
+
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_DATADIR}/Translations)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_DATADIR}/Translations )
+  endif ()
+
+  foreach (_qm ${_qm_files})
+    get_filename_component (_qm_name "${_qm}" NAME)
+    add_custom_command (TARGET translations_target_${_target} POST_BUILD
+                        COMMAND ${CMAKE_COMMAND} -E
+                        copy_if_different
+                          ${_qm}
+                          ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_DATADIR}/Translations/${_qm_name})
+  endforeach ()
+
+  if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
+    install (FILES ${_qm_files} DESTINATION "${ACG_PROJECT_DATADIR}/Translations")
   endif ()
 endfunction ()
