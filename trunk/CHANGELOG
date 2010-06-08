@@ -3,7 +3,7 @@
 #============================================================================================
 
 
-OpenMesh 2.0-RC6 ( Rev  322 ):
+OpenMesh 2.0-RC6 ( Rev  324 ):
 
 * Core
 - Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)
@@ -17,11 +17,13 @@ OpenMesh 2.0-RC6 ( Rev  322 ):
 
 * Documentation
 - Added search engine
-- Added reeview on the left
+- Added treeview on the left
 - Generate subpage structure to make treeview more organized 
+- Enabled Doxygen stl support</li>
 
 * Build System
 - Updated glew and glut finders
+- Respect seperate settings for build types (release,debug,relwithdebinfo)
 
 OpenMesh 2.0-RC5 ( Rev  306 ):
 

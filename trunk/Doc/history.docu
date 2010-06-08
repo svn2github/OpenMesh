@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.318)</td><td>
+<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.324)</td><td>
 
 <b>Core</b>
 <ul>
@@ -28,13 +28,15 @@
 <b>Documentation</b>
 <ul>
 <li>Added search engine</li>
-<li>Added reeview on the left</li>
+<li>Added treeview on the left</li>
 <li>Generate subpage structure to make treeview more organized</li>
+<li>Enabled Doxygen stl support</li>
 </ul>
 
 <b>Build System</b>
 <ul>
 <li>Updated glew and glut finders</li>
+<li>Respect seperate settings for build types (release,debug,relwithdebinfo)</li>
 </ul>
 
 </tr>
