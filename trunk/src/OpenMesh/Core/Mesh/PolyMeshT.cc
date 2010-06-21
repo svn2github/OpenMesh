@@ -109,14 +109,14 @@ calc_face_normal(FaceHandle _fh) const
   for(; fv_it; ++fv_it)
   {
     p2 = point(fv_it);
-    n += vector_cast<Normal>((p2-p1)%(p0-p1)); 
+    n += vector_cast<Normal>(calc_face_normal(p0, p1, p2)); 
     p0 = p1;
     p1 = p2;
   }
   
   //two additional steps since we started at vertex 2, not 0
-  n += vector_cast<Normal>((p0i-p1)%(p0-p1)); 
-  n += vector_cast<Normal>((p1i-p0i)%(p1-p0i));
+  n += vector_cast<Normal>(calc_face_normal(p0i, p0, p1)); 
+  n += vector_cast<Normal>(calc_face_normal(p1i, p0i, p1));
 
   typename Normal::value_type norm = n.length();
   
