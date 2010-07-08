@@ -193,20 +193,35 @@ macro (acg_ftgl)
 endmacro ()
 
 # append all files with extension "ext" in the "dirs" directories to "ret"
+# excludes all files starting with a '.' (dot)
 macro (acg_append_files ret ext)
   foreach (_dir ${ARGN})
     file (GLOB _files "${_dir}/${ext}")
+    foreach (_file ${_files})
+      get_filename_component (_filename ${_file} NAME)
+      if (_filename MATCHES "^[.]")
+	list (REMOVE_ITEM _files ${_file})
+      endif ()
+    endforeach ()
     list (APPEND ${ret} ${_files})
   endforeach ()
 endmacro ()
 
 # append all files with extension "ext" in the "dirs" directories and its subdirectories to "ret"
+# excludes all files starting with a '.' (dot)
 macro (acg_append_files_recursive ret ext)
   foreach (_dir ${ARGN})
     file (GLOB_RECURSE _files "${_dir}/${ext}")
+    foreach (_file ${_files})
+      get_filename_component (_filename ${_file} NAME)
+      if (_filename MATCHES "^[.]")
+	list (REMOVE_ITEM _files ${_file})
+      endif ()
+    endforeach ()
     list (APPEND ${ret} ${_files})
   endforeach ()
 endmacro ()
+
 
 # drop all "*T.cc" files from list
 macro (acg_drop_templates list)
