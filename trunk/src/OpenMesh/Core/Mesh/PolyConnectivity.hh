@@ -196,7 +196,9 @@ public:
   * Create a new face consisting of three vertices provided by the handles.
   * (The vertices have to be already added to the mesh by add_vertex)
   *
-  * @param _vhandles sorted list of vertex handles (also defines order in which the vertices are added to the face)
+  * @param _vh0 First  vertex handle
+  * @param _vh1 Second vertex handle
+  * @param _vh2 Third  vertex handle
   */
   FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2)
   { 
@@ -209,7 +211,10 @@ public:
   * Create a new face consisting of four vertices provided by the handles.
   * (The vertices have to be already added to the mesh by add_vertex)
   *
-  * @param _vhandles sorted list of vertex handles (also defines order in which the vertices are added to the face)
+  * @param _vh0 First  vertex handle
+  * @param _vh1 Second vertex handle
+  * @param _vh2 Third  vertex handle
+  * @param _vh3 Fourth vertex handle
   */
   FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2, VertexHandle _vh3)
   { 
