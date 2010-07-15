@@ -175,26 +175,56 @@ public:
   /** \name Adding items to a mesh
   */
   //@{
+
   /// Add a new vertex 
   inline VertexHandle add_vertex()
   { return new_vertex(); }
 
-  /// Add and connect a new face
+  /** \brief Add and connect a new face
+  *
+  * Create a new face consisting of the vertices provided by the vertex handle vector.
+  * (The vertices have to be already added to the mesh by add_vertex)
+  *
+  * @param _vhandles sorted list of vertex handles (also defines order in which the vertices are added to the face)
+  */
   FaceHandle add_face(const std::vector<VertexHandle>& _vhandles)
   { return add_face(&_vhandles.front(), _vhandles.size()); }
-  
+ 
+   
+  /** \brief Add and connect a new face
+  *
+  * Create a new face consisting of three vertices provided by the handles.
+  * (The vertices have to be already added to the mesh by add_vertex)
+  *
+  * @param _vhandles sorted list of vertex handles (also defines order in which the vertices are added to the face)
+  */
   FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2)
   { 
     VertexHandle vhs[3] = { _vh0, _vh1, _vh2 };
     return add_face(vhs, 3); 
   }
-  
+
+  /** \brief Add and connect a new face
+  *
+  * Create a new face consisting of four vertices provided by the handles.
+  * (The vertices have to be already added to the mesh by add_vertex)
+  *
+  * @param _vhandles sorted list of vertex handles (also defines order in which the vertices are added to the face)
+  */
   FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2, VertexHandle _vh3)
   { 
     VertexHandle vhs[4] = { _vh0, _vh1, _vh2, _vh3 };
     return add_face(vhs, 4); 
   }
-  
+ 
+  /** \brief Add and connect a new face
+  *
+  * Create a new face consisting of vertices provided by a handle array.
+  * (The vertices have to be already added to the mesh by add_vertex)
+  *
+  * @param _vhandles pointer to a sorted list of vertex handles (also defines order in which the vertices are added to the face)
+  * @param _vhs_size number of vertex handles in the array
+  */
   FaceHandle add_face(const VertexHandle* _vhandles, uint _vhs_size);
   //@}
 
