@@ -192,7 +192,7 @@ the desired property, and the set-methods require an additional
 parameter to pass the new value to the property. According to the
 table not every pair of get/set-methods apply to every entity. For
 example a face has normally no texture coordinates, hence a call to \c
-mesh.texcoord( _face_handle ) will result in an error when compiling
+mesh.texcoord2D( _face_handle ) will result in an error when compiling
 the code.
 
 Since we know how to add/remove/access standard properties, one further
