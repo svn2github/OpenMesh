@@ -124,6 +124,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set vertex handle invalid if the mesh contains no vertex
+    if(_mesh.n_vertices() == 0) hnd_ = value_handle(-1);
   }
 
 
@@ -290,6 +293,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set vertex handle invalid if the mesh contains no vertex
+    if(_mesh.n_vertices() == 0) hnd_ = value_handle(-1);
   }
 
 
@@ -456,6 +462,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set halfedge handle invalid if the mesh contains no edge
+    if(_mesh.n_edges() == 0) hnd_ = value_handle(-1);
   }
 
 
@@ -622,6 +631,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set halfedge handle invalid if the mesh contains no edge
+    if(_mesh.n_edges() == 0) hnd_ = value_handle(-1);
   }
 
 
@@ -788,6 +800,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set halfedge handle invalid if the mesh contains no edge
+    if(_mesh.n_edges() == 0) hnd_ = value_handle(-1);
   }
 
 
@@ -954,6 +969,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set halfedge handle invalid if the mesh contains no edge
+    if(_mesh.n_edges() == 0) hnd_ = value_handle(-1);
   }
 
 
@@ -1120,6 +1138,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set face handle invalid if the mesh contains no faces
+    if(_mesh.n_faces() == 0) hnd_ = value_handle(-1);
   }
 
 
@@ -1286,6 +1307,9 @@ public:
     : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0) 
   {
     if (_skip) enable_skipping();
+    
+    // Set face handle invalid if the mesh contains no faces
+    if(_mesh.n_faces() == 0) hnd_ = value_handle(-1);
   }
 
 
