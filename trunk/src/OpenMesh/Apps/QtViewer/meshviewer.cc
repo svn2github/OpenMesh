@@ -68,8 +68,9 @@ int main(int argc, char **argv)
   // OpenGL check
   QApplication::setColorSpec( QApplication::CustomColor );
   QApplication app(argc,argv);
-
+#if !defined(__APPLE__)
   glutInit(&argc,argv);
+#endif
 
   if ( !QGLFormat::hasOpenGL() ) {
     QString msg = "System has no OpenGL support!";
