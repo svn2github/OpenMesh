@@ -119,6 +119,7 @@ public:
     refcount_htexcoords1D_(0),
     refcount_htexcoords2D_(0),
     refcount_htexcoords3D_(0),
+    refcount_hecolors_(0),
     refcount_ecolors_(0),
     refcount_fnormals_(0),
     refcount_fcolors_(0),
@@ -149,6 +150,9 @@ public:
 
     if (HAttribs & Attributes::TexCoord3D)
       request_halfedge_texcoords3D();
+
+    if (HAttribs & Attributes::Color)
+      request_halfedge_colors();
 
     if (VAttribs & Attributes::Status)
       Connectivity::request_vertex_status();
@@ -394,6 +398,18 @@ public:
   void set_color(EdgeHandle _eh, const Color& _c)
   { property(edge_colors_, _eh) = _c; }
 
+
+  //------------------------------------------------------------- halfedge colors
+  
+  const Color* halfedge_colors() const
+  { return property(halfedge_colors_).data(); }
+  
+  const Color& color(HalfedgeHandle _heh) const
+  { return property(halfedge_colors_, _heh); }
+  
+  void set_color(HalfedgeHandle _heh, const Color& _c)
+  { property(halfedge_colors_, _heh) = _c; }
+
   //-------------------------------------------------------------- face normals
 
   const Normal& normal(FaceHandle _fh) const
@@ -474,6 +490,12 @@ public:
       add_property( edge_colors_, "e:colors" );
   }
 
+  void request_halfedge_colors()
+  {
+    if (!refcount_hecolors_++)
+      add_property( halfedge_colors_, "h:colors" );
+  }
+
   void request_face_normals()
   {
     if (!refcount_fnormals_++)
@@ -542,6 +564,12 @@ public:
           remove_property(edge_colors_);
   }
 
+  void release_halfedge_colors()
+  {
+      if ((refcount_hecolors_ > 0) && (! --refcount_hecolors_))
+          remove_property(halfedge_colors_);
+  }
+
   void release_face_normals()
   {
     if ((refcount_fnormals_ > 0) && (! --refcount_fnormals_))
@@ -571,6 +599,7 @@ public:
   bool has_halfedge_texcoords2D() const { return halfedge_texcoords2D_.is_valid();}
   bool has_halfedge_texcoords3D() const { return halfedge_texcoords3D_.is_valid();}
   bool has_edge_colors()          const { return edge_colors_.is_valid();         }
+  bool has_halfedge_colors()      const { return halfedge_colors_.is_valid();     }
   bool has_face_normals()         const { return face_normals_.is_valid();        }
   bool has_face_colors()          const { return face_colors_.is_valid();         }
   bool has_face_texture_index()   const { return face_texture_index_.is_valid();  }
@@ -587,6 +616,7 @@ public:
   typedef HPropHandleT<TexCoord2D>          HalfedgeTexCoords2DPropertyHandle;
   typedef HPropHandleT<TexCoord3D>          HalfedgeTexCoords3DPropertyHandle;
   typedef EPropHandleT<Color>               EdgeColorsPropertyHandle;
+  typedef HPropHandleT<Color>               HalfedgeColorsPropertyHandle;
   typedef FPropHandleT<Normal>              FaceNormalsPropertyHandle;
   typedef FPropHandleT<Color>               FaceColorsPropertyHandle;
   typedef FPropHandleT<TextureIndex>        FaceTextureIndexPropertyHandle;
@@ -620,12 +650,16 @@ public:
 
   HalfedgeTexCoords3DPropertyHandle           halfedge_texcoords3D_pph() const
   { return halfedge_texcoords3D_; }
+
+  // standard edge properties
+  HalfedgeColorsPropertyHandle              halfedge_colors_pph() const
+  { return halfedge_colors_; }
   
   // standard edge properties
   EdgeColorsPropertyHandle                  edge_colors_pph() const
   { return edge_colors_; }
 
-	//standard face properties
+//standard face properties
   FaceNormalsPropertyHandle                 face_normals_pph() const
   { return face_normals_; }
 
@@ -671,6 +705,7 @@ private:
   HalfedgeTexCoords1DPropertyHandle         halfedge_texcoords1D_;
   HalfedgeTexCoords2DPropertyHandle         halfedge_texcoords2D_;
   HalfedgeTexCoords3DPropertyHandle         halfedge_texcoords3D_;
+  HalfedgeColorsPropertyHandle              halfedge_colors_;
   // standard edge properties
   EdgeColorsPropertyHandle                  edge_colors_;
   //standard face properties
@@ -691,6 +726,7 @@ private:
   unsigned int                              refcount_htexcoords1D_;
   unsigned int                              refcount_htexcoords2D_;
   unsigned int                              refcount_htexcoords3D_;
+  unsigned int                              refcount_hecolors_;
   unsigned int                              refcount_ecolors_;
   unsigned int                              refcount_fnormals_;
   unsigned int                              refcount_fcolors_;
