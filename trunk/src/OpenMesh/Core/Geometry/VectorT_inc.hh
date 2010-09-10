@@ -39,6 +39,22 @@
  *                                                                           *
 \*===========================================================================*/
 
+// Set template keywords and class names properly when
+// parsing with doxygen. This only seems to work this way since
+// the scope of preprocessor defines is limited to one file in doxy.
+#ifdef DOXYGEN
+
+// Only used for correct doxygen parsing
+#define OPENMESH_VECTOR_HH
+
+#define DIM               N
+#define TEMPLATE_HEADER   template <typename Scalar, int N>
+#define CLASSNAME         VectorT
+#define DERIVED           VectorDataT<Scalar,N>
+#define unroll(expr)      for (int i=0; i<N; ++i) expr(i)
+
+#endif
+
 #if defined( OPENMESH_VECTOR_HH )
 
 // ----------------------------------------------------------------------------

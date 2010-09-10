@@ -46,6 +46,12 @@
 //
 //=============================================================================
 
+// Don't parse this header file with doxygen since
+// for some reason (obviously due to a bug in doxygen,
+// bugreport: https://bugzilla.gnome.org/show_bug.cgi?id=629182)
+// macro expansion and preprocessor defines
+// don't work properly.
+#ifndef DOXYGEN
 
 #ifndef OPENMESH_VECTOR_HH
 #define OPENMESH_VECTOR_HH
@@ -184,8 +190,6 @@ template <> struct VectorDataT<float, 4>
 //== FULL TEMPLATE SPECIALIZATIONS ============================================
 #else
 
-#  ifndef DOXY_IGNORE_THIS
-
 /// cross product for Vec3f
 template<>
 inline VectorT<float,3>
@@ -208,8 +212,6 @@ VectorT<double,3>::operator%(const VectorT<double,3>& _rhs) const
 		     values_[2]*_rhs.values_[0]-values_[0]*_rhs.values_[2],
 		     values_[0]*_rhs.values_[1]-values_[1]*_rhs.values_[0]);
 }
-
-#  endif // DOXY_IGNORE_THIS
 
 #endif
 
@@ -339,3 +341,4 @@ typedef VectorT<double,6> Vec6d;
 //=============================================================================
 #endif // OPENMESH_VECTOR_HH defined
 //=============================================================================
+#endif DOXYGEN
