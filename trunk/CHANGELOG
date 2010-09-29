@@ -3,27 +3,38 @@
 #============================================================================================
 
 
-OpenMesh 2.0-RC6 ( Rev  324 ):
+OpenMesh 2.0-RC6 ( Rev  337 ):
 
 * Core
 - Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)
-- Added status flag indicating that mesh reader duplicated primitives to avoid non-manifold configurations</li>
+- Avoid % Operator in normal calculation (triggers compiler error on vectors of size other than 3)
+- Added status flag indicating that mesh reader duplicated primitives to avoid non-manifold configurations
+- Setting associated handles of iterator types invalid if reference mesh contains none of the respective entities.
+- Added halfedge colors
+
+
+* Math
+- Added missing include of string.h to VectorT.hh (Thanks to Justin Bronder for reporting this)
 
 * Tools
-- OpenMesh mesh dual generator added (Thanks to Clement Courbet for providing the code)</li>
+- OpenMesh mesh dual generator added (Thanks to Clement Courbet for providing the code)
 
 * Apps
-- OpenMesh mesh dual generator application added (Thanks to Clement Courbet for providing the code)</li>
+- OpenMesh mesh dual generator application added (Thanks to Clement Courbet for providing the code)
 
 * Documentation
 - Added search engine
 - Added treeview on the left
 - Generate subpage structure to make treeview more organized 
-- Enabled Doxygen stl support</li>
+- Enabled Doxygen stl support
+- Fixed documentation for add_face and some other typos (Thanks to Yamauchi Hitoshi)
+- Added preprocessor directives such that doxigen parses vectorT correctly
 
 * Build System
 - Updated glew and glut finders
 - Respect seperate settings for build types (release,debug,relwithdebinfo)
+- Extend macros acg_append_files_recursive acg_append_files to not include files starting with a dot
+
 
 OpenMesh 2.0-RC5 ( Rev  306 ):
 

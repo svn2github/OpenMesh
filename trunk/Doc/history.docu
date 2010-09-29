@@ -7,13 +7,22 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.324)</td><td>
+<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.337)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)</li>
+<li>Avoid % Operator in normal calculation (triggers compiler error on vectors of size other than 3)</li>
 <li>Added status flag indicating that mesh reader duplicated primitives to avoid non-manifold configurations</li>
+<li>Setting associated handles of iterator types invalid if reference mesh contains none of the respective entities.</li>
+<li>Added halfedge colors</li>
 </ul>
+
+<b>Math</b>
+<ul>
+<li>Added missing include of string.h to VectorT.hh (Thanks to Justin Bronder for reporting this)</li>
+</ul>
+
 
 <b>Tools</b>
 <ul>
@@ -31,12 +40,15 @@
 <li>Added treeview on the left</li>
 <li>Generate subpage structure to make treeview more organized</li>
 <li>Enabled Doxygen stl support</li>
+<li>Fixed documentation for add_face and some other typos (Thanks to Yamauchi Hitoshi)</li>
+<li>Added preprocessor directives such that doxigen parses vectorT correctly</li>
 </ul>
 
 <b>Build System</b>
 <ul>
 <li>Updated glew and glut finders</li>
 <li>Respect seperate settings for build types (release,debug,relwithdebinfo)</li>
+<li>Extend macros acg_append_files_recursive acg_append_files to not include files starting with a dot</li>
 </ul>
 
 </tr>
