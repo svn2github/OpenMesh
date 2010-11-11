@@ -416,7 +416,6 @@ public:
 #undef expr
 #endif
   }
-  //@}
 
   /** normalize vector, return normalized vector
   */
@@ -438,9 +437,36 @@ public:
     }
     return *this;
   }
+  
+  //@}
 
+  //------------------------------------------------------------ euclidean norm
+
+  /// \name Non-Euclidean norm calculations
+  //@{
+  
+  /// compute L1 (Manhattan) norm
+  inline Scalar l1_norm() const
+  {
+#if DIM==N
+    Scalar s(0);
+#define expr(i) s += abs(Base::values_[i]);
+    unroll(expr);
+#undef expr
+    return s;
+#else
+#define expr(i) abs(Base::values_[i])
+    return (unroll_comb(expr, +));
+#undef expr
+#endif
+  }
+
+  //@}
 
   //------------------------------------------------------------ max, min, mean
+
+  /// \name Minimum maximum and mean
+  //@{
 
   /// return the maximal component
   inline Scalar max() const 
@@ -450,11 +476,32 @@ public:
     return m;
   }
 
+  /// return the maximal absolute component
+  inline Scalar max_abs() const
+  {
+    Scalar m(abs(Base::values_[0]));
+    for(int i=1; i<DIM; ++i) 
+      if(abs(Base::values_[i])>m)
+        m=abs(Base::values_[i]);
+    return m;
+  }
+
+
   /// return the minimal component
   inline Scalar min() const 
   {
     Scalar m(Base::values_[0]);
     for(int i=1; i<DIM; ++i) if(Base::values_[i]<m) m=Base::values_[i];
+    return m;
+  }
+
+  /// return the minimal absolute component
+  inline Scalar min_abs() const 
+  {
+    Scalar m(abs(Base::values_[0]));
+    for(int i=1; i<DIM; ++i) 
+      if(abs(Base::values_[i])<m)
+        m=abs(Base::values_[i]);
     return m;
   }
 
@@ -465,6 +512,14 @@ public:
     return m/Scalar(DIM);
   }
 
+  /// return absolute arithmetic mean
+  inline Scalar mean_abs() const {
+    Scalar m(abs(Base::values_[0]));
+    for(int i=1; i<DIM; ++i) m+=abs(Base::values_[i]);
+    return m/Scalar(DIM);
+  }
+
+
   /// minimize values: same as *this = min(*this, _rhs), but faster
   inline vector_type minimize(const vector_type& _rhs) {
 #define expr(i) if (_rhs[i] < Base::values_[i]) Base::values_[i] = _rhs[i];
@@ -473,12 +528,30 @@ public:
     return *this;
   }
 
+  /// minimize values and signalize coordinate minimization
+  inline bool minimized(const vector_type& _rhs) {
+    bool result(false);
+#define expr(i) if (_rhs[i] < Base::values_[i]) { Base::values_[i] = _rhs[i]; result = true; }
+    unroll(expr);
+#undef expr
+    return result;
+  }
+
   /// maximize values: same as *this = max(*this, _rhs), but faster
   inline vector_type maximize(const vector_type& _rhs) {
 #define expr(i) if (_rhs[i] > Base::values_[i]) Base::values_[i] = _rhs[i];
     unroll(expr);
 #undef expr
     return *this;
+  }
+
+  /// maximize values and signalize coordinate maximization
+  inline bool maximized(const vector_type& _rhs) {
+    bool result(false);
+#define expr(i) if (_rhs[i] > Base::values_[i]) { Base::values_[i] =_rhs[i]; result = true; }
+    unroll(expr);
+#undef expr
+    return result;
   }
 
   /// component-wise min
@@ -491,8 +564,7 @@ public:
     return vector_type(*this).maximize(_rhs);
   }
 
-
-
+  //@}
 
   //------------------------------------------------------------ misc functions
 
