@@ -461,6 +461,12 @@ public:
 #endif
   }
 
+  /// compute l8_norm
+  inline Scalar l8_norm() const
+  {
+    return max_abs();
+  }
+
   //@}
 
   //------------------------------------------------------------ max, min, mean
