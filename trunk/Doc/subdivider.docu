@@ -8,6 +8,8 @@ subdivision:
 -# Uniform subdivision
   -# OpenMesh::Subdivider::Uniform::LoopT
   -# OpenMesh::Subdivider::Uniform::Sqrt3T
+  -# OpenMesh::Subdivider::Uniform::ModifiedButterflyT
+  -# OpenMesh::Subdivider::Uniform::InterpolatingSqrt3LGT
   -# OpenMesh::Subdivider::Uniform::CompositeT
 -# Adaptive subdivision
   -# OpenMesh::Subdivider::Adaptive::CompositeT
