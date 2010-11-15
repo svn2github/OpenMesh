@@ -40,10 +40,12 @@
 \*==========================================================================*/
 
 /** \file Sqrt3InterpolatingSubdividerLabsikGreinerT.hh
-
-  Interpolating Labsik Greiner Subdivider as described in "interpolating sqrt(3) subdivision" Labsik & Greiner, 2000
-  clement.courbet@ecp.fr
-
+ *
+ * Interpolating Labsik Greiner Subdivider as described in 
+ * "Interpolating sqrt(3) subdivision" Labsik & Greiner, 2000
+ *
+ * Clement Courbet - clement.courbet@ecp.fr
+ *
 */
 
 //=============================================================================
@@ -94,7 +96,12 @@ namespace Uniform    { // BEGIN_NS_UNIFORM
 
 /** %Uniform Interpolating Sqrt3 subdivision algorithm
  *
- */
+ * Implementation of the interpolating Labsik Greiner Subdivider as described in 
+ * "interpolating sqrt(3) subdivision" Labsik & Greiner, 2000
+ *
+ * Clement Courbet - clement.courbet@ecp.fr
+*/
+
 template <typename MeshType, typename RealType = float>
 class InterpolatingSqrt3LGT : public SubdividerT< MeshType, RealType >
 {

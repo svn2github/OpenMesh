@@ -39,7 +39,7 @@
 *                                                                           *
 \*==========================================================================*/
 
-/** \file ModifiedButterflyT.hh
+/** \file ModifiedButterFlyT.hh
 
 The modified butterfly scheme of Denis Zorin, Peter Schröder and Wim Sweldens, 
 ``Interpolating subdivision for meshes with arbitrary topology,'' in Proceedings 
@@ -79,6 +79,15 @@ namespace Uniform    { // BEGIN_NS_UNIFORM
 
 //== CLASS DEFINITION =========================================================
 
+
+/** Modified Butterfly subdivision algorithm
+ *
+ * Implementation of the modified butterfly scheme of Denis Zorin, Peter Schröder and Wim Sweldens, 
+ * ``Interpolating subdivision for meshes with arbitrary topology,'' in Proceedings 
+ * of SIGGRAPH 1996, ACM SIGGRAPH, 1996, pp. 189-192.
+ *
+ * Clement Courbet - clement.courbet@ecp.fr
+ */
 template <typename MeshType, typename RealType = float>
 class ModifiedButterflyT : public SubdividerT<MeshType, RealType>
 {
