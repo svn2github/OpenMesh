@@ -73,7 +73,7 @@
 
 namespace OpenMesh   { // BEGIN_NS_OPENMESH
 namespace Subdivider { // BEGIN_NS_DECIMATER
-namespace Adaptive   { // BEGIN_NS_UNIFORM
+namespace Adaptive   { // BEGIN_NS_ADAPTIVE
 
 
 //== IMPLEMENTATION ========================================================== 
