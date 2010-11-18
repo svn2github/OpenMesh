@@ -956,6 +956,18 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
                         std::pair<VertexProperty, ValueType> entry(COLORBLUE, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
                         options_ += Options::VertexColor;
+                    } else if (propertyName == "diffuse_red") {
+                      std::pair<VertexProperty, ValueType> entry(COLORRED, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexColor;
+                    } else if (propertyName == "diffuse_green") {
+                      std::pair<VertexProperty, ValueType> entry(COLORGREEN, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexColor;
+                    } else if (propertyName == "diffuse_blue") {
+                      std::pair<VertexProperty, ValueType> entry(COLORBLUE, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexColor;                        
                     } else if (propertyName == "alpha") {
                         std::pair<VertexProperty, ValueType> entry(COLORALPHA, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
