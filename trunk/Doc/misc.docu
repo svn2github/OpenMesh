@@ -139,14 +139,13 @@ In Visual Studio 2008 choose "Release" in the appropriate select box and build t
 \section sec_compiling_macosx MacOS X
 
 Download and install required libraries as stated above.
-Because some of the examples depend on the GLEW library, it's recommended to install glew via the darwin portage
-system <a href="http://darwinports.com/" target="_blank">darwin ports</a>.<br>
+Because some of the examples depend on the GLEW library, it's recommended to install glew via MacPorts portage system <a href="http://www.macports.org/" target="_blank">MacPorts</a>.<br>
 If you have not installed it yet, follow the instructions given on their site in order to install it.<br>
 Type
 <tt>
 sudo port -v install glew
 </tt>
-to install glew headers and libraries. ( Darwin ports usually installs header files to \c /usr/local/include and libraries to \c /usr/local/lib. )<br>
+to install glew headers and libraries. ( MacPorts usually installs header files to \c /opt/local/include and libraries to \c /opt/local/lib. )<br>
 <br>
 
 \subsection mac_using_cmake Compiling %OpenMesh using CMake
