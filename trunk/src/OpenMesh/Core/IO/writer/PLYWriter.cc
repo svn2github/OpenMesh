@@ -86,8 +86,21 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
 
 
   // check writer features
-  if ( _opt.check(Options::FaceNormal) || _opt.check(Options::FaceColor) ) // not supported yet
-    return false;
+  if ( _opt.check(Options::FaceNormal) ) {
+    // Face normals are not supported
+    // Uncheck these options and output message that
+    // they are not written out even though they were requested
+    _opt.unset(Options::FaceNormal);
+    omerr() << "[PLYWriter] : Warning: Face normals are not supported and thus not exported! " << std::endl;
+  }
+  
+  if ( _opt.check(Options::FaceColor) ) {
+    // Face normals are not supported
+    // Uncheck these options and output message that
+    // they are not written out even though they were requested
+    _opt.unset(Options::FaceColor);
+    omerr() << "[PLYWriter] : Warning: Face colors are not supported and thus not exported! " << std::endl;
+  }
 
   options_ = _opt;
 
