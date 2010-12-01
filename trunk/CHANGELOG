@@ -3,7 +3,7 @@
 #============================================================================================
 
 
-OpenMesh 2.0-RC6 ( Rev  337 ):
+OpenMesh 2.0 ( Rev  348 ):
 
 * Core
 - Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)
@@ -12,12 +12,16 @@ OpenMesh 2.0-RC6 ( Rev  337 ):
 - Setting associated handles of iterator types invalid if reference mesh contains none of the respective entities.
 - Added halfedge colors
 
+* IO
+- PLY Reader: Avoid failure of file writing if face colors or face normals are requested for PLY files.
 
 * Math
 - Added missing include of string.h to VectorT.hh (Thanks to Justin Bronder for reporting this)
+- Added some vector norm functions for L1 norm, and absolute mean,max,min(Thanks to Michal Nociar)
 
 * Tools
 - OpenMesh mesh dual generator added (Thanks to Clement Courbet for providing the code)
+- Added Sqrt3InterpolatingSubdividerLabsikGreinerT and ModifiedButterFlyT (Thanks to Clément Courbet for providing the code)
 
 * Apps
 - OpenMesh mesh dual generator application added (Thanks to Clement Courbet for providing the code)

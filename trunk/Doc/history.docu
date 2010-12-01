@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0-RC6</b> (?/?/?,Rev.337)</td><td>
+<tr valign=top><td><b>2.0</b> (2010/12/1,Rev.348)</td><td>
 
 <b>Core</b>
 <ul>
@@ -18,15 +18,23 @@
 <li>Added halfedge colors</li>
 </ul>
 
+
+<b>IO</b>
+<ul>
+<li>PLY Reader: Avoid failure of file writing if face colors or face normals are requested for PLY files.</li>
+</ul>
+
 <b>Math</b>
 <ul>
 <li>Added missing include of string.h to VectorT.hh (Thanks to Justin Bronder for reporting this)</li>
+<li>Added some vector norm functions for L1 norm, and absolute mean,max,min(Thanks to Michal Nociar)</li>
 </ul>
 
 
 <b>Tools</b>
 <ul>
 <li>OpenMesh mesh dual generator added (Thanks to Clement Courbet for providing the code)</li>
+<li>Added Sqrt3InterpolatingSubdividerLabsikGreinerT and ModifiedButterFlyT (Thanks to Clément Courbet for providing the code)</li>
 </ul>
 
 <b>Apps</b>
