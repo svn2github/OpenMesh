@@ -96,6 +96,35 @@ if (WIN32)
   #     "Delete \\\"$SMPROGRAMS\\\\$MUI_TEMP\\\\OpenFlipper.lnk\\\""
   #    )
 
+  # Copy all shared Qt files to build binary dir
+  if ( NOT Q_WS_MAC)
+      if (DEFINED QT_QMAKE_EXECUTABLE)
+          SET (QTLIBLIST QtCore QtGui)
+
+          IF (MSVC)
+              set(TYPE "d")
+              FOREACH(qtlib ${QTLIBLIST})
+                IF (WIN32)
+                  GET_FILENAME_COMPONENT(QT_DLL_PATH_tmp ${QT_QMAKE_EXECUTABLE} PATH)
+                  file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug)
+                  file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release)
+                  file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/MinSizeRel)
+                  file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/RelWithDebInfo)
+                  INSTALL(FILES ${QT_DLL_PATH_tmp}/${qtlib}${type}d4.dll
+                      DESTINATION ./
+                      CONFIGURATIONS Debug
+                      COMPONENT Applications)
+                  INSTALL(FILES ${QT_DLL_PATH_tmp}/${qtlib}4.dll
+                      DESTINATION ./
+                      CONFIGURATIONS Release
+                      COMPONENT Applications)
+                ENDIF (WIN32)
+              ENDFOREACH(qtlib)
+
+          endif()
+      endif(DEFINED QT_QMAKE_EXECUTABLE)
+  endif()
+
   # append dll's to installed package
   #if (EXISTS ${CMAKE_SOURCE_DIR}/WIN)
 	  #file (GLOB _files "${CMAKE_SOURCE_DIR}/WIN/DLLs/DLLs 32 debug/*.dll")
