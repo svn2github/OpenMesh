@@ -52,11 +52,16 @@ get_filename_component(_GlutDir "@GLUT_glut_LIBRARY@" PATH)
 get_filename_component(_GlewDir "@GLEW_LIBRARY@" PATH)
 
 # fix all dependencies
-fixup_bundle ("@CMAKE_BINARY_DIR@/Build/OpenMesh.app" "" "${_GlutDir};${_GlewDir}")
+fixup_bundle ("@CMAKE_BINARY_DIR@/Build/bin/DecimaterGui" "" "${_GlutDir};${_GlewDir}")
+fixup_bundle ("@CMAKE_BINARY_DIR@/Build/bin/ProgViewer" "" "${_GlutDir};${_GlewDir}")
+fixup_bundle ("@CMAKE_BINARY_DIR@/Build/bin/QtViewer" "" "${_GlutDir};${_GlewDir}")
+fixup_bundle ("@CMAKE_BINARY_DIR@/Build/bin/SubdividerGui" "" "${_GlutDir};${_GlewDir}")
 
-# fix all dependencies
-fixup_bundle (@CMAKE_BINARY_DIR@/Build/OpenMesh.app "${_qtplugins}" "/usr/lib;${_qtdirs}")
+fixup_bundle (@CMAKE_BINARY_DIR@/Build/bin/DecimaterGui "${_qtplugins}" "/usr/lib;${_qtdirs}")
+fixup_bundle (@CMAKE_BINARY_DIR@/Build/bin/ProgViewer "${_qtplugins}" "/usr/lib;${_qtdirs}")
+fixup_bundle (@CMAKE_BINARY_DIR@/Build/bin/QtViewer "${_qtplugins}" "/usr/lib;${_qtdirs}")
+fixup_bundle (@CMAKE_BINARY_DIR@/Build/bin/SubdividerGui "${_qtplugins}" "/usr/lib;${_qtdirs}")
 
 # create qt plugin configuration file
-file(WRITE "@CMAKE_BINARY_DIR@/Build/OpenMesh.app/Contents/Resources/qt.conf" "[Paths]\nPlugins = Resources/QtPlugins")
+# file(WRITE "@CMAKE_BINARY_DIR@/Build/OpenMesh.app/Contents/Resources/qt.conf" "[Paths]\nPlugins = Resources/QtPlugins")
 

@@ -50,11 +50,11 @@ if (APPLE)
     COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.cmake"
   )
   # let bundle generation depend on all targets
-  add_dependencies (fixbundle QtViewer DecimaterGui) 
+  add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui) 
 
   # install bundle
-  install (DIRECTORY ${CMAKE_BINARY_DIR}/Build/OpenMesh.app DESTINATION .
-           USE_SOURCE_PERMISSIONS)
+  #install (DIRECTORY ${CMAKE_BINARY_DIR}/Build/OpenMesh.app DESTINATION .
+  #         USE_SOURCE_PERMISSIONS)
 endif ()
 
 # ========================================================================
