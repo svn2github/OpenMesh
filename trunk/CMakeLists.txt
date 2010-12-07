@@ -50,7 +50,7 @@ if (APPLE)
     COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.cmake"
   )
   # let bundle generation depend on all targets
-  # add_dependencies (fixbundle OpenFlipper PluginLib ${OPENFLIPPER_PLUGINS})
+  add_dependencies (fixbundle QtViewer DecimaterGui) 
 
   # install bundle
   install (DIRECTORY ${CMAKE_BINARY_DIR}/Build/OpenMesh.app DESTINATION .
