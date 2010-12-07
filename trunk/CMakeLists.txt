@@ -52,6 +52,14 @@ if (APPLE)
   # let bundle generation depend on all targets
   add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui) 
 
+
+  # Required for Snow leopard, and the latest qt. Then the resources have to be copied
+  if ( EXISTS "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" )
+      add_custom_command(TARGET OpenMesh POST_BUILD
+         COMMAND ${CMAKE_COMMAND} -E copy_directory "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" "${CMAKE_BINARY_DIR}/Build/Libraries/qt_menu.nib" 
+        )
+  endif ()
+  
   # install bundle
   #install (DIRECTORY ${CMAKE_BINARY_DIR}/Build/OpenMesh.app DESTINATION .
   #         USE_SOURCE_PERMISSIONS)
