@@ -3,7 +3,7 @@
 #============================================================================================
 
 
-OpenMesh 2.0 ( Rev  348 ):
+OpenMesh 2.0 ( Rev  356 ):
 
 * Core
 - Improve computation of normals for poly meshes ( now the average normal is taken not the normal of one triangle)
@@ -35,6 +35,8 @@ OpenMesh 2.0 ( Rev  348 ):
 - Added preprocessor directives such that doxigen parses vectorT correctly
 
 * Build System
+- Copy Doc directories to installers
+- Copy shared Qt Libs to build dir on windows
 - Updated glew and glut finders
 - Respect seperate settings for build types (release,debug,relwithdebinfo)
 - Extend macros acg_append_files_recursive acg_append_files to not include files starting with a dot

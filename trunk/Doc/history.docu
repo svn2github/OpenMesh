@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.0</b> (2010/12/1,Rev.348)</td><td>
+<tr valign=top><td><b>2.0</b> (2010/12/21,Rev.356)</td><td>
 
 <b>Core</b>
 <ul>
@@ -54,6 +54,8 @@
 
 <b>Build System</b>
 <ul>
+<li>Copy Doc directories to installers</li>
+<li>Copy shared Qt Libs to build dir on windows</li>
 <li>Updated glew and glut finders</li>
 <li>Respect seperate settings for build types (release,debug,relwithdebinfo)</li>
 <li>Extend macros acg_append_files_recursive acg_append_files to not include files starting with a dot</li>
