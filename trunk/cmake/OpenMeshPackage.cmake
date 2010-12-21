@@ -89,13 +89,6 @@ if (WIN32)
   # TODO: fillme
   # set (CPACK_NSIS_CONTACT "")
 
-  #set (CPACK_NSIS_CREATE_ICONS
-  #     "CreateShortCut \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\OpenFlipper.lnk\\\" \\\"$INSTDIR\\\\OpenFlipper.exe\\\""
-  #    )
-  #set (CPACK_NSIS_DELETE_ICONS
-  #     "Delete \\\"$SMPROGRAMS\\\\$MUI_TEMP\\\\OpenFlipper.lnk\\\""
-  #    )
-
   # Copy all shared Qt files to build binary dir
   if ( NOT Q_WS_MAC)
       if (DEFINED QT_QMAKE_EXECUTABLE)
@@ -124,6 +117,27 @@ if (WIN32)
           endif()
       endif(DEFINED QT_QMAKE_EXECUTABLE)
   endif()
+
+  # copy the glut library if it exists on windows
+  IF ( WIN32)
+    if (EXISTS ${CMAKE_BINARY_DIR}/Build/glut32.dll)
+	    install(FILES ${CMAKE_BINARY_DIR}/Build/glut32.dll
+	    DESTINATION ./
+           COMPONENT Applications
+           )
+    endif()
+  endif()
+
+   # copy the documentation if it exists
+   IF ( WIN32)
+     if (EXISTS ${CMAKE_BINARY_DIR}/Build/Doc)
+	     install(DIRECTORY ${CMAKE_BINARY_DIR}/Build/Doc
+	     DESTINATION ./
+            COMPONENT Applications
+            )
+     endif()
+   endif()
+
 
   # append dll's to installed package
   #if (EXISTS ${CMAKE_SOURCE_DIR}/WIN)
