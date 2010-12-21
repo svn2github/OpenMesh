@@ -53,6 +53,11 @@ int main(int argc, char **argv)
 {
     MyMesh mesh;
 
+    if ( argc != 2 ) {
+        std::cerr << "Please specify input filename only!" << std::endl;
+        return 1;
+    }
+
     // read mesh from argv[1]
     if ( !OpenMesh::IO::read_mesh(mesh, argv[1]) )
     {
