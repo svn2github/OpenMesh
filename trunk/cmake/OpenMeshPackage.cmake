@@ -129,7 +129,7 @@ if (WIN32)
   endif()
 
    # copy the documentation if it exists
-   IF ( WIN32)
+   IF ( WIN32 )
      if (EXISTS ${CMAKE_BINARY_DIR}/Build/Doc)
 	     install(DIRECTORY ${CMAKE_BINARY_DIR}/Build/Doc
 	     DESTINATION ./
@@ -170,6 +170,15 @@ if (WIN32)
 else ()
   include (InstallRequiredSystemLibraries)
 endif ()
+
+if (APPLE)
+  if (EXISTS ${CMAKE_BINARY_DIR}/Build/share/OpenMesh/Doc)
+	     install(DIRECTORY ${CMAKE_BINARY_DIR}/Build/share/OpenMesh/Doc
+	     DESTINATION ./
+         COMPONENT Applications
+     )
+  endif()
+endif()
 
 
 include (CPack)
