@@ -1,3 +1,10 @@
+openmesh (2.0-0~ppa1~maverick1) maverick; urgency=low
+
+  * First maverick version of the official openmesh v2 release.
+  * Adding libxi-dev, libxmu-dev dependencies to build the apps.
+
+ -- Jean Pierre Charalambos <nakednous@gmail.com>  Sun, 02 Jan 2011 10:29:02 -0500
+
 openmesh (2.0~svn216-0~ppa3~karmic1) karmic; urgency=low
 
   * Fix UPSTREAM SVN REPOSITORY in rules. Thanks to Jan Möbius.
