@@ -53,6 +53,7 @@
 
 #include <OpenMesh/Core/System/config.h>
 #include <assert.h>
+#include <cstddef>
 
 
 //== NAMESPACES ===============================================================
@@ -103,21 +104,21 @@ class VertexVertexIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Vertex           value_type;
-  typedef typename Mesh::VertexHandle         value_handle;
+  typedef typename Mesh::Vertex             value_type;
+  typedef typename Mesh::VertexHandle       value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Vertex&      reference;
   typedef const typename Mesh::Vertex*      pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Vertex&            reference;
@@ -297,21 +298,21 @@ class ConstVertexVertexIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Vertex           value_type;
-  typedef typename Mesh::VertexHandle         value_handle;
+  typedef typename Mesh::Vertex             value_type;
+  typedef typename Mesh::VertexHandle       value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Vertex&      reference;
   typedef const typename Mesh::Vertex*      pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Vertex&            reference;
@@ -491,21 +492,21 @@ class VertexOHalfedgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
   typedef typename Mesh::Halfedge           value_type;
-  typedef typename Mesh::HalfedgeHandle         value_handle;
+  typedef typename Mesh::HalfedgeHandle     value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Halfedge&    reference;
   typedef const typename Mesh::Halfedge*    pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Halfedge&          reference;
@@ -685,21 +686,21 @@ class ConstVertexOHalfedgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
   typedef typename Mesh::Halfedge           value_type;
-  typedef typename Mesh::HalfedgeHandle         value_handle;
+  typedef typename Mesh::HalfedgeHandle     value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Halfedge&    reference;
   typedef const typename Mesh::Halfedge*    pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Halfedge&          reference;
@@ -879,21 +880,21 @@ class VertexIHalfedgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
   typedef typename Mesh::Halfedge           value_type;
-  typedef typename Mesh::HalfedgeHandle         value_handle;
+  typedef typename Mesh::HalfedgeHandle     value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Halfedge&    reference;
   typedef const typename Mesh::Halfedge*    pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Halfedge&          reference;
@@ -1073,21 +1074,21 @@ class ConstVertexIHalfedgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
   typedef typename Mesh::Halfedge           value_type;
-  typedef typename Mesh::HalfedgeHandle         value_handle;
+  typedef typename Mesh::HalfedgeHandle     value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Halfedge&    reference;
   typedef const typename Mesh::Halfedge*    pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Halfedge&          reference;
@@ -1267,21 +1268,21 @@ class VertexEdgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Edge           value_type;
+  typedef typename Mesh::Edge               value_type;
   typedef typename Mesh::EdgeHandle         value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Edge&        reference;
   typedef const typename Mesh::Edge*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Edge&              reference;
@@ -1461,21 +1462,21 @@ class ConstVertexEdgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Edge           value_type;
+  typedef typename Mesh::Edge               value_type;
   typedef typename Mesh::EdgeHandle         value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Edge&        reference;
   typedef const typename Mesh::Edge*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Edge&              reference;
@@ -1655,21 +1656,21 @@ class VertexFaceIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Face           value_type;
+  typedef typename Mesh::Face               value_type;
   typedef typename Mesh::FaceHandle         value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Face&        reference;
   typedef const typename Mesh::Face*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Face&              reference;
@@ -1847,21 +1848,21 @@ class ConstVertexFaceIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Face           value_type;
+  typedef typename Mesh::Face               value_type;
   typedef typename Mesh::FaceHandle         value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Face&        reference;
   typedef const typename Mesh::Face*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Face&              reference;
@@ -2039,21 +2040,21 @@ class FaceVertexIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Vertex           value_type;
-  typedef typename Mesh::VertexHandle         value_handle;
+  typedef typename Mesh::Vertex             value_type;
+  typedef typename Mesh::VertexHandle       value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Vertex&      reference;
   typedef const typename Mesh::Vertex*      pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Vertex&            reference;
@@ -2233,21 +2234,21 @@ class ConstFaceVertexIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Vertex           value_type;
-  typedef typename Mesh::VertexHandle         value_handle;
+  typedef typename Mesh::Vertex             value_type;
+  typedef typename Mesh::VertexHandle       value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Vertex&      reference;
   typedef const typename Mesh::Vertex*      pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Vertex&            reference;
@@ -2427,21 +2428,21 @@ class FaceHalfedgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
   typedef typename Mesh::Halfedge           value_type;
-  typedef typename Mesh::HalfedgeHandle         value_handle;
+  typedef typename Mesh::HalfedgeHandle     value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Halfedge&    reference;
   typedef const typename Mesh::Halfedge*    pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Halfedge&          reference;
@@ -2621,21 +2622,21 @@ class ConstFaceHalfedgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
   typedef typename Mesh::Halfedge           value_type;
-  typedef typename Mesh::HalfedgeHandle         value_handle;
+  typedef typename Mesh::HalfedgeHandle     value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Halfedge&    reference;
   typedef const typename Mesh::Halfedge*    pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Halfedge&          reference;
@@ -2815,21 +2816,21 @@ class FaceEdgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Edge           value_type;
+  typedef typename Mesh::Edge               value_type;
   typedef typename Mesh::EdgeHandle         value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Edge&        reference;
   typedef const typename Mesh::Edge*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Edge&              reference;
@@ -3009,21 +3010,21 @@ class ConstFaceEdgeIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Edge           value_type;
+  typedef typename Mesh::Edge               value_type;
   typedef typename Mesh::EdgeHandle         value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Edge&        reference;
   typedef const typename Mesh::Edge*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Edge&              reference;
@@ -3203,21 +3204,21 @@ class FaceFaceIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Face           value_type;
+  typedef typename Mesh::Face               value_type;
   typedef typename Mesh::FaceHandle         value_handle;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Face&        reference;
   typedef const typename Mesh::Face*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Face&              reference;
@@ -3395,21 +3396,21 @@ class ConstFaceFaceIterT
 
   //--- Typedefs ---
 
-  typedef typename Mesh::HalfedgeHandle   HalfedgeHandle;
+  typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Face           value_type;
+  typedef typename Mesh::Face               value_type;
   typedef typename Mesh::FaceHandle         value_handle;
 
 #if 1
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef const Mesh&                       mesh_ref;
   typedef const Mesh*                       mesh_ptr;
   typedef const typename Mesh::Face&        reference;
   typedef const typename Mesh::Face*        pointer;
 #else
   typedef std::bidirectional_iterator_tag   iterator_category;
-  typedef ptrdiff_t                         difference_type;
+  typedef std::ptrdiff_t                    difference_type;
   typedef Mesh&                             mesh_ref;
   typedef Mesh*                             mesh_ptr;
   typedef typename Mesh::Face&              reference;
