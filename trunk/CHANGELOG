@@ -2,6 +2,11 @@
 
 #============================================================================================
 
+OpenMesh 2.0.1 ( Rev  360 ):
+* Core
+- Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)
+* Build System
+- Updated debian dir (thanks to Jean Pierre Charalambos)
 
 OpenMesh 2.0 ( Rev  356 ):
 

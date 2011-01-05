@@ -7,6 +7,20 @@
 
 <!-- --------------------------------------------------------------------- -->
 
+
+<tr valign=top><td><b>2.0.1</b> (?/?/?,Rev.360)</td><td>
+<b>Core</b>
+<ul>
+<li>Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)</li>
+</ul>
+
+<b>Build System</b>
+<ul>
+<li>Updated debian dir (thanks to Jean Pierre Charalambos)</li>
+</ul>
+
+</tr>
+
 <tr valign=top><td><b>2.0</b> (2010/12/21,Rev.356)</td><td>
 
 <b>Core</b>
