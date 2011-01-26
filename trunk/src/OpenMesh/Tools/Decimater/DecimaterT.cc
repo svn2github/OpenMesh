@@ -307,7 +307,7 @@ DecimaterT<Mesh>::is_collapse_legal(const CollapseInfo& _ci)
   // v0vl and v1vl must not both be boundary edges
   if (_ci.vl.is_valid() &&
       mesh_.is_boundary(_ci.vlv1) &&
-      mesh_.is_boundary(_ci.v0v1))
+      mesh_.is_boundary(_ci.v0vl))
     return false;
 
   // v0vr and v1vr must not be both boundary edges
