@@ -2,9 +2,13 @@
 
 #============================================================================================
 
-OpenMesh 2.0.1 ( Rev  360 ):
+OpenMesh 2.0.1 ( Rev 363 ):
 * Core
 - Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)
+
+* Tools
+- Fixed bug in decimater where boundary check was using the wrong halfege(Thanks to Michal Nociar for the patch)
+
 * Build System
 - Updated debian dir (thanks to Jean Pierre Charalambos)
 

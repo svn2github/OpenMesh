@@ -8,10 +8,15 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.1</b> (?/?/?,Rev.360)</td><td>
+<tr valign=top><td><b>2.0.1</b> (?/?/?,Rev.363)</td><td>
 <b>Core</b>
 <ul>
 <li>Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)</li>
+</ul>
+
+<b>Tools</b>
+<ul>
+<li>Fixed bug in decimater where boundary check was using the wrong halfege(Thanks to Michal Nociar for the patch)</li>
 </ul>
 
 <b>Build System</b>
