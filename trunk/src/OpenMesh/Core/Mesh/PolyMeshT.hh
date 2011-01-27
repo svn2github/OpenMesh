@@ -229,8 +229,10 @@ public:
   void update_normal(VertexHandle _vh)
   { set_normal(_vh, calc_vertex_normal(_vh)); }
 
-  /** Update normal vectors for all vertices. \attention Needs the
-      Attributes::Normal attribute for faces and vertices. */
+  /** \brief Update normal vectors for all vertices. 
+
+      Uses existing face normals to calculate new vertex normals.
+      \attention Needs the Attributes::Normal attribute for faces and vertices. */
   void update_vertex_normals();
 
   /** Calculate normal vector for vertex _vh by averaging normals
