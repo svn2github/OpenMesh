@@ -24,6 +24,12 @@ set (directories
 acg_append_files (headers "*.hh" ${directories})
 acg_append_files (sources "*.cc" ${directories})
 
+# Disable Library installation when not building OpenMesh on its own but as part of another project!
+if ( NOT ${PROJECT_NAME} MATCHES "OpenMesh")
+  set(ACG_NO_LIBRARY_INSTALL true)
+endif()
+
+
 if (WIN32)
   # OpenMesh has no dll exports so we have to build a static library on windows
   acg_add_library (OpenMeshCore STATIC ${sources} ${headers})

@@ -145,6 +145,7 @@ macro (acg_qt4)
     set (QT_USE_QTSCRIPT 1)
     set (QT_USE_QTSQL 1)
     set (QT_USE_QTXML 1)
+    set (QT_USE_QTXMLPATTERNS 1)
     set (QT_USE_QTHELP 1)
     set (QT_USE_QTWEBKIT 1)
     set (QT_USE_QTUITOOLS 1)
@@ -497,23 +498,27 @@ function (acg_add_library _target _libtype)
                             ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.a)
 
   endif ()
-  
-  if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
-    if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC )
-      install (TARGETS ${_target}
-               RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
-               LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
-               ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR})
-      if (_and_static)
-        install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
-                 DESTINATION ${ACG_PROJECT_LIBDIR}
-                 RENAME lib${_target}.a
-                 PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+ 
+
+  # Block installation of libraries by setting ACG_NO_LIBRARY_INSTALL
+  if ( NOT ACG_NO_LIBRARY_INSTALL ) 
+    if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
+      if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC )
+        install (TARGETS ${_target}
+                 RUNTIME DESTINATION ${ACG_PROJECT_BINDIR}
+                 LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
+                 ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR})
+        if (_and_static)
+          install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
+                   DESTINATION ${ACG_PROJECT_LIBDIR}
+                   RENAME lib${_target}.a
+                   PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+        endif ()
+      elseif (${_type} STREQUAL MODULE)
+        install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_PLUGINDIR})
       endif ()
-    elseif (${_type} STREQUAL MODULE)
-      install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_PLUGINDIR})
     endif ()
-  endif ()
+  endif()
 
 endfunction ()
 

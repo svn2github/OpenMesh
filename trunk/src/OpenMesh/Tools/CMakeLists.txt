@@ -26,6 +26,12 @@ IF(WIN32)
   acg_append_files (sources "*.c" ${directories})
 ENDIF(WIN32)
 
+# Disable Library installation when not building OpenMesh on its own but as part of another project!
+if ( NOT ${PROJECT_NAME} MATCHES "OpenMesh")
+  set(ACG_NO_LIBRARY_INSTALL true)
+endif()
+
+
 if (WIN32)
   # OpenMesh has no dll exports so we have to build a static library on windows
   acg_add_library (OpenMeshTools STATIC ${sources} ${headers})
