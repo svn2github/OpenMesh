@@ -41,9 +41,8 @@ IF( NOT WIN32 )
   target_link_libraries (OpenMeshToolsStatic OpenMeshCoreStatic)
 ENDIF(NOT WIN32)
 
-if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
-
-if ( APPLE )
+# Install Header Files (Apple)
+if ( NOT ACG_PROJECT_MACOS_BUNDLE AND APPLE )
  FILE(GLOB files_install_Decimater                       "${CMAKE_CURRENT_SOURCE_DIR}/Decimater/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Decimater/*T.cc" )
  FILE(GLOB files_install_Dualizer                        "${CMAKE_CURRENT_SOURCE_DIR}/Dualizer/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Dualizer/*T.cc" )
  FILE(GLOB files_install_KERNEL_OSG                      "${CMAKE_CURRENT_SOURCE_DIR}/Kernel_OSG/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Kernel_OSG/*T.cc" )
@@ -62,8 +61,11 @@ if ( APPLE )
  INSTALL(FILES ${files_install_Subdivider_Uniform_Composite}    DESTINATION include/OpenMesh/Tools/Subdivider/Uniform/Composite )
  INSTALL(FILES ${files_install_Utils}                           DESTINATION include/OpenMesh/Tools/Utils )
  INSTALL(FILES ${files_install_VDPM}                            DESTINATION include/OpenMesh/Tools/VDPM )
-endif( APPLE )
+endif()
 
+
+# Only install if the project name matches OpenMesh.
+if (NOT APPLE AND ${PROJECT_NAME} MATCHES "OpenMesh")
 
 # Install Header Files
 install(DIRECTORY .

@@ -35,11 +35,8 @@ else ()
 endif ()
 
 
-# Install Header Files
-
-if (NOT ACG_PROJECT_MACOS_BUNDLE OR NOT APPLE)
-
-if ( APPLE )
+# Install Header Files (Apple)
+if ( NOT ACG_PROJECT_MACOS_BUNDLE AND APPLE )
  FILE(GLOB files_install_Geometry    "${CMAKE_CURRENT_SOURCE_DIR}/Geometry/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Geometry/*T.cc" )
  FILE(GLOB files_install_IO          "${CMAKE_CURRENT_SOURCE_DIR}/IO/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/IO/*T.cc" "${CMAKE_CURRENT_SOURCE_DIR}/IO/*.inl"  )
  FILE(GLOB files_install_IO_importer "${CMAKE_CURRENT_SOURCE_DIR}/IO/importer/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/IO/importer/*T.cc" )
@@ -60,10 +57,13 @@ if ( APPLE )
  INSTALL(FILES ${files_install_Mesh_Gen}    DESTINATION include/OpenMesh/Core/Mesh/gen )
  INSTALL(FILES ${files_install_System}      DESTINATION include/OpenMesh/Core/System )
  INSTALL(FILES ${files_install_Utils}       DESTINATION include/OpenMesh/Core/Utils )
-endif(APPLE)
+endif()
 
 
+# Only install if the project name matches OpenMesh.
+if (NOT APPLE AND ${PROJECT_NAME} MATCHES "OpenMesh")
 
+# Install Header Files)
 install(DIRECTORY . 
 	DESTINATION include/OpenMesh/Core
         FILES_MATCHING 
@@ -101,6 +101,7 @@ install(DIRECTORY IO/
         PATTERN "exporter" EXCLUDE
         PATTERN "tmp" EXCLUDE
         PATTERN "Debian*" EXCLUDE )
+
 endif ()
 
 
