@@ -31,7 +31,7 @@ The following naming conventions are used for the %OpenMesh code:
 //-----------------------------------------------------------------------------
 
 
-/** \page compiling Compiling %OpenMesh
+/** \page compiling Compiling OpenMesh
 
 \section compilers Tested compilers
 
@@ -75,7 +75,7 @@ Install the following external libraries / frameworks if you want to use the inc
 
 \section sec_compiling_unix Unix
 
-\subsection linux_using_cmake Compiling %OpenMesh using CMake
+\subsection linux_using_cmake Compiling OpenMesh using CMake
 
 In order to compile %OpenMesh, create a directory named e.g. "build" in
 OpenMesh's root directory. <b>Change to the newly created directory</b> and type
@@ -107,7 +107,7 @@ There are some additional targets:<br>
 
 \section sec_compiling_windows Windows
 
-\subsection windows_using_cmake Compiling %OpenMesh using CMake
+\subsection windows_using_cmake Compiling OpenMesh using CMake
 
 If you want to use cmake to build your Visual Studio 2008 solution file,<br>
 download and install CMake from <a href="http://www.cmake.org/cmake/resources/software.html">www.cmake.org</a>.<br>
@@ -140,23 +140,44 @@ In Visual Studio 2008 choose "Release" in the appropriate select box and build t
 
 Download and install required libraries as stated above.
 Because some of the examples depend on the GLEW library, it's recommended to install glew via MacPorts portage system <a href="http://www.macports.org/" target="_blank">MacPorts</a>.<br>
-If you have not installed it yet, follow the instructions given on their site in order to install it.<br>
-Type
-<tt>
-sudo port -v install glew
-</tt>
-to install glew headers and libraries. ( MacPorts usually installs header files to \c /opt/local/include and libraries to \c /opt/local/lib. )<br>
-<br>
+If you have not installed it yet, follow the instructions given on their site. Type <tt>sudo port -v install glew</tt> to install glew headers and libraries.<br/><br/>
+You can download %OpenMesh's sources from <tt>www.openmesh.org</tt> or check out the latest repository via SVN:<br/>
+<tt>svn co http://www.openmesh.org/svnrepo/OpenMesh/trunk %OpenMesh</tt>.<br/><br/>
 
-\subsection mac_using_cmake Compiling %OpenMesh using CMake
+\subsection mac_using_cmake Compiling OpenMesh using CMake
 
-If you're using cmake as preferred build system create a directory
-named e.g. in %OpenMesh's root directory and change to it.
+We recommend you to use CMake >= 2.8 as build system. This can also easily be installed
+via MacPorts as well as the Qt >= 4.6 library which is used for some example applications
+in %OpenMesh.<br/>
+Once installed, change to %OpenMesh's root directory and create a directory
+named e.g. "buildDebug" (assuming you want to build with debug symbols).<br/>
+Then type in the following command to initially set up the build environment:
 <br/><br/>
 <tt>
 cmake&nbsp;..&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Generates the appropriate Makefiles<br>
-make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Builds the project (use 'make debug' to build debug version)<br>
-</tt><br>
+</tt>
+<br/>
+Note: If the build directory is not a subdirectory of %OpenMesh's root folder, replace ".." with %OpenMesh's
+absolute (or relative) path.
+In order to manually set specific build variables, just type:
+<br/><br/>
+<tt>
+ccmake&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Configure build environment<br>
+</tt>
+<br/>
+This opens the CMake configure tool. Change the CMAKE_BUILD_TYPE variable to "Release" in order to prepare build
+for release configuration. Now, when everything is set up, just type:
+<br/><br/>
+<tt>
+make&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Build %OpenMesh<br>
+</tt>
+<br/>
+And optionally:
+<br/><br/>
+<tt>
+make&nbsp;doc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## Build %OpenMesh's documentation<br>
+</tt>
+<br>
 The mac application bundle will be found under "Build" in the recently created build folder. 
 It automatically contains all needed shared objects (libs, fonts, textures, etc.).
 
