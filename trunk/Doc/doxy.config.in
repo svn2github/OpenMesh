@@ -788,7 +788,7 @@ HTML_FILE_EXTENSION    = .html
 # each generated HTML page. If it is left blank doxygen will generate a 
 # standard header.
 
-HTML_HEADER            = @CMAKE_CURRENT_SOURCE_DIR@/html/acg_header.html
+HTML_HEADER            = 
 
 # The HTML_FOOTER tag can be used to specify a personal HTML footer for 
 # each generated HTML page. If it is left blank doxygen will generate a 
@@ -803,7 +803,7 @@ HTML_FOOTER            = @CMAKE_CURRENT_SOURCE_DIR@/html/acg_footer.html
 # the style sheet file to the HTML output directory, so don't put your own 
 # stylesheet in the HTML output directory as well, or it will be erased!
 
-HTML_STYLESHEET        = @CMAKE_CURRENT_SOURCE_DIR@/html/acg_style.css
+HTML_STYLESHEET        = 
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes, 
 # files or namespaces will be aligned in HTML using tables. If set to 
