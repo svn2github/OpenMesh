@@ -636,7 +636,7 @@ an arbitrary data structure on the other side by means of reader/writer
 and importer/exporter modules. This is illustrated by the following
 diagramm :
 
-\image html iomanager.gif
+\image html iomanager.png
 
 <br>
 
