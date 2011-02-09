@@ -28,7 +28,7 @@ The tutorials explain how to use %OpenMesh by demonstrating real code examples.
 In this section all necessary information on how to build projects using %OpenMesh
 is given.
 
-\li \ref compiling
+\li \subpage compiling
 
 <br /><br />
 
