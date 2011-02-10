@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.1</b> (?/?/?,Rev.363)</td><td>
+<tr valign=top><td><b>2.0.1</b> (?/?/?,Rev.376)</td><td>
 <b>Core</b>
 <ul>
 <li>Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)</li>
@@ -22,6 +22,14 @@
 <b>Build System</b>
 <ul>
 <li>Updated debian dir (thanks to Jean Pierre Charalambos)</li>
+</ul>
+
+<b>Documentation</b>
+<ul>
+<li>Fixed error in image about edge collapses</li>
+<li>Fixed wrong strip path in doxygen settings</li>
+<li>Fixed compilation instructions for mac</li>
+<li>Switched to white background with black text</li>
 </ul>
 
 </tr>

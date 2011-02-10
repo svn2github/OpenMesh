@@ -2,7 +2,7 @@
 
 #============================================================================================
 
-OpenMesh 2.0.1 ( Rev 363 ):
+OpenMesh 2.0.1 ( Rev 376 ):
 * Core
 - Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)
 
@@ -11,6 +11,12 @@ OpenMesh 2.0.1 ( Rev 363 ):
 
 * Build System
 - Updated debian dir (thanks to Jean Pierre Charalambos)
+
+* Documentation
+- Fixed error in image about edge collapses
+- Fixed wrong strip path in doxygen settings
+- Fixed compilation instructions for mac
+- Switched to white background with black text
 
 OpenMesh 2.0 ( Rev  356 ):
 
