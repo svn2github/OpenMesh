@@ -2,13 +2,13 @@ Source: openmesh
 Section: libs
 Priority: optional
 Maintainer: Jean Pierre Charalambos <nakednous@gmail.com>
-Build-Depends: cdbs, debhelper (>= 7), cmake, libglew1.5-dev, libqt4-dev, libqt4-opengl-dev, libqwt5-qt4-dev, freeglut3-dev, libfreetype6-dev, libxi-dev, libxmu-dev, libgomp1, doxygen
+Build-Depends: cdbs, debhelper (>= 7), cmake, libqt4-dev, libqt4-opengl-dev, freeglut3-dev, libfreetype6-dev, libgomp1, doxygen
 Standards-Version: 3.9.1
 Homepage: http://www.openmesh.org
 
 Package: libopenmesh
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libglew1.5, libqt4-opengl, libqwt5-qt4, freeglut3, libfreetype6
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: OpenMesh is a generic and efficient data structure for representing
  and manipulating polygonal meshes. OpenMesh provides the following features:
  .
@@ -23,7 +23,7 @@ Description: OpenMesh is a generic and efficient data structure for representing
 Package: libopenmesh-dev
 Section: libdevel
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenmesh (= ${binary:Version}), libglew1.5-dev, libqt4-dev, libqt4-opengl-dev, libqwt5-qt4-dev, freeglut3-dev, libfreetype6-dev
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenmesh (= ${binary:Version}), libqt4-dev, libqt4-opengl-dev, freeglut3-dev, libfreetype6-dev
 Suggests: qt4-designer(>= 4.5), qt4-dev-tools (>= 4.5), libopenmesh-doc, libopenmesh-apps
 Description: OpenMesh is a generic and efficient data structure for representing
  and manipulating polygonal meshes. OpenMesh provides the following features:
@@ -38,7 +38,7 @@ Description: OpenMesh is a generic and efficient data structure for representing
 
 Package: libopenmesh-apps
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenmesh (= ${binary:Version}), libxi-dev, libxmu-dev
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenmesh (= ${binary:Version})
 Description: OpenMesh is a generic and efficient data structure for representing
  and manipulating polygonal meshes. OpenMesh provides the following features:
  .
