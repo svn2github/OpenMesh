@@ -28,7 +28,7 @@ message(STATUS "Fixing ${EXECUTABLES}")
 # fix all dependencies
 foreach( CURRENTEXE ${EXECUTABLES})
    fixup_bundle (${CURRENTEXE} "" "${_GlutDir};${_GlewDir};@QT_BINARY_DIR@")
-endforeach(loop_var)
+endforeach()
 
 
 
