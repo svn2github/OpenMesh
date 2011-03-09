@@ -47,15 +47,17 @@ IF( NOT WIN32 )
   target_link_libraries (OpenMeshToolsStatic OpenMeshCoreStatic)
 ENDIF(NOT WIN32)
 
-# Add tools as dependency before fixbundle 
-if ( WIN32 OR APPLE)
-  # let bundle generation depend on target
-  add_dependencies (fixbundle OpenMeshTools)
-endif()
+if ( ${PROJECT_NAME} MATCHES "OpenMesh")
+  # Add tools as dependency before fixbundle 
+  if ( WIN32 OR APPLE)
+    # let bundle generation depend on target
+    add_dependencies (fixbundle OpenMeshTools)
+  endif()
 
-if ( APPLE)
-  # let bundle generation depend on target
-  add_dependencies (fixbundle OpenMeshToolsStatic)
+  if ( APPLE)
+    # let bundle generation depend on target
+    add_dependencies (fixbundle OpenMeshToolsStatic)
+  endif()
 endif()
 
 
