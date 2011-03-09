@@ -20,15 +20,9 @@ include (BundleUtilities)
 # Get library paths
 get_filename_component(_GlutDir "@GLUT_glut_LIBRARY@" PATH)
 
-# Get all executables in build dir
-file (GLOB EXECUTABLES "@CMAKE_BINARY_DIR@/Build/*.exe" )
-
-message(STATUS "Fixing ${EXECUTABLES}")
-
 # fix all dependencies
-foreach( CURRENTEXE ${EXECUTABLES})
-   fixup_bundle (${CURRENTEXE} "" "${_GlutDir};${_GlewDir};@QT_BINARY_DIR@")
-endforeach()
+fixup_bundle ("@CMAKE_BINARY_DIR@/Build/QtViewer.exe" ""  "${_GlutDir};@QT_BINARY_DIR@")
+
 
 
 
