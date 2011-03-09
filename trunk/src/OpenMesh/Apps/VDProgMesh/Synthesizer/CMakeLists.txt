@@ -3,7 +3,6 @@ include (ACGCommon)
 include_directories (
   ../../../..
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${GLEW_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
   ${QT_INCLUDE_DIR}
 )
@@ -39,6 +38,5 @@ target_link_libraries (${targetName}
   OpenMeshTools
   ${QT_LIBRARIES}
   ${OPENGL_LIBRARIES}
-  ${GLEW_LIBRARY}
   ${GLUT_LIBRARIES}
 )

@@ -40,6 +40,17 @@ else ()
 
 endif ()
 
+# Add core as dependency before fixbundle 
+if ( WIN32 OR APPLE)
+  # let bundle generation depend on targets
+  add_dependencies (fixbundle OpenMeshCore)
+endif ()
+
+if ( APPLE)
+  # let bundle generation depend on target
+  add_dependencies (fixbundle OpenMeshToolsStatic)
+endif()
+
 
 # Install Header Files (Apple)
 if ( NOT ACG_PROJECT_MACOS_BUNDLE AND APPLE )

@@ -69,12 +69,9 @@ ENDIF (WIN32)
 SET( GLUT_FOUND "NO" )
 IF(GLUT_INCLUDE_DIR)
   IF(GLUT_glut_LIBRARY)
-    # Is -lXi and -lXmu required on all platforms that have it?
-    # If not, we need some way to figure out what platform we are on.
+    
     SET( GLUT_LIBRARIES
       ${GLUT_glut_LIBRARY}
-      ${GLUT_Xmu_LIBRARY}
-      ${GLUT_Xi_LIBRARY} 
       ${GLUT_cocoa_LIBRARY}
       )
     SET( GLUT_FOUND "YES" )

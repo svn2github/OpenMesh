@@ -47,6 +47,18 @@ IF( NOT WIN32 )
   target_link_libraries (OpenMeshToolsStatic OpenMeshCoreStatic)
 ENDIF(NOT WIN32)
 
+# Add tools as dependency before fixbundle 
+if ( WIN32 OR APPLE)
+  # let bundle generation depend on target
+  add_dependencies (fixbundle OpenMeshTools)
+endif()
+
+if ( APPLE)
+  # let bundle generation depend on target
+  add_dependencies (fixbundle OpenMeshToolsStatic)
+endif()
+
+
 # Install Header Files (Apple)
 if ( NOT ACG_PROJECT_MACOS_BUNDLE AND APPLE )
  FILE(GLOB files_install_Decimater                       "${CMAKE_CURRENT_SOURCE_DIR}/Decimater/*.hh"  "${CMAKE_CURRENT_SOURCE_DIR}/Decimater/*T.cc" )
