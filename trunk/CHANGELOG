@@ -11,6 +11,10 @@ OpenMesh 2.0.1 ( Rev 376 ):
 
 * Build System
 - Updated debian dir (thanks to Jean Pierre Charalambos)
+- Removed glew depedency
+- Only one fixbundle on mac and windows
+- Run fixbundle only in standalone mode
+- Change debian control to reduce dependencies (glew,some qt libs)
 
 * Documentation
 - Fixed error in image about edge collapses

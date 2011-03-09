@@ -22,6 +22,10 @@
 <b>Build System</b>
 <ul>
 <li>Updated debian dir (thanks to Jean Pierre Charalambos)</li>
+<li>Removed glew depedency</li>
+<li>Only one fixbundle on mac and windows</li>
+<li>Run fixbundle only in standalone mode</li>
+<li>Change debian control to reduce dependencies (glew,some qt libs)</li>
 </ul>
 
 <b>Documentation</b>
