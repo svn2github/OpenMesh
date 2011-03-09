@@ -21,7 +21,7 @@ include (BundleUtilities)
 get_filename_component(_GlutDir "@GLUT_glut_LIBRARY@" PATH)
 
 # Get all executables in build dir
-list( APPEND EXECUTABLES "@CMAKE_BINARY_DIR@/Build/*.exe" )
+file (GLOB EXECUTABLES "@CMAKE_BINARY_DIR@/Build/*.exe" )
 
 message(STATUS "Fixing ${EXECUTABLES}")
 
