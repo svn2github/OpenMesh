@@ -19,10 +19,9 @@ include (BundleUtilities)
 
 # Get library paths
 get_filename_component(_GlutDir "@GLUT_glut_LIBRARY@" PATH)
-get_filename_component(_GlewDir "@GLEW_LIBRARY@" PATH)
 
 # fix all dependencies
-fixup_bundle ("@CMAKE_BINARY_DIR@/Build/ProgViewer.exe" "" "${_GlutDir};${_GlewDir};@QT_BINARY_DIR@")
+fixup_bundle ("@CMAKE_BINARY_DIR@/Build/*" "" "${_GlutDir};${_GlewDir};@QT_BINARY_DIR@")
 
 
 
