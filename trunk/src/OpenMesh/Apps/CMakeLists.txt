@@ -1,5 +1,10 @@
 include (ACGCommon)
 
+if ( NOT DEFINED BUILD_APPS )
+  set( BUILD_APPS true CACHE BOOL "Enable or disable building of apps" )
+endif()
+ 
+if ( BUILD_APPS )
 
 add_subdirectory (Dualizer)
 add_subdirectory (Decimating/commandlineDecimater)
@@ -31,7 +36,7 @@ endif ()
 
 
 # check for OpenGL and GLUT as our required dependencies
-if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND NOT BUILD_APPS STREQUAL OFF  )
+if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND )
   add_subdirectory (Decimating/DecimaterGui)
   add_subdirectory (QtViewer)
   add_subdirectory (Subdivider/SubdividerGui)
@@ -45,9 +50,9 @@ if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND NOT BUILD_APPS STREQUAL OFF  )
   endif()
 
 else ()
-  if ( BUILD_APPS STREQUAL OFF )
-    message ("Building Apps disabled by user.")
-  endif ()
+  
+  
+  
 
   if (NOT QT4_FOUND)
     message ("QT 4 not found! Skipping some apps.")
@@ -61,3 +66,9 @@ else ()
     message ("GLUT not found! Skipping some apps.")
   endif ()
 endif ()
+
+else (BUILD_APPS)
+
+  message ("Building Apps disabled by user.")
+
+endif (BUILD_APPS)
