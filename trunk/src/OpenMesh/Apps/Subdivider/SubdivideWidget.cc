@@ -70,6 +70,8 @@
 #include <OpenMesh/Tools/Subdivider/Uniform/CompositeSqrt3T.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/LoopT.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/Sqrt3T.hh>
+#include <OpenMesh/Tools/Subdivider/Uniform/Sqrt3InterpolatingSubdividerLabsikGreinerT.hh>
+#include <OpenMesh/Tools/Subdivider/Uniform/ModifiedButterFlyT.hh>
 
 // My stuff
 #include <OpenMesh/Apps/Subdivider/SubdivideWidget.hh>
@@ -144,20 +146,25 @@ SubdivideWidget(QWidget* _parent, const char* _name)
   QRadioButton* radio1 = new QRadioButton( "Comp. Loop" );
   QRadioButton* radio2 = new QRadioButton( "Comp. SQRT(3)" );
   QRadioButton* radio3 = new QRadioButton( "Loop" );
+  QRadioButton* radio4 = new QRadioButton( "Sqrt(3)" );
+  QRadioButton* radio5 = new QRadioButton( "Interpolating Sqrt3" );
+  QRadioButton* radio6 = new QRadioButton( "Modified Butterfly" );
   radio3->setChecked( TRUE );
   sel_topo_type = SOP_UniformLoop;
-
-  QRadioButton* radio4 = new QRadioButton( "Sqrt(3)" );
 
   buttonGroup->addButton(radio1, SOP_UniformCompositeLoop);
   buttonGroup->addButton(radio2, SOP_UniformCompositeSqrt3);
   buttonGroup->addButton(radio3, SOP_UniformLoop);
   buttonGroup->addButton(radio4, SOP_UniformSqrt3);
+  buttonGroup->addButton(radio5, SOP_UniformInterpolatingSqrt3);
+  buttonGroup->addButton(radio6, SOP_ModifiedButterfly);
 
   vbox->addWidget(radio1);
   vbox->addWidget(radio2);
   vbox->addWidget(radio3);
   vbox->addWidget(radio4);
+  vbox->addWidget(radio5);
+  vbox->addWidget(radio6);
 
   QObject::connect( buttonGroup, SIGNAL( buttonPressed(int) ),
                           this, SLOT( slot_select_sop(int) ) );
@@ -178,10 +185,12 @@ SubdivideWidget(QWidget* _parent, const char* _name)
 
   // --------------------
 
-  subdivider_[SOP_UniformCompositeLoop]  = new Uniform::CompositeLoopT<Mesh>;
-  subdivider_[SOP_UniformCompositeSqrt3] = new Uniform::CompositeSqrt3T<Mesh>;
-  subdivider_[SOP_UniformLoop]           = new Uniform::LoopT<Mesh>;
-  subdivider_[SOP_UniformSqrt3]          = new Uniform::Sqrt3T<Mesh>;
+  subdivider_[SOP_UniformCompositeLoop]      = new Uniform::CompositeLoopT<Mesh>;
+  subdivider_[SOP_UniformCompositeSqrt3]     = new Uniform::CompositeSqrt3T<Mesh>;
+  subdivider_[SOP_UniformLoop]               = new Uniform::LoopT<Mesh>;
+  subdivider_[SOP_UniformSqrt3]              = new Uniform::Sqrt3T<Mesh>;
+  subdivider_[SOP_UniformInterpolatingSqrt3] = new Uniform::InterpolatingSqrt3LGT< Mesh >;
+  subdivider_[SOP_ModifiedButterfly]         = new Uniform::ModifiedButterflyT<Mesh>;
 
 }
 
@@ -195,6 +204,8 @@ void SubdivideWidget::slot_select_sop(int i)
     case SOP_UniformCompositeLoop:
     case SOP_UniformCompositeSqrt3:
     case SOP_UniformLoop:
+    case SOP_UniformInterpolatingSqrt3:
+    case SOP_ModifiedButterfly:
     case SOP_UniformSqrt3:          sel_topo_type = (SOPType)i; break;
     default:                        sel_topo_type = SOP_Undefined;
   }

@@ -51,6 +51,8 @@
 #include <OpenMesh/Tools/Subdivider/Uniform/LoopT.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/CompositeSqrt3T.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/CompositeLoopT.hh>
+#include <OpenMesh/Tools/Subdivider/Uniform/Sqrt3InterpolatingSubdividerLabsikGreinerT.hh>
+#include <OpenMesh/Tools/Subdivider/Uniform/ModifiedButterFlyT.hh>
 
 // ----------------------------------------------------------------------------
 
@@ -64,6 +66,8 @@ typedef Uniform::Sqrt3T< Mesh >                              Sqrt3;
 typedef Uniform::LoopT< Mesh >                               Loop;
 typedef Uniform::CompositeSqrt3T< CMesh >                    CompositeSqrt3;
 typedef Uniform::CompositeLoopT< CMesh >                     CompositeLoop;
+typedef Uniform::InterpolatingSqrt3LGT< Mesh >               InterpolatingSqrt3LG;
+typedef Uniform::ModifiedButterflyT< Mesh >                  ModifiedButterfly;
 
 using OpenMesh::Utils::Timer;
 
@@ -189,12 +193,14 @@ int main(int argc, char **argv)
     TypeSqrt3,
     TypeLoop,
     TypeCompSqrt3,
-    TypeCompLoop
+    TypeCompLoop,
+    TypeLabsikGreiner,
+    TypeModButterfly
   } st = TypeSqrt3;
 
   Timer::Format fmt = Timer::Automatic;
 
-  while ( (c=getopt(argc, argv, "csSlLhf:"))!=-1 )
+  while ( (c=getopt(argc, argv, "csSlLbBhf:"))!=-1 )
   {
     switch(c)
     {
@@ -203,6 +209,8 @@ int main(int argc, char **argv)
       case 'S': st = TypeCompSqrt3; break;
       case 'l': st = TypeLoop; break;
       case 'L': st = TypeCompLoop; break;
+      case 'b': st = TypeLabsikGreiner; break;
+      case 'B': st = TypeModButterfly; break;
       case 'f': 
       {
         switch(*optarg)
@@ -241,10 +249,12 @@ int main(int argc, char **argv)
   if ( compare_all )
   {
     int rc;
-    rc  = mainT<Sqrt3>         ( n, ifname, "", fmt );
-    rc += mainT<Loop>          ( n, ifname, "", fmt );
-    rc += mainT<CompositeSqrt3>( n, ifname, "", fmt );
-    rc += mainT<CompositeLoop> ( n, ifname, "", fmt );
+    rc  = mainT<Sqrt3>                  ( n, ifname, "", fmt );
+    rc += mainT<Loop>                   ( n, ifname, "", fmt );
+    rc += mainT<CompositeSqrt3>         ( n, ifname, "", fmt );
+    rc += mainT<CompositeLoop>          ( n, ifname, "", fmt );
+    rc += mainT<InterpolatingSqrt3LG>   ( n, ifname, "", fmt );
+    rc += mainT<ModifiedButterfly>      ( n, ifname, "", fmt );
     
     if (rc)
       return rc;
@@ -264,6 +274,9 @@ int main(int argc, char **argv)
               << std::endl
               << "loop   : "
               << timings["Uniform Composite Loop"]/timings["Uniform Loop"]
+              << std::endl
+              << "Interpolating sqrt(3)   : "
+              << timings["Uniform Interpolating Sqrt3"]/timings["Uniform Sqrt3"]
               << std::endl;
     return 0;
   }
@@ -277,6 +290,10 @@ int main(int argc, char **argv)
       return mainT<CompositeSqrt3>( n, ifname, ofname, fmt );
     case TypeCompLoop:  
       return mainT<CompositeLoop> ( n, ifname, ofname, fmt );
+    case TypeLabsikGreiner:
+      return mainT<InterpolatingSqrt3LG> ( n, ifname, ofname, fmt );
+    case TypeModButterfly:
+      return mainT<ModifiedButterfly> ( n, ifname, ofname, fmt );
   }
   return 1;
 }
@@ -293,6 +310,8 @@ void usage_and_exit(int _xcode)
             << "  -L\tComposite Loop\n"
             << "  -s\tSqrt3\n"
             << "  -S\tComposite Sqrt3\n"
+            << "  -b\tInterpolating Sqrt3 Labsik-Greiner\n"
+            << "  -B\tModified Butterfly\n"
             << std::endl;
   exit(_xcode);
 }
