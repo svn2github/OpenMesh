@@ -8,7 +8,16 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.1</b> (?/?/?,Rev.376)</td><td>
+<tr valign=top><td><b>2.0.1</b> (?/?/?,Rev.389)</td><td>
+
+<b>Apps</b>
+<ul>
+<li>Get rid of glew dependencies</li>
+<li>Remove a lot of unused qt libraries which were linked before</li>
+<li>Do not link libXi and Xmu as we don't need it</li>
+<li>Added two new subdivision schemes (Interpolating Sqrt3 Labsik-Greiner and Modified Butterfly) to subdivider applications</li>
+</ul>
+
 <b>Core</b>
 <ul>
 <li>Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)</li>
@@ -25,7 +34,9 @@
 <li>Removed glew depedency</li>
 <li>Only one fixbundle on mac and windows</li>
 <li>Run fixbundle only in standalone mode</li>
+<li>Run fixbundle only once</li>
 <li>Change debian control to reduce dependencies (glew,some qt libs)</li>
+<li> Fixed BUILD_APPS macro</li>
 </ul>
 
 <b>Documentation</b>
@@ -34,6 +45,7 @@
 <li>Fixed wrong strip path in doxygen settings</li>
 <li>Fixed compilation instructions for mac</li>
 <li>Switched to white background with black text</li>
+<li>Removed glew from docs</li>
 </ul>
 
 </tr>

@@ -2,7 +2,13 @@
 
 #============================================================================================
 
-OpenMesh 2.0.1 ( Rev 376 ):
+OpenMesh 2.0.1 ( Rev 389 ):
+* Apps 
+- Get rid of glew dependencies
+- Remove a lot of unused qt libraries which were linked before
+- Do not link libXi and Xmu as we don't need it
+- Added two new subdivision schemes (Interpolating Sqrt3 Labsik-Greiner and Modified Butterfly) to subdivider applications
+
 * Core
 - Work with gcc 4.6: ptrdiff_t not correctly included from std, Thanks to Ville Heiskanen for the patch)
 
@@ -14,13 +20,16 @@ OpenMesh 2.0.1 ( Rev 376 ):
 - Removed glew depedency
 - Only one fixbundle on mac and windows
 - Run fixbundle only in standalone mode
+- Run fixbundle only once
 - Change debian control to reduce dependencies (glew,some qt libs)
+- Fixed BUILD_APPS macro
 
 * Documentation
 - Fixed error in image about edge collapses
 - Fixed wrong strip path in doxygen settings
 - Fixed compilation instructions for mac
 - Switched to white background with black text
+- Removed glew from docs
 
 OpenMesh 2.0 ( Rev  356 ):
 
