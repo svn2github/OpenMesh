@@ -159,6 +159,6 @@ inline T rad_to_deg(const T& _angle)
 inline double log_(double _value)
 { return log(_value); }
 
-};//namespace OpenMesh
+}//namespace OpenMesh
 
 #endif//MATHDEFS_HH

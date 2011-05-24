@@ -182,7 +182,7 @@ public:
 typedef LoopSchemeMaskT<double, 100>        LoopSchemeMaskDouble;
 typedef SingletonT<LoopSchemeMaskDouble>    LoopSchemeMaskDoubleSingleton;
 
-};//namespace OpenMesh
+}//namespace OpenMesh
 
 #endif//LOOPSCHEMEMASKT_HH
 
