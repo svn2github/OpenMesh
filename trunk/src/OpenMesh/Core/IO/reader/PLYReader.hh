@@ -118,7 +118,7 @@ public:
     ValueTypeINT32, ValueTypeINT,
     ValueTypeUINT32, ValueTypeUINT,
     ValueTypeFLOAT32, ValueTypeFLOAT,
-    ValueTypeFLOAT64, ValueTypeDOUBLE,
+    ValueTypeFLOAT64, ValueTypeDOUBLE
   };
 
 private:
