@@ -365,9 +365,9 @@ int _OFFReader_::getColorType(std::string& _line, bool _texCoordsAvailable) cons
 		return 0;
 
     //first remove spaces at start/end of the line
-    while (std::isspace(_line[0]))
+    while (_line.size() > 0 && std::isspace(_line[0]))
       _line = _line.substr(1);
-    while (std::isspace(_line[ _line.length()-1 ]))
+    while (_line.size() > 0 && std::isspace(_line[ _line.length()-1 ]))
       _line = _line.substr(0, _line.length()-1);
 
     //count the remaining items in the line
