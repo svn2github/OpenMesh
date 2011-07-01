@@ -8,7 +8,20 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.389)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.396)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Implemented is_collapse_ok for polymeshes</li>
+<li>Implemented split_edge ( split(edgehandle,vertexhandle) ) for poly meshes</li>
+<li>Fixed compiler error because of extra ','</li>
+<li>Fixed some compiler warnings</li>
+</ul>
+
+<b>IO</b>
+<ul>
+<li>OFF Reader: Fixed crash on some files containing empty lines(Thanks to R.Schneider for the fix)).</li>
+</ul>
 
 </tr>
 

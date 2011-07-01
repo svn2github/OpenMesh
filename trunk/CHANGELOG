@@ -2,7 +2,15 @@
 
 #============================================================================================
 
-OpenMesh 2.0.2 ( Rev 389 ):
+OpenMesh 2.0.2 ( Rev 396 ):
+* Core
+- Implemented is_collapse_ok for polymeshes
+- Implemented split_edge ( split(edgehandle,vertexhandle) ) for poly meshes
+- Fixed compiler error because of extra ','
+- Fixed some compiler warnings
+
+* IO
+- OFF Reader: Fixed crash on some files containing empty lines(Thanks to R.Schneider for the fix)).
 
 
 OpenMesh 2.0.1 ( Rev 389 ):
