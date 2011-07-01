@@ -236,6 +236,13 @@ public:
   /// \name Deleting mesh items and other connectivity/topology modifications
   //@{
 
+  /** Returns whether collapsing halfedge _heh is ok or would lead to
+      topological inconsistencies.
+      \attention This method need the Attributes::Status attribute and
+      changes the \em tagged bit.  */
+  bool is_collapse_ok(HalfedgeHandle _he);
+    
+    
   /** Mark vertex and all incident edges and faces deleted.
       Items marked deleted will be removed by garbageCollection().
       \attention Needs the Attributes::Status attribute for vertices,
@@ -657,6 +664,9 @@ public:
   /// triangulate the entire mesh
   void triangulate();
   
+  /// Edge split (inserts a vertex on the edge only)
+  void split_edge(EdgeHandle _eh, VertexHandle _vh);
+
 
   /** \name Generic handle derefertiation.
       Calls the respective vertex(), halfedge(), edge(), face()

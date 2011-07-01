@@ -287,6 +287,140 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
   return fh;
 }
 
+
+
+//-----------------------------------------------------------------------------
+bool PolyConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
+{
+  HalfedgeHandle v1v0(opposite_halfedge_handle(v0v1));
+  VertexHandle v0(to_vertex_handle(v1v0));
+  VertexHandle v1(to_vertex_handle(v0v1));  
+
+  bool v0v1_triangle = false;
+  bool v1v0_triangle = false;
+  
+  if (!is_boundary(v0v1))
+    v0v1_triangle = valence(face_handle(v0v1)) == 3;
+  
+  if (!is_boundary(v1v0))
+    v1v0_triangle = valence(face_handle(v1v0)) == 3;
+
+  //in a quadmesh we dont have the "next" or "previous" vhandle, so we need to look at previous and next on both sides
+  VertexHandle v_01_p = from_vertex_handle(prev_halfedge_handle(v0v1));
+  VertexHandle v_01_n = to_vertex_handle(next_halfedge_handle(v0v1));  
+
+  VertexHandle v_10_p = from_vertex_handle(prev_halfedge_handle(v1v0));
+  VertexHandle v_10_n = to_vertex_handle(next_halfedge_handle(v1v0));
+
+  //is edge already deleteed?
+  if (status(edge_handle(v0v1)).deleted())
+  {
+    return false;
+  }
+
+  //are the vertices already deleted ?
+  if (status(v0).deleted() || status(v1).deleted())
+  {
+    return false;
+  }
+
+  //the edges v1-vl and vl-v0 must not be both boundary edges
+  //this test makes only sense in a polymesh if the side face is a triangle
+  if (!is_boundary(v0v1))
+  {
+    if (v0v1_triangle)
+    {
+      VertexHandle vl = to_vertex_handle(next_halfedge_handle(v0v1));
+
+      HalfedgeHandle h1 = next_halfedge_handle(v0v1);
+      HalfedgeHandle h2 = next_halfedge_handle(h1);
+      if (is_boundary(opposite_halfedge_handle(h1)) && is_boundary(opposite_halfedge_handle(h2)))
+	return false;
+    }
+  }
+
+  //the edges v0-vr and vr-v1 must not be both boundary edges
+  //this test makes only sense in a polymesh if the side face is a triangle
+  if (!is_boundary(v1v0))
+  {
+    if (v1v0_triangle)
+    {
+      VertexHandle vr = to_vertex_handle(next_halfedge_handle(v1v0));
+
+      HalfedgeHandle h1 = next_halfedge_handle(v1v0);
+      HalfedgeHandle h2 = next_halfedge_handle(h1);
+      if (is_boundary(opposite_halfedge_handle(h1)) && is_boundary(opposite_halfedge_handle(h2)))
+	return false;
+    }
+  }
+
+  // edge between two boundary vertices should be a boundary edge
+  if ( is_boundary(v0) && is_boundary(v1) && !is_boundary(v0v1) && !is_boundary(v1v0))
+    return false;
+  
+  VertexVertexIter vv_it;
+  // test intersection of the one-rings of v0 and v1
+  for (vv_it = vv_iter(v0); vv_it; ++vv_it)
+  {
+    status(vv_it).set_tagged(false);
+  }
+
+  for (vv_it = vv_iter(v1); vv_it; ++vv_it)
+  {
+    status(vv_it).set_tagged(true);
+  }
+
+  for (vv_it = vv_iter(v0); vv_it; ++vv_it)
+  {
+    if (status(vv_it).tagged() &&
+      !(vv_it.handle() == v_01_n && v0v1_triangle) &&
+      !(vv_it.handle() == v_10_n && v1v0_triangle)
+      )
+    {
+      return false;
+    }
+  }
+  
+  //test for a face on the backside/other side that might degenerate
+  if (v0v1_triangle)
+  {
+    HalfedgeHandle one, two;
+    one = next_halfedge_handle(v0v1);
+    two = next_halfedge_handle(one);
+    
+    one = opposite_halfedge_handle(one);
+    two = opposite_halfedge_handle(two);
+    
+    if (face_handle(one) == face_handle(two) && valence(face_handle(one)) != 3)
+    {
+      return false;
+    }
+  }
+  
+  if (v1v0_triangle)
+  {
+    HalfedgeHandle one, two;
+    one = next_halfedge_handle(v1v0);
+    two = next_halfedge_handle(one);
+    
+    one = opposite_halfedge_handle(one);
+    two = opposite_halfedge_handle(two);
+    
+    if (face_handle(one) == face_handle(two) && valence(face_handle(one)) != 3)
+    {
+      return false;
+    }
+  }
+
+  if (status(vv_it).tagged() && v_01_n == v_10_n && v0v1_triangle && v1v0_triangle)
+  {
+    return false;
+  }
+
+  // passed all tests
+  return true;
+}
+
 //-----------------------------------------------------------------------------
 
 void PolyConnectivity::delete_vertex(VertexHandle _vh, bool _delete_isolated_vertices)
@@ -848,6 +982,64 @@ uint PolyConnectivity::valence(FaceHandle _fh) const
   for (ConstFaceVertexIter fv_it=cfv_iter(_fh); fv_it; ++fv_it)
     ++count;
   return count;
+}
+
+//-----------------------------------------------------------------------------
+void PolyConnectivity::split_edge(EdgeHandle _eh, VertexHandle _vh)
+{
+  HalfedgeHandle h0 = halfedge_handle(_eh, 0);
+  HalfedgeHandle h1 = halfedge_handle(_eh, 1);
+  
+  VertexHandle vfrom = from_vertex_handle(h0);
+
+  HalfedgeHandle ph0 = prev_halfedge_handle(h0);
+  HalfedgeHandle ph1 = prev_halfedge_handle(h1);
+  
+  HalfedgeHandle nh0 = next_halfedge_handle(h0);
+  HalfedgeHandle nh1 = next_halfedge_handle(h1);
+  
+  bool boundary0 = is_boundary(h0);
+  bool boundary1 = is_boundary(h1);
+  
+  //add the new edge
+  HalfedgeHandle new_e = new_edge(from_vertex_handle(h0), _vh);
+  
+  //fix the vertex of the opposite halfedge
+  set_vertex_handle(h1, _vh);
+  
+  //fix the halfedge connectivity
+  set_next_halfedge_handle(new_e, h0);
+  set_next_halfedge_handle(h1, opposite_halfedge_handle(new_e));
+  
+  set_next_halfedge_handle(ph0, new_e);
+  set_next_halfedge_handle(opposite_halfedge_handle(new_e), nh1);
+  
+  set_prev_halfedge_handle(new_e, ph0);
+  set_prev_halfedge_handle(opposite_halfedge_handle(new_e), h1);
+  
+  set_prev_halfedge_handle(nh1, opposite_halfedge_handle(new_e));
+  set_prev_halfedge_handle(h0, new_e);
+  
+  if (!boundary0)
+  {
+    set_face_handle(new_e, face_handle(h0));
+  } else
+  {
+    set_boundary(new_e);
+  }
+  
+  if (!boundary1)
+  {
+    set_face_handle(opposite_halfedge_handle(new_e), face_handle(h1));
+  }
+  {
+    set_boundary(opposite_halfedge_handle(new_e));
+  }
+  
+  if (halfedge_handle(vfrom) == h0)
+  {
+    set_halfedge_handle(vfrom, new_e);
+  }
 }
 
 }//namespace OpenMesh

@@ -430,10 +430,11 @@ public:
   { Kernel::split(_fh, _vh); }
 
   inline void split(EdgeHandle _eh, const Point& _p)
-  { Kernel::split(_eh, add_vertex(_p)); }
+  { Kernel::split_edge(_eh, add_vertex(_p)); }
 
   inline void split(EdgeHandle _eh, VertexHandle _vh)
-  { Kernel::split(_eh, _vh); }
+  { Kernel::split_edge(_eh, _vh); }
+  
 };
 
 
