@@ -177,11 +177,12 @@ public:
   { return PolyMesh::vertex_split(_v0, _v1, _vl, _vr); }
 
   /// Edge split (= 2-to-4 split)
+  /// Do not call PolyMeshT function below as this does the wrong operation
   inline void split(EdgeHandle _eh, const Point& _p)
-  { PolyMesh::split(_eh, add_vertex(_p)); }
+  { Kernel::split(_eh, add_vertex(_p)); }
 
   inline void split(EdgeHandle _eh, VertexHandle _vh)
-  { PolyMesh::split(_eh, _vh); }
+  { Kernel::split(_eh, _vh); }
 
   /// Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
   inline void split(FaceHandle _fh, const Point& _p)
