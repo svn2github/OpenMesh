@@ -246,12 +246,9 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
     }
   }
 
-
   fclose(in);
 
-
-  // In general a file has data, there the number of vertices cannot be 0.
-  return _bi.n_vertices() != 0;
+  return true;
 }
 
 
