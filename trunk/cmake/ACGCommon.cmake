@@ -432,6 +432,15 @@ function (acg_add_library _target _libtype)
     endif ()
   endif ()
 
+  if( ${CMAKE_BUILD_TYPE} STREQUAL Debug )
+    set ( postfix ${CMAKE_DEBUG_POSTFIX} )
+  else ()
+    set ( postfix "" )
+  endif ()
+
+  set( fullname ${_target}${postfix} )
+
+
   if (WIN32)
     # copy exe file to "Build" directory
     # Visual studio will create this file in a subdirectory so we can't use
@@ -440,8 +449,8 @@ function (acg_add_library _target _libtype)
       add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.dll
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/${_target}.dll)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${fullname}.dll
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/${fullname}.dll)
     elseif (${_type} STREQUAL MODULE)
       if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
         file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
@@ -449,23 +458,23 @@ function (acg_add_library _target _libtype)
       add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.dll
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/${_target}.dll)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${fullname}.dll
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/${fullname}.dll)
     endif ()
     if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC)
       add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_target}.lib
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/${_target}.lib)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${fullname}.lib
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/${fullname}.lib)
     endif ()
   elseif (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE)
     if (${_type} STREQUAL SHARED)
       add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}.dylib
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.dylib)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${fullname}.dylib
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${fullname}.dylib)
     elseif (${_type} STREQUAL MODULE)
       if (NOT EXISTS ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
         file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR})
@@ -473,29 +482,29 @@ function (acg_add_library _target _libtype)
       add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}.so
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/lib${_target}.so)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${fullname}.so
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/lib${fullname}.so)
     elseif (${_type} STREQUAL STATIC)
       add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}.a
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.a)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${fullname}.a
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${fullname}.a)
     endif ()
     if (_and_static)
       add_custom_command (TARGET ${_target}Static POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.a)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static${postfix}.a
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${fullname}.a)
     endif ()
 
   elseif (NOT APPLE AND _and_static)
       add_custom_command (TARGET ${_target}Static POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${_target}.a)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static${postfix}.a
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${fullname}.a)
 
   endif ()
  
@@ -509,9 +518,9 @@ function (acg_add_library _target _libtype)
                  LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
                  ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR})
         if (_and_static)
-          install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static.a
+          install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static${postfix}.a
                    DESTINATION ${ACG_PROJECT_LIBDIR}
-                   RENAME lib${_target}.a
+                   RENAME lib${fullname}.a
                    PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
         endif ()
       elseif (${_type} STREQUAL MODULE)
