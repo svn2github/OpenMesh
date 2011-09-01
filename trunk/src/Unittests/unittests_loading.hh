@@ -1,21 +1,11 @@
-#ifndef INCLUDE_UNITTESTS_LOADING_CC
-#define INCLUDE_UNITTESTS_LOADING_CC
+#ifndef INCLUDE_UNITTESTS_LOADING_HH
+#define INCLUDE_UNITTESTS_LOADING_HH
 
 #include <gtest/gtest.h>
-#include <OpenMesh/Core/IO/MeshIO.hh>
+#include <Unittests/unittests_common.hh>
 
-#include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
 
-struct CustomTraits : public OpenMesh::DefaultTraits {
-};
-
-typedef OpenMesh::TriMesh_ArrayKernelT<CustomTraits> Mesh;
-
-/*
- * Simple test setting.
- */
-
-class OpenMeshLoader : public testing::Test {
+class OpenMeshLoader : public OpenMeshBase {
 
     protected:
 
@@ -31,8 +21,8 @@ class OpenMeshLoader : public testing::Test {
             // Do some final stuff with the member data here...
         }
 
-    // This member will be accessible in all tests
-    Mesh mesh_;  
+    // Member already defined in OpenMeshBase
+    //Mesh mesh_;  
 };
 
 /*
