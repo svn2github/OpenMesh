@@ -2,16 +2,23 @@
 
 #============================================================================================
 
-OpenMesh 2.0.2 ( Rev 396 ):
+OpenMesh 2.0.2 ( Rev 407 ):
 * Core
 - Implemented is_collapse_ok for polymeshes
 - Implemented split_edge ( split(edgehandle,vertexhandle) ) for poly meshes
 - Fixed compiler error because of extra ','
 - Fixed some compiler warnings
+- Added patch to speed up add_face function(Thanks to Stephen Webb).
 
 * IO
 - OFF Reader: Fixed crash on some files containing empty lines(Thanks to R.Schneider for the fix)).
+- STL Reader: Add empty mesh when reading empty stl file (don't fail as this is still a valid file)
 
+* Build System
+- Append a 'd' to the lib name if in debug mode and not in release mode
+- Changed build directory contents on Mac (Build all binaries in Build dir only)
+- Disable Fixbundle on Mac (not required at the moment and hangs forever)
+- Added basic unittest directory and uild system (build explicitly with make unittests)
 
 OpenMesh 2.0.1 ( Rev 389 ):
 * Apps 
