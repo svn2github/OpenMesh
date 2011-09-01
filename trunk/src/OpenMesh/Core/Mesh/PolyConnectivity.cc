@@ -109,40 +109,26 @@ void PolyConnectivity::adjust_outgoing_halfedge(VertexHandle _vh)
 }
 
 //-----------------------------------------------------------------------------
-namespace
-{
-template <class _Handle>
-struct NextCacheEntryT : public std::pair<_Handle, _Handle>
-{
-  typedef std::pair<_Handle, _Handle> Base;
-
-  NextCacheEntryT(_Handle _heh0, _Handle _heh1)
-    : Base(_heh0, _heh1)
-  {
-    assert(_heh0.is_valid());
-    assert(_heh1.is_valid());
-  }
-};
-}
 
 PolyConnectivity::FaceHandle
 PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
 {
   VertexHandle                   vh;
   uint                           i, ii, n(_vhs_size), id;
-  std::vector<HalfedgeHandle>    halfedge_handles(n);
-  std::vector<bool>              is_new(n), needs_adjust(n, false);
   HalfedgeHandle                 inner_next, inner_prev,
                                  outer_next, outer_prev,
                                  boundary_next, boundary_prev,
                                  patch_start, patch_end;
 
-  // cache for set_next_halfedge and vertex' set_halfedge
-  typedef NextCacheEntryT<HalfedgeHandle>   NextCacheEntry;
-  typedef std::vector<NextCacheEntry>       NextCache;
 
-  NextCache    next_cache;
-  next_cache.reserve(3*n);
+  // Check sufficient working storage available
+  if (edgeData_.size() < n)
+  {
+    edgeData_.resize(n);
+    next_cache_.resize(6*n);
+  }
+  next_cache_count_ = 0;
+
   // don't allow degenerated faces
   assert (n > 2);
 
@@ -155,11 +141,13 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
       return InvalidFaceHandle;
     }
 
-    halfedge_handles[i] = find_halfedge(_vertex_handles[i],
-                                        _vertex_handles[ii]);
-    is_new[i] = !halfedge_handles[i].is_valid();
+    // Initialise edge attributes
+    edgeData_[i].halfedge_handle = find_halfedge(_vertex_handles[i],
+                                                 _vertex_handles[ii]);
+    edgeData_[i].is_new = !edgeData_[i].halfedge_handle.is_valid();
+    edgeData_[i].needs_adjust = false;
 
-    if (!is_new[i] && !is_boundary(halfedge_handles[i]))
+    if (!edgeData_[i].is_new && !is_boundary(edgeData_[i].halfedge_handle))
     {
       omerr() << "PolyMeshT::add_face: complex edge\n";
       return InvalidFaceHandle;
@@ -169,10 +157,11 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
   // re-link patches if necessary
   for (i=0, ii=1; i<n; ++i, ++ii, ii%=n)
   {
-    if (!is_new[i] && !is_new[ii])
+    if (!edgeData_[i].is_new && !edgeData_[ii].is_new)
     {
-      inner_prev = halfedge_handles[i];
-      inner_next = halfedge_handles[ii];
+      inner_prev = edgeData_[i].halfedge_handle;
+      inner_next = edgeData_[ii].halfedge_handle;
+
 
       if (next_halfedge_handle(inner_prev) != inner_next)
       {
@@ -202,32 +191,34 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
         patch_end   = prev_halfedge_handle(inner_next);
 
         // relink
-        next_cache.push_back(NextCacheEntry(boundary_prev, patch_start));
-        next_cache.push_back(NextCacheEntry(patch_end, boundary_next));
-        next_cache.push_back(NextCacheEntry(inner_prev, inner_next));
+        next_cache_[next_cache_count_++] = std::make_pair(boundary_prev, patch_start);
+        next_cache_[next_cache_count_++] = std::make_pair(patch_end, boundary_next);
+        next_cache_[next_cache_count_++] = std::make_pair(inner_prev, inner_next);
       }
     }
   }
 
   // create missing edges
   for (i=0, ii=1; i<n; ++i, ++ii, ii%=n)
-    if (is_new[i])
-      halfedge_handles[i] = new_edge(_vertex_handles[i], _vertex_handles[ii]);
+    if (edgeData_[i].is_new)
+      edgeData_[i].halfedge_handle = new_edge(_vertex_handles[i], _vertex_handles[ii]);
 
   // create the face
   FaceHandle fh(new_face());
-  set_halfedge_handle(fh, halfedge_handles[n-1]);
+  set_halfedge_handle(fh, edgeData_[n-1].halfedge_handle);
 
   // setup halfedges
   for (i=0, ii=1; i<n; ++i, ++ii, ii%=n)
   {
     vh         = _vertex_handles[ii];
-    inner_prev = halfedge_handles[i];
-    inner_next = halfedge_handles[ii];
+
+    inner_prev = edgeData_[i].halfedge_handle;
+    inner_next = edgeData_[ii].halfedge_handle;
 
     id = 0;
-    if (is_new[i])  id |= 1;
-    if (is_new[ii]) id |= 2;
+    if (edgeData_[i].is_new)  id |= 1;
+    if (edgeData_[ii].is_new) id |= 2;
+
 
     if (id)
     {
@@ -239,13 +230,13 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
       {
         case 1: // prev is new, next is old
           boundary_prev = prev_halfedge_handle(inner_next);
-          next_cache.push_back(NextCacheEntry(boundary_prev, outer_next));
+          next_cache_[next_cache_count_++] = std::make_pair(boundary_prev, outer_next);
           set_halfedge_handle(vh, outer_next);
           break;
 
         case 2: // next is new, prev is old
           boundary_next = next_halfedge_handle(inner_prev);
-          next_cache.push_back(NextCacheEntry(outer_prev, boundary_next));
+          next_cache_[next_cache_count_++] = std::make_pair(outer_prev, boundary_next);
           set_halfedge_handle(vh, boundary_next);
           break;
 
@@ -253,35 +244,36 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
           if (!halfedge_handle(vh).is_valid())
           {
             set_halfedge_handle(vh, outer_next);
-            next_cache.push_back(NextCacheEntry(outer_prev, outer_next));
+            next_cache_[next_cache_count_++] = std::make_pair(outer_prev, outer_next);
           }
           else
           {
             boundary_next = halfedge_handle(vh);
             boundary_prev = prev_halfedge_handle(boundary_next);
-            next_cache.push_back(NextCacheEntry(boundary_prev, outer_next));
-            next_cache.push_back(NextCacheEntry(outer_prev, boundary_next));
+            next_cache_[next_cache_count_++] = std::make_pair(boundary_prev, outer_next);
+            next_cache_[next_cache_count_++] = std::make_pair(outer_prev, boundary_next);
           }
           break;
       }
 
       // set inner link
-      next_cache.push_back(NextCacheEntry(inner_prev, inner_next));
+      next_cache_[next_cache_count_++] = std::make_pair(inner_prev, inner_next);
     }
-    else needs_adjust[ii] = (halfedge_handle(vh) == inner_next);
+    else edgeData_[ii].needs_adjust = (halfedge_handle(vh) == inner_next);
+
 
     // set face handle
-    set_face_handle(halfedge_handles[i], fh);
+    set_face_handle(edgeData_[i].halfedge_handle, fh);
   }
 
   // process next halfedge cache
-  NextCache::const_iterator  ncIt(next_cache.begin()), ncEnd(next_cache.end());
-  for (; ncIt != ncEnd; ++ncIt)
-    set_next_halfedge_handle(ncIt->first, ncIt->second);
+  for (i = 0; i < next_cache_count_; ++i)
+    set_next_halfedge_handle(next_cache_[i].first, next_cache_[i].second);
+
 
   // adjust vertices' halfedge handle
   for (i=0; i<n; ++i)
-    if (needs_adjust[i])
+    if (edgeData_[i].needs_adjust)
       adjust_outgoing_halfedge(_vertex_handles[i]);
 
   return fh;

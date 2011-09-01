@@ -689,6 +689,20 @@ protected:
   void collapse_edge(HalfedgeHandle _hh);
   /// Helper for halfedge collapse
   void collapse_loop(HalfedgeHandle _hh);
+
+
+
+private: // Working storage for add_face()
+       struct AddFaceEdgeInfo
+       {
+               HalfedgeHandle halfedge_handle;
+               bool is_new;
+               bool needs_adjust;
+       };
+       std::vector<AddFaceEdgeInfo> edgeData_; //
+       std::vector<std::pair<HalfedgeHandle, HalfedgeHandle> > next_cache_; // cache for set_next_halfedge and vertex' set_halfedge
+       uint next_cache_count_;
+
 };
 
 }//namespace OpenMesh
