@@ -41,6 +41,7 @@ endif()
 add_subdirectory (src/OpenMesh/Core)
 add_subdirectory (src/OpenMesh/Tools)
 add_subdirectory (src/OpenMesh/Apps)
+add_subdirectory (src/Unittests)
 add_subdirectory (Doc)
 
 # ========================================================================
