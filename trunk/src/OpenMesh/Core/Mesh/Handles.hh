@@ -75,15 +75,15 @@ public:
   void invalidate() { idx_ = -1; }
 
   bool operator==(const BaseHandle& _rhs) const { 
-    return idx_ == _rhs.idx_; 
+    return (this->idx_ == _rhs.idx_); 
   }
 
   bool operator!=(const BaseHandle& _rhs) const { 
-    return idx_ != _rhs.idx_; 
+    return (this->idx_ != _rhs.idx_); 
   }
 
   bool operator<(const BaseHandle& _rhs) const { 
-    return idx_ < _rhs.idx_; 
+    return (this->idx_ < _rhs.idx_); 
   }
 
 
