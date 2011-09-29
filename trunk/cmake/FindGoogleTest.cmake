@@ -51,6 +51,11 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       ~/sw/gtest/lib
       /opt/local/lib
       /usr/local/lib)
+
+     if ( _GTEST_LIBRARY )
+        get_filename_component(_GTEST_LIBRARY_DIR ${_GTEST_LIBRARY} PATH CACHE )
+     endif()
+
   endif(GTEST_PREFIX)
   if(_GTEST_INCLUDE_DIR AND _GTEST_LIBRARY AND _GTEST_MAIN_LIBRARY)
     set(GTEST_FOUND true)
@@ -60,7 +65,9 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       "Libraries to link for Google Test framework")
     set(GTEST_MAIN_LIBRARIES ${_GTEST_MAIN_LIBRARY} CACHE FILEPATH
       "Libraries to link for Google Test automatic main() definition")
-    mark_as_advanced(GTEST_INCLUDE_DIRS GTEST_LIBRARIES GTEST_MAIN_LIBRARIES)
+    set(GTEST_LIBRARY_DIR ${_GTEST_LIBRARY_DIR} CACHE FILEPATH
+      "Library dir containing Google Test libraries")
+    mark_as_advanced(GTEST_INCLUDE_DIRS GTEST_LIBRARIES GTEST_MAIN_LIBRARIES GTEST_LIBRARY_DIR )
     if(NOT GoogleTest_FIND_QUIETLY)
       message(STATUS "Found Google Test: ${GTEST_LIBRARIES}")
     endif(NOT GoogleTest_FIND_QUIETLY)
