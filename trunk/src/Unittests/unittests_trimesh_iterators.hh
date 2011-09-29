@@ -79,4 +79,62 @@ TEST_F(OpenMeshIterators, VertexIter) {
 
 }
 
+/*
+ * Small EdgeIterator Test
+ */
+TEST_F(OpenMeshIterators, EdgeIter) {
+
+    unsigned int i = 0;
+
+
+    Mesh::EdgeIter e_it  = mesh_.edges_begin(); 
+    Mesh::EdgeIter e_end = mesh_.edges_end(); 
+    
+    EXPECT_EQ(0, e_it.handle().idx()) << "Wrong start index in edge iterator";
+    EXPECT_EQ(5, e_end.handle().idx()) << "Wrong end index in edge iterator";
+
+    EXPECT_EQ(1, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "1: Wrong to vertex handle of halfedge 0";
+    EXPECT_EQ(2, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "1: Wrong from vertex handle of halfedge 0";
+    EXPECT_EQ(2, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() )   << "1: Wrong to vertex handle of halfedge 1";
+    EXPECT_EQ(1, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() ) << "1: Wrong from vertex handle of halfedge 1";
+
+    ++e_it;
+    EXPECT_EQ(1, e_it.handle().idx()) << "Wrong index in edge iterator";
+
+    EXPECT_EQ(0, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "2: Wrong to vertex handle of halfedge 0";
+    EXPECT_EQ(1, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "2: Wrong from vertex handle of halfedge 0";
+    EXPECT_EQ(1, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() )   << "2: Wrong to vertex handle of halfedge 1";
+    EXPECT_EQ(0, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() ) << "2: Wrong from vertex handle of halfedge 1";
+
+
+    ++e_it;
+    EXPECT_EQ(2, e_it.handle().idx()) << "Wrong index in edge iterator";
+
+    EXPECT_EQ(2, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "3: Wrong to vertex handle of halfedge 0";
+    EXPECT_EQ(0, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "3: Wrong from vertex handle of halfedge 0";
+    EXPECT_EQ(0, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() )   << "3: Wrong to vertex handle of halfedge 1";
+    EXPECT_EQ(2, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() ) << "3: Wrong from vertex handle of halfedge 1";
+
+
+    ++e_it;
+    EXPECT_EQ(3, e_it.handle().idx()) << "Wrong index in edge iterator";
+
+    EXPECT_EQ(3, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "4: Wrong to vertex handle of halfedge 0";
+    EXPECT_EQ(0, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "4: Wrong from vertex handle of halfedge 0";
+    EXPECT_EQ(0, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() )   << "4: Wrong to vertex handle of halfedge 1";
+    EXPECT_EQ(3, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() ) << "4: Wrong from vertex handle of halfedge 1";
+
+
+    ++e_it;
+    EXPECT_EQ(4, e_it.handle().idx()) << "Wrong index in edge iterator";
+
+    EXPECT_EQ(2, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "5: Wrong to vertex handle of halfedge 0";
+    EXPECT_EQ(3, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "5: Wrong from vertex handle of halfedge 0";
+    EXPECT_EQ(3, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() )   << "5: Wrong to vertex handle of halfedge 1";
+    EXPECT_EQ(2, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() ) << "5: Wrong from vertex handle of halfedge 1";
+
+
+}
+
+
 #endif // INCLUDE GUARD
