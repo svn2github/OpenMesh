@@ -72,23 +72,25 @@ void DecimaterViewerWidget::keyPressEvent(QKeyEvent* _event)
       int rc;
       if ( (rc=decimater_->decimate(steps_)) )
       {
-	decimater_->mesh().garbage_collection();
-	std::cout << rc << " vertices removed!\n";
-	updateGL();
+        decimater_->mesh().garbage_collection();
+        std::cout << rc << " vertices removed!\n";
+        updateGL();
       }
       else
-	std::cout << "Decimation failed\n";
+        std::cout << "Decimation failed\n";
       break;
     }
 
     case Key_Plus:
-      steps_ = std::min( ++steps_, (size_t)(mesh_.n_vertices() * 0.1) );
+      ++steps_;
+      steps_ = std::min( steps_ , (size_t)( mesh_.n_vertices() / 10 ) );
       updateGL();
       std::cout << "# decimating steps increased to " << steps_ << std::endl;
       break;
 
     case Key_Minus:
-      steps_ = std::max( --steps_, size_t(1) );
+      --steps_;
+      steps_ = std::max( steps_ , size_t(1) );
       updateGL();
       std::cout << "# decimating steps increased to " << steps_ << std::endl;
       break;
@@ -100,7 +102,7 @@ void DecimaterViewerWidget::keyPressEvent(QKeyEvent* _event)
       opt += OpenMesh::IO::Options::Binary;
 
       if (OpenMesh::IO::write_mesh( mesh(), "result.off", opt ))
-	std::cout << "mesh saved in 'result.off'\n";
+        std::cout << "mesh saved in 'result.off'\n";
     }
     break;
 
