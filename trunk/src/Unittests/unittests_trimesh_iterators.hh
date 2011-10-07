@@ -422,7 +422,7 @@ TEST_F(OpenMeshIterators, FaceFaceIterWithoutHoles) {
   mesh_.clear();
 
   // Add some vertices
-  Mesh::VertexHandle vhandle[5];
+  Mesh::VertexHandle vhandle[6];
 
   vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
   vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
