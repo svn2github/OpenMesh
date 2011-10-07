@@ -8,15 +8,17 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.407)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.416)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Implemented is_collapse_ok for polymeshes</li>
 <li>Implemented split_edge ( split(edgehandle,vertexhandle) ) for poly meshes</li>
+<li>Bugfix for #248 (broken end definition for vertexFaceIter). Thanks to Patrik Rauber for reporting this bug.</li>
 <li>Fixed compiler error because of extra ','</li>
 <li>Fixed some compiler warnings</li>
 <li>Added patch to speed up add_face function(Thanks to Stephen Webb).</li>
+<li>Avoid some compiler warnings</li>
 </ul>
 
 <b>IO</b>
@@ -25,13 +27,21 @@
 <li>STL Reader: Add empty mesh when reading empty stl file (don't fail as this is still a valid file)</li>
 </ul>
 
+<b>Unittests</b>
+<ul>
+<li>Added test for VertexIter</li>
+<li>Added test for EdgeIter</li>
+<li>Added test for VertexFaceiter (with and without holes)</li>
+<li>Added test for FaceFaceiter (with and without holes)</li>
+</ul>
+
 
 <b>Build System</b>
 <ul>
 <li>Append a 'd' to the lib name if in debug mode and not in release mode</li>
 <li>Changed build directory contents on Mac (Build all binaries in Build dir only)</li>
 <li>Disable Fixbundle on Mac (not required at the moment and hangs forever)</li>
-<li>Added basic unittest directory and uild system (build explicitly with make unittests)</li>
+<li>Added unittest directory and Build system (build explicitly with make unittests)</li>
 </ul>
 
 </tr>
