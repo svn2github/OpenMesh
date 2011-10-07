@@ -1689,7 +1689,7 @@ class VertexFaceIterT
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
     lap_counter_(_end)
-  { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
+  { if (heh_.is_valid() && !handle().is_valid() && !_end) operator++();; }
 
 
   /// Construct with mesh and start halfedge
@@ -1881,7 +1881,7 @@ class ConstVertexFaceIterT
     start_(_mesh.halfedge_handle(_start)),
     heh_(start_),
     lap_counter_(_end)
-  { if (heh_.is_valid() && !handle().is_valid()) operator++();; }
+  { if (heh_.is_valid() && !handle().is_valid() && !_end) operator++();; }
 
 
   /// Construct with mesh and start halfedge
