@@ -585,9 +585,9 @@ documentation (see \ref mesh_kernels_group). Therefore your mesh
 provides the pubic member functions of
 
 <ul>
-<li> The mesh kernel.
-<li> The general polygonal mesh.
-<li> The specialized triangle mesh (if you use a TriMesh instead of a PolyMesh).
+<li> The mesh kernel.</li>
+<li> The general polygonal mesh.</li>
+<li> The specialized triangle mesh (if you use a TriMesh instead of a PolyMesh).</li>
 </ul>
 
 
@@ -615,13 +615,15 @@ finally step three will show you how to add your own modules to IOManager.
 
 For a quick start you can copy the following code directly to your project.
 
-\b Note: If you link statically against OpenMesh, you have to add the define
+\note 
+<ul>
+<li>If you link statically against OpenMesh, you have to add the define
 OM_STATIC_BUILD to your application. This will ensure that readers and writers 
-get initialized correctly.
-
-\b Note: IOManager uses the filename extension to determine which reader/writer
+get initialized correctly.</li>
+<li>IOManager uses the filename extension to determine which reader/writer
 to use. I.e. if passing "inputmesh.obj" as filename parameter, the OBJ-File
-reader/writer will be used to parse/write the file.
+reader/writer will be used to parse/write the file.</li>
+</ul>
 
 \include mesh_io.cc
 
@@ -713,6 +715,7 @@ provided by %OpenMesh which can be found in the IO subdirectory.
 
 - \ref it_iters
 - \ref it_iters_h
+- \ref it_iters_skipping
 - \ref it_circs
 - \ref it_circs_h
 
@@ -752,9 +755,15 @@ Additionally to the standard operations, each linear iterator
 provides a method \c handle(), which returns the handle of the
 item referred to by the iterator.
 
-\note An iterator to an item usually needs more memory than a
+\note 
+<ul>
+<li>If you delete elements on the mesh, they will still be 
+enumerated by the standard iterators. To skip deleted elements,
+use the \ref it_iters_skipping</li>
+<li>An iterator to an item usually needs more memory than a
 handle of an item. To store many references to an item, it is
-therefore better to use handles.
+therefore better to use handles.</li>
+</ul>
 
 
 \section it_iters_h How to use iterators in OpenMesh
@@ -771,6 +780,18 @@ for(MyMesh::FaceIter f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it
 
 \endcode
 
+\section it_iters_skipping Skipping Iterators
+All iterators are also available as skipping iterators. If elements are deleted on a mesh,
+the standard iterators go over all elements, even deleted ones(which are available until
+a garbage_collection is done). The skipping iterators ignore these elements. You can retrieve
+a skipping iterator by calling one of the following functions:
+
+\arg \c vertices_sbegin(),
+\arg \c edges_sbegin(),
+\arg \c halfedges_sbegin(),
+\arg \c faces_sbegin()
+
+The ends for these iterators are equal to the standard iterator ends (e.g. \c vertices_end() ).
 
 \section it_circs Circulators
 

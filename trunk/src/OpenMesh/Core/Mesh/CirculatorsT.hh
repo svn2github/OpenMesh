@@ -2132,9 +2132,9 @@ class FaceVertexIterT
   /// Equal ?
   bool operator==(const FaceVertexIterT& _rhs) const {
     return ((mesh_   == _rhs.mesh_) &&
-	    (start_  == _rhs.start_) &&
-	    (heh_    == _rhs.heh_) &&
-	    (lap_counter_ == _rhs.lap_counter_));
+            (start_  == _rhs.start_) &&
+            (heh_    == _rhs.heh_) &&
+            (lap_counter_ == _rhs.lap_counter_));
   }
 
 
