@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.416)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.421)</td><td>
 
 <b>Core</b>
 <ul>
@@ -35,6 +35,12 @@
 <li>Added test for FaceFaceiter (with and without holes)</li>
 </ul>
 
+<b>Doc</b>
+<ul>
+<li>Document that if OpenMesh is linked statically OM_STATIC_BUILD has to be defined on the executable to make readers work correctly</li>
+<li>Improved MeshIO Documentation</li>
+<li>Get rid of most doxygen warnings</li>
+</ul>
 
 <b>Build System</b>
 <ul>
