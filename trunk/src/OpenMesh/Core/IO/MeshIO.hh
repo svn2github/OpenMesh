@@ -83,9 +83,9 @@ namespace IO   {
 
     The file format is determined by the file extension. 
 
-    \b Note: If you link statically against OpenMesh, you have to add 
-             the define OM_STATIC_BUILD to your application. This will 
-             ensure that readers and writers get initialized correctly.
+    \note If you link statically against OpenMesh, you have to add 
+          the define OM_STATIC_BUILD to your application. This will 
+          ensure that readers and writers get initialized correctly.
 
     @param _mesh     The target mesh that will be filled with the read data
     @param _filename fill to load
@@ -109,9 +109,9 @@ read_mesh(Mesh&         _mesh,
 
     The file format is determined by the file extension. 
 
-    \b Note: If you link statically against OpenMesh, you have to add 
-             the define OM_STATIC_BUILD to your application. This will 
-             ensure that readers and writers get initialized correctly.
+    \note If you link statically against OpenMesh, you have to add 
+          the define OM_STATIC_BUILD to your application. This will 
+          ensure that readers and writers get initialized correctly.
 
     @param _mesh     The target mesh that will be filled with the read data
     @param _filename fill to load
@@ -140,9 +140,9 @@ read_mesh(Mesh&         _mesh,
     The file format is determined by parameter _ext. _ext has to include 
     ".[format]" in order to work properly (e.g. ".OFF")
 
-    \b Note: If you link statically against OpenMesh, you have to add 
-             the define OM_STATIC_BUILD to your application. This will 
-             ensure that readers and writers get initialized correctly.
+    \note If you link statically against OpenMesh, you have to add 
+          the define OM_STATIC_BUILD to your application. This will 
+          ensure that readers and writers get initialized correctly.
 
     @param _mesh     The target mesh that will be filled with the read data
     @param _is       stream to load the data from
@@ -176,9 +176,9 @@ read_mesh(Mesh&         _mesh,
 
     The file format is determined by _filename's extension. 
 
-    \b Note: If you link statically against OpenMesh, you have to add 
-             the define OM_STATIC_BUILD to your application. This will 
-             ensure that readers and writers get initialized correctly.
+    \note If you link statically against OpenMesh, you have to add 
+          the define OM_STATIC_BUILD to your application. This will 
+          ensure that readers and writers get initialized correctly.
 
     @param _mesh     The mesh that will be written to file
     @param _filename output filename
@@ -205,9 +205,9 @@ bool write_mesh(const Mesh&        _mesh,
     The file format is determined by parameter _ext. _ext has to include 
     ".[format]" in order to work properly (e.g. ".OFF")
 
-    \b Note: If you link statically against OpenMesh, you have to add 
-             the define OM_STATIC_BUILD to your application. This will 
-             ensure that readers and writers get initialized correctly.
+    \note If you link statically against OpenMesh, you have to add 
+          the define OM_STATIC_BUILD to your application. This will 
+          ensure that readers and writers get initialized correctly.
 
     @param _mesh     The mesh that will be written to file
     @param _os       output stream to write into
