@@ -40,17 +40,20 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       PATHS
       ~/sw/gtest/include
       /opt/local/include
-      /usr/local/include)
+      /usr/local/include
+	  "C:/libs/win32/gtest/include")
     find_library(_GTEST_LIBRARY gtest
       PATHS
       ~/sw/gtest/lib
       /opt/local/lib
-      /usr/local/lib)
+      /usr/local/lib
+	  "C:/libs/win32/gtest/lib")
     find_library(_GTEST_MAIN_LIBRARY gtest_main
       PATHS
       ~/sw/gtest/lib
       /opt/local/lib
-      /usr/local/lib)
+      /usr/local/lib
+	  "C:/libs/win32/gtest/lib")
 
      if ( _GTEST_LIBRARY )
         get_filename_component(_GTEST_LIBRARY_DIR ${_GTEST_LIBRARY} PATH CACHE )
@@ -61,10 +64,19 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
     set(GTEST_FOUND true)
     set(GTEST_INCLUDE_DIRS ${_GTEST_INCLUDE_DIR} CACHE PATH
       "Include directories for Google Test framework")
-    set(GTEST_LIBRARIES ${_GTEST_LIBRARY} CACHE FILEPATH
-      "Libraries to link for Google Test framework")
-    set(GTEST_MAIN_LIBRARIES ${_GTEST_MAIN_LIBRARY} CACHE FILEPATH
-      "Libraries to link for Google Test automatic main() definition")
+	  
+	if ( NOT WIN32 ) 
+      set(GTEST_LIBRARIES ${_GTEST_LIBRARY} CACHE FILEPATH
+        "Libraries to link for Google Test framework")
+      set(GTEST_MAIN_LIBRARIES ${_GTEST_MAIN_LIBRARY} CACHE FILEPATH
+        "Libraries to link for Google Test automatic main() definition")
+	else()
+	  set(GTEST_LIBRARIES "optimized;gtest;debug;gtestd" CACHE FILEPATH
+        "Libraries to link for Google Test framework")
+      set(GTEST_MAIN_LIBRARIES "optimized;gtest_main;debug;gtest_maind" CACHE FILEPATH
+        "Libraries to link for Google Test automatic main() definition")
+	endif()
+	
     set(GTEST_LIBRARY_DIR ${_GTEST_LIBRARY_DIR} CACHE FILEPATH
       "Library dir containing Google Test libraries")
     mark_as_advanced(GTEST_INCLUDE_DIRS GTEST_LIBRARIES GTEST_MAIN_LIBRARIES GTEST_LIBRARY_DIR )
