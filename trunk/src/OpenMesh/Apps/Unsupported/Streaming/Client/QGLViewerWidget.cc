@@ -428,7 +428,7 @@ void QGLViewerWidget::keyPressEvent( QKeyEvent* _event)
 
 
 void
-QGLViewerWidget::translate( const Vec3f& _trans )
+QGLViewerWidget::translate( const OpenMesh::Vec3f& _trans )
 {
   // Translate the object by _trans
   // Update modelview_matrix_
@@ -444,7 +444,7 @@ QGLViewerWidget::translate( const Vec3f& _trans )
 
 
 void
-QGLViewerWidget::rotate( const Vec3f& _axis, float _angle )
+QGLViewerWidget::rotate( const OpenMesh::Vec3f& _axis, float _angle )
 {
   // Rotate around center center_, axis _axis, by angle _angle
   // Update modelview_matrix_
@@ -476,7 +476,7 @@ QGLViewerWidget::rotate( const Vec3f& _axis, float _angle )
 
 
 bool
-QGLViewerWidget::map_to_sphere( const QPoint& _v2D, Vec3f& _v3D )
+QGLViewerWidget::map_to_sphere( const QPoint& _v2D, OpenMesh::Vec3f& _v3D )
 {
   if ( (_v2D.x() >= 0) && (_v2D.x() <= width()) &&
        (_v2D.y() >= 0) && (_v2D.y() <= height()) ) 
@@ -539,7 +539,7 @@ QGLViewerWidget::view_all()
 
 
 void
-QGLViewerWidget::set_scene_pos( const Vec3f& _cog, float _radius )
+QGLViewerWidget::set_scene_pos( const OpenMesh::Vec3f& _cog, float _radius )
 {
   center_ = _cog;
   radius_ = _radius;

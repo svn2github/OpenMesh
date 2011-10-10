@@ -206,10 +206,9 @@ private:
 //-----------------------------------------------------------------------------
 
 
-/** \class PropertyT<bool> Property.hh <OpenMesh/Core/Utils/PropertyT.hh>
+/** Property specialization for bool type. 
 
-  Property specialization for bool type. The data will be stored as
-  a bitset.
+  The data will be stored as a bitset.
  */
 template <>
 class PropertyT<bool> : public BaseProperty
@@ -364,9 +363,7 @@ private:
 //-----------------------------------------------------------------------------
 
 
-/** \class PropertyT<std::string> Property.hh <OpenMesh/Core/Utils/PropertyT.hh>
-
-  Property specialization for std::string type.
+/** Property specialization for std::string type.
 */
 template <>
 class PropertyT<std::string> : public BaseProperty

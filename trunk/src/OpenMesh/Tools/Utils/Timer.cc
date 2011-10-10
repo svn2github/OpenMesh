@@ -83,7 +83,9 @@ public:
 // ------------------------------------------------------------- windows 32 ----
 #if defined(WIN32) && (defined(_MSC_VER) || defined(__INTEL_COMPILER))
 
+#ifndef DOXY_IGNORE_THIS
 #include <windows.h>
+#endif
 
 class TimerImplWin32 : public TimerImpl
 {
@@ -143,7 +145,9 @@ double TimerImplWin32::seconds(void) const
 // ------------------------------------------------------------- posix time ----
 #elif defined(__GNUC__) && defined(__POSIX__) 
 
+#ifndef DOXY_IGNORE_THIS
 #  include <time.h>
+#endif
 
 template <clockid_t N>
 class TimerImplPosix : public TimerImpl

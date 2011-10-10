@@ -503,7 +503,7 @@ void QGLViewerWidget::keyPressEvent( QKeyEvent* _event)
 
 
 void
-QGLViewerWidget::translate( const Vec3f& _trans )
+QGLViewerWidget::translate( const OpenMesh::Vec3f& _trans )
 {
   // Translate the object by _trans
   // Update modelview_matrix_
@@ -519,7 +519,7 @@ QGLViewerWidget::translate( const Vec3f& _trans )
 
 
 void
-QGLViewerWidget::rotate( const Vec3f& _axis, float _angle )
+QGLViewerWidget::rotate( const OpenMesh::Vec3f& _axis, float _angle )
 {
   // Rotate around center center_, axis _axis, by angle _angle
   // Update modelview_matrix_
@@ -551,7 +551,7 @@ QGLViewerWidget::rotate( const Vec3f& _axis, float _angle )
 
 
 bool
-QGLViewerWidget::map_to_sphere( const QPoint& _v2D, Vec3f& _v3D )
+QGLViewerWidget::map_to_sphere( const QPoint& _v2D, OpenMesh::Vec3f& _v3D )
 {
     // This is actually doing the Sphere/Hyperbolic sheet hybrid thing,
     // based on Ken Shoemake's ArcBall in Graphics Gems IV, 1993.
@@ -616,7 +616,7 @@ QGLViewerWidget::view_all()
 
 
 void
-QGLViewerWidget::set_scene_pos( const Vec3f& _cog, float _radius )
+QGLViewerWidget::set_scene_pos( const OpenMesh::Vec3f& _cog, float _radius )
 {
   center_ = _cog;
   radius_ = _radius;
