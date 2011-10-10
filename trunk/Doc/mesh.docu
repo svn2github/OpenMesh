@@ -840,13 +840,23 @@ to get circulators around a specified center item:
 
 \include circulator_functions.cc
 
-Note that for every circulator there also exists a constant version.
+\note For every circulator there also exists a constant version.
 To make use of these constant circulators just add the prefix<br />
 "Const" to the type specifier and add the prefix "c" to the function used to request
 the circulator of an item. Example:<br/>
 
 \code
 ConstVertexVertexIter cvvit = mesh.cvv_iter(some_vertex_handle);
+\endcode
+
+\note When constructing Circulators from iterators, make sure you don't create
+a circulator of an deleted element(e.g. FaceVertexiter of a deleted Face), as
+this will lead to unpredictable behaviour. Using skipping iterators for iterating over
+the elements and creating circulators from them is safe as they don't contain
+deleted elements.
+
+\code
+
 \endcode
 
 \section it_circs_h How to use circulators in OpenMesh
