@@ -174,343 +174,91 @@ TEST_F(OpenMeshIterators, EdgeIter) {
 }
 
 /*
- * Small VertexFaceIterator Test with holes in it
+ * Test with a mesh with one deleted face
  */
-TEST_F(OpenMeshIterators, VertexFaceIterWithHoles) {
+TEST_F(OpenMeshIterators, FaceIterEmptyMeshOneDeletedFace) {
 
   mesh_.clear();
 
-  // Add some vertices
-  Mesh::VertexHandle vhandle[5];
+  // request delete_face capability
+  mesh_.request_vertex_status();
+  mesh_.request_edge_status();
+  mesh_.request_face_status();
 
-  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
-  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
-  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
-  vhandle[3] = mesh_.add_vertex(Mesh::Point(0,-1, 0));
-  vhandle[4] = mesh_.add_vertex(Mesh::Point(2,-1, 0));
+  // Add some vertices
+  Mesh::VertexHandle vhandle[4];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 0, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(1, 1, 0));
 
   // Add two faces
   std::vector<Mesh::VertexHandle> face_vhandles;
 
-  face_vhandles.push_back(vhandle[0]);
-  face_vhandles.push_back(vhandle[1]);
   face_vhandles.push_back(vhandle[2]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
   face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[3]);
-  face_vhandles.push_back(vhandle[4]);
-  mesh_.add_face(face_vhandles);
+  face_vhandles.push_back(vhandle[0]);
+  Mesh::FaceHandle fh = mesh_.add_face(face_vhandles);
 
-  /* Test setup:
-      0 ==== 2
-       \    /
-        \  /
-          1
-        /  \
-       /    \
-      3 ==== 4 */
+  // Delete face but keep vertices
+  bool const is_delete_isolated_vertex = false;
+  mesh_.delete_face(fh, is_delete_isolated_vertex);
 
-  // Iterate around vertex 1 at the middle (with holes in between)
-  Mesh::VertexFaceIter vf_it  = mesh_.vf_begin(vhandle[1]); 
-  Mesh::VertexFaceIter vf_end = mesh_.vf_end(vhandle[1]);
-  EXPECT_EQ(0, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at initialization";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at initialization";
-  ++vf_it ;
-  EXPECT_EQ(1, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 1";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
-  ++vf_it ;
-  EXPECT_EQ(-1, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at end";
-  EXPECT_FALSE(vf_it) << "Iterator not invalid in VertexFaceIter at end";
-  EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
+  // Test setup (Face deleted but vertices kept.
+  //  1 === 2
+  //  |   /
+  //  |  /
+  //  | /
+  //  0
 
-  // Iterate around vertex 1 at the middle (with holes in between) with const iterator
-  Mesh::ConstVertexFaceIter cvf_it  = mesh_.cvf_begin(vhandle[1]);
-  Mesh::ConstVertexFaceIter cvf_end = mesh_.cvf_end(vhandle[1]);
-  EXPECT_EQ(0, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at initialization";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at initialization";
-  ++cvf_it ;
-  EXPECT_EQ(1, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at step one";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step one";
-  ++cvf_it ;
-  EXPECT_EQ(-1, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at end";
-  EXPECT_FALSE(cvf_it) << "Iterator not invalid in ConstVertexFaceIter at end";
-  EXPECT_TRUE( cvf_it == cvf_end )  << "End iterator for ConstVertexFaceIter not matching";
+  Mesh::FaceIter f_it  = mesh_.faces_begin();
+  Mesh::FaceIter f_end = mesh_.faces_end();
+
+  EXPECT_EQ(0, f_it.handle().idx()) << "Wrong start index in FaceIterator";
+
+  EXPECT_EQ(1, f_end.handle().idx()) << "Wrong end index in FaceIterator";
+
+  ++f_it;
+  EXPECT_EQ(1, f_it.handle().idx()) << "Wrong end index in FaceIterator after one step";
+  EXPECT_TRUE(f_it == f_end ) << "Iterator not at end for FaceIterator after one step";
+
+  Mesh::ConstFaceIter cf_it  = mesh_.faces_begin();
+  Mesh::ConstFaceIter cf_end = mesh_.faces_end();
+
+  EXPECT_EQ(0, cf_it.handle().idx()) << "Wrong start index in ConstFaceIterator";
+
+  EXPECT_EQ(1, cf_end.handle().idx()) << "Wrong end index in ConstFaceIterator";
+
+  ++cf_it;
+  EXPECT_EQ(1, cf_it.handle().idx()) << "Wrong end index in ConstFaceIterator after one step";
+  EXPECT_TRUE(cf_it == cf_end ) << "Iterator not at end for ConstFaceIterator after one step";
+
+
+  // Same with skipping iterators:
+  f_it  = mesh_.faces_sbegin();
+  f_end = mesh_.faces_end();
+
+  EXPECT_EQ(1, f_it.handle().idx()) << "Wrong start index in FaceIterator with skipping";
+
+  EXPECT_EQ(1, f_end.handle().idx()) << "Wrong end index in FaceIterator with skipping";
+
+  EXPECT_TRUE(f_it == f_end ) << "Iterator not at end for FaceIterator with skipping";
+
+  // Same with skipping iterators:
+  cf_it  = mesh_.faces_sbegin();
+  cf_end = mesh_.faces_end();
+
+  EXPECT_EQ(1, cf_it.handle().idx()) << "Wrong start index in ConstFaceIterator with skipping";
+
+  EXPECT_EQ(1, cf_end.handle().idx()) << "Wrong end index in ConstFaceIterator with skipping";
+
+  EXPECT_TRUE(cf_it == cf_end ) << "Iterator not at end for ConstFaceIterator with skipping";
+
+
+  mesh_.release_vertex_status();
+  mesh_.release_edge_status();
+  mesh_.release_face_status();
 
 }
-
-/*
- * Small VertexFaceIterator Test without holes in it
- */
-TEST_F(OpenMeshIterators, VertexFaceIterWithoutHoles) {
-
-  mesh_.clear();
-
-  // Add some vertices
-  Mesh::VertexHandle vhandle[5];
-
-  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
-  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
-  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
-  vhandle[3] = mesh_.add_vertex(Mesh::Point(0,-1, 0));
-  vhandle[4] = mesh_.add_vertex(Mesh::Point(2,-1, 0));
-
-  // Add two faces
-  std::vector<Mesh::VertexHandle> face_vhandles;
-
-  face_vhandles.push_back(vhandle[0]);
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[2]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[3]);
-  face_vhandles.push_back(vhandle[4]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[0]);
-  face_vhandles.push_back(vhandle[3]);
-  face_vhandles.push_back(vhandle[1]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[2]);
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[4]);
-  mesh_.add_face(face_vhandles);
-
-  /* Test setup:
-      0 ==== 2
-      |\  0 /|
-      | \  / |
-      |2  1 3|
-      | /  \ |
-      |/  1 \|
-      3 ==== 4 */
-
-  Mesh::VertexFaceIter vfa_it  = mesh_.vf_begin(vhandle[1]);
-
-  // Iterate around vertex 1 at the middle (with holes in between)
-  Mesh::VertexFaceIter vf_it  = mesh_.vf_begin(vhandle[1]);
-  Mesh::VertexFaceIter vf_end = mesh_.vf_end(vhandle[1]);
-  EXPECT_EQ(3, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at initialization";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at initialization";
-  ++vf_it ;
-  EXPECT_EQ(1, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 1";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
-  ++vf_it ;
-  EXPECT_EQ(2, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 2";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 2";
-  ++vf_it ;
-  EXPECT_EQ(0, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 3";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 3";
-  ++vf_it ;
-  EXPECT_EQ(3, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at end";
-  EXPECT_FALSE(vf_it) << "Iterator not invalid in VertexFaceIter at end";
-  EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
-
-  // Iterate around vertex 1 at the middle (with holes in between) with const iterator
-  Mesh::ConstVertexFaceIter cvf_it  = mesh_.cvf_begin(vhandle[1]);
-  Mesh::ConstVertexFaceIter cvf_end = mesh_.cvf_end(vhandle[1]);
-  EXPECT_EQ(3, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at initialization";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at initialization";
-  ++cvf_it ;
-  EXPECT_EQ(1, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at step 1";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step 1";
-  ++cvf_it ;
-  EXPECT_EQ(2, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at step 2";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step 2";
-  ++cvf_it ;
-  EXPECT_EQ(0, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at step 3";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step 3";
-  ++cvf_it ;
-  EXPECT_EQ(3, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at end";
-  EXPECT_FALSE(cvf_it) << "Iterator not invalid in VertexFaceIter at end";
-  EXPECT_TRUE( cvf_it == cvf_end )  << "End iterator for ConstVertexFaceIter not matching";
-
-
-}
-
-/*
- * Small FaceFaceIterator Test with holes in it
- */
-TEST_F(OpenMeshIterators, FaceFaceIterWithHoles) {
-
-  mesh_.clear();
-
-  // Add some vertices
-  Mesh::VertexHandle vhandle[5];
-
-  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
-  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
-  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
-  vhandle[3] = mesh_.add_vertex(Mesh::Point(3, 0, 0));
-  vhandle[4] = mesh_.add_vertex(Mesh::Point(4, 1, 0));
-
-  // Add three faces
-  std::vector<Mesh::VertexHandle> face_vhandles;
-
-  face_vhandles.push_back(vhandle[0]);
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[2]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[2]);
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[3]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[2]);
-  face_vhandles.push_back(vhandle[3]);
-  face_vhandles.push_back(vhandle[4]);
-  mesh_.add_face(face_vhandles);
-
-  /* Test setup:
-   *
-   * 0 ------ 2 ------ 4
-   *  \      / \      /
-   *   \  0 /   \  2 /
-   *    \  /  1  \  /
-   *     1 ------- 3
-   */
-
-
-  Mesh::FaceFaceIter ff_it  = mesh_.ff_begin(mesh_.face_handle(1));
-  Mesh::FaceFaceIter ff_end = mesh_.ff_end(mesh_.face_handle(1));
-
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at initialization";
-  EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at initialization";
-  ++ff_it;
-  EXPECT_EQ(0, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at step 1";
-  EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at step 1";
-  ++ff_it;
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at end";
-  EXPECT_FALSE(ff_it) << "Iterator invalid in FaceFaceIter at end";
-  EXPECT_TRUE( ff_it == ff_end )  << "End iterator for FaceFaceIter not matching";
-
-  Mesh::ConstFaceFaceIter cff_it  = mesh_.cff_begin(mesh_.face_handle(1));
-  Mesh::ConstFaceFaceIter cff_end = mesh_.cff_end(mesh_.face_handle(1));
-
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at initialization";
-  EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at initialization";
-  ++cff_it;
-  EXPECT_EQ(0, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at step 1";
-  EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at step 1";
-  ++cff_it;
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at end";
-  EXPECT_FALSE(cff_it) << "Iterator invalid in ConstFaceFaceIter at end";
-  EXPECT_TRUE( cff_it == cff_end )  << "End iterator for ConstFaceFaceIter not matching";
-
-}
-
-/*
- * Small FaceFaceIterator Test with holes in it
- */
-TEST_F(OpenMeshIterators, FaceFaceIterWithoutHoles) {
-
-  mesh_.clear();
-
-  // Add some vertices
-  Mesh::VertexHandle vhandle[6];
-
-  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
-  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
-  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
-  vhandle[3] = mesh_.add_vertex(Mesh::Point(3, 0, 0));
-  vhandle[4] = mesh_.add_vertex(Mesh::Point(4, 1, 0));
-  vhandle[5] = mesh_.add_vertex(Mesh::Point(2,-1, 0));
-
-  // Add three faces
-  std::vector<Mesh::VertexHandle> face_vhandles;
-
-  face_vhandles.push_back(vhandle[0]);
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[2]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[2]);
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[3]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[2]);
-  face_vhandles.push_back(vhandle[3]);
-  face_vhandles.push_back(vhandle[4]);
-  mesh_.add_face(face_vhandles);
-
-  face_vhandles.clear();
-
-  face_vhandles.push_back(vhandle[1]);
-  face_vhandles.push_back(vhandle[5]);
-  face_vhandles.push_back(vhandle[3]);
-  mesh_.add_face(face_vhandles);
-
-  /* Test setup:
-   *
-   * 0 ------ 2 ------ 4
-   *  \      / \      /
-   *   \  0 /   \  2 /
-   *    \  /  1  \  /
-   *     1 ------- 3
-   *      \       /
-   *       \  3  /
-   *        \   /
-   *         \ /
-   *          5
-   */
-
-
-  Mesh::FaceFaceIter ff_it  = mesh_.ff_begin(mesh_.face_handle(1));
-  Mesh::FaceFaceIter ff_end = mesh_.ff_end(mesh_.face_handle(1));
-
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at initialization";
-  EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at initialization";
-  ++ff_it;
-  EXPECT_EQ(0, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at step 1";
-  EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at step 1";
-  ++ff_it;
-  EXPECT_EQ(3, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at step 2";
-  EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at step 2";
-  ++ff_it;
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at end";
-  EXPECT_FALSE(ff_it) << "Iterator invalid in FaceFaceIter at end";
-  EXPECT_TRUE( ff_it == ff_end )  << "End iterator for FaceFaceIter not matching";
-
-  Mesh::ConstFaceFaceIter cff_it  = mesh_.cff_begin(mesh_.face_handle(1));
-  Mesh::ConstFaceFaceIter cff_end = mesh_.cff_end(mesh_.face_handle(1));
-
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at initialization";
-  EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at initialization";
-  ++cff_it;
-  EXPECT_EQ(0, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at step 1";
-  EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at step 1";
-  ++cff_it;
-  EXPECT_EQ(3, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at step 2";
-  EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at step 2";
-  ++cff_it;
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at end";
-  EXPECT_FALSE(cff_it) << "Iterator invalid in ConstFaceFaceIter at end";
-  EXPECT_TRUE( cff_it == cff_end )  << "End iterator for ConstFaceFaceIter not matching";
-
-}
-
-
-
-
 
 #endif // INCLUDE GUARD
