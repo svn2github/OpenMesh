@@ -615,7 +615,11 @@ finally step three will show you how to add your own modules to IOManager.
 
 For a quick start you can copy the following code directly to your project.
 
-Note: IOManager uses the filename extension to determine which reader/writer
+\b Note: If you link statically against OpenMesh, you have to add the define
+OM_STATIC_BUILD to your application. This will ensure that readers and writers 
+get initialized correctly.
+
+\b Note: IOManager uses the filename extension to determine which reader/writer
 to use. I.e. if passing "inputmesh.obj" as filename parameter, the OBJ-File
 reader/writer will be used to parse/write the file.
 
