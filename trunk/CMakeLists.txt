@@ -54,7 +54,7 @@ add_subdirectory (Doc)
 # Bundle generation (Targets exist, now configure them)
 # ========================================================================
 
-if (WIN32 )
+if (WIN32 AND  BUILD_APPS )
   # prepare bundle generation cmake file and add a build target for it
   configure_file ("${CMAKE_SOURCE_DIR}/cmake/fixbundle.cmake.win.in"
      "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" @ONLY IMMEDIATE)
