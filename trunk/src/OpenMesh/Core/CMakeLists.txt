@@ -56,6 +56,13 @@ if ( ${PROJECT_NAME} MATCHES "OpenMesh")
 
 endif()
 
+# if we build debug and release in the same dir, we want to install both!
+if ( ${PROJECT_NAME} MATCHES "OpenMesh")
+  if ( WIN32 )
+    INSTALL(FILES "${CMAKE_CURRENT_BUILD_DIR}/Build/lib/lib*.lib" lib   )
+  endif()
+endif()
+
 
 # Install Header Files (Apple)
 if ( NOT ACG_PROJECT_MACOS_BUNDLE AND APPLE )
