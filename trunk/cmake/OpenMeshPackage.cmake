@@ -23,8 +23,6 @@ set (CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${CPACK_PACKAGE_NAME}")
 set (CPACK_SOURCE_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
 set (CPACK_SOURCE_STRIP_FILES "")
 
-# set (CPACK_STRIP_FILES "bin/OpenFlipper")
-
 # source package generation
 set (CPACK_SOURCE_GENERATOR "TGZ;TBZ2;ZIP")
 
@@ -119,25 +117,22 @@ if (WIN32)
   endif()
 
   # copy the glut library if it exists on windows
-  IF ( WIN32)
-    if (EXISTS ${CMAKE_BINARY_DIR}/Build/glut32.dll)
-	    install(FILES ${CMAKE_BINARY_DIR}/Build/glut32.dll
-	    DESTINATION ./
-           COMPONENT Applications
+  if (EXISTS ${CMAKE_BINARY_DIR}/Build/glut32.dll)
+    install(FILES ${CMAKE_BINARY_DIR}/Build/glut32.dll
+            DESTINATION ./
+            COMPONENT Applications
            )
-    endif()
   endif()
 
-   # copy the documentation if it exists
-   IF ( WIN32 )
-     if (EXISTS ${CMAKE_BINARY_DIR}/Build/Doc)
-	     install(DIRECTORY ${CMAKE_BINARY_DIR}/Build/Doc
-	     DESTINATION ./
+  # copy the documentation if it exists
+  if (EXISTS ${CMAKE_BINARY_DIR}/Build/Doc)
+    install(DIRECTORY ${CMAKE_BINARY_DIR}/Build/Doc
+            DESTINATION ./
             COMPONENT Applications
-            )
-     endif()
-   endif()
+           )
+  endif()
 
+  set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "CreateShortcut \\\"$SMPROGRAMS\\\\${CPACK_NSIS_DISPLAY_NAME}\\\\Documentation.lnk\\\" \\\"$INSTDIR\\\\Doc\\\\html\\\\index.html \\\" "  )
 
   # append dll's to installed package
   #if (EXISTS ${CMAKE_SOURCE_DIR}/WIN)
