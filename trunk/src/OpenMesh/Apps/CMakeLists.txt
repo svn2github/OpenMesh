@@ -49,6 +49,15 @@ if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND )
     add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui Synthesizer)
   endif()
 
+  # Make sure that we install all dlls into install directory on windows
+  if ( ${PROJECT_NAME} MATCHES "OpenMesh")
+    if ( WIN32 )
+      FILE(GLOB files_install_app_dlls "${CMAKE_BINARY_DIR}/Build/*.dll" )
+      INSTALL(FILES ${files_install_app_dlls} DESTINATION . )
+    endif()
+  endif()
+
+
 else ()
   
   
