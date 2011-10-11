@@ -23,9 +23,15 @@ endif ()
 # ========================================================================
 # Add bundle targets here
 # ========================================================================
+if ( NOT DEFINED BUILD_APPS )
+  set( BUILD_APPS true CACHE BOOL "Enable or disable building of apps" )
+endif()
+
 if (WIN32)
-  add_custom_target (fixbundle ALL
-    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" )
+  if ( BUILD_APPS )
+    add_custom_target (fixbundle ALL
+      COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" )
+  endif()
 endif()
 
 if (APPLE)
