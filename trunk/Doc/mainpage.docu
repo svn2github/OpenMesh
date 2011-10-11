@@ -92,7 +92,7 @@ repeatedly replacing each vertex' position by the center of gravity
 \li \ref mesh_cpp
 \li \ref mesh_members
 \li \ref naming_conventions
-\li \ref history
+\li \ref om_changelog
 
 \page mesh_docu Using and understanding OpenMesh
 \li \subpage mesh_features
@@ -109,7 +109,7 @@ repeatedly replacing each vertex' position by the center of gravity
 \li \subpage mesh_cpp
 \li \subpage mesh_members
 \li \subpage naming_conventions
-\li \subpage history
+\li \subpage om_changelog
 
 
 **/
