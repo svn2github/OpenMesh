@@ -48,8 +48,15 @@ IF( NOT WIN32 )
 ENDIF(NOT WIN32)
 
 if ( ${PROJECT_NAME} MATCHES "OpenMesh")
+
+  if ( WIN32 AND BUILD_APPS )
+    # let bundle generation depend on target
+    add_dependencies (fixbundle OpenMeshTools)
+  endif()
+
+
   # Add tools as dependency before fixbundle 
-  if ( WIN32 OR APPLE)
+  if (APPLE)
     # let bundle generation depend on target
     add_dependencies (fixbundle OpenMeshTools)
   endif()
