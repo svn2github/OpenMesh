@@ -62,7 +62,7 @@ if (WIN32 AND  BUILD_APPS )
   # let bundle generation depend on all targets
   add_dependencies (fixbundle QtViewer DecimaterGui)
  
-endif(WIN32)
+endif()
 
 
 if (APPLE)
