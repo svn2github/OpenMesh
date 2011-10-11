@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.421)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.439)</td><td>
 
 <b>Core</b>
 <ul>
@@ -29,6 +29,7 @@
 
 <b>Unittests</b>
 <ul>
+<li>Enabled unittests for windows</li>
 <li>Added test for VertexIter</li>
 <li>Added test for EdgeIter</li>
 <li>Added test for VertexFaceiter (with and without holes)</li>
@@ -39,6 +40,8 @@
 <ul>
 <li>Document that if OpenMesh is linked statically OM_STATIC_BUILD has to be defined on the executable to make readers work correctly</li>
 <li>Improved MeshIO Documentation</li>
+<li>Added doc about Skipping Iterators</li>
+<li>Document behaviour of circulators on deleted elements</li>
 <li>Get rid of most doxygen warnings</li>
 </ul>
 
@@ -48,6 +51,10 @@
 <li>Changed build directory contents on Mac (Build all binaries in Build dir only)</li>
 <li>Disable Fixbundle on Mac (not required at the moment and hangs forever)</li>
 <li>Added unittest directory and Build system (build explicitly with make unittests)</li>
+<li>Skip fixbundle when building without apps on windows</li>
+<li>On windows: If release and debug libs are build in same directory, install them both</li>
+<li>On windows: Make sure that all dlls are copied</li>
+<li>On windows: create start menu shortcut to Documentation</li>
 </ul>
 
 </tr>
