@@ -59,8 +59,7 @@ endif()
 # if we build debug and release in the same dir, we want to install both!
 if ( ${PROJECT_NAME} MATCHES "OpenMesh")
   if ( WIN32 )
-    message("Location : ${CMAKE_BINARY_DIR}/Build/lib/lib*.lib ")
-    INSTALL(FILES "${CMAKE_BINARY_DIR}/Build/lib/lib*.lib" DESTINATION lib )
+    INSTALL(FILES "${CMAKE_BINARY_DIR}/Build/lib/*.lib" DESTINATION lib )
   endif()
 endif()
 
