@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.439)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.442)</td><td>
 
 <b>Core</b>
 <ul>
@@ -19,6 +19,7 @@
 <li>Fixed some compiler warnings</li>
 <li>Added patch to speed up add_face function(Thanks to Stephen Webb).</li>
 <li>Avoid some compiler warnings</li>
+<li>Added color caster from vec3f to vec4f setting alpha to 1.0 as default</li>
 </ul>
 
 <b>IO</b>
