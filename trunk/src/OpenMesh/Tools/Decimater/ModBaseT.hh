@@ -242,6 +242,12 @@ public: // common interface
    virtual float collapse_priority(const CollapseInfoT<Mesh>& /* _ci */)
    { return LEGAL_COLLAPSE; }
 
+   /** Before _from_vh has been collapsed into _to_vh, this method
+       will be called.
+    */
+   virtual void preprocess_collapse(const CollapseInfoT<Mesh>& /* _ci */)
+   {}
+
    /** After _from_vh has been collapsed into _to_vh, this method
        will be called. 
     */

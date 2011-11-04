@@ -178,6 +178,10 @@ public:
 	     decimate( mesh().n_vertices() - _n_vertices ) : 0 );
   }
 
+  /** Decimate to target complexity (vertices and faces).
+   *  Returns number of performed collapses.
+   */
+  size_t decimate_to_faces( size_t  _n_vertices=0, size_t _n_faces=0 );
 
 private:
 
@@ -244,6 +248,9 @@ private: //---------------------------------------------------- private methods
 
   /// Calculate priority of an halfedge collapse (using the modules)
   float collapse_priority(const CollapseInfo& _ci);
+
+  /// Pre-process a collapse
+  void preprocess_collapse(CollapseInfo& _ci);
 
   /// Post-process a collapse
   void postprocess_collapse(CollapseInfo& _ci);
