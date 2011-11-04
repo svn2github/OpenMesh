@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.442)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.448)</td><td>
 
 <b>Core</b>
 <ul>
@@ -20,6 +20,7 @@
 <li>Added patch to speed up add_face function(Thanks to Stephen Webb).</li>
 <li>Avoid some compiler warnings</li>
 <li>Added color caster from vec3f to vec4f setting alpha to 1.0 as default</li>
+<li>Added color caster from vec4i to vec4f converting alpha from 0..255 range to 0..1.0</li>
 </ul>
 
 <b>IO</b>
@@ -28,12 +29,18 @@
 <li>STL Reader: Add empty mesh when reading empty stl file (don't fail as this is still a valid file)</li>
 </ul>
 
+<b>Decimater</b>
+<li>Added preprocess collapse function</li>
+<li>Added decimate_to_faces function (Decimating to a target face count)</li>
+</ul>
+
 <b>Unittests</b>
 <ul>
 <li>Enabled unittests for windows</li>
 <li>Added test for VertexIter</li>
 <li>Added test for EdgeIter</li>
 <li>Added test for VertexFaceiter (with and without holes)</li>
+<li>Added test for VertexOHalfedgeiter</li>
 <li>Added test for FaceFaceiter (with and without holes)</li>
 </ul>
 
