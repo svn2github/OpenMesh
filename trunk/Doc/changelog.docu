@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.448)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.451)</td><td>
 
 <b>Core</b>
 <ul>
@@ -32,6 +32,8 @@
 <b>Decimater</b>
 <li>Added preprocess collapse function</li>
 <li>Added decimate_to_faces function (Decimating to a target face count)</li>
+<li>Added Hausdorff Distance module</li>
+<li>Added edge length module
 </ul>
 
 <b>Unittests</b>
