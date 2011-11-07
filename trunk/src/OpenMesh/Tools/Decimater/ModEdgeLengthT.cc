@@ -54,8 +54,7 @@
 
 //== INCLUDES =================================================================
 
-#include "ModEdgeLengthT.hh"
-#include <ACG/Geometry/Algorithms.hh>
+#include "ModEdgeLengthT.hh"s
 
 
 //== NAMESPACES ===============================================================

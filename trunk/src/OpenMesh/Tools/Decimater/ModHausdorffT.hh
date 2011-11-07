@@ -124,6 +124,16 @@ public:
 
 private:
 
+  /// squared distance from point _p to triangle (_v0, _v1, _v2)
+  template <class Vec>
+  typename Vec::value_type
+  distPointTriangleSquared( const Vec& _p,
+                            const Vec& _v0,
+                            const Vec& _v1,
+                            const Vec& _v2,
+                            Vec& _nearestPoint );
+
+
   /// compute max error for face _fh w.r.t. its point list and _p
   Scalar compute_sqr_error(FaceHandle _fh, const Point& _p) const;
 

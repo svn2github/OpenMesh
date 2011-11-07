@@ -55,7 +55,6 @@
 //== INCLUDES =================================================================
 
 #include "ModHausdorffT.hh"
-#include <ACG/Geometry/Algorithms.hh>
 
 
 //== NAMESPACES ===============================================================
@@ -63,8 +62,131 @@
 namespace OpenMesh  {
 namespace Decimater {
 
-
 //== IMPLEMENTATION ==========================================================
+
+
+template <class Vec>
+typename Vec::value_type
+distPointTriangleSquared( const Vec& _p,
+    const Vec& _v0,
+    const Vec& _v1,
+    const Vec& _v2,
+    Vec& _nearestPoint )
+{
+  Vec v0v1 = _v1 - _v0;
+  Vec v0v2 = _v2 - _v0;
+  Vec n = v0v1 % v0v2; // not normalized !
+  double d = n.sqrnorm();
+
+
+  // Check if the triangle is degenerated
+  if (d < FLT_MIN && d > -FLT_MIN) {
+    std::cerr << "distPointTriangleSquared: Degenerated triangle !\n";
+    return -1.0;
+  }
+  double invD = 1.0 / d;
+
+
+  // these are not needed for every point, should still perform
+  // better with many points against one triangle
+  Vec v1v2 = _v2 - _v1;
+  double inv_v0v2_2 = 1.0 / v0v2.sqrnorm();
+  double inv_v0v1_2 = 1.0 / v0v1.sqrnorm();
+  double inv_v1v2_2 = 1.0 / v1v2.sqrnorm();
+
+
+  Vec v0p = _p - _v0;
+  Vec t = v0p % n;
+  double  s01, s02, s12;
+  double a = (t | v0v2) * -invD;
+  double b = (t | v0v1) * invD;
+
+
+  if (a < 0)
+  {
+    // Calculate the distance to an edge or a corner vertex
+    s02 = ( v0v2 | v0p ) * inv_v0v2_2;
+    if (s02 < 0.0)
+    {
+      s01 = ( v0v1 | v0p ) * inv_v0v1_2;
+      if (s01 <= 0.0) {
+        v0p = _v0;
+      } else if (s01 >= 1.0) {
+        v0p = _v1;
+      } else {
+        v0p = _v0 + v0v1 * s01;
+      }
+    } else if (s02 > 1.0) {
+      s12 = ( v1v2 | ( _p - _v1 )) * inv_v1v2_2;
+      if (s12 >= 1.0) {
+        v0p = _v2;
+      } else if (s12 <= 0.0) {
+        v0p = _v1;
+      } else {
+        v0p = _v1 + v1v2 * s12;
+      }
+    } else {
+      v0p = _v0 + v0v2 * s02;
+    }
+  } else if (b < 0.0) {
+    // Calculate the distance to an edge or a corner vertex
+    s01 = ( v0v1 | v0p ) * inv_v0v1_2;
+    if (s01 < 0.0)
+    {
+      s02 = ( v0v2 |  v0p ) * inv_v0v2_2;
+      if (s02 <= 0.0) {
+        v0p = _v0;
+      } else if (s02 >= 1.0) {
+        v0p = _v2;
+      } else {
+        v0p = _v0 + v0v2 * s02;
+      }
+    } else if (s01 > 1.0) {
+      s12 = ( v1v2 | ( _p - _v1 )) * inv_v1v2_2;
+      if (s12 >= 1.0) {
+        v0p = _v2;
+      } else if (s12 <= 0.0) {
+        v0p = _v1;
+      } else {
+        v0p = _v1 + v1v2 * s12;
+      }
+    } else {
+      v0p = _v0 + v0v1 * s01;
+    }
+  } else if (a+b > 1.0) {
+    // Calculate the distance to an edge or a corner vertex
+    s12 = ( v1v2 | ( _p - _v1 )) * inv_v1v2_2;
+    if (s12 >= 1.0) {
+      s02 = ( v0v2 | v0p ) * inv_v0v2_2;
+      if (s02 <= 0.0) {
+        v0p = _v0;
+      } else if (s02 >= 1.0) {
+        v0p = _v2;
+      } else {
+        v0p = _v0 + v0v2*s02;
+      }
+    } else if (s12 <= 0.0) {
+      s01 = ( v0v1 |  v0p ) * inv_v0v1_2;
+      if (s01 <= 0.0) {
+        v0p = _v0;
+      } else if (s01 >= 1.0) {
+        v0p = _v1;
+      } else {
+        v0p = _v0 + v0v1 * s01;
+      }
+    } else {
+      v0p = _v1 + v1v2 * s12;
+    }
+  } else {
+    // Calculate the distance to an interior point of the triangle
+    _nearestPoint = _p - n*((n|v0p) * invD);
+    return (_nearestPoint - _p).sqrnorm();
+  }
+
+  _nearestPoint = v0p;
+
+  return (_nearestPoint - _p).sqrnorm();
+}
 
 
 template <class DecimaterT>
@@ -136,7 +258,7 @@ collapse_priority(const CollapseInfo& _ci)
       const Point& p1 = mesh_.point(++fv_it);
       const Point& p2 = mesh_.point(++fv_it);
 
-      if ( ACG::Geometry::distPointTriangleSquared(*p_it, p0, p1, p2, dummy) <= sqr_tolerace)
+      if (  distPointTriangleSquared(*p_it, p0, p1, p2, dummy) <= sqr_tolerace)
         ok = true;
     }
   }
@@ -222,7 +344,7 @@ postprocess_collapse(const CollapseInfo& _ci)
       const Point& p1 = mesh_.point(++fv_it);
       const Point& p2 = mesh_.point(++fv_it);
 
-      e = ACG::Geometry::distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
+      e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
       if (e < emin) {
         emin = e;
         fh   = *fh_it;
@@ -254,10 +376,10 @@ compute_sqr_error(FaceHandle _fh, const Point& _p) const
 
   Point  dummy;
   Scalar e;
-  Scalar emax = ACG::Geometry::distPointTriangleSquared(_p, p0, p1, p2, dummy);
+  Scalar emax =  distPointTriangleSquared(_p, p0, p1, p2, dummy);
 
   for (; p_it!=p_end; ++p_it) {
-    e = ACG::Geometry::distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
+    e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
     if (e > emax)
       emax = e;
   }
