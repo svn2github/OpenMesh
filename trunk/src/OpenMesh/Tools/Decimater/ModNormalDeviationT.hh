@@ -49,8 +49,8 @@
 //=============================================================================
 
 
-#ifndef MB_MODNORMALDEVIATIONT_HH
-#define MB_MODNORMALDEVIATIONT_HH
+#ifndef MODNORMALDEVIATIONT_HH
+#define MODNORMALDEVIATIONT_HH
 
 
 //== INCLUDES =================================================================
@@ -208,6 +208,6 @@ private:
 } // END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#endif // MB_MODNORMALDEVIATIONT_HH defined
+#endif // MODNORMALDEVIATIONT_HH defined
 //=============================================================================
 

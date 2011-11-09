@@ -50,8 +50,8 @@
 //=============================================================================
 
 
-#ifndef MB_MODHAUSDORFFT_HH
-#define MB_MODHAUSDORFFT_HH
+#ifndef MODHAUSDORFFT_HH
+#define MODHAUSDORFFT_HH
 
 
 //== INCLUDES =================================================================
@@ -149,11 +149,11 @@ private:
 } // END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(INCLUDE_TEMPLATES) && !defined(MB_MODHAUSDORFFT_C)
-#define MB_MODHAUSDORFFT_TEMPLATES
+#if defined(INCLUDE_TEMPLATES) && !defined(MODHAUSDORFFT_C)
+#define MODHAUSDORFFT_TEMPLATES
 #include "ModHausdorffT.cc"
 #endif
 //=============================================================================
-#endif // MB_MODHAUSDORFFT_HH defined
+#endif // MODHAUSDORFFT_HH defined
 //=============================================================================
 

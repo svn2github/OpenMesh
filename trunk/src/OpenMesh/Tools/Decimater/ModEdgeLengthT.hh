@@ -49,8 +49,8 @@
 //=============================================================================
 
 
-#ifndef MB_MODEDGELENGTHT_HH
-#define MB_MODEDGELENGTHT_HH
+#ifndef MODEDGELENGTHT_HH
+#define MODEDGELENGTHT_HH
 
 
 //== INCLUDES =================================================================
@@ -108,11 +108,11 @@ private:
 } // END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(INCLUDE_TEMPLATES) && !defined(MB_MODEDGELENGTHT_C)
-#define MB_MODEDGELENGTHT_TEMPLATES
+#if defined(INCLUDE_TEMPLATES) && !defined(MODEDGELENGTHT_C)
+#define MODEDGELENGTHT_TEMPLATES
 #include "ModEdgeLengthT.cc"
 #endif
 //=============================================================================
-#endif // MB_MODEDGELENGTHT_HH defined
+#endif // MODEDGELENGTHT_HH defined
 //=============================================================================
 
