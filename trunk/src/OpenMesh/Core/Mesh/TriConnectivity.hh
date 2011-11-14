@@ -46,7 +46,7 @@
 
 namespace OpenMesh {
 
-/** \brief Connectifity Class for Triangle Meshes
+/** \brief Connectivity Class for Triangle Meshes
 */
 class TriConnectivity : public PolyConnectivity
 {

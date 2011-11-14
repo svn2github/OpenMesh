@@ -49,7 +49,7 @@
 namespace OpenMesh
 {
 
-/** \brief Connectifity Class for polygonal meshes
+/** \brief Connectivity Class for polygonal meshes
 */
 class PolyConnectivity : public ArrayKernel
 {
