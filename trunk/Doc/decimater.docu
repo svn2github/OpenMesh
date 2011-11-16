@@ -62,13 +62,17 @@
   generate progressive meshes as described in "Progressive meshes",
   Hoppe, 1996.
     
-  Provided decimation modules:
-
-  - OpenMesh::Decimater::ModQuadricT
-  - OpenMesh::Decimater::ModRoundnessT
-  - OpenMesh::Decimater::ModNormalFlippingT
-  - OpenMesh::Decimater::ModIndependentSetsT
-  - OpenMesh::Decimater::ModProgMeshT
+  Provided decimation modules(Binary: B, Continuous: C, Special: X):
+ 
+  - OpenMesh::Decimater::ModAspectRatioT (B,C)
+  - OpenMesh::Decimater::ModEdgeLengthT (B,C)
+  - OpenMesh::Decimater::ModHausdorffT (B)
+  - OpenMesh::Decimater::ModIndependentSetsT (B)
+  - OpenMesh::Decimater::ModNormalDeviationT (B,C) 
+  - OpenMesh::Decimater::ModNormalFlippingT (B)
+  - OpenMesh::Decimater::ModProgMeshT (X)
+  - OpenMesh::Decimater::ModQuadricT (B,C)
+  - OpenMesh::Decimater::ModRoundnessT (B,C)
 
 \section DecimaterHnd Module Handles
 
