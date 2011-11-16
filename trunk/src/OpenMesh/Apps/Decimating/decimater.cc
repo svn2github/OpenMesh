@@ -64,6 +64,10 @@
 #include <OpenMesh/Tools/Utils/getopt.h>
 #include <OpenMesh/Tools/Utils/Timer.hh>
 #include <OpenMesh/Tools/Decimater/DecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/ModAspectRatioT.hh>
+#include <OpenMesh/Tools/Decimater/ModEdgeLengthT.hh>
+#include <OpenMesh/Tools/Decimater/ModHausdorffT.hh>
+#include <OpenMesh/Tools/Decimater/ModNormalDeviationT.hh>
 #include <OpenMesh/Tools/Decimater/ModNormalFlippingT.hh>
 #include <OpenMesh/Tools/Decimater/ModQuadricT.hh>
 #include <OpenMesh/Tools/Decimater/ModProgMeshT.hh>
@@ -111,17 +115,21 @@ void usage_and_exit(int xcode);
 struct DecOptions
 {
   DecOptions()
-    : n_collapses(0)
+  : n_collapses(0)
   { }
 
   CmdOption<bool>        decorate_name;
   CmdOption<float>       n_collapses;
-  CmdOption<float>       Q;    // Quadrics
-  CmdOption<float>       NF;   // Normal Flipping
-  CmdOption<bool>        IS;   // Independent Sets
-  CmdOption<std::string> PM;   // Progressive Mesh
-  CmdOption<float>       R;    // Roundness
 
+  CmdOption<float>       AR;   // Aspect ratio
+  CmdOption<float>       EL;   // Edge length
+  CmdOption<float>       HD;   // Hausdorff distance
+  CmdOption<bool>        IS;   // Independent Sets
+  CmdOption<float>       ND;   // Normal deviation
+  CmdOption<float>       NF;   // Normal flipping
+  CmdOption<std::string> PM;   // Progressive Mesh
+  CmdOption<float>       Q;    // Quadrics
+  CmdOption<float>       R;    // Roundness
 
   template <typename T>
   bool init( CmdOption<T>& _o, const std::string& _val )
@@ -135,8 +143,8 @@ struct DecOptions
       T v;
 
       if ( (istr >> v).fail() )
-	return false;
-      
+        return false;
+
       _o = v;
     }
     return true;
@@ -159,28 +167,31 @@ struct DecOptions
     }
     strip(name);
     strip(value);
-        
-    if (name == "Q")  return init(Q,  value);
+
+    if (name == "AR") return init(AR, value);
+    if (name == "EL") return init(EL, value);
+    if (name == "HD") return init(HD, value);
+    if (name == "IS") return init(IS, value);
+    if (name == "ND") return init(ND, value);
     if (name == "NF") return init(NF, value);
     if (name == "PM") return init(PM, value);
-    if (name == "IS") return init(IS, value);
+    if (name == "Q")  return init(Q,  value);
     if (name == "R")  return init(R,  value);
     return false;
   }
 
-
   std::string& strip(std::string & line)
   {
     std::string::size_type pos = 0;
-    
+
     pos = line.find_last_not_of(" \t");
-    
+
     if ( pos!=0 && pos!=std::string::npos )
     {
       ++pos;
       line.erase( pos, line.length()-pos );
     }
-    
+
     pos = line.find_first_not_of(" \t");
     if ( pos!=0 && pos!=std::string::npos )
     {
@@ -198,7 +209,7 @@ template <typename Mesh, typename Decimater>
 bool
 decimate(const std::string &_ifname,
          const std::string &_ofname,
-	 DecOptions        &_opt)
+         DecOptions        &_opt)
 {
    using namespace std;
 
@@ -211,7 +222,7 @@ decimate(const std::string &_ifname,
      if (gverbose)
        clog << "source mesh: ";
      bool rc;
-   
+
      if (gverbose)
        clog << _ifname << endl;
      if ( !(rc = OpenMesh::IO::read_mesh(mesh, _ifname, opt)) )
@@ -220,7 +231,7 @@ decimate(const std::string &_ifname,
        return rc;
      }
    }
-   
+
    // ---------------------------------------- do some decimation
    {
      // ---- 0 - For module NormalFlipping one needs face normals
@@ -228,50 +239,87 @@ decimate(const std::string &_ifname,
      if ( !opt.check( OpenMesh::IO::Options::FaceNormal ) )
      {
        if ( !mesh.has_face_normals() )
-	 mesh.request_face_normals();
+         mesh.request_face_normals();
 
        if (gverbose)
-	 clog << "  updating face normals" << endl;
+         clog << "  updating face normals" << endl;
        mesh.update_face_normals();
      }
-     
+
      // ---- 1 - create decimater instance
      Decimater decimater( mesh );
-     
-     // ---- 2 - registrate modules
-     if (gverbose)
-       clog << "  registrate modules" << endl;
-          
-     
-     typename OpenMesh::Decimater::ModQuadricT<Decimater>::Handle        modQ;
 
-     if (_opt.Q.is_enabled())
+     // ---- 2 - register modules
+     if (gverbose)
+       clog << "  register modules" << endl;
+
+
+
+     typename OpenMesh::Decimater::ModAspectRatioT<Decimater>::Handle modAR;
+
+     if (_opt.AR.is_enabled())
      {
-       decimater.add(modQ);
-       if (_opt.Q.has_value())
-	 decimater.module( modQ ).set_max_err( _opt.Q );
+       decimater.add(modAR);
+       if (_opt.AR.has_value())
+         decimater.module( modAR ).set_aspect_ratio( _opt.AR ) ;
+     }
+
+     typename OpenMesh::Decimater::ModEdgeLengthT<Decimater>::Handle modEL;
+
+     if (_opt.EL.is_enabled())
+     {
+       decimater.add(modEL);
+       if (_opt.EL.has_value())
+         decimater.module( modEL ).set_edge_length( _opt.EL ) ;
+     }
+
+     typename OpenMesh::Decimater::ModHausdorffT <Decimater>::Handle modHD;
+
+     if (_opt.HD.is_enabled())
+     {
+       decimater.add(modHD);
+       if (_opt.HD.has_value())
+         decimater.module( modHD ).set_tolerance( _opt.HD ) ;
+
+     }
+
+     typename OpenMesh::Decimater::ModIndependentSetsT<Decimater>::Handle modIS;
+
+     if ( _opt.IS.is_enabled() )
+       decimater.add(modIS);
+
+     typename OpenMesh::Decimater::ModNormalDeviationT<Decimater>::Handle modND;
+
+     if (_opt.ND.is_enabled())
+     {
+       decimater.add(modND);
+       if (_opt.ND.has_value())
+         decimater.module( modND ).set_normal_deviation( _opt.ND );
      }
 
      typename OpenMesh::Decimater::ModNormalFlippingT<Decimater>::Handle modNF;
-     
+
      if (_opt.NF.is_enabled())
      {
        decimater.add(modNF);
        if (_opt.NF.has_value())
-	 decimater.module( modNF ).set_normal_deviation( _opt.NF );
+         decimater.module( modNF ).set_max_normal_deviation( _opt.NF );
      }
+
 
      typename OpenMesh::Decimater::ModProgMeshT<Decimater>::Handle       modPM;
 
      if ( _opt.PM.is_enabled() )
        decimater.add(modPM);
 
+     typename OpenMesh::Decimater::ModQuadricT<Decimater>::Handle        modQ;
 
-     typename OpenMesh::Decimater::ModIndependentSetsT<Decimater>::Handle modIS;
-     
-     if ( _opt.IS.is_enabled() )
-       decimater.add(modIS);
-
+     if (_opt.Q.is_enabled())
+     {
+       decimater.add(modQ);
+       if (_opt.Q.has_value())
+         decimater.module( modQ ).set_max_err( _opt.Q );
+     }
 
      typename OpenMesh::Decimater::ModRoundnessT<Decimater>::Handle      modR;
 
@@ -279,16 +327,16 @@ decimate(const std::string &_ifname,
      {
        decimater.add( modR );
        if ( _opt.R.has_value() )
-	 decimater.module( modR ).set_min_angle( _opt.R, 
-						 !modQ.is_valid() ||
-						 !decimater.module(modQ).is_binary());
+         decimater.module( modR ).set_min_angle( _opt.R,
+             !modQ.is_valid() ||
+             !decimater.module(modQ).is_binary());
      }
 
      // ---- 3 - initialize decimater
 
      if (gverbose)
        clog << "initializing mesh" << endl;
-     
+
      {
        bool rc;
        timer.start();
@@ -296,8 +344,8 @@ decimate(const std::string &_ifname,
        timer.stop();
        if (!rc)
        {
-	 std::cerr << "  initializing failed!" << std::endl;
-	 return false;
+         std::cerr << "  initializing failed!" << std::endl;
+         return false;
        }
      }
      if (gverbose)
@@ -325,12 +373,12 @@ decimate(const std::string &_ifname,
      else if (_opt.n_collapses > 0.0f)
        rc = decimater.decimate_to(size_t(mesh.n_vertices()*_opt.n_collapses));
      timer.stop();
-     
+
      // ---- 5 - write progmesh file for progviewer (before garbage collection!)
-     
+
      if ( _opt.PM.has_value() )
        decimater.module(modPM).write( _opt.PM );
-    
+
      // ---- 6 - throw away all tagged edges
 
      mesh.garbage_collection();
@@ -339,13 +387,13 @@ decimate(const std::string &_ifname,
      {       
        std::clog << "  # executed collapses: " << rc << std::endl;
        std::clog << "  # vertices: " << mesh.n_vertices() << ", " 
-		 << ( 100.0*mesh.n_vertices()/nv_before ) << "%\n";
+           << ( 100.0*mesh.n_vertices()/nv_before ) << "%\n";
        std::clog << "  Elapsed time: " << timer.as_string() << std::endl;
        std::clog << "  collapses/s : " << rc/timer.seconds() << std::endl;
      }
 
    }
-      
+
    // write resulting mesh
    if ( ! _ofname.empty() )
    {
@@ -373,12 +421,12 @@ decimate(const std::string &_ifname,
      if ( !OpenMesh::IO::write_mesh(mesh, ofname, opt ) )
      {
        std::cerr << "  Cannot write decimated mesh to file '" 
-		 << ofname << "'\n";
+           << ofname << "'\n";
        return false;
      }
      std::clog << "  Exported decimated mesh to file '" << ofname << "'\n";
    }
-   
+
    return true;
 }
 
@@ -398,24 +446,24 @@ int main(int argc, char* argv[])
   //---------------------------------------- parse command line
   {
     int c;
-    
+
     while ( (c=getopt( argc, argv, "dDhi:M:n:o:v")) != -1 )
     {
       switch (c)
       {
         case 'D': opt.decorate_name = true;   break;
-	case 'd': gdebug        = true;   break;
-	case 'h': usage_and_exit(0);
-	case 'i': ifname        = optarg; break;
-	case 'M': opt.parse_argument( optarg ); break;
-	case 'n': opt.n_collapses = float(atof(optarg)); break;
-	case 'o': ofname        = optarg; break;
-	case 'v': gverbose      = true;   break;
-	case '?':
-	default:
-	  std::cerr << "FATAL: cannot process command line option!"
-		    << std::endl;
-	  exit(-1);
+        case 'd': gdebug            = true;   break;
+        case 'h': usage_and_exit(0);
+        case 'i': ifname            = optarg; break;
+        case 'M': opt.parse_argument( optarg ); break;
+        case 'n': opt.n_collapses   = float(atof(optarg)); break;
+        case 'o': ofname            = optarg; break;
+        case 'v': gverbose          = true;   break;
+        case '?':
+        default:
+          std::cerr << "FATAL: cannot process command line option!"
+          << std::endl;
+          exit(-1);
       }                  
     }
   }
@@ -467,40 +515,39 @@ int main(int argc, char* argv[])
 void usage_and_exit(int xcode)
 {
   std::string errmsg;
-  
+
   switch(xcode)
   {
     case 1: errmsg = "Option not supported!"; break;
     case 2: errmsg = "Invalid output file format!"; break;
   }
-  
+
   std::cerr << std::endl;
-  if (xcode)
-  {
+  if (xcode) {
     std::cerr << "Error " << xcode << ": " << errmsg << std::endl << std::endl;
   }
   std::cerr << "Usage: decimator [Options] -i input-file -o output-file\n"
-	    << "  Decimating a mesh using quadrics and normal flipping.\n"
-	    << std::endl;
-  std::cerr << "Options\n"
-	    << std::endl;
+            << "  Decimating a mesh using quadrics and normal flipping.\n" << std::endl;
+  std::cerr << "Options\n"  << std::endl;
   std::cerr << " -M \"{Module-Name}[:Value]}\"\n"
-            << "    Use named module with eventually given parameterization\n"
-	    << std::endl;
+            << "    Use named module with eventually given parameterization\n" << std::endl;
   std::cerr << " -n <N>\n"
-	    << "    N >= 1: do N halfedge collapses.\n"
-	    << "    N <=-1: decimate down to |N| vertices.\n"
-	    << " 0 < N < 1: decimate down to N%.\n"
-	    << std::endl;
+            << "    N >= 1: do N halfedge collapses.\n"
+            << "    N <=-1: decimate down to |N| vertices.\n"
+            << " 0 < N < 1: decimate down to N%.\n" << std::endl;
   std::cerr << std::endl;
   std::cerr << "Modules:\n\n";
+  std::cerr << "  AR[:ratio]      - ModAspectRatio\n";
+  std::cerr << "  EL[:legth]      - ModEdgeLength\n";
+  std::cerr << "  HD[:distance]   - ModHausdorff\n";
   std::cerr << "  IS              - ModIndependentSets\n";
+  std::cerr << "  ND[:angle]      - ModNormalDeviation\n";
   std::cerr << "  NF[:angle]      - ModNormalFlipping\n";
   std::cerr << "  PM[:file name]  - ModProgMesh\n";
   std::cerr << "  Q[:error]       - ModQuadric\n";
   std::cerr << "  R[:angle]       - ModRoundness\n";
   std::cerr << "    0 < angle < 60\n";
-    
+
   exit( xcode );
 }
 

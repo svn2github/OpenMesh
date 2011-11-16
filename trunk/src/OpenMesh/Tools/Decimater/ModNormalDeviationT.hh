@@ -49,15 +49,15 @@
 //=============================================================================
 
 
-#ifndef MODNORMALDEVIATIONT_HH
-#define MODNORMALDEVIATIONT_HH
+#ifndef OPENMESH_DECIMATER_MODNORMALDEVIATIONT_HH
+#define OPENMESH_DECIMATER_MODNORMALDEVIATIONT_HH
 
 
 //== INCLUDES =================================================================
 
 #include <OpenMesh/Tools/Decimater/ModBaseT.hh>
 #include <OpenMesh/Core/Utils/Property.hh>
-#include <ACG/Geometry/Types/NormalConeT.hh>
+#include <OpenMesh/Core/Geometry/NormalConeT.hh>
 
 
 //== NAMESPACES ===============================================================
@@ -69,7 +69,20 @@ namespace Decimater {
 //== CLASS DEFINITION =========================================================
 
 
-
+/** \brief Use Normal deviation to control decimation
+  *
+  * The module tracks the normals while decimating
+  * a normal cone consisting of all normals of the
+  * faces collapsed together is computed and if
+  * a collapse would increase the size of
+  * the cone to a value greater than the given value
+  * the collapse will be illegal.
+  *
+  * In binary and mode, the collapse is legal if:
+  *  - The normal deviation after the collapse is lower than the given value
+  *
+  * In continuous mode the maximal deviation is returned
+  */
 template <class DecimaterT>
 class ModNormalDeviationT : public ModBaseT< DecimaterT >
 {
@@ -83,7 +96,7 @@ public:
   typedef typename Mesh::VertexHandle               VertexHandle;
   typedef typename Mesh::FaceHandle                 FaceHandle;
   typedef typename Mesh::EdgeHandle                 EdgeHandle;
-  typedef ACG::Geometry::NormalConeT<Scalar>        NormalCone;
+  typedef NormalConeT<Scalar>                       NormalCone;
 
 
 
@@ -91,13 +104,12 @@ public:
 
   /// Constructor
   ModNormalDeviationT(DecimaterT& _dec, float _max_dev = 180.0) 
-    : Base(_dec, true),
-      mesh_(Base::mesh())
+  : Base(_dec, true), mesh_(Base::mesh())
   {
     set_normal_deviation(_max_dev);
     mesh_.add_property(normal_cones_);
   }
- 
+
 
   /// Destructor
   ~ModNormalDeviationT() {
@@ -105,12 +117,12 @@ public:
   }
 
 
-  /// Get normal deviation
+  /// Get normal deviation ( 0 .. 360 )
   Scalar normal_deviation() const {
     return normal_deviation_ / M_PI * 180.0;
   }
 
-  /// Set normal deviation
+  /// Set normal deviation ( 0 .. 360 )
   void set_normal_deviation(Scalar _s) {
     normal_deviation_ = _s / 180.0 * M_PI;
   }
@@ -122,13 +134,26 @@ public:
       mesh_.add_property(normal_cones_);
 
     typename Mesh::FaceIter f_it  = mesh_.faces_begin(),
-                            f_end = mesh_.faces_end();
-    
+        f_end = mesh_.faces_end();
+
     for (; f_it != f_end; ++f_it)
       mesh_.property(normal_cones_, f_it) = NormalCone(mesh_.normal(f_it));
   }
 
-
+  /** \brief Control normals when Decimating
+   *
+   * Binary and Cont. mode.
+   *
+   * The module tracks the normals while decimating
+   * a normal cone consisting of all normals of the
+   * faces collapsed together is computed and if
+   * a collapse would increase the size of
+   * the cone to a value greater than the given value
+   * the collapse will be illegal.
+   *
+   * @param _ci Collapse info data
+   * @return Half of the normal cones size (radius in radians)
+   */
   float collapse_priority(const CollapseInfo& _ci) {
     // simulate collapse
     mesh_.set_point(_ci.v0, _ci.p1);
@@ -152,7 +177,7 @@ public:
 
         if (nc.angle() > max_angle) {
           max_angle = nc.angle();
-          if (max_angle > 0.5*normal_deviation_)
+          if (max_angle > 0.5 * normal_deviation_)
             break;
         }
       }
@@ -163,8 +188,7 @@ public:
     mesh_.set_point(_ci.v0, _ci.p0);
 
 
-    return (max_angle < 0.5*normal_deviation_ ?
-	    max_angle : float( Base::ILLEGAL_COLLAPSE ));
+    return (max_angle < 0.5 * normal_deviation_ ? max_angle : float( Base::ILLEGAL_COLLAPSE ));
   }
 
 
@@ -193,7 +217,7 @@ public:
         merge(mesh_.property(normal_cones_, _ci.fr));
     }
   }
-  
+
 
 
 private:
@@ -208,6 +232,6 @@ private:
 } // END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#endif // MODNORMALDEVIATIONT_HH defined
+#endif // OPENMESH_DECIMATER_MODNORMALDEVIATIONT_HH defined
 //=============================================================================
 

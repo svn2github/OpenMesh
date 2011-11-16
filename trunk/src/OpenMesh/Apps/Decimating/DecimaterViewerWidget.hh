@@ -138,16 +138,16 @@ public: // inherited
 
       // to be compatible with gcc 2.95.3
       {
-	decimater_o  tmp( new decimater_t  ( mesh() ) );
-	decimater_ = tmp;
+        decimater_o  tmp( new decimater_t  ( mesh() ) );
+        decimater_ = tmp;
       }
       {
-	mod_quadric_o  tmp( new mod_quadric_t( *decimater_ ) );
-	mod_quadric_ = tmp;
+        mod_quadric_o  tmp( new mod_quadric_t( *decimater_ ) );
+        mod_quadric_ = tmp;
       }
       {
-	mod_nf_o       tmp( new mod_nf_t     ( *decimater_ ) );
-	mod_nf_      = tmp;
+        mod_nf_o       tmp( new mod_nf_t     ( *decimater_ ) );
+        mod_nf_      = tmp;
       }
 
       decimater_->initialize();

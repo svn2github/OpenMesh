@@ -40,7 +40,7 @@
 \*===========================================================================*/
 
 /** \file ModRoundnessT.hh
-    
+
  */
 
 //=============================================================================
@@ -49,8 +49,8 @@
 //
 //=============================================================================
 
-#ifndef OPENMESH_TOOLS_MODROUNDNESST_HH
-#define OPENMESH_TOOLS_MODROUNDNESST_HH
+#ifndef OPENMESH_DECIMATER_MODROUNDNESST_HH
+#define OPENMESH_DECIMATER_MODROUNDNESST_HH
 
 
 //== INCLUDES =================================================================
@@ -72,33 +72,39 @@ namespace Decimater { // BEGIN_NS_DECIMATER
 //== CLASS DEFINITION =========================================================
 
 
-/** Compute error value based on roundness criteria.
- */
+/** \brief Use Roundness of triangles to control decimation
+  *
+  *
+  * In binary and mode, the collapse is legal if:
+  *  - The roundness after the collapse is greater than the given value
+  *
+  * In continuous mode the roundness after the collapse is returned
+  */
 template <class DecimaterType>
 class ModRoundnessT : public ModBaseT<DecimaterType>
 {
-public:
+  public:
   DECIMATING_MODULE( ModRoundnessT, DecimaterType, Roundness );
 
-public:
+  public:
 
   // typedefs
   typedef typename Mesh::Point                      Point;
   typedef typename vector_traits<Point>::value_type value_type;
 
-public:
-   
+  public:
+
   /// Constructor
   ModRoundnessT( DecimaterType &_dec ) :
     Base(_dec, false), 
     min_r_(-1.0)
   { }
- 
+
   /// Destructor
   ~ModRoundnessT() { }
 
-public: // inherited
-   
+  public: // inherited
+
   /** Compute collapse priority due to roundness of triangle.
    *
    *  The roundness is computed by dividing the radius of the
@@ -111,14 +117,14 @@ public: // inherited
    */
   float collapse_priority(const CollapseInfo& _ci)  
   {    
-//     using namespace OpenMesh;
+    //     using namespace OpenMesh;
 
     typename Mesh::ConstVertexOHalfedgeIter voh_it(Base::mesh(), _ci.v0);
     double                                  r;
     double                                  priority = 0.0; //==LEGAL_COLLAPSE
     typename Mesh::FaceHandle               fhC, fhB;
     Vec3f                                   B,C;
-    
+
     if ( min_r_ < 0.0 ) // continues mode
     {      
       C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(voh_it)));
@@ -126,19 +132,19 @@ public: // inherited
 
       for (++voh_it; voh_it; ++voh_it) 
       {
-	B   = C;
-	fhB = fhC;
-	C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(voh_it)));
-	fhC = Base::mesh().face_handle( voh_it.handle() );
+        B   = C;
+        fhB = fhC;
+        C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(voh_it)));
+        fhC = Base::mesh().face_handle( voh_it.handle() );
 
-	if ( fhB == _ci.fl || fhB == _ci.fr )
-	  continue;
-      
-	// simulate collapse using position of v1
-	r = roundness( vector_cast<Vec3f>(_ci.p1), B, C );
-      
-	// return the maximum non-roundness
-	priority = std::max( priority, (1.0-r) );
+        if ( fhB == _ci.fl || fhB == _ci.fr )
+          continue;
+
+        // simulate collapse using position of v1
+        r = roundness( vector_cast<Vec3f>(_ci.p1), B, C );
+
+        // return the maximum non-roundness
+        priority = std::max( priority, (1.0-r) );
 
       }
     }
@@ -149,24 +155,23 @@ public: // inherited
 
       for (++voh_it; voh_it && (priority==Base::LEGAL_COLLAPSE); ++voh_it) 
       {
-	B   = C;
-	fhB = fhC;
-	C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(voh_it)));
-	fhC = Base::mesh().face_handle( voh_it.handle() );
+        B   = C;
+        fhB = fhC;
+        C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(voh_it)));
+        fhC = Base::mesh().face_handle( voh_it.handle() );
 
-	if ( fhB == _ci.fl || fhB == _ci.fr )
-	  continue;
+        if ( fhB == _ci.fl || fhB == _ci.fr )
+          continue;
 
-	priority = ( (r=roundness( vector_cast<Vec3f>(_ci.p1), B, C )) < min_r_)
-	  ? Base::ILLEGAL_COLLAPSE 
-	  : Base::LEGAL_COLLAPSE;
+        priority = ( (r=roundness( vector_cast<Vec3f>(_ci.p1), B, C )) < min_r_)
+	          ? Base::ILLEGAL_COLLAPSE : Base::LEGAL_COLLAPSE;
       }
     }
 
     return (float) priority;
   }
-  
-   
+
+
 
 public: // specific methods
 
@@ -199,7 +204,7 @@ public: // specific methods
    *  \param _min_roundness in range (0,1)
    *  \param _binary Set true, if the binary mode should be enabled, 
    *                 else false. In latter case the collapse_priority()
-   *                 returns a float value if the constrain does not apply
+   *                 returns a float value if the constraint does not apply
    *                 and ILLEGAL_COLLAPSE else.
    */
   void set_min_roundness( value_type _min_roundness, bool _binary=true )
@@ -282,8 +287,8 @@ public: // specific methods
     return nR;
   }
 
-private:
-  
+  private:
+
   value_type min_r_;
 };
 
@@ -297,6 +302,6 @@ private:
 #  undef OM_ENABLE_WARNINGS
 #endif
 //=============================================================================
-#endif // OPENMESH_TOOLS_PROGMESHT_HH defined
+#endif // OPENMESH_DECIMATER_MODROUNDNESST_HH defined
 //=============================================================================
 

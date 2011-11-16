@@ -30,18 +30,17 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/
+ \*===========================================================================*/
 
 /*===========================================================================*\
  *                                                                           *
  *   $Revision: 448 $                                                        *
  *   $Date: 2011-11-04 13:59:37 +0100 (Fri, 04 Nov 2011) $                   *
  *                                                                           *
-\*===========================================================================*/
+ \*===========================================================================*/
 
 /** \file ModAspectRatioT.hh
  */
-
 
 //=============================================================================
 //
@@ -49,95 +48,99 @@
 //
 //=============================================================================
 
-
-#ifndef MODASPECTRATIOT_HH
-#define MODASPECTRATIOT_HH
-
+#ifndef OPENMESH_DECIMATER_MODASPECTRATIOT_HH
+#define OPENMESH_DECIMATER_MODASPECTRATIOT_HH
 
 //== INCLUDES =================================================================
 
 #include <OpenMesh/Tools/Decimater/ModBaseT.hh>
 #include <OpenMesh/Core/Utils/Property.hh>
 
-
 //== NAMESPACES ===============================================================
 
-namespace OpenMesh  {
+namespace OpenMesh {
 namespace Decimater {
-
 
 //== CLASS DEFINITION =========================================================
 
+/** \brief Use aspect ratio to control decimation
+ *
+ * This module computes the aspect ratio.
+ *
+ * In binary mode, the collapse is legal if:
+ *  - The aspect ratio after the collapse is greater
+ *  - The aspect ratio after the collapse is greater than the given minimum
+ *
+ * In continuous mode the collapse is illegal if:
+ *  - The aspect ratio after the collapse is smaller than the given minimum
+ *
+ *
+ */
+template<class DecimaterT>
+class ModAspectRatioT: public ModBaseT<DecimaterT> {
+  public:
 
-template <class DecimaterT>
-class ModAspectRatioT : public ModBaseT<DecimaterT>
-{
-public:
-   
-  DECIMATING_MODULE( ModAspectRatioT, DecimaterT, Roundness );
+    DECIMATING_MODULE( ModAspectRatioT, DecimaterT, Roundness )
+    ;
 
-  typedef typename Mesh::Scalar      Scalar;
-  typedef typename Mesh::Point       Point;
+    typedef typename Mesh::Scalar Scalar;
+    typedef typename Mesh::Point Point;
 
-  // constructor
-  ModAspectRatioT(DecimaterT&  _dec,
-		float        _min_roundness = 5.0,
-		bool         _is_binary = true)
-    : Base(_dec, _is_binary),
-      mesh_(Base::mesh()),
-      min_roundness_(1.0/_min_roundness)
-  {
-    mesh_.add_property( roundness_ );
-  }
+    /// constructor
+    ModAspectRatioT(DecimaterT& _dec, float _min_aspect = 5.0, bool _is_binary =
+        true) :
+        Base(_dec, _is_binary), mesh_(Base::mesh()), min_aspect_(
+            1.0 / _min_aspect) {
+      mesh_.add_property(aspect_);
+    }
 
+    /// destructor
+    ~ModAspectRatioT() {
+      mesh_.remove_property(aspect_);
+    }
 
-  // destructor
-  ~ModAspectRatioT()
-  {
-    mesh_.remove_property( roundness_ );
-  }
+    /// get aspect ratio
+    float aspect_ratio() const {
+      return 1.0 / min_aspect_;
+    }
 
-  
+    /// set aspect ratio
+    void set_aspect_ratio(float _f) {
+      min_aspect_ = 1.0 / _f;
+    }
 
-  /// get roundness
-  float roundness() const { return 1.0/min_roundness_; }
-  /// set roundness
-  void set_roundness(float _f) { min_roundness_ = 1.0/_f; }
-  
-  // precompute face roundness
-  void initialize();
-  // blabla
-  float collapse_priority(const CollapseInfo& _ci);
-  // update roundness of one-ring
-  void preprocess_collapse(const CollapseInfo& _ci);
+    /// precompute face aspect ratio
+    void initialize();
 
+    /// Returns the collapse priority
+    float collapse_priority(const CollapseInfo& _ci);
 
-private:
+    /// update aspect ratio of one-ring
+    void preprocess_collapse(const CollapseInfo& _ci);
 
-  /** \brief return aspect ratio (length/height) of triangle
-  *
-  */
-  Scalar aspectRatio( const Point& _v0,
-                      const Point& _v1,
-                      const Point& _v2 );
+  private:
 
-private:
+    /** \brief return aspect ratio (length/height) of triangle
+     *
+     */
+    Scalar aspectRatio(const Point& _v0, const Point& _v1, const Point& _v2);
 
-  Mesh&  mesh_;
-  float  min_roundness_;
-  FPropHandleT<float>  roundness_;
+  private:
+
+    Mesh& mesh_;
+    float min_aspect_;
+    FPropHandleT<float> aspect_;
 };
 
-
 //=============================================================================
-} // END_NS_DECIMATER
+}// END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(INCLUDE_TEMPLATES) && !defined(MB_MODASPECTRATIOT_C)
-#define MODASPECTRATIOT_TEMPLATES
+#if defined(INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_MODASPECTRATIOT_C)
+#define OPENMESH_DECIMATER_MODASPECTRATIOT_TEMPLATES
 #include "ModAspectRatioT.cc"
 #endif
 //=============================================================================
-#endif // MB_MODASPECTRATIOT_HH defined
+#endif // OPENMESH_DECIMATER_MODASPECTRATIOT_HH defined
 //=============================================================================
 

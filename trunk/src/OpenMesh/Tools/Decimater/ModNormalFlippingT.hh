@@ -70,7 +70,7 @@ namespace Decimater { // BEGIN_NS_DECIMATER
  *  
  *  This module can be used only as a binary module. The criterion
  *  of allowing/disallowing the collapse is the angular deviation between
- *  the face normal of the orignal faces and normals of the faces after the
+ *  the face normal of the original faces and normals of the faces after the
  *  collapse. The collapse will pass the test, if the deviation is below
  *  a given threshold.
  */	      
@@ -102,8 +102,8 @@ public:
    *  -# Compute for each adjacent face of \c _ci.v0 the face
    *  normal if the collpase would be executed.  
    *
-   *  -# Prevent the collapse, if the angle between the original and the
-   *  new normal is below a given threshold.
+   *  -# Prevent the collapse, if the cosine of the angle between the
+   *     original and the new normal is below a given threshold.
    *  
    *  \param _ci The collapse description
    *  \return LEGAL_COLLAPSE or ILLEGAL_COLLAPSE
@@ -148,9 +148,6 @@ public:
   /// get normal deviation
   float max_normal_deviation() const { return max_deviation_ / M_PI * 180.0; }
   
-  /// \deprecated
-  float normal_deviation() const { return max_normal_deviation(); }
-  
   /** Set normal deviation
    *  
    *  Set the maximum angular deviation of the orignal normal and the new
@@ -160,10 +157,6 @@ public:
     max_deviation_ = _f / 180.0 * M_PI; 
     min_cos_       = cos(max_deviation_);
   }
-
-  /// \deprecated
-  void set_normal_deviation(float _f) 
-  { set_max_normal_deviation(_f); }
   
 private:
 

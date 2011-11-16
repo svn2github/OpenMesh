@@ -68,7 +68,7 @@ namespace Decimater {
 //== CLASS DEFINITION =========================================================
 
 
-/** Mesh decimation module computing collapse priority based on error quadrics.
+/** \brief Mesh decimation module computing collapse priority based on error quadrics.
  *
  *  This module can be used as a binary and non-binary module.
  */
