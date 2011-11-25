@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.451)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.463)</td><td>
 
 <b>Core</b>
 <ul>
@@ -23,17 +23,24 @@
 <li>Added color caster from vec4i to vec4f converting alpha from 0..255 range to 0..1.0</li>
 </ul>
 
+<b>Geometry</b>
+<ul>
+<li>Added normal cone datatype</li>
+</ul>
+
 <b>IO</b>
 <ul>
 <li>OFF Reader: Fixed crash on some files containing empty lines(Thanks to R.Schneider for the fix)).</li>
 <li>STL Reader: Add empty mesh when reading empty stl file (don't fail as this is still a valid file)</li>
+<li>PLY Reader: Support normals</li>
 </ul>
 
 <b>Decimater</b>
 <li>Added preprocess collapse function</li>
 <li>Added decimate_to_faces function (Decimating to a target face count)</li>
 <li>Added Hausdorff Distance module</li>
-<li>Added edge length module
+<li>Added edge length module</li>
+<li>Added aspect ratio module</li>
 </ul>
 
 <b>Unittests</b>
@@ -44,6 +51,8 @@
 <li>Added test for VertexFaceiter (with and without holes)</li>
 <li>Added test for VertexOHalfedgeiter</li>
 <li>Added test for FaceFaceiter (with and without holes)</li>
+<li>Added test for collapse and is_collapse_ok operations</li>
+<li>Added test for ply reader(points only)</li>
 </ul>
 
 <b>Doc</b>
@@ -53,6 +62,7 @@
 <li>Added doc about Skipping Iterators</li>
 <li>Document behaviour of circulators on deleted elements</li>
 <li>Get rid of most doxygen warnings</li>
+<li>Improved documentation of the decimater and its modules</li>
 </ul>
 
 <b>Build System</b>
