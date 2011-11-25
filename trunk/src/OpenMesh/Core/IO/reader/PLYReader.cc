@@ -179,7 +179,7 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
 
     unsigned int i, j, k, l, idx;
     unsigned int nV;
-    OpenMesh::Vec3f v;
+    OpenMesh::Vec3f v, n;
     std::string trash;
     OpenMesh::Vec2f t;
     OpenMesh::Vec4i c;
@@ -200,6 +200,10 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
         v[1] = 0.0;
         v[2] = 0.0;
 
+        n[0] = 0.0;
+        n[1] = 0.0;
+        n[2] = 0.0;
+
         t[0] = 0.0;
         t[1] = 0.0;
 
@@ -218,6 +222,15 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
                 break;
             case ZCOORD:
                 _in >> v[2];
+                break;
+            case XNORM:
+                _in >> n[0];
+                break;
+            case YNORM:
+                _in >> n[1];
+                break;
+            case ZNORM:
+                _in >> n[2];
                 break;
             case TEXX:
                 _in >> t[0];
@@ -264,6 +277,7 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
         }
 
         vh = _bi.add_vertex(v);
+        _bi.set_normal(vh, n);
         _bi.set_texcoord(vh, t);
         _bi.set_color(vh, Vec4uc(c));
     }
@@ -313,7 +327,7 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
 
     unsigned int i, j, k, l, idx;
     unsigned int nV;
-    OpenMesh::Vec3f v;  // Vertex
+    OpenMesh::Vec3f v, n;  // Vertex
     OpenMesh::Vec2f t;  // TexCoords
     BaseImporter::VHandles vhandles;
     VertexHandle vh;
@@ -327,6 +341,10 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
         v[0] = 0.0;
         v[1] = 0.0;
         v[2] = 0.0;
+
+        n[0] = 0.0;
+        n[1] = 0.0;
+        n[2] = 0.0;
 
         t[0] = 0.0;
         t[1] = 0.0;
@@ -346,6 +364,15 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
                 break;
             case ZCOORD:
                 readValue(vertexPropertyMap_[propertyIndex].second, _in, v[2]);
+                break;
+            case XNORM:
+                readValue(vertexPropertyMap_[propertyIndex].second, _in, n[0]);
+                break;
+            case YNORM:
+                readValue(vertexPropertyMap_[propertyIndex].second, _in, n[1]);
+                break;
+            case ZNORM:
+                readValue(vertexPropertyMap_[propertyIndex].second, _in, n[2]);
                 break;
             case TEXX:
                 readValue(vertexPropertyMap_[propertyIndex].second, _in, t[0]);
@@ -399,6 +426,7 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
         }
 
         vh = _bi.add_vertex(v);
+        _bi.set_normal(vh, n);
         _bi.set_texcoord(vh, t);
         _bi.set_color(vh, Vec4uc(c));
     }
@@ -936,6 +964,18 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
                         std::pair<VertexProperty, ValueType> entry(ZCOORD, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
                         vertexDimension_++;
+                    } else if (propertyName == "nx") {
+                        std::pair<VertexProperty, ValueType> entry(XNORM, valueType);
+                        vertexPropertyMap_[vertexPropertyCount_] = entry;
+                        options_ += Options::VertexNormal;
+                    } else if (propertyName == "ny") {
+                        std::pair<VertexProperty, ValueType> entry(YNORM, valueType);
+                        vertexPropertyMap_[vertexPropertyCount_] = entry;
+                        options_ += Options::VertexNormal;
+                    } else if (propertyName == "nz") {
+                        std::pair<VertexProperty, ValueType> entry(ZNORM, valueType);
+                        vertexPropertyMap_[vertexPropertyCount_] = entry;
+                        options_ += Options::VertexNormal;
                     } else if (propertyName == "u" || propertyName == "s") {
                         std::pair<VertexProperty, ValueType> entry(TEXX, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
