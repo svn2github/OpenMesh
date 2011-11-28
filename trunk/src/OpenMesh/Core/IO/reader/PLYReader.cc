@@ -107,8 +107,7 @@ _PLYReader_::_PLYReader_() {
 
 bool _PLYReader_::read(const std::string& _filename, BaseImporter& _bi, Options& _opt) {
 
-    std::fstream in(_filename.c_str(), (options_.is_binary() ? std::ios_base::binary | std::ios_base::in
-            : std::ios_base::in));
+    std::fstream in(_filename.c_str(), (std::ios_base::binary | std::ios_base::in) );
 
     if (!in.is_open() || !in.good()) {
         omerr() << "[PLYReader] : cannot not open file " << _filename << std::endl;
@@ -833,7 +832,6 @@ _PLYReader_::ValueType get_property_type(std::string _string1, std::string _stri
 
 //-----------------------------------------------------------------------------
 
-
 bool _PLYReader_::can_u_read(std::istream& _is) const {
 
     // Clear per file options
@@ -846,6 +844,7 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
     // read 1st line
     std::string line;
     std::getline(_is, line);
+    trim(line);
 
     //Check if this file is really a ply format
     if (line != "PLY" && line != "ply")
