@@ -51,17 +51,30 @@ TEST_F(OpenMeshLoader, LoadSimpleOFFFile) {
  * Just load a point file in ply format and count whether
  * the right number of entities has been loaded.
  */
-TEST_F(OpenMeshLoader, LoadSimplePointPLYFileWithEncodingProblems) {
+TEST_F(OpenMeshLoader, LoadSimplePointPLYFileWithBadEncoding) {
 
     bool ok = OpenMesh::IO::read_mesh(mesh_, "pointCloudBadEncoding.ply");
 
-    EXPECT_TRUE(ok);
+    EXPECT_TRUE(ok) << "Unable to load pointCloudBadEncoding.ply";
 
     EXPECT_EQ(10, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
     EXPECT_EQ(0, mesh_.n_edges()) << "The number of loaded edges is not correct!";
     EXPECT_EQ(0, mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
+/*
+ * Just load a point file in ply format and count whether
+ * the right number of entities has been loaded.
+ */
+TEST_F(OpenMeshLoader, LoadSimplePointPLYFileWithGoodEncoding) {
 
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "pointCloudGoodEncoding.ply");
+
+    EXPECT_TRUE(ok) << "Unable to load pointCloudGoodEncoding.ply";
+
+    EXPECT_EQ(10, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(0, mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(0, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+}
 
 #endif // INCLUDE GUARD
