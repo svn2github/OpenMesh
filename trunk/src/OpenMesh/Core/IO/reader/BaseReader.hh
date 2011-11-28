@@ -57,11 +57,7 @@
 // STD C++
 #include <iostream>
 #include <string>
-//#include <ctype.h>
-//#include <locale>
-//#include <algorithm>
-//#include <functional>
-
+#include <cctype>
 
 // OpenMesh
 #include <OpenMesh/Core/System/config.h>
@@ -137,40 +133,40 @@ protected:
 };
 
 
-///** \brief Trim left whitespace
-// *
-// * Removes whitespace at the beginning of the string
-// *
-// * @param _string input string
-// * @return trimmed string
-// */
-//static inline std::string &left_trim(std::string &_string) {
-//  _string.erase(_string.begin(), std::find_if(_string.begin(), _string.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-//  return _string;
-//}
-//
-///** \brief Trim right whitespace
-// *
-// * Removes whitespace at the end of the string
-// *
-// * @param _string input string
-// * @return trimmed string
-// */
-//static inline std::string &right_trim(std::string &_string) {
-//  _string.erase(std::find_if(_string.rbegin(), _string.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), _string.end());
-//  return _string;
-//}
-//
-///** \brief Trim whitespace
-// *
-// * Removes whitespace at the beginning and end of the string
-// *
-// * @param _string input string
-// * @return trimmed string
-// */
-//static inline std::string &trim(std::string &_string) {
-//  return left_trim(right_trim(_string));
-//}
+/** \brief Trim left whitespace
+ *
+ * Removes whitespace at the beginning of the string
+ *
+ * @param _string input string
+ * @return trimmed string
+ */
+static inline std::string &left_trim(std::string &_string) {
+  _string.erase(_string.begin(), std::find_if(_string.begin(), _string.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+  return _string;
+}
+
+/** \brief Trim right whitespace
+ *
+ * Removes whitespace at the end of the string
+ *
+ * @param _string input string
+ * @return trimmed string
+ */
+static inline std::string &right_trim(std::string &_string) {
+  _string.erase(std::find_if(_string.rbegin(), _string.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), _string.end());
+  return _string;
+}
+
+/** \brief Trim whitespace
+ *
+ * Removes whitespace at the beginning and end of the string
+ *
+ * @param _string input string
+ * @return trimmed string
+ */
+static inline std::string &trim(std::string &_string) {
+  return left_trim(right_trim(_string));
+}
 
 
 

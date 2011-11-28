@@ -844,7 +844,7 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
     // read 1st line
     std::string line;
     std::getline(_is, line);
-    //trim(line);
+    trim(line);
 
     //Check if this file is really a ply format
     if (line != "PLY" && line != "ply")
