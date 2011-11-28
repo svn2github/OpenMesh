@@ -16,7 +16,15 @@ add_subdirectory (VDProgMesh/mkbalancedpm)
 add_subdirectory (VDProgMesh/Analyzer)
 
 # Add non ui apps as dependency before fixbundle 
-if ( WIN32 OR APPLE)
+if ( WIN32 )
+  if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
+    # let bundle generation depend on all targets
+    add_dependencies (fixbundle commandlineDecimater Dualizer mconvert Smoothing commandlineAdaptiveSubdivider commandlineSubdivider mkbalancedpm Analyzer )
+  endif()
+endif()
+
+# Add non ui apps as dependency before fixbundle
+if ( APPLE)
   # let bundle generation depend on all targets
   add_dependencies (fixbundle commandlineDecimater Dualizer mconvert Smoothing commandlineAdaptiveSubdivider commandlineSubdivider mkbalancedpm Analyzer )
 endif()

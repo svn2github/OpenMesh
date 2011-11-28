@@ -49,9 +49,11 @@ ENDIF(NOT WIN32)
 
 if ( ${PROJECT_NAME} MATCHES "OpenMesh")
 
-  if ( WIN32 AND BUILD_APPS )
-    # let bundle generation depend on target
-    add_dependencies (fixbundle OpenMeshTools)
+  if ( WIN32 AND BUILD_APPS)
+    if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
+      # let bundle generation depend on target
+      add_dependencies (fixbundle OpenMeshTools)
+    endif()
   endif()
 
 
@@ -59,12 +61,9 @@ if ( ${PROJECT_NAME} MATCHES "OpenMesh")
   if (APPLE)
     # let bundle generation depend on target
     add_dependencies (fixbundle OpenMeshTools)
-  endif()
-
-  if ( APPLE)
-    # let bundle generation depend on target
     add_dependencies (fixbundle OpenMeshToolsStatic)
   endif()
+
 endif()
 
 

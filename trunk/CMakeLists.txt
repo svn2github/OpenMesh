@@ -28,7 +28,7 @@ if ( NOT DEFINED BUILD_APPS )
 endif()
 
 if (WIN32)
-  if ( BUILD_APPS )
+  if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" AND BUILD_APPS )
     add_custom_target (fixbundle ALL
       COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" )
   endif()
@@ -59,8 +59,10 @@ if (WIN32 AND  BUILD_APPS )
   configure_file ("${CMAKE_SOURCE_DIR}/cmake/fixbundle.cmake.win.in"
      "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" @ONLY IMMEDIATE)
 
-  # let bundle generation depend on all targets
-  add_dependencies (fixbundle QtViewer DecimaterGui)
+  if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
+    # let bundle generation depend on all targets
+    add_dependencies (fixbundle QtViewer DecimaterGui)
+  endif()
  
 endif()
 

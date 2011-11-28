@@ -468,11 +468,16 @@ function (acg_add_library _target _libtype)
                             ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_PLUGINDIR}/${fullname}.dll)
     endif ()
     if (${_type} STREQUAL SHARED OR ${_type} STREQUAL STATIC)
+	  if("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
+		SET(OUTPUTNAME "lib${fullname}.a")
+	  else()
+	    SET(OUTPUTNAME "${fullname}.lib")
+	  endif()
       add_custom_command (TARGET ${_target} POST_BUILD
                           COMMAND ${CMAKE_COMMAND} -E
                           copy_if_different
-                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${fullname}.lib
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/${fullname}.lib)
+                            ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${OUTPUTNAME}
+                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/${OUTPUTNAME})
     endif ()
   elseif (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE)
     if (${_type} STREQUAL SHARED)

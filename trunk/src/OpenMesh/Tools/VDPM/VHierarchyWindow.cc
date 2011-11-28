@@ -53,6 +53,11 @@
 #ifndef WIN32
 #include <string.h>
 #include <cstdlib>
+#else
+  #if defined(__MINGW32__)
+    #include <stdlib.h>
+    #include <string.h>
+  #endif
 #endif
 
 //== NAMESPACES ===============================================================
