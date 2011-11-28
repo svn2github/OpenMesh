@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.463)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.473)</td><td>
 
 <b>Core</b>
 <ul>
@@ -32,7 +32,8 @@
 <ul>
 <li>OFF Reader: Fixed crash on some files containing empty lines(Thanks to R.Schneider for the fix)).</li>
 <li>STL Reader: Add empty mesh when reading empty stl file (don't fail as this is still a valid file)</li>
-<li>PLY Reader: Support normals</li>
+<li>PLY Reader: Support normals (Thanks to Bruno Dutailly)</li>
+<li>Added trim functions to BaseReader</li>
 </ul>
 
 <b>Decimater</b>
@@ -75,6 +76,7 @@
 <li>On windows: If release and debug libs are build in same directory, install them both</li>
 <li>On windows: Make sure that all dlls are copied</li>
 <li>On windows: create start menu shortcut to Documentation</li>
+<li>On windows: MinGW support</li>
 </ul>
 
 </tr>
