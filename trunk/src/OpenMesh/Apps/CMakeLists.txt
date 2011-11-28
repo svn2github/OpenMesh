@@ -42,6 +42,9 @@ if (NOT QT4_FOUND)
   include (${QT_USE_FILE})
 endif ()
 
+if ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
+  message(WARNING "GUI Apps are not build with mingw. (TODO)")
+endif()
 
 # check for OpenGL and GLUT as our required dependencies
 if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
