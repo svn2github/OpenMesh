@@ -44,15 +44,21 @@ endif ()
 
 
 # check for OpenGL and GLUT as our required dependencies
-if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND )
+if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
   add_subdirectory (Decimating/DecimaterGui)
   add_subdirectory (QtViewer)
   add_subdirectory (Subdivider/SubdividerGui)
   add_subdirectory (ProgViewer)
   add_subdirectory (VDProgMesh/Synthesizer)
-
+  
   # Add ui apps as dependency before fixbundle 
-  if ( WIN32 OR APPLE)
+  if ( WIN32 AND NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
+    # let bundle generation depend on all targets
+    add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui Synthesizer)
+  endif()
+  
+  # Add ui apps as dependency before fixbundle 
+  if ( APPLE)
     # let bundle generation depend on all targets
     add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui Synthesizer)
   endif()
