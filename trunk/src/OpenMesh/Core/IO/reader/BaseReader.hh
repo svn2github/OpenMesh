@@ -57,6 +57,10 @@
 // STD C++
 #include <iostream>
 #include <string>
+#include <ctype.h>
+//#include <algorithm>
+//#include <functional>
+//#include <locale>
 
 // OpenMesh
 #include <OpenMesh/Core/System/config.h>
