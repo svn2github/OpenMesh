@@ -174,8 +174,61 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJWithVertexColorsAsVCLines) {
 
 }
 
+/*
+ * Just load a ply
+ */
+TEST_F(OpenMeshLoader, LoadSimplePLY) {
+
+    mesh_.clear();
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal.ply");
+
+    EXPECT_TRUE(ok) << "Unable to load cube-minimal.ply";
+
+    EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+
+}
 
 
+/*
+ * Just load a ply with normals, ascii mode
+ */
+TEST_F(OpenMeshLoader, LoadSimplePLYWithNormals) {
+
+    mesh_.clear();
+
+    mesh_.request_vertex_normals();
+ 
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-normals.ply");
+
+    EXPECT_TRUE(ok) << "Unable to load cube-minimal-normals.ply";
+
+    EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+
+
+    EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(0))[0] ) << "Wrong normal at vertex 0 component 0";
+    EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(0))[1] ) << "Wrong normal at vertex 0 component 1";
+    EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(0))[2] ) << "Wrong normal at vertex 0 component 2";
+
+    EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(3))[0] ) << "Wrong normal at vertex 3 component 0";
+    EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(3))[1] ) << "Wrong normal at vertex 3 component 1";
+    EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(3))[2] ) << "Wrong normal at vertex 3 component 2";
+
+    EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(4))[0] ) << "Wrong normal at vertex 4 component 0";
+    EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(4))[1] ) << "Wrong normal at vertex 4 component 1";
+    EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(4))[2] ) << "Wrong normal at vertex 4 component 2";
+
+    EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(7))[0] ) << "Wrong normal at vertex 7 component 0";
+    EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(7))[1] ) << "Wrong normal at vertex 7 component 1";
+    EXPECT_EQ(2, mesh_.normal(mesh_.vertex_handle(7))[2] ) << "Wrong normal at vertex 7 component 2";
+
+    mesh_.release_vertex_normals();
+
+}
 
 
 
