@@ -187,6 +187,12 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
   _out << "property float32 y" << std::endl;
   _out << "property float32 z" << std::endl;
 
+  if ( _opt.vertex_has_normal() ){
+    _out << "property float32 nx" << std::endl;
+    _out << "property float32 ny" << std::endl;
+    _out << "property float32 nz" << std::endl;
+  }
+
   if ( _opt.vertex_has_texcoord() ){
     _out << "property float32 u" << std::endl;
     _out << "property float32 v" << std::endl;
@@ -213,6 +219,12 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
     //Vertex
     _out << v[0] << " " << v[1] << " " << v[2];
+
+    // Vertex Normals
+    if ( _opt.vertex_has_normal() ){
+      n = _be.normal(vh);
+      _out << " " << n[0] << " " << n[1] << " " << n[2];
+    }
 
     // Vertex TexCoords
     if ( _opt.vertex_has_texcoord() ) {
@@ -384,6 +396,12 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   _out << "property float32 x" << std::endl;
   _out << "property float32 y" << std::endl;
   _out << "property float32 z" << std::endl;
+  
+  if ( _opt.vertex_has_normal() ){
+    _out << "property float32 nx" << std::endl;
+    _out << "property float32 ny" << std::endl;
+    _out << "property float32 nz" << std::endl;
+  }
 
   if ( _opt.vertex_has_texcoord() ){
     _out << "property float32 u" << std::endl;
@@ -413,6 +431,14 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
     writeValue(ValueTypeFLOAT, _out, v[0]);
     writeValue(ValueTypeFLOAT, _out, v[1]);
     writeValue(ValueTypeFLOAT, _out, v[2]);
+
+    // Vertex Normal
+    if ( _opt.vertex_has_normal() ){
+      n = _be.normal(vh);
+      writeValue(ValueTypeFLOAT, _out, n[0]);
+      writeValue(ValueTypeFLOAT, _out, n[1]);
+      writeValue(ValueTypeFLOAT, _out, n[2]);
+    }
 
     // Vertex TexCoords
     if ( _opt.vertex_has_texcoord() ) {

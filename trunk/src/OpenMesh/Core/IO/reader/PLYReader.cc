@@ -326,12 +326,12 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
 
     unsigned int i, j, k, l, idx;
     unsigned int nV;
-    OpenMesh::Vec3f v, n;  // Vertex
-    OpenMesh::Vec2f t;  // TexCoords
+    OpenMesh::Vec3f        v, n;  // Vertex
+    OpenMesh::Vec2f        t;  // TexCoords
     BaseImporter::VHandles vhandles;
-    VertexHandle vh;
-    OpenMesh::Vec4i c;  // Color
-    float tmp;
+    VertexHandle           vh;
+    OpenMesh::Vec4i        c;  // Color
+    float                  tmp;
 
     _bi.reserve(vertexCount_, 3* vertexCount_ , faceCount_);
 
