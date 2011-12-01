@@ -280,7 +280,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
   std::vector<Vec2f>        face_texcoords;
   std::vector<VertexHandle> vertexHandles;
 
-  std::string            matname;
+  std::string               matname;
 
 
   while( _in && !_in.eof() )
@@ -359,13 +359,13 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
       if ( !stream.fail() )
       {
         vertexHandles.push_back(_bi.add_vertex(OpenMesh::Vec3f(x,y,z)));
-	stream >> r; stream >> g; stream >> b;
+        stream >> r; stream >> g; stream >> b;
 
-	if ( !stream.fail() )
-	{
-	  _opt += Options::VertexColor;
-	  colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
-	}
+        if ( !stream.fail() )
+        {
+          _opt += Options::VertexColor;
+          colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
+        }
       }
     }
 
@@ -487,8 +487,8 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
               }
               // Obj counts from 1 and not zero .. array counts from zero therefore -1
               vhandles.push_back(VertexHandle(value-1));
-	      if (_opt.vertex_has_color())
-		_bi.set_color(vhandles.back(), colors[value-1]);
+              if (_opt.vertex_has_color())
+                _bi.set_color(vhandles.back(), colors[value-1]);
               break;
 	      
             case 1: // texture coord
@@ -586,6 +586,29 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
       }
 
     }
+
+  }
+
+  // If we do not have any faces,
+  // assume this is a point cloud and read the normals and colors directly
+  if (_bi.n_faces()==0)
+  {
+    int i=0;
+    // add normal per vertex
+    if ( normals.size() == _bi.n_vertices() )
+      for (std::vector<VertexHandle>::iterator it  = vertexHandles.begin();
+          it != vertexHandles.end(); ++it, i++) {
+          _bi.set_normal( *it, normals[i] );
+      }
+
+
+    // add color per vertex
+    i=0;
+    if ( colors.size() >= _bi.n_vertices() )
+      for (std::vector<VertexHandle>::iterator it  = vertexHandles.begin();
+          it != vertexHandles.end(); ++it, i++) {
+        _bi.set_color( *it, colors[i] );
+      }
 
   }
 
