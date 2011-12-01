@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.473)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.478)</td><td>
 
 <b>Core</b>
 <ul>
@@ -32,7 +32,10 @@
 <ul>
 <li>OFF Reader: Fixed crash on some files containing empty lines(Thanks to R.Schneider for the fix)).</li>
 <li>STL Reader: Add empty mesh when reading empty stl file (don't fail as this is still a valid file)</li>
-<li>PLY Reader: Support normals (Thanks to Bruno Dutailly)</li>
+<li>PLY Reader: Support vertex normals (Thanks to Bruno Dutailly)</li>
+<li>PlY Writer: vertex normal support (Thanks to Bruno Dutailly)</li>
+<li>OBJ Reader: support for vertex colors after vertices or Vertex colors as separate lines. (Thanks to Bruno Dutailly)</li>
+<li>OBJ Reader: Handle objs without faces(Thanks to Bruno Dutailly)</li>
 <li>Added trim functions to BaseReader</li>
 </ul>
 
@@ -54,6 +57,8 @@
 <li>Added test for FaceFaceiter (with and without holes)</li>
 <li>Added test for collapse and is_collapse_ok operations</li>
 <li>Added test for ply reader(points only)</li>
+<li>Added tests for vertex colors in obj files</li>
+<li>Added tests for ply reader with and without normals, ascii mode</li>
 </ul>
 
 <b>Doc</b>
