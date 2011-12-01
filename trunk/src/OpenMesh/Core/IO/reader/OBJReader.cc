@@ -271,12 +271,14 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
   std::string line;
   std::string keyWrd;
 
-  float                  x, y, z, u, v;
-
-  BaseImporter::VHandles vhandles;
-  std::vector<Vec3f>     normals;
-  std::vector<Vec2f>     texcoords;
-  std::vector<Vec2f>     face_texcoords;
+  float                     x, y, z, u, v;
+  int                       r, g, b;
+  BaseImporter::VHandles    vhandles;
+  std::vector<Vec3f>        normals;
+  std::vector<Vec3uc>       colors;
+  std::vector<Vec2f>        texcoords;
+  std::vector<Vec2f>        face_texcoords;
+  std::vector<VertexHandle> vertexHandles;
 
   std::string            matname;
 
@@ -355,7 +357,16 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
       stream >> x; stream >> y; stream >> z;
 
       if ( !stream.fail() )
-        _bi.add_vertex(OpenMesh::Vec3f(x,y,z));
+      {
+        vertexHandles.push_back(_bi.add_vertex(OpenMesh::Vec3f(x,y,z)));
+	stream >> r; stream >> g; stream >> b;
+
+	if ( !stream.fail() )
+	{
+	  _opt += Options::VertexColor;
+	  colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
+	}
+      }
     }
 
     // texture coord
@@ -376,6 +387,16 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
       }
     }
 
+    // color per vertex
+    else if (keyWrd == "vc")
+    {
+      stream >> r; stream >> g; stream >> b;
+
+      if ( !stream.fail() ){
+        colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
+        _opt += Options::VertexColor;
+      }
+    }
 
     // normal
     else if (keyWrd == "vn")
@@ -466,8 +487,10 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
               }
               // Obj counts from 1 and not zero .. array counts from zero therefore -1
               vhandles.push_back(VertexHandle(value-1));
+	      if (_opt.vertex_has_color())
+		_bi.set_color(vhandles.back(), colors[value-1]);
               break;
-
+	      
             case 1: // texture coord
               if ( value < 0 ) {
                 // Calculation of index :
