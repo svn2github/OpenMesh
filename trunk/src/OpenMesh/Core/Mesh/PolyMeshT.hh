@@ -312,7 +312,7 @@ public:
     {
       return 0;
     }
-    Scalar cos_a = (v0 | v1) / denom;
+    Scalar cos_a = dot(v0 , v1) / denom;
     if (is_boundary(_in_heh))
     {//determine if the boundary sector is concave or convex
       FaceHandle fh(face_handle(opposite_halfedge_handle(_in_heh)));
