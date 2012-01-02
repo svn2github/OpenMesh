@@ -1006,16 +1006,17 @@ void PolyConnectivity::split_edge(EdgeHandle _eh, VertexHandle _vh)
   set_next_halfedge_handle(ph0, new_e);
   set_next_halfedge_handle(opposite_halfedge_handle(new_e), nh1);
   
-  set_prev_halfedge_handle(new_e, ph0);
-  set_prev_halfedge_handle(opposite_halfedge_handle(new_e), h1);
+//  set_prev_halfedge_handle(new_e, ph0);
+//  set_prev_halfedge_handle(opposite_halfedge_handle(new_e), h1);
   
-  set_prev_halfedge_handle(nh1, opposite_halfedge_handle(new_e));
-  set_prev_halfedge_handle(h0, new_e);
+//  set_prev_halfedge_handle(nh1, opposite_halfedge_handle(new_e));
+//  set_prev_halfedge_handle(h0, new_e);
   
   if (!boundary0)
   {
     set_face_handle(new_e, face_handle(h0));
-  } else
+  }
+  else
   {
     set_boundary(new_e);
   }
@@ -1024,13 +1025,18 @@ void PolyConnectivity::split_edge(EdgeHandle _eh, VertexHandle _vh)
   {
     set_face_handle(opposite_halfedge_handle(new_e), face_handle(h1));
   }
+  else
   {
     set_boundary(opposite_halfedge_handle(new_e));
   }
+
+  set_halfedge_handle( _vh, h0 );
+  adjust_outgoing_halfedge( _vh );
   
   if (halfedge_handle(vfrom) == h0)
   {
     set_halfedge_handle(vfrom, new_e);
+    adjust_outgoing_halfedge( vfrom );
   }
 }
 
