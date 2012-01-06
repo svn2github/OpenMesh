@@ -257,6 +257,7 @@ omlog() << "[OFFReader] : read ascii file\n";
 
         default:
             std::cerr << "Error in file format (colorType = " << colorType << ")\n";
+            break;
       }
     }
     //perhaps read TEXTURE COORDs
@@ -337,6 +338,7 @@ omlog() << "[OFFReader] : read ascii file\n";
 
         default:
             std::cerr << "Error in file format (colorType = " << colorType << ")\n";
+            break;
       }
     }
   }
