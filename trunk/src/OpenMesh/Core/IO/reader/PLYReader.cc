@@ -859,7 +859,6 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
     std::string keyword;
     std::string fileType;
     std::string elementName = "";
-    std::string propertyType;
     std::string propertyName;
     std::string listIndexType;
     std::string listEntryType;

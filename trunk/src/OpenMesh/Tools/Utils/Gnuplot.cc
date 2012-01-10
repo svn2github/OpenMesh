@@ -129,7 +129,7 @@ Gnuplot::Gnuplot(const string &title,
 {
   init();
 		
-  if (x.size() == 0 || y.size() == 0)
+  if (x.empty() || y.empty() )
     throw GnuplotException("vectors too small");
   
   if (style == "")
@@ -160,7 +160,7 @@ Gnuplot::Gnuplot(const string &title,  const string &style,
 {
   init();
   
-  if (x.size() == 0)
+  if (x.empty() )
     throw GnuplotException("vector too small");
   if (!this->gnucmd)
     throw GnuplotException("Could'nt open connection to gnuplot");
@@ -189,7 +189,7 @@ Gnuplot::Gnuplot(const string &title,  const string &style,
 
 Gnuplot::~Gnuplot()
 {
-  if ((this->to_delete).size() > 0)
+  if ( !((this->to_delete).empty()) )
   {
     for (size_t i = 0; i < this->to_delete.size(); i++)
       remove(this->to_delete[i].c_str());
@@ -228,7 +228,7 @@ bool Gnuplot::get_program_path(const string pname)
 
 void Gnuplot::reset_plot(void)
 {       
-  if (this->to_delete.size() > 0)
+  if ( !(this->to_delete.empty()) )
   {
     for (size_t i = 0; i < this->to_delete.size(); i++)
       remove(this->to_delete[i].c_str());
