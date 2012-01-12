@@ -120,6 +120,13 @@ public:
     connect( timer_, SIGNAL(timeout()), SLOT(animate()) );
   }
   
+  DecimaterViewerWidget() :
+          animate_(false),
+          timer_(0),
+          steps_(0)
+  {
+  }
+
   /// destructor
   ~DecimaterViewerWidget()
   {
