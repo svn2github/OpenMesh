@@ -56,11 +56,11 @@
 #include <OpenMesh/Tools/Decimater/ModIndependentSetsT.hh>
 
 typedef OpenMesh::TriMesh_ArrayKernelT<> Mesh;
-typedef OpenMesh::Decimater::DecimaterT<Mesh> Decimater;
-typedef OpenMesh::Decimater::ModNormalFlippingT<Decimater>  ModNormalFlipping;
-typedef OpenMesh::Decimater::ModQuadricT<Decimater>         ModQuadric;
-typedef OpenMesh::Decimater::ModProgMeshT<Decimater>        ModProgMesh;
-typedef OpenMesh::Decimater::ModIndependentSetsT<Decimater> ModIndependentSets;
+typedef OpenMesh::Decimater::DecimaterT<Mesh> DecimaterProgMesh;
+typedef OpenMesh::Decimater::ModNormalFlippingT<DecimaterProgMesh>  ModNormalFlipping;
+typedef OpenMesh::Decimater::ModQuadricT<DecimaterProgMesh>         ModQuadric;
+typedef OpenMesh::Decimater::ModProgMeshT<DecimaterProgMesh>        ModProgMesh;
+typedef OpenMesh::Decimater::ModIndependentSetsT<DecimaterProgMesh> ModIndependentSets;
 
 // ----------------------------------------------------------------------------
 
@@ -168,7 +168,7 @@ private:
 template <typename D>
 const double ModBalancerT<D>::inv_log2_ = 1.0/std::log(2.0);
 
-typedef ModBalancerT<Decimater>  ModBalancer;
+typedef ModBalancerT<DecimaterProgMesh>  ModBalancer;
 
 
 // ----------------------------------------------------------------------------
@@ -271,7 +271,7 @@ int main(int argc, char **argv)
   {
     OpenMesh::Utils::Timer t;
 
-    Decimater decimater(mesh);
+    DecimaterProgMesh decimater(mesh);
 
     ModProgMesh::Handle        modPM;
     ModBalancer::Handle        modB;
