@@ -45,12 +45,13 @@
 #include <OpenMesh/Core/System/config.h>
 // -------------------- STL
 #if defined( OM_CC_MIPS )
-#  include <time.h>
-#  include <string.h>
+  #include <time.h>
+  #include <string.h>
 #else
-#  include <ctime>
-#  include <cstring>
+  #include <ctime>
+  #include <cstring>
 #endif
+
 #include <fstream>
 // -------------------- OpenMesh
 #include <OpenMesh/Core/IO/OMFormat.hh>
@@ -168,7 +169,9 @@ template <typename T> struct Enabler
 bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
                                Options _opt) const
 {
-  Enabler<mostream> enabler(omlog());
+  #ifndef DOXY_IGNORE_THIS
+    Enabler<mostream> enabler(omlog());
+  #endif
 
   omlog() << "[OMWriter] : write binary file\n";
 
