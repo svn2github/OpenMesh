@@ -243,7 +243,6 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   }
 
   // ---------- write vertex color
-#if 1
   if (_opt.check( Options::VertexColor ) && _be.has_vertex_colors() )
   {  
     Vec3uc c = _be.color(VertexHandle(0));
@@ -260,7 +259,6 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     for (i=0, nV=_be.n_vertices(); i<nV; ++i)
       bytes += vector_store( _os, _be.color(VertexHandle(i)), swap );
   }
-#endif
 
   // ---------- write vertex texture coords
   if (_be.n_vertices() && _opt.check(Options::VertexTexCoord))
