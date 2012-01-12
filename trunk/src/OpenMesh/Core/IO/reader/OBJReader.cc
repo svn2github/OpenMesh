@@ -330,7 +330,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
       omlog() << "  " << materials_.size() << " materials loaded.\n";
 
-      for ( MaterialList::iterator material = materials_.begin(); material != materials_.end(); material++ )
+      for ( MaterialList::iterator material = materials_.begin(); material != materials_.end(); ++material )
       {
         // Save the texture information in a property
         if ( (*material).second.has_map_Kd() )

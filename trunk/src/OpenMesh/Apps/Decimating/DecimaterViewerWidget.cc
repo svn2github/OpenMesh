@@ -112,6 +112,7 @@ void DecimaterViewerWidget::keyPressEvent(QKeyEvent* _event)
 
     default:
       this->inherited_t::keyPressEvent(_event);
+      break;
   }
 }
 

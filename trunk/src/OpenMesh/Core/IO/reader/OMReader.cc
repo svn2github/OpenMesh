@@ -614,9 +614,6 @@ _OMReader_::restore_binary_custom_data( std::istream& _is, BaseProperty* _bp,
 
   if ( _bp )
   {
-#if defined(OM_DEBUG)
-    size_t b;
-#endif
     size_t n_bytes = _bp->size_of( _n_elem );
 
     if ( ((n_bytes == BaseProperty::UnknownSize) || (n_bytes == block_size)) &&
@@ -624,6 +621,7 @@ _OMReader_::restore_binary_custom_data( std::istream& _is, BaseProperty* _bp,
 	  (_n_elem * _bp->element_size() == block_size) ) )
     {
 #if defined(OM_DEBUG)
+      size_t b;
       bytes += (b=_bp->restore( _is, _swap ));
 #else
       bytes += _bp->restore( _is, _swap );

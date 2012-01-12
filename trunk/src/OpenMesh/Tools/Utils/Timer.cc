@@ -229,7 +229,7 @@ static const unsigned long clockticks = CLOCKS_PER_SEC;
 class TimerImplStd : public TimerImpl
 {
 public:
-   TimerImplStd() : freq_(clockticks) { reset(); }
+   TimerImplStd() : freq_(clockticks),count_(0),start_(0) { reset(); }
    ~TimerImplStd() { ; }
 
    virtual void   reset(void) { count_ = 0; }

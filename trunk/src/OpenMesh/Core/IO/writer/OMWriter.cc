@@ -145,25 +145,9 @@ _OMWriter_::write(std::ostream& _os, BaseExporter& _be, Options _opt) const
   _opt += Options::LSB;
   _opt -= Options::MSB;
 
-//    if ( _opt.check(Options::Binary) )
-//    {
   return write_binary(_os, _be, _opt);
-//    }
-//    else
-//    {
-//       return write_ascii(_os, _be, _opt);
-//    }
 }
 
-
-//-----------------------------------------------------------------------------
-
-
-// bool _OMWriter_::write_ascii(std::ostream& _os, BaseExporter& _be,
-//                               Options _opt) const
-// {
-//    return false;
-// }
 
 //-----------------------------------------------------------------------------
 
