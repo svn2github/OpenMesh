@@ -703,7 +703,6 @@ open_vd_base_mesh(const char* _filename)
 
 
 #ifdef EXAMPLE_CREATION
-  int   tree_id, node_id;
 
   // load details
   for (i=0; i<n_details_; ++i)

@@ -316,7 +316,6 @@ QGLViewerWidget::mouseMoveEvent( QMouseEvent* _event )
   // Left & middle button: zoom in/out
   
 
-  float  value_y;
   Vec3f  newPoint3D;
   bool   newPoint_hitSphere = map_to_sphere( newPoint2D, newPoint3D );
 
@@ -336,7 +335,7 @@ QGLViewerWidget::mouseMoveEvent( QMouseEvent* _event )
   if ( (_event->buttons() == (LeftButton+MidButton)) ||
 	  (_event->buttons() == LeftButton && _event->modifiers() == ControlModifier))
   {
-    value_y = radius_ * dy * 3.0 / h;
+    float value_y = radius_ * dy * 3.0 / h;
     translate(Vec3f(0.0, 0.0, value_y));
   }
 	
@@ -367,29 +366,30 @@ QGLViewerWidget::mouseMoveEvent( QMouseEvent* _event )
 
 	
   // rotate
-  else if (_event->buttons() == LeftButton) 
-  {
-    if (last_point_ok_) 
-    {
-      if ( (newPoint_hitSphere = map_to_sphere(newPoint2D, newPoint3D)) ) 
-      {
-	Vec3f axis = last_point_3D_ % newPoint3D;
-              if (axis.sqrnorm() < 1e-7) {
-                  axis = Vec3f(1,0,0);
-              } else {
-                  axis.normalize();
-              }
-              // find the amount of rotation
-              Vec3f d = last_point_3D_ - newPoint3D;
-              float t = 0.5*d.norm()/TRACKBALL_RADIUS;
-              if (t<-1.0) t=-1.0;
-              else if (t>1.0) t=1.0;
-              float phi = 2.0 * asin(t);
-              float  angle =  phi * 180.0 / M_PI;
-	  rotate( axis, angle );
-	}
+  else if (_event->buttons() == LeftButton) {
+
+    if (last_point_ok_) {
+      if ((newPoint_hitSphere = map_to_sphere(newPoint2D, newPoint3D))) {
+        Vec3f axis = last_point_3D_ % newPoint3D;
+        if (axis.sqrnorm() < 1e-7) {
+          axis = Vec3f(1, 0, 0);
+        } else {
+          axis.normalize();
+        }
+        // find the amount of rotation
+        Vec3f d = last_point_3D_ - newPoint3D;
+        float t = 0.5 * d.norm() / TRACKBALL_RADIUS;
+        if (t < -1.0)
+          t = -1.0;
+        else if (t > 1.0)
+          t = 1.0;
+        float phi = 2.0 * asin(t);
+        float angle = phi * 180.0 / M_PI;
+        rotate(axis, angle);
       }
     }
+
+  }
 
 
   // remember this point

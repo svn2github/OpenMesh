@@ -275,7 +275,6 @@ QGLViewerWidget::mouseMoveEvent( QMouseEvent* _event )
   // Left & middle button: zoom in/out
   
 
-  float  value_y;
   Vec3f  newPoint3D;
   bool   newPoint_hitSphere = map_to_sphere( newPoint2D, newPoint3D );
 
@@ -294,7 +293,7 @@ QGLViewerWidget::mouseMoveEvent( QMouseEvent* _event )
   // move in z direction
   if ( (_event->state() & LeftButton) && (_event->state() & MidButton)) 
   {
-    value_y = radius_ * dy * 3.0 / h;
+    float value_y = radius_ * dy * 3.0 / h;
     translate(Vec3f(0.0, 0.0, value_y));
   }
 	
