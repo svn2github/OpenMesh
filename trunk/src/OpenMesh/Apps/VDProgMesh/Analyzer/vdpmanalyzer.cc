@@ -963,7 +963,7 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
 	
   OpenMesh::Vec3f     residual;
 
-  float distance2;
+//  float distance2;
 
   if ( s + t <= det )
   {
@@ -977,12 +977,12 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
           if ( -d >= a )
           {
             s = 1.0f;
-            distance2 = a+2.0f*d+f;
+//            distance2 = a+2.0f*d+f;
           }
           else
           {
             s = -d/a;
-            distance2 = d*s+f;
+//            distance2 = d*s+f;
           }
         }
         else
@@ -991,17 +991,17 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
           if ( e >= 0.0f )
           {
             t = 0.0f;
-            distance2 = f;
+//            distance2 = f;
           }
           else if ( -e >= c )
           {
             t = 1.0f;
-            distance2 = c+2.0f*e+f;
+//            distance2 = c+2.0f*e+f;
           }
           else
           {
             t = -e/c;
-            distance2 = e*t+f;
+//            distance2 = e*t+f;
           }
         }
       }
@@ -1011,17 +1011,17 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
         if ( e >= 0.0f )
         {
           t = 0.0f;
-          distance2 = f;
+//          distance2 = f;
         }
         else if ( -e >= c )
         {
           t = 1.0f;
-          distance2 = c+2.0f*e+f;
+//          distance2 = c+2.0f*e+f;
         }
         else
         {
           t = -e/c;
-          distance2 = e*t+f;
+//          distance2 = e*t+f;
         }
       }
     }
@@ -1031,17 +1031,17 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
       if ( d >= 0.0f )
       {
         s = 0.0f;
-        distance2 = f;
+//        distance2 = f;
       }
       else if ( -d >= a )
       {
         s = 1.0f;
-        distance2 = a+2.0f*d+f;
+//        distance2 = a+2.0f*d+f;
       }
       else
       {
         s = -d/a;
-        distance2 = d*s+f;
+//        distance2 = d*s+f;
       }
     }
     else  // region 0
@@ -1050,8 +1050,7 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
       float inv_det = 1.0f/det;
       s *= inv_det;
       t *= inv_det;
-      distance2 = s*(a*s+b*t+2.0f*d) +
-        t*(b*s+c*t+2.0f*e)+f;
+//      distance2 = s*(a*s+b*t+2.0f*d) + t*(b*s+c*t+2.0f*e)+f;
     }
   }
   else
@@ -1070,14 +1069,13 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
         {
           s = 1.0f;
           t = 0.0f;
-          distance2 = a+2.0f*d+f;
+//          distance2 = a+2.0f*d+f;
         }
         else
         {
           s = numer/denom;
           t = 1.0f - s;
-          distance2 = s*(a*s+b*t+2.0f*d) +
-            t*(b*s+c*t+2.0f*e)+f;
+//          distance2 = s*(a*s+b*t+2.0f*d) + t*(b*s+c*t+2.0f*e)+f;
         }
       }
       else
@@ -1086,17 +1084,17 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
         if ( tmp1 <= 0.0f )
         {
           t = 1.0f;
-          distance2 = c+2.0f*e+f;
+//          distance2 = c+2.0f*e+f;
         }
         else if ( e >= 0.0f )
         {
           t = 0.0f;
-          distance2 = f;
+//          distance2 = f;
         }
         else
         {
           t = -e/c;
-          distance2 = e*t+f;
+//          distance2 = e*t+f;
         }
       }
     }
@@ -1112,13 +1110,13 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
         {
           t = 1.0f;
           s = 0.0f;
-          distance2 = c+2.0f*e+f;
+//          distance2 = c+2.0f*e+f;
         }
         else
         {
           t = numer/denom;
           s = 1.0f - t;
-          distance2 = s*(a*s+b*t+2.0f*d)+ t*(b*s+c*t+2.0f*e)+f;
+//          distance2 = s*(a*s+b*t+2.0f*d)+ t*(b*s+c*t+2.0f*e)+f;
         }
       }
       else
@@ -1127,17 +1125,17 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
         if ( tmp1 <= 0.0f )
         {
           s = 1.0f;
-          distance2 = a+2.0f*d+f;
+//          distance2 = a+2.0f*d+f;
         }
         else if ( d >= 0.0f )
         {
           s = 0.0f;
-          distance2 = f;
+//          distance2 = f;
         }
         else
         {
           s = -d/a;
-          distance2 = d*s+f;
+//          distance2 = d*s+f;
         }
       }
     }
@@ -1148,7 +1146,7 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
       {
         s = 0.0f;
         t = 1.0f;
-        distance2 = c+2.0f*e+f;
+//        distance2 = c+2.0f*e+f;
       }
       else
       {
@@ -1157,13 +1155,13 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
         {
           s = 1.0f;
           t = 0.0f;
-          distance2 = a+2.0f*d+f;
+//          distance2 = a+2.0f*d+f;
         }
         else
         {
           s = numer/denom;
           t = 1.0f - s;
-          distance2 = s*(a*s+b*t+2.0f*d) + t*(b*s+c*t+2.0f*e)+f;
+//          distance2 = s*(a*s+b*t+2.0f*d) + t*(b*s+c*t+2.0f*e)+f;
         }
       }
     }

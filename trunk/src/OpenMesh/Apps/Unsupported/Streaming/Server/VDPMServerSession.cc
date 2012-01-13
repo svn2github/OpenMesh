@@ -73,6 +73,8 @@ set_vdpm(const char _vdpm_name[256])
   vdpm_->vhierarchy_roots(roots);
   n_details = vdpm_->n_details();
 
+  std::cout << "Details : " << n_details << std::endl;
+
   //vfront_.init(roots, n_details);
 
   // vertex hierarchy window

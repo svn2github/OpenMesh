@@ -50,7 +50,7 @@ public:
   typedef T value_type;
 
   CmdOption(const T& _val) : val_(_val), valid_(true), enabled_(false) { }
-  CmdOption() : valid_(false), enabled_(false) { }
+  CmdOption() : val_(T()),valid_(false), enabled_(false) { }
 
   // has been set and has a value
   bool is_valid(void) const   { return valid_;   }
