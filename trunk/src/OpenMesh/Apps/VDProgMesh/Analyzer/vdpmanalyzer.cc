@@ -956,7 +956,7 @@ point2triangle_residual(const Vec3f &p, const Vec3f tri[3], float &s, float &t)
   float	c = dot(E1, E1);                  // fA11
   float	d = dot(E0, D);                   // fB0
   float	e = dot(E1, D);                   // fB1
-  float	f = dot(D, D);                    // fC
+  //float	f = dot(D, D);                    // fC
   float det = fabsf(a*c - b*b);
   s = b*e-c*d;
   t = b*d-a*e;
