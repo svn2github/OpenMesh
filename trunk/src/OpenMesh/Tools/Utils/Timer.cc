@@ -229,7 +229,7 @@ static const unsigned long clockticks = CLOCKS_PER_SEC;
 class TimerImplStd : public TimerImpl
 {
 public:
-   TimerImplStd() : freq_(clockticks) { reset(); }
+   TimerImplStd() : freq_(clockticks),count_(0),start_(0) { reset(); }
    ~TimerImplStd() { ; }
 
    virtual void   reset(void) { count_ = 0; }
@@ -254,7 +254,6 @@ void TimerImplStd::stop(void)
 
 // ----------------------------------------------------------------- Timer ----
 
-#if ! (defined(WIN32) && (defined(_MSC_VER) || defined(__INTEL_COMPILER)))
 Timer::Timer(void)
 {
 #if defined(WIN32) && defined(_MSC_VER)
@@ -276,7 +275,6 @@ Timer::Timer(void)
 #endif
   state_      = Stopped;
 }
-#endif
 
 Timer::~Timer(void)
 {
