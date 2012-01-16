@@ -80,70 +80,9 @@ public:
 
 // compiler and os dependent implementation
 
-// ------------------------------------------------------------- windows 32 ----
-#if defined(WIN32) && (defined(_MSC_VER) || defined(__INTEL_COMPILER))
-
-#ifndef DOXY_IGNORE_THIS
-#include <windows.h>
-#endif
-
-class TimerImplWin32 : public TimerImpl
-{
-protected:
-   LARGE_INTEGER freq_;
-   LARGE_INTEGER count_;
-   LARGE_INTEGER start_;
-
-public:
-   TimerImplWin32(void);
-   ~TimerImplWin32(void) { ; }
-
-   virtual void   reset(void);
-   virtual void   start(void);
-   virtual void   stop(void);
-   virtual void   cont(void);
-   virtual double seconds(void) const;
-};
-
-TimerImplWin32::TimerImplWin32(void)
-{
-   if (QueryPerformanceFrequency(&freq_)==FALSE)
-     throw std::runtime_error("Performance counter of of stock!");
-   reset();
-}
-
-void TimerImplWin32::reset(void)
-{
-   memset(&count_,0,sizeof(count_));
-   memset(&start_,0,sizeof(count_));
-}
-
-void TimerImplWin32::start(void)
-{
-   reset();
-   QueryPerformanceCounter(&start_);
-}
-
-void TimerImplWin32::stop(void)
-{
-   LARGE_INTEGER stop_;
-
-   QueryPerformanceCounter(&stop_);
-   count_.QuadPart += stop_.QuadPart - start_.QuadPart;
-}
-
-void TimerImplWin32::cont(void)
-{
-   QueryPerformanceCounter(&start_);
-}
-
-double TimerImplWin32::seconds(void) const
-{
-   return (double)count_.QuadPart/(double)freq_.QuadPart;
-}
 
 // ------------------------------------------------------------- posix time ----
-#elif defined(__GNUC__) && defined(__POSIX__) 
+#if defined(__GNUC__) && defined(__POSIX__)
 
 #ifndef DOXY_IGNORE_THIS
 #  include <time.h>
