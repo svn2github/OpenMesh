@@ -195,9 +195,7 @@ void TimerImplStd::stop(void)
 
 Timer::Timer(void)
 {
-#if defined(WIN32) && defined(_MSC_VER)
-  impl_       = new TimerImplWin32;
-#elif defined(__GNUC__) && defined(__POSIX__)
+#if defined(__GNUC__) && defined(__POSIX__)
 // CLOCK_REALTIME
 // CLOCK_MONOTONIC     - ?
 // CLOCK_REALTIME_HR   - RTlinux

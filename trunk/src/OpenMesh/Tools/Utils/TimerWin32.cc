@@ -124,6 +124,12 @@ double TimerImplWin32::seconds(void) const
    return (double)count_.QuadPart/(double)freq_.QuadPart;
 }
 
+Timer::Timer(void)
+{
+  impl_       = new TimerImplWin32;
+  state_      = Stopped;
+}
+
 #endif
 
 // ============================================================================
