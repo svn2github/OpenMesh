@@ -63,13 +63,87 @@ namespace Utils {
 using namespace std;
 
 // -------------------------------------------------------------- TimerImpl ----
+// just a base class for the implementation
+class TimerImpl
+{
+protected:
+public:
+  TimerImpl()  { ; }
+  virtual ~TimerImpl() { ; }
 
+  virtual void   reset(void) = 0;
+  virtual void   start(void) = 0;
+  virtual void   stop(void)  = 0;
+  virtual void   cont(void)  = 0;
+  virtual double seconds(void) const = 0;
+};
 
 // compiler and os dependent implementation
 
+// ------------------------------------------------------------- windows 32 ----
+#if defined(WIN32) && (defined(_MSC_VER) || defined(__INTEL_COMPILER))
+
+#ifndef DOXY_IGNORE_THIS
+#include <windows.h>
+#endif
+
+class TimerImplWin32 : public TimerImpl
+{
+protected:
+   LARGE_INTEGER freq_;
+   LARGE_INTEGER count_;
+   LARGE_INTEGER start_;
+
+public:
+   TimerImplWin32(void);
+   ~TimerImplWin32(void) { ; }
+
+   virtual void   reset(void);
+   virtual void   start(void);
+   virtual void   stop(void);
+   virtual void   cont(void);
+   virtual double seconds(void) const;
+};
+
+TimerImplWin32::TimerImplWin32(void)
+{
+   if (QueryPerformanceFrequency(&freq_)==FALSE)
+     throw std::runtime_error("Performance counter of of stock!");
+   reset();
+}
+
+void TimerImplWin32::reset(void)
+{
+   memset(&count_,0,sizeof(count_));
+   memset(&start_,0,sizeof(count_));
+}
+
+void TimerImplWin32::start(void)
+{
+   reset();
+   QueryPerformanceCounter(&start_);
+}
+
+void TimerImplWin32::stop(void)
+{
+   LARGE_INTEGER stop_;
+
+   QueryPerformanceCounter(&stop_);
+   count_.QuadPart += stop_.QuadPart - start_.QuadPart;
+}
+
+void TimerImplWin32::cont(void)
+{
+   QueryPerformanceCounter(&start_);
+}
+
+double TimerImplWin32::seconds(void) const
+{
+   return (double)count_.QuadPart/(double)freq_.QuadPart;
+}
 
 // ------------------------------------------------------------- posix time ----
-#if defined(__GNUC__) && defined(__POSIX__)
+#elif defined(__GNUC__) && defined(__POSIX__) 
 
 #ifndef DOXY_IGNORE_THIS
 #  include <time.h>
@@ -155,7 +229,7 @@ static const unsigned long clockticks = CLOCKS_PER_SEC;
 class TimerImplStd : public TimerImpl
 {
 public:
-   TimerImplStd() : freq_(clockticks),count_(0),start_(0) { reset(); }
+   TimerImplStd() : freq_(clockticks) { reset(); }
    ~TimerImplStd() { ; }
 
    virtual void   reset(void) { count_ = 0; }
@@ -180,9 +254,12 @@ void TimerImplStd::stop(void)
 
 // ----------------------------------------------------------------- Timer ----
 
+#if ! (defined(WIN32) && (defined(_MSC_VER) || defined(__INTEL_COMPILER)))
 Timer::Timer(void)
 {
-#if defined(__GNUC__) && defined(__POSIX__)
+#if defined(WIN32) && defined(_MSC_VER)
+  impl_       = new TimerImplWin32;
+#elif defined(__GNUC__) && defined(__POSIX__)
 // CLOCK_REALTIME
 // CLOCK_MONOTONIC     - ?
 // CLOCK_REALTIME_HR   - RTlinux
@@ -199,6 +276,7 @@ Timer::Timer(void)
 #endif
   state_      = Stopped;
 }
+#endif
 
 Timer::~Timer(void)
 {

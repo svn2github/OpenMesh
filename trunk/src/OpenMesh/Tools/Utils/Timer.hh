@@ -70,20 +70,7 @@ namespace Utils {
 // -------------------------------------------------------------- forwards ----
 
 
-// just a base class for the implementation
-class TimerImpl
-{
-protected:
-public:
-  TimerImpl()  { ; }
-  virtual ~TimerImpl() { ; }
-
-  virtual void   reset(void) = 0;
-  virtual void   start(void) = 0;
-  virtual void   stop(void)  = 0;
-  virtual void   cont(void)  = 0;
-  virtual double seconds(void) const = 0;
-};
+class TimerImpl;
 
 
 // ----------------------------------------------------------------- class ----
