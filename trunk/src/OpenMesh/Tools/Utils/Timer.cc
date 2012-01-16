@@ -64,7 +64,6 @@ using namespace std;
 
 // -------------------------------------------------------------- TimerImpl ----
 
-};
 
 // compiler and os dependent implementation
 
