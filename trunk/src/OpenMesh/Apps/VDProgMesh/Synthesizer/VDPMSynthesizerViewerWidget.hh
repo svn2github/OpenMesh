@@ -113,16 +113,9 @@ public:
 
 public:
 
-  VDPMSynthesizerViewerWidget(QWidget* _parent=0, const char* _name=0)
-    : MeshViewerWidget(_parent)
-  {
-    adaptive_mode_ = true;
-  }
+  VDPMSynthesizerViewerWidget(QWidget* _parent=0, const char* _name=0);
 
-  ~VDPMSynthesizerViewerWidget()
-  {
-
-  }
+  ~VDPMSynthesizerViewerWidget();
 
   /// open view-dependent progressive mesh
   void open_vd_prog_mesh(const char* _filename);
