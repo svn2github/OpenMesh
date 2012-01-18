@@ -6,17 +6,21 @@ endif()
  
 if ( BUILD_APPS )
 
-add_subdirectory (Dualizer)
-add_subdirectory (Decimating/commandlineDecimater)
-add_subdirectory (Smoothing)
-add_subdirectory (Subdivider/commandlineSubdivider)
-add_subdirectory (Subdivider/commandlineAdaptiveSubdivider)
-add_subdirectory (mconvert)
-add_subdirectory (VDProgMesh/mkbalancedpm)
-add_subdirectory (VDProgMesh/Analyzer)
-
 # Only call fixbundle, when we are building OpenMesh standalone
 if(${PROJECT_NAME} MATCHES "OpenMesh")
+
+
+  add_subdirectory (Dualizer)
+  add_subdirectory (Decimating/commandlineDecimater)
+  add_subdirectory (Smoothing)
+  add_subdirectory (Subdivider/commandlineSubdivider)
+  add_subdirectory (Subdivider/commandlineAdaptiveSubdivider)
+  add_subdirectory (mconvert)
+  add_subdirectory (VDProgMesh/mkbalancedpm)
+  add_subdirectory (VDProgMesh/Analyzer)
+
+
+
 
   # Add non ui apps as dependency before fixbundle 
   if ( WIN32 )
@@ -32,7 +36,6 @@ if(${PROJECT_NAME} MATCHES "OpenMesh")
     add_dependencies (fixbundle commandlineDecimater Dualizer mconvert Smoothing commandlineAdaptiveSubdivider commandlineSubdivider mkbalancedpm Analyzer )
   endif()
 
-endif() # Project is OpenMesh standalone
 
 # find needed packages for gui applications
 find_package (OpenGL)
@@ -98,6 +101,8 @@ else ()
     message ("GLUT not found! Skipping some apps.")
   endif ()
 endif ()
+
+endif() # Project is OpenMesh standalone
 
 else (BUILD_APPS)
 
