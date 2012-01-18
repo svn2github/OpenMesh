@@ -15,19 +15,24 @@ add_subdirectory (mconvert)
 add_subdirectory (VDProgMesh/mkbalancedpm)
 add_subdirectory (VDProgMesh/Analyzer)
 
-# Add non ui apps as dependency before fixbundle 
-if ( WIN32 )
-  if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
+# Only call fixbundle, when we are building OpenMesh standalone
+if(${PROJECT_NAME} MATCHES "OpenMesh")
+
+  # Add non ui apps as dependency before fixbundle 
+  if ( WIN32 )
+    if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
+      # let bundle generation depend on all targets
+      add_dependencies (fixbundle commandlineDecimater Dualizer mconvert Smoothing commandlineAdaptiveSubdivider commandlineSubdivider mkbalancedpm Analyzer )
+    endif()
+  endif()
+
+  # Add non ui apps as dependency before fixbundle
+  if ( APPLE)
     # let bundle generation depend on all targets
     add_dependencies (fixbundle commandlineDecimater Dualizer mconvert Smoothing commandlineAdaptiveSubdivider commandlineSubdivider mkbalancedpm Analyzer )
   endif()
-endif()
 
-# Add non ui apps as dependency before fixbundle
-if ( APPLE)
-  # let bundle generation depend on all targets
-  add_dependencies (fixbundle commandlineDecimater Dualizer mconvert Smoothing commandlineAdaptiveSubdivider commandlineSubdivider mkbalancedpm Analyzer )
-endif()
+endif() # Project is OpenMesh standalone
 
 # find needed packages for gui applications
 find_package (OpenGL)
