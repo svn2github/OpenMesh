@@ -1,9 +1,12 @@
 cmake_minimum_required (VERSION 2.6)
 
-project (OpenMesh)
+# Only set project name if OpenMesh is built as stand-alone library
+if("${PROJECT_NAME}" STREQUAL "")
+    project (OpenMesh)
+endif()
 
 # add our macro directory to cmake search path
-set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set (CMAKE_DEBUG_POSTFIX "d")
 
 # include our cmake files
@@ -11,7 +14,12 @@ include (ACGCommon)
 
 acg_get_version ()
 
-include(OpenMeshPackage)
+
+# Disable package building when built as an external library
+if(${PROJECT_NAME} MATCHES "OpenMesh")
+    include(OpenMeshPackage)
+endif()
+
 include (ACGOutput)
 
 if (WIN32)
