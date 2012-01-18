@@ -35,18 +35,23 @@ if ( NOT DEFINED BUILD_APPS )
   set( BUILD_APPS true CACHE BOOL "Enable or disable building of apps" )
 endif()
 
-if (WIN32)
-  if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" AND BUILD_APPS )
-    add_custom_target (fixbundle ALL
-      COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" )
-  endif()
-endif()
+# Only call fixbundle, when we are building OpenMesh standalone
+if(${PROJECT_NAME} MATCHES "OpenMesh")
 
-if (APPLE)
-  add_custom_target (fixbundle ALL
-    COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.cmake"
-  )
-endif()
+  if (WIN32)
+    if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" AND BUILD_APPS )
+      add_custom_target (fixbundle ALL
+        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" )
+    endif()
+  endif()
+
+  if (APPLE)
+    add_custom_target (fixbundle ALL
+      COMMAND ${CMAKE_COMMAND} -P "${CMAKE_BINARY_DIR}/fixbundle.cmake"
+    )
+  endif()
+
+endif() # project OpenMesh
 
 # ========================================================================
 # Call the subdirectories with there projects
@@ -67,36 +72,40 @@ add_subdirectory (Doc)
 # Bundle generation (Targets exist, now configure them)
 # ========================================================================
 
-if (WIN32 AND  BUILD_APPS )
-  # prepare bundle generation cmake file and add a build target for it
-  configure_file ("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fixbundle.cmake.win.in"
-     "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" @ONLY IMMEDIATE)
+# Only call fixbundle, when we are building OpenMesh standalone
+if(${PROJECT_NAME} MATCHES "OpenMesh")
 
-  if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
-    # let bundle generation depend on all targets
-    add_dependencies (fixbundle QtViewer DecimaterGui)
-  endif()
+  if (WIN32 AND  BUILD_APPS )
+    # prepare bundle generation cmake file and add a build target for it
+    configure_file ("${CMAKE_SOURCE_DIR}/cmake/fixbundle.cmake.win.in"
+       "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" @ONLY IMMEDIATE)
+
+    if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
+      # let bundle generation depend on all targets
+      add_dependencies (fixbundle QtViewer DecimaterGui)
+    endif()
  
-endif()
+  endif()
 
 
-if (APPLE)
-  # prepare bundle generation cmake file and add a build target for it
-  configure_file ("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fixbundle.cmake.in"
-     "${CMAKE_BINARY_DIR}/fixbundle.cmake" @ONLY IMMEDIATE)
+  if (APPLE)
+    # prepare bundle generation cmake file and add a build target for it
+    configure_file ("${CMAKE_SOURCE_DIR}/cmake/fixbundle.cmake.in"
+       "${CMAKE_BINARY_DIR}/fixbundle.cmake" @ONLY IMMEDIATE)
 
-  # let bundle generation depend on all targets
-  add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui) 
+    # let bundle generation depend on all targets
+    add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui) 
 
-
-  # Required for Snow leopard, and the latest qt. Then the resources have to be copied
-  if ( EXISTS "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" )
-      add_custom_command(TARGET OpenMesh POST_BUILD
-         COMMAND ${CMAKE_COMMAND} -E copy_directory "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" "${CMAKE_BINARY_DIR}/Build/Libraries/qt_menu.nib" 
-        )
-  endif ()
+    # Required for Snow leopard, and the latest qt. Then the resources have to be copied
+    if ( EXISTS "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" )
+        add_custom_command(TARGET OpenMesh POST_BUILD
+           COMMAND ${CMAKE_COMMAND} -E copy_directory "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" "${CMAKE_BINARY_DIR}/Build/Libraries/qt_menu.nib" 
+          )
+    endif ()
   
-endif ()
+  endif ()
+
+endif()
 
 # ========================================================================
 
