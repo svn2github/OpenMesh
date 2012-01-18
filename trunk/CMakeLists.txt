@@ -69,7 +69,7 @@ add_subdirectory (Doc)
 
 if (WIN32 AND  BUILD_APPS )
   # prepare bundle generation cmake file and add a build target for it
-  configure_file ("${CMAKE_SOURCE_DIR}/cmake/fixbundle.cmake.win.in"
+  configure_file ("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fixbundle.cmake.win.in"
      "${CMAKE_BINARY_DIR}/fixbundle.win.cmake" @ONLY IMMEDIATE)
 
   if ( NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
@@ -82,7 +82,7 @@ endif()
 
 if (APPLE)
   # prepare bundle generation cmake file and add a build target for it
-  configure_file ("${CMAKE_SOURCE_DIR}/cmake/fixbundle.cmake.in"
+  configure_file ("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fixbundle.cmake.in"
      "${CMAKE_BINARY_DIR}/fixbundle.cmake" @ONLY IMMEDIATE)
 
   # let bundle generation depend on all targets
