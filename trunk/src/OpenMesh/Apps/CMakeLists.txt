@@ -33,67 +33,64 @@ if ( BUILD_APPS )
     endif()
 
 
-  # find needed packages for gui applications
-  find_package (OpenGL)
-  find_package (GLUT)
+    # find needed packages for gui applications
+    find_package (OpenGL)
+    find_package (GLUT)
 
-  # For the apps, we need qt and opengl to build them
-  if (NOT QT4_FOUND)
-    find_package (Qt4 COMPONENTS QtCore QtGui )
-
-    set (QT_USE_QTOPENGL 1)
-
-    include (${QT_USE_FILE})
-  endif ()
-
-  if ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
-    message(WARNING "GUI Apps are not build with mingw. (TODO)")
-  endif()
-
-  # check for OpenGL and GLUT as our required dependencies
-  if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
-    add_subdirectory (Decimating/DecimaterGui)
-    add_subdirectory (QtViewer)
-    add_subdirectory (Subdivider/SubdividerGui)
-    add_subdirectory (ProgViewer)
-    add_subdirectory (VDProgMesh/Synthesizer)
-                           
-
-    # Add ui apps as dependency before fixbundle 
-    if ( WIN32 AND NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
-      # let bundle generation depend on all targets
-      add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui Synthesizer)
-    endif()
-  
-    # Add ui apps as dependency before fixbundle 
-    if ( APPLE)
-      # let bundle generation depend on all targets
-      add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui Synthesizer)
-    endif()
-
-    if ( WIN32 )
-      FILE(GLOB files_install_app_dlls "${CMAKE_BINARY_DIR}/Build/*.dll" )
-      INSTALL(FILES ${files_install_app_dlls} DESTINATION . )
-    endif()
-
-
-  else ()
-    
-    
-    
-
+    # For the apps, we need qt and opengl to build them
     if (NOT QT4_FOUND)
-      message ("QT 4 not found! Skipping some apps.")
+      find_package (Qt4 COMPONENTS QtCore QtGui )
+
+      set (QT_USE_QTOPENGL 1)
+
+      include (${QT_USE_FILE})
     endif ()
 
-    if (NOT OPENGL_FOUND)
-      message ("OpengGL not found! Skipping some apps.")
-    endif ()
+    if ("${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
+      message(WARNING "GUI Apps are not build with mingw. (TODO)")
+    endif()
 
-    if (NOT GLUT_FOUND)
-      message ("GLUT not found! Skipping some apps.")
+    # check for OpenGL and GLUT as our required dependencies
+    if (QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles" )
+      add_subdirectory (Decimating/DecimaterGui)
+      add_subdirectory (QtViewer)
+      add_subdirectory (Subdivider/SubdividerGui)
+      add_subdirectory (ProgViewer)
+      add_subdirectory (VDProgMesh/Synthesizer)
+			    
+
+      # Add ui apps as dependency before fixbundle 
+      if ( WIN32 AND NOT "${CMAKE_GENERATOR}" MATCHES "MinGW Makefiles")
+	# let bundle generation depend on all targets
+	add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui Synthesizer)
+      endif()
+    
+      # Add ui apps as dependency before fixbundle 
+      if ( APPLE)
+	# let bundle generation depend on all targets
+	add_dependencies (fixbundle DecimaterGui ProgViewer QtViewer SubdividerGui Synthesizer)
+      endif()
+
+      if ( WIN32 )
+	FILE(GLOB files_install_app_dlls "${CMAKE_BINARY_DIR}/Build/*.dll" )
+	INSTALL(FILES ${files_install_app_dlls} DESTINATION . )
+      endif()
+
+    else () # QT ,Opengl or glut not found
+      
+      if (NOT QT4_FOUND)
+	message ("QT 4 not found! Skipping some apps.")
+      endif ()
+
+      if (NOT OPENGL_FOUND)
+	message ("OpengGL not found! Skipping some apps.")
+      endif ()
+
+      if (NOT GLUT_FOUND)
+	message ("GLUT not found! Skipping some apps.")
+      endif ()
+      
     endif ()
-  endif ()
 
   endif() # Project is OpenMesh standalone
 
