@@ -184,8 +184,9 @@ void
 PolyMeshT<Kernel>::
 update_normals()
 {
-  if (Kernel::has_face_normals())    update_face_normals();
-  if (Kernel::has_vertex_normals())  update_vertex_normals();
+  if (Kernel::has_face_normals())     update_face_normals();
+  if (Kernel::has_vertex_normals())   update_vertex_normals();
+  if (Kernel::has_halfedge_normals()) update_halfedge_normals();
 }
 
 
@@ -201,6 +202,102 @@ update_face_normals()
 
   for (; f_it != f_end; ++f_it)
     set_normal(f_it.handle(), calc_face_normal(f_it.handle()));
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+template <class Kernel>
+void
+PolyMeshT<Kernel>::
+update_halfedge_normals(const double _feature_angle)
+{
+  HalfedgeIter h_it(Kernel::halfedges_begin()), h_end(Kernel::halfedges_end());
+
+  for (; h_it != h_end; ++h_it)
+    set_normal(h_it.handle(), calc_halfedge_normal(h_it.handle(), _feature_angle));
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+template <class Kernel>
+typename PolyMeshT<Kernel>::Normal
+PolyMeshT<Kernel>::
+calc_halfedge_normal(HalfedgeHandle _heh, const double _feature_angle) const
+{
+  if(Kernel::is_boundary(_heh))
+    return Normal(0,0,0);
+  else
+  {
+    std::vector<FaceHandle> fhs; fhs.reserve(10);
+
+    HalfedgeHandle heh = _heh;
+
+    // collect CW face-handles
+    do
+    {
+      fhs.push_back(Kernel::face_handle(heh));
+
+      heh = Kernel::next_halfedge_handle(heh);
+      heh = Kernel::opposite_halfedge_handle(heh);
+    }
+    while(heh != _heh && !Kernel::is_boundary(heh) && !is_estimated_feature_edge(heh, _feature_angle));
+
+    // collect CCW face-handles
+    if(heh != _heh && !is_estimated_feature_edge(_heh, _feature_angle))
+    {
+      heh = Kernel::opposite_halfedge_handle(_heh);
+
+      do
+      {
+        fhs.push_back(Kernel::face_handle(heh));
+
+        heh = Kernel::prev_halfedge_handle(heh);
+        heh = Kernel::opposite_halfedge_handle(heh);
+      }
+      while(!Kernel::is_boundary(heh) && !is_estimated_feature_edge(heh, _feature_angle));
+    }
+
+    Normal n(0,0,0);
+    for(unsigned int i=0; i<fhs.size(); ++i)
+      n += Kernel::normal(fhs[i]);
+
+    return n.normalize();
+  }
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+template <class Kernel>
+bool
+PolyMeshT<Kernel>::
+is_estimated_feature_edge(HalfedgeHandle _heh, const double _feature_angle) const
+{
+  EdgeHandle eh = Kernel::edge_handle(_heh);
+
+  if(Kernel::has_edge_status())
+  {
+    if(Kernel::status(eh).feature())
+      return true;
+  }
+
+  if(Kernel::is_boundary(eh))
+    return false;
+
+  // compute angle between faces
+  FaceHandle fh0 = Kernel::face_handle(_heh);
+  FaceHandle fh1 = Kernel::face_handle(Kernel::opposite_halfedge_handle(_heh));
+
+  Normal fn0 = Kernel::normal(fh0);
+  Normal fn1 = Kernel::normal(fh1);
+
+  // dihedral angle above angle threshold
+  return ( (fn0|fn1) < cos(_feature_angle) );
 }
 
 

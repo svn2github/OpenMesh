@@ -119,6 +119,7 @@ public:
     refcount_htexcoords1D_(0),
     refcount_htexcoords2D_(0),
     refcount_htexcoords3D_(0),
+    refcount_henormals_(0),
     refcount_hecolors_(0),
     refcount_ecolors_(0),
     refcount_fnormals_(0),
@@ -159,6 +160,9 @@ public:
 
     if (HAttribs & Attributes::Status)
       Connectivity::request_halfedge_status();
+
+    if (HAttribs & Attributes::Normal)
+      request_halfedge_normals();
 
     if (EAttribs & Attributes::Status)
       Connectivity::request_edge_status();
@@ -399,6 +403,15 @@ public:
   { property(edge_colors_, _eh) = _c; }
 
 
+  //------------------------------------------------------------- halfedge normals
+
+  const Normal& normal(HalfedgeHandle _heh) const
+  { return property(halfedge_normals_, _heh); }
+
+  void set_normal(HalfedgeHandle _heh, const Normal& _n)
+  { property(halfedge_normals_, _heh) = _n; }
+
+
   //------------------------------------------------------------- halfedge colors
   
   const Color* halfedge_colors() const
@@ -490,6 +503,12 @@ public:
       add_property( edge_colors_, "e:colors" );
   }
 
+  void request_halfedge_normals()
+  {
+    if (!refcount_henormals_++)
+      add_property( halfedge_normals_, "h:normals" );
+  }
+
   void request_halfedge_colors()
   {
     if (!refcount_hecolors_++)
@@ -564,6 +583,12 @@ public:
           remove_property(edge_colors_);
   }
 
+  void release_halfedge_normals()
+  {
+      if ((refcount_henormals_ > 0) && (! --refcount_henormals_))
+          remove_property(halfedge_normals_);
+  }
+
   void release_halfedge_colors()
   {
       if ((refcount_hecolors_ > 0) && (! --refcount_hecolors_))
@@ -599,6 +624,7 @@ public:
   bool has_halfedge_texcoords2D() const { return halfedge_texcoords2D_.is_valid();}
   bool has_halfedge_texcoords3D() const { return halfedge_texcoords3D_.is_valid();}
   bool has_edge_colors()          const { return edge_colors_.is_valid();         }
+  bool has_halfedge_normals()     const { return halfedge_normals_.is_valid();    }
   bool has_halfedge_colors()      const { return halfedge_colors_.is_valid();     }
   bool has_face_normals()         const { return face_normals_.is_valid();        }
   bool has_face_colors()          const { return face_colors_.is_valid();         }
@@ -616,6 +642,7 @@ public:
   typedef HPropHandleT<TexCoord2D>          HalfedgeTexCoords2DPropertyHandle;
   typedef HPropHandleT<TexCoord3D>          HalfedgeTexCoords3DPropertyHandle;
   typedef EPropHandleT<Color>               EdgeColorsPropertyHandle;
+  typedef HPropHandleT<Normal>              HalfedgeNormalsPropertyHandle;
   typedef HPropHandleT<Color>               HalfedgeColorsPropertyHandle;
   typedef FPropHandleT<Normal>              FaceNormalsPropertyHandle;
   typedef FPropHandleT<Color>               FaceColorsPropertyHandle;
@@ -650,6 +677,11 @@ public:
 
   HalfedgeTexCoords3DPropertyHandle           halfedge_texcoords3D_pph() const
   { return halfedge_texcoords3D_; }
+
+  // standard edge properties
+  HalfedgeNormalsPropertyHandle              halfedge_normals_pph() const
+  { return halfedge_normals_; }
+
 
   // standard edge properties
   HalfedgeColorsPropertyHandle              halfedge_colors_pph() const
@@ -705,6 +737,7 @@ private:
   HalfedgeTexCoords1DPropertyHandle         halfedge_texcoords1D_;
   HalfedgeTexCoords2DPropertyHandle         halfedge_texcoords2D_;
   HalfedgeTexCoords3DPropertyHandle         halfedge_texcoords3D_;
+  HalfedgeNormalsPropertyHandle             halfedge_normals_;
   HalfedgeColorsPropertyHandle              halfedge_colors_;
   // standard edge properties
   EdgeColorsPropertyHandle                  edge_colors_;
@@ -726,6 +759,7 @@ private:
   unsigned int                              refcount_htexcoords1D_;
   unsigned int                              refcount_htexcoords2D_;
   unsigned int                              refcount_htexcoords3D_;
+  unsigned int                              refcount_henormals_;
   unsigned int                              refcount_hecolors_;
   unsigned int                              refcount_ecolors_;
   unsigned int                              refcount_fnormals_;

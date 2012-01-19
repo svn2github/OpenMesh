@@ -225,6 +225,24 @@ public:
                                             const Point& _p2) const;
   // calculates the average of the vertices defining _fh
   void calc_face_centroid(FaceHandle _fh, Point& _pt) const;
+
+  /// Update normal for halfedge _heh
+  void update_normal(HalfedgeHandle _heh, const double _feature_angle = 0.8)
+  { set_normal(_heh, calc_halfedge_normal(_heh)); }
+
+  /** Update normal vectors for all halfedges.
+      \attention Needs the Attributes::Normal attribute for faces. */
+  void update_halfedge_normals(const double _feature_angle = 0.8);
+
+  /** Calculate normal vector for halfedge _heh. */
+  /** requires valid face normals!!! */
+  virtual Normal calc_halfedge_normal(HalfedgeHandle _fh, const double _feature_angle = 0.8) const;
+
+
+  /** identifies feature edges w.r.t. the minimal dihedral angle for feautre edges (in radians) */
+  /** and the status feature tag */
+  bool is_estimated_feature_edge(HalfedgeHandle _heh, const double _feature_angle) const;
+
   /// Update normal for vertex _vh
   void update_normal(VertexHandle _vh)
   { set_normal(_vh, calc_vertex_normal(_vh)); }
