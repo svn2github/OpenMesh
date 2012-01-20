@@ -106,7 +106,7 @@ protected: // inherited interface
 
   bool prepare( MeshType& _m );
 
-  bool subdivide( MeshType& _m, size_t _n )
+  bool subdivide( MeshType& _m, size_t _n, const bool _update_points = true  )
   {
     assert( p_mesh_ == &_m );
 
