@@ -308,6 +308,9 @@ public: // Standard Property Management
   const Normal& normal(VertexHandle _vh) const; ///< Get normal
   void set_normal(VertexHandle _vh, const Normal& _n); ///< Set normal
 
+  const Normal& normal(HalfedgeHandle _heh) const; ///< Get normal of the to vertex for the current face (per face per vertex normals)
+  void set_normal(HalfedgeHandle _heh, const Normal& _n); ///< Set normal of the to vertex for the current face (per face per vertex normals)
+
   const Color& color(VertexHandle _vh) const; ///< Get color
   void set_color(VertexHandle _vh, const Color& _c); ///< Set color
 
@@ -320,14 +323,14 @@ public: // Standard Property Management
   const TexCoord3D& texcoord3D(VertexHandle _vh) const; ///< Get texture coordinate.
   void set_texcoord3D(VertexHandle _vh, const TexCoord3D& _t); ///< Set texture coordinate.
   
-  const TexCoord1D& texcoord1D(HalfedgeHandle _hh) const; ///< Get texture coordinate.
-  void set_texcoord1D(HalfedgeHandle _hh, const TexCoord1D& _t); ///< Set texture coordinate.
+  const TexCoord1D& texcoord1D(HalfedgeHandle _hh) const; ///< Get texture coordinate of the to vertex for the current face (per face per vertex texcoords)
+  void set_texcoord1D(HalfedgeHandle _hh, const TexCoord1D& _t); ///< Set texture coordinate of the to vertex for the current face (per face per vertex texcoords)
 
-  const TexCoord2D& texcoord2D(HalfedgeHandle _hh) const; ///< Get texture coordinate.
-  void set_texcoord2D(HalfedgeHandle _hh, const TexCoord2D& _t); ///< Set texture coordinate.
+  const TexCoord2D& texcoord2D(HalfedgeHandle _hh) const; ///< Get texture coordinate of the to vertex for the current face (per face per vertex texcoords)
+  void set_texcoord2D(HalfedgeHandle _hh, const TexCoord2D& _t); ///< Set texture coordinate of the to vertex for the current face (per face per vertex texcoords)
   
-  const TexCoord3D& texcoord3D(HalfedgeHandle _hh) const; ///< Get texture coordinate.
-  void set_texcoord3D(HalfedgeHandle _hh, const TexCoord3D& _t); ///< Set texture coordinate.
+  const TexCoord3D& texcoord3D(HalfedgeHandle _hh) const; ///< Get texture coordinate of the to vertex for the current face (per face per vertex texcoords)
+  void set_texcoord3D(HalfedgeHandle _hh, const TexCoord3D& _t); ///< Set texture coordinate of the to vertex for the current face (per face per vertex texcoords)
   
   const StatusInfo& status(VertexHandle _vh) const; ///< Get status
   StatusInfo& status(VertexHandle _vh); ///< Get status
@@ -363,6 +366,7 @@ public: // Standard Property Management
   void request_vertex_status();
 
   void request_halfedge_status();
+  void request_halfedge_normals();
   void request_halfedge_texcoords1D();
   void request_halfedge_texcoords2D();
   void request_halfedge_texcoords3D();
@@ -387,6 +391,7 @@ public: // Standard Property Management
   void release_vertex_status();
 
   void release_halfedge_status();
+  void release_halfedge_normals();
   void release_halfedge_texcoords1D();
   void release_halfedge_texcoords2D();
   void release_halfedge_texcoords3D();
@@ -411,6 +416,7 @@ public: // Standard Property Management
   bool has_vertex_status() const;
 
   bool has_halfedge_status() const;
+  bool has_halfedge_normals(); const;
   bool has_halfedge_texcoords1D() const;
   bool has_halfedge_texcoords2D() const;
   bool has_halfedge_texcoords3D() const;
