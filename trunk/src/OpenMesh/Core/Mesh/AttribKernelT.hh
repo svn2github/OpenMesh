@@ -691,7 +691,7 @@ public:
   EdgeColorsPropertyHandle                  edge_colors_pph() const
   { return edge_colors_; }
 
-//standard face properties
+  //standard face properties
   FaceNormalsPropertyHandle                 face_normals_pph() const
   { return face_normals_; }
 
