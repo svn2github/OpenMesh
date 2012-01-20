@@ -174,7 +174,7 @@ protected:
   }
 
 
-  bool subdivide( MeshType& _m, size_t _n , const bool _update_positions = true)
+  bool subdivide( MeshType& _m, size_t _n , const bool _update_points = true)
   {
 
     ///TODO:Implement fixed positions
