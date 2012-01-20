@@ -127,7 +127,7 @@ merge(const NormalConeT& _cone)
     Scalar centerAngle = acos(dotp);
     Scalar minAngle    = std::min(-angle(), centerAngle - _cone.angle());
     Scalar maxAngle    = std::max( angle(), centerAngle + _cone.angle());
-    angle_     = 0.5f * (maxAngle - minAngle);
+    angle_     = (maxAngle - minAngle) * 0.5;
 
     // axis by SLERP
     Scalar axisAngle = 0.5*(minAngle + maxAngle);
