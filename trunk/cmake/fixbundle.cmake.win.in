@@ -21,7 +21,7 @@ include (BundleUtilities)
 get_filename_component(_GlutDir "@GLUT_glut_LIBRARY@" PATH)
 
 # fix all dependencies
-fixup_bundle ("@CMAKE_BINARY_DIR@/Build/QtViewer.exe" ""  "${_GlutDir};@QT_BINARY_DIR@")
+fixup_bundle ("@CMAKE_BINARY_DIR@/Build/Smoothing.exe" ""  "${_GlutDir};@QT_BINARY_DIR@")
 
 
 
