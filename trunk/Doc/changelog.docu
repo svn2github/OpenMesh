@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.482)</td><td>
+<tr valign=top><td><b>2.0.2</b> (?/?/?,Rev.514)</td><td>
 
 <b>Core</b>
 <ul>
@@ -23,6 +23,7 @@
 <li>Added color caster from vec4i to vec4f converting alpha from 0..255 range to 0..1.0</li>
 <li>Replaced (v0|v1) by dot(v0,v1) in calc_sector_angle as it fails to build otherwise (Thanks to Zhang Juyong for the fix)</li>
 <li>Fixed some cppcheck warnings</li>
+<li>Added support for halfedge normals(allows per vertex per face normals)</li>
 </ul>
 
 <b>Geometry</b>
