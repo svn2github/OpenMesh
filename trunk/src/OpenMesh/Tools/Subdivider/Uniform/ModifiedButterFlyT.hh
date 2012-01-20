@@ -174,8 +174,11 @@ protected:
   }
 
 
-  bool subdivide( mesh_t& _m, size_t _n)
+  bool subdivide( MeshType& _m, size_t _n , const bool _update_positions = true)
   {
+
+    ///TODO:Implement fixed positions
+
     typename mesh_t::FaceIter   fit, f_end;
     typename mesh_t::EdgeIter   eit, e_end;
     typename mesh_t::VertexIter vit;

@@ -143,8 +143,11 @@ protected:
   }
 
 
-  bool subdivide( mesh_t& _m, size_t _n)
+  bool subdivide( mesh_t& _m, size_t _n, const bool _update_positions = true)
   {
+
+    ///TODO:Implement fixed positions
+
     typename mesh_t::FaceIter   fit, f_end;
     typename mesh_t::EdgeIter   eit, e_end;
     typename mesh_t::VertexIter vit;
@@ -169,7 +172,7 @@ protected:
       // Attention! Creating new edges, hence make sure the loop ends correctly.
       e_end = _m.edges_end();
       for (eit=_m.edges_begin(); eit != e_end; ++eit)
-  split_edge(_m, eit.handle() );
+        split_edge(_m, eit.handle() );
 
 
       // Commit changes in topology and reconsitute consistency
@@ -178,7 +181,6 @@ protected:
       f_end   = _m.faces_end();
       for (fit = _m.faces_begin(); fit != f_end; ++fit)
         split_face(_m, fit.handle() );
-
 
       // Commit changes in geometry
       for ( vit  = _m.vertices_begin();
@@ -207,7 +209,7 @@ private:
       using std::cos;
 #endif
       //              1
-      // alpha(n) = ---- * (40 - ( 3 + 2 cos( 2 Pi / n ) )² )
+      // alpha(n) = ---- * (40 - ( 3 + 2 cos( 2 Pi / n ) )ï¿½ )
       //             64
 
       if (++valence)
@@ -395,7 +397,7 @@ private: // geometry helper
   {
     typename mesh_t::Point            pos(0.0,0.0,0.0);
 
-    if (_m.is_boundary(_vh)) // if boundary: Point 1-6-1
+    if (_m.is_boundary(_vh) ) // if boundary: Point 1-6-1
     {
       typename mesh_t::HalfedgeHandle heh, prev_heh;
       heh      = _m.halfedge_handle( _vh );

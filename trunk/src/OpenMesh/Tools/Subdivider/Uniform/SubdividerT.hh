@@ -118,9 +118,9 @@ public: /// \name Interface 1
   //@{
   /// Subdivide the mesh \c _m \c _n times.
   /// \see SubdividerT(MeshType&)
-  bool operator () ( MeshType& _m, size_t _n )
+  bool operator () ( MeshType& _m, size_t _n , const bool _update_positions  = true)
   {    
-    return prepare(_m) && subdivide( _m, _n ) && cleanup( _m );
+    return prepare(_m) && subdivide( _m, _n , _update_positions ) && cleanup( _m );
   }
   //@}
 
@@ -144,9 +144,9 @@ public: /// \name Interface 2
 
   /// Subdivide the attached \c _n times.
   /// \see SubdividerT(), attach(), detach()
-  bool operator()( size_t _n )
+  bool operator()( size_t _n , const bool _update_positions = true)
   {
-    return attached_ ? subdivide( *attached_, _n ) : false;
+    return attached_ ? subdivide( *attached_, _n , _update_positions) : false;
   }
 
   /// Detach an eventually attached mesh.
@@ -169,7 +169,7 @@ protected:
   virtual bool prepare( MeshType& _m ) = 0;
 
   /// Subdivide mesh \c _m \c _n times
-  virtual bool subdivide( MeshType& _m, size_t _n ) = 0;
+  virtual bool subdivide( MeshType& _m, size_t _n, const bool _update_positions = true) = 0;
 
   /// Cleanup mesh after usage, e.g. remove added properties
   virtual bool cleanup( MeshType& _m ) = 0;
