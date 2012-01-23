@@ -155,16 +155,17 @@ protected:
     // Do _n subdivisions
     for (size_t i=0; i < _n; ++i)
     {
-      // compute new positions for old vertices
-      for ( vit  = _m.vertices_begin();
-            vit != _m.vertices_end(); ++vit)
-        smooth( _m, vit.handle() );
 
+      if(_update_points) {
+        // compute new positions for old vertices
+        for (vit = _m.vertices_begin(); vit != _m.vertices_end(); ++vit) {
+          smooth(_m, vit.handle());
+        }
+      }
 
       // Compute position for new vertices and store them in the edge property
       for (eit=_m.edges_begin(); eit != _m.edges_end(); ++eit)
         compute_midpoint( _m, eit.handle() );
-
 
       // Split each edge at midpoint and store precomputed positions (stored in
       // edge property ep_pos_) in the vertex property vp_pos_;
@@ -182,10 +183,14 @@ protected:
       for (fit = _m.faces_begin(); fit != f_end; ++fit)
         split_face(_m, fit.handle() );
 
-      // Commit changes in geometry
-      for ( vit  = _m.vertices_begin();
-            vit != _m.vertices_end(); ++vit)
-        _m.set_point(vit, _m.property( vp_pos_, vit ) );
+      if(_update_points) {
+        // Commit changes in geometry
+        for ( vit  = _m.vertices_begin();
+            vit != _m.vertices_end(); ++vit) {
+            _m.set_point(vit, _m.property( vp_pos_, vit ) );
+        }
+      }
+
 
 #if defined(_DEBUG) || defined(DEBUG)
       // Now we have an consistent mesh!
@@ -311,10 +316,12 @@ private: // topological modifiers
     typename mesh_t::HalfedgeHandle new_heh, opp_new_heh, t_heh;
     typename mesh_t::VertexHandle   vh;
     typename mesh_t::VertexHandle   vh1(_m.to_vertex_handle(heh));
-    typename mesh_t::Point          zero(0,0,0);
+    typename mesh_t::Point          midP(_m.point(_m.to_vertex_handle(heh)));
+    midP += _m.point(_m.to_vertex_handle(opp_heh));
+    midP *= 0.5;
 
     // new vertex
-    vh                = _m.new_vertex( zero );
+    vh                = _m.new_vertex( midP );
 
     // memorize position, will be set later
     _m.property( vp_pos_, vh ) = _m.property( ep_pos_, _eh );
@@ -391,7 +398,6 @@ private: // geometry helper
     _m.property( ep_pos_, _eh ) = pos;
 #undef V
   }
-
 
   void smooth(mesh_t& _m, const typename mesh_t::VertexHandle& _vh)
   {
