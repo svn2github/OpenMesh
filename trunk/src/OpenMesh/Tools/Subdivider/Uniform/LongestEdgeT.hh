@@ -77,14 +77,13 @@ namespace Uniform    { // BEGIN_NS_UNIFORM
 
 template <typename MeshType, typename RealType = float>
 class CompareLengthFunction {
-    public:
+  public:
 
-    bool operator()( const std::pair< typename MeshType::EdgeHandle, RealType >& t1, const std::pair< typename MeshType::EdgeHandle, RealType >& t2) // Returns true if t1 is earlier than t2
+    typedef std::pair<typename MeshType::EdgeHandle, RealType> queueElement;
+
+    bool operator()(const queueElement& t1, const queueElement& t2) // Returns true if t1 is smaller than t2
     {
-       if (t1.second < t2.second)
-         return true;
-       else
-         return false;
+      return (t1.second < t2.second);
     }
 };
 
@@ -106,6 +105,8 @@ public:
 
   typedef std::vector< std::vector<real_t> >      weights_t;
   typedef std::vector<real_t>                     weight_t;
+
+  typedef std::pair< typename mesh_t::EdgeHandle, real_t > queueElement;
 
 public:
 
@@ -148,7 +149,6 @@ protected:
   bool subdivide( MeshType& _m, size_t _n , const bool _update_points = true)
   {
 
-    typedef std::pair< typename mesh_t::EdgeHandle, real_t > queueElement;
     // Sorted queue containing all edges sorted by their decreasing length
     std::priority_queue< queueElement, std::vector< queueElement > , CompareLengthFunction< typename mesh_t::EdgeHandle, real_t > > queue;
 
