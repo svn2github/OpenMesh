@@ -13,6 +13,8 @@ subdivision:
   -# OpenMesh::Subdivider::Uniform::CompositeT
 -# Adaptive subdivision
   -# OpenMesh::Subdivider::Adaptive::CompositeT
+-# Simple subdivision
+  -# OpenMesh::Subdivider::Uniform::LongestEdgeT
 
 */
 
