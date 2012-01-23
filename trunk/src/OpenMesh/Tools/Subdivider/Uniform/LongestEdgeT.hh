@@ -150,7 +150,7 @@ protected:
   {
 
     // Sorted queue containing all edges sorted by their decreasing length
-    std::priority_queue< queueElement, std::vector< queueElement > , CompareLengthFunction< typename mesh_t::EdgeHandle, real_t > > queue;
+    std::priority_queue< queueElement, std::vector< queueElement > , CompareLengthFunction< typename mesh_t, real_t > > queue;
 
     // Build the initial queue
     // First element should be longest edge
