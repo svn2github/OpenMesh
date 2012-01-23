@@ -148,7 +148,6 @@ protected:
   bool subdivide( MeshType& _m, size_t _n , const bool _update_points = true)
   {
 
-    std::cerr << "Longest" << std::endl;
     typedef std::pair< typename mesh_t::EdgeHandle, real_t > queueElement;
     // Sorted queue containing all edges sorted by their decreasing length
     std::priority_queue< queueElement, std::vector< queueElement > , CompareLengthFunction< typename mesh_t::EdgeHandle, real_t > > queue;
