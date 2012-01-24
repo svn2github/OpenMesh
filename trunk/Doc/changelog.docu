@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.1</b> (?/?/?,Rev.514)</td><td>
+<tr valign=top><td><b>2.1</b> (2012/01/24,Rev.530)</td><td>
 
 <b>Core</b>
 <ul>
@@ -37,17 +37,26 @@
 <li>STL Reader: Add empty mesh when reading empty stl file (don't fail as this is still a valid file)</li>
 <li>PLY Reader: Support vertex normals (Thanks to Bruno Dutailly)</li>
 <li>PlY Writer: vertex normal support (Thanks to Bruno Dutailly)</li>
+<li>PLY Writer: Fixed output of colors</li>
 <li>OBJ Reader: support for vertex colors after vertices or Vertex colors as separate lines. (Thanks to Bruno Dutailly)</li>
 <li>OBJ Reader: Handle objs without faces(Thanks to Bruno Dutailly)</li>
 <li>Added trim functions to BaseReader</li>
 </ul>
 
 <b>Decimater</b>
+<ul>
 <li>Added preprocess collapse function</li>
 <li>Added decimate_to_faces function (Decimating to a target face count)</li>
 <li>Added Hausdorff Distance module</li>
 <li>Added edge length module</li>
 <li>Added aspect ratio module</li>
+</ul>
+
+<b>Subdivider</b>
+<ul>
+<li>Modified base class to support fixed positions on already existing vertices</li>
+<li>Added LongestEdge subdivider (Always split the currently longest edge, until a maximal edge length on the mesh is reached)</li>
+<li>Updated Loop subdivider for the fixed vertex positions</li>
 </ul>
 
 <b>Unittests</b>
