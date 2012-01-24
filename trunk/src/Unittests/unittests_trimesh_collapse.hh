@@ -349,7 +349,7 @@ TEST_F(OpenMeshCollapse, CollapseComplex) {
   mesh_.clear();
 
   // Add some vertices
-  Mesh::VertexHandle vhandle[4];
+  Mesh::VertexHandle vhandle[5];
 
   // Setup a pyramid
   vhandle[0] = mesh_.add_vertex(Mesh::Point(0 , 0, 0));
