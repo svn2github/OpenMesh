@@ -172,8 +172,8 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
   unsigned int i, j, nV, nF;
   Vec3f v, n;
-  OpenMesh::Vec3f c;
-  OpenMesh::Vec4f cA;
+  OpenMesh::Vec3uc c;
+  OpenMesh::Vec4uc cA;
   OpenMesh::Vec2f t;
   VertexHandle vh;
   std::vector<VertexHandle> vhandles;
@@ -199,12 +199,12 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
   }
 
   if ( _opt.vertex_has_color() ){
-    _out << "property int32 red" << std::endl;
-    _out << "property int32 green" << std::endl;
-    _out << "property int32 blue" << std::endl;
+    _out << "property uint8 red" << std::endl;
+    _out << "property uint8 green" << std::endl;
+    _out << "property uint8 blue" << std::endl;
 
     if ( _opt.color_has_alpha() )
-      _out << "property int32 alpha" << std::endl;
+      _out << "property uint8 alpha" << std::endl;
   }
 
   _out << "element face " << _be.n_faces() << std::endl;
