@@ -9,13 +9,15 @@ include_directories (
 find_package(GoogleTest)
 
 if(GTEST_FOUND)
+
+    enable_testing()
    
     # Set correct include paths so that the compiler can find the headers
     include_directories(${GTEST_INCLUDE_DIRS})
     # set additional link directories
     link_directories(${GTEST_LIBRARY_DIR} )
     # Create new target named unittests_hexmeshing
-    add_executable(unittests EXCLUDE_FROM_ALL unittests.cc)
+    add_executable(unittests unittests.cc)
 	
 	if ( NOT WIN32)
       # Link against all necessary libraries
@@ -49,6 +51,8 @@ if(GTEST_FOUND)
 	endif()
 	
     acg_copy_after_build(unittests ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles ${CMAKE_BINARY_DIR}/Unittests/)
+
+    add_test(NAME AllTestsIn_OpenMesh_tests WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/Unittests" COMMAND "${CMAKE_BINARY_DIR}/Unittests/unittests")
 
 else(GTEST_FOUND)
     message("Google testing framework was not found!")
