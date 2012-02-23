@@ -7,7 +7,11 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.1.1</b> (?/?/?,Rev.531)</td><td>
+<tr valign=top><td><b>2.1.1</b> (?/?/?,Rev.5314)</td><td>
+<b>Unittests</b>
+<ul>
+<li>Always build the unit tests if google test has been found</li>
+</ul>
 
 </tr>
 
