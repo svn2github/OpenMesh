@@ -81,7 +81,9 @@ distPointTriangleSquared( const Point& _p,
 
   // Check if the triangle is degenerated
   if (d < FLT_MIN && d > -FLT_MIN) {
-    std::cerr << "distPointTriangleSquared: Degenerated triangle !\n";
+//    std::cerr << "distPointTriangleSquared: Degenerated triangle !\n";
+//    std::cerr << "Points are : " << _v0 << " " << _v1 << " " << _v2 << std::endl;
+//    std::cerr << "d is " << d << std::endl;
     return -1.0;
   }
   double invD = 1.0 / d;
