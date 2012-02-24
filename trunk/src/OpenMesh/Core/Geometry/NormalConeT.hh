@@ -114,7 +114,7 @@ private:
 //=============================================================================
 } // namespace OpenMesh
 //=============================================================================
-#if defined(INCLUDE_TEMPLATES) && !defined(OPENMESH_NORMALCONE_C)
+#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_NORMALCONE_C)
 #define OPENMESH_NORMALCONE_TEMPLATES
 #include "NormalConeT.cc"
 #endif
