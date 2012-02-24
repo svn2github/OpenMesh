@@ -35,6 +35,10 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
     find_library(_GTEST_MAIN_LIBRARY gtest_main
       PATHS "${GTEST_PREFIX}/lib"
       NO_DEFAULT_PATH)
+	  
+    if ( _GTEST_LIBRARY )
+      get_filename_component(_GTEST_LIBRARY_DIR ${_GTEST_LIBRARY} PATH CACHE )
+    endif()
   else(GTEST_PREFIX)
     find_path(_GTEST_INCLUDE_DIR "gtest/gtest.h"
       PATHS
