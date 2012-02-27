@@ -145,7 +145,7 @@ class ModHausdorffT: public ModBaseT<DecimaterT> {
 }// END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_MODHAUSDORFFT_C)
+#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_MODHAUSDORFFT_C)
 #define OPENMESH_DECIMATER_MODHAUSDORFFT_TEMPLATES
 #include "ModHausdorffT.cc"
 #endif

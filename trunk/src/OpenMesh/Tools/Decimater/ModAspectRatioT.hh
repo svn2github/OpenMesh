@@ -136,7 +136,7 @@ class ModAspectRatioT: public ModBaseT<DecimaterT> {
 }// END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_MODASPECTRATIOT_C)
+#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_MODASPECTRATIOT_C)
 #define OPENMESH_DECIMATER_MODASPECTRATIOT_TEMPLATES
 #include "ModAspectRatioT.cc"
 #endif

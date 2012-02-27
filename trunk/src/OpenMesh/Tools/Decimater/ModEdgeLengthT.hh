@@ -109,7 +109,7 @@ class ModEdgeLengthT: public ModBaseT<DecimaterT> {
 }// END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_MODEDGELENGTHT_C)
+#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_MODEDGELENGTHT_C)
 #define MODEDGELENGTHT_TEMPLATES
 #include "ModEdgeLengthT.cc"
 #endif
