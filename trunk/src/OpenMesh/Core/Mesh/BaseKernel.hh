@@ -499,10 +499,10 @@ protected: // low-level access non-public
 public: //----------------------------------------------------- element numbers
 
 
-  virtual unsigned int n_vertices()  const { return 0; }
-  virtual unsigned int n_halfedges() const { return 0; }
-  virtual unsigned int n_edges()     const { return 0; }
-  virtual unsigned int n_faces()     const { return 0; }
+  virtual size_t n_vertices()  const { return 0; }
+  virtual size_t n_halfedges() const { return 0; }
+  virtual size_t n_edges()     const { return 0; }
+  virtual size_t n_faces()     const { return 0; }
 
 
 protected: //------------------------------------------- synchronize properties

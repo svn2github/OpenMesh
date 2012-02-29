@@ -265,10 +265,10 @@ public:
   void clear();
 
   // --- number of items ---
-  uint n_vertices()  const { return vertices_.size(); }
-  uint n_halfedges() const { return 2*edges_.size(); }
-  uint n_edges()     const { return edges_.size(); }
-  uint n_faces()     const { return faces_.size(); }
+  size_t n_vertices()  const { return vertices_.size(); }
+  size_t n_halfedges() const { return 2*edges_.size(); }
+  size_t n_edges()     const { return edges_.size(); }
+  size_t n_faces()     const { return faces_.size(); }
 
   bool vertices_empty()  const { return vertices_.empty(); }
   bool halfedges_empty() const { return edges_.empty(); }
