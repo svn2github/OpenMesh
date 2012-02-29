@@ -5,10 +5,15 @@ include_directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Search for gtest headers and libraries
-find_package(GoogleTest)
+if ( NOT DEFINED OPENMESH_BUILD_UNIT_TESTS)
+    set( OPENMESH_BUILD_UNIT_TESTS false CACHE BOOL "Enable or disable unit test builds in OpenMesh." )
+endif()
 
-if(GTEST_FOUND)
+if ( OPENMESH_BUILD_UNIT_TESTS )
+  # Search for gtest headers and libraries
+  find_package(GoogleTest)
+
+  if(GTEST_FOUND)
 
     enable_testing()
    
@@ -19,28 +24,28 @@ if(GTEST_FOUND)
     # Create new target named unittests_hexmeshing
     add_executable(unittests unittests.cc)
 	
-	if ( NOT WIN32)
+	  if ( NOT WIN32)
       # Link against all necessary libraries
       target_link_libraries(unittests OpenMeshCore OpenMeshTools ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} pthread)
 	  
-	  # Set output directory to ${BINARY_DIR}/Unittests
+	    # Set output directory to ${BINARY_DIR}/Unittests
       set_target_properties(unittests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Unittests)
 	
     else()
-	  # Link against all necessary libraries
+	    # Link against all necessary libraries
       target_link_libraries(unittests OpenMeshCore OpenMeshTools ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}) 
-	endif()
+	  endif()
 	
 
     
-	if ( NOT WIN32 )
-	  # Set compiler flags
+	  if ( NOT WIN32 )
+	    # Set compiler flags
       set_target_properties(unittests PROPERTIES COMPILE_FLAGS "-g -pedantic -ansi -Wno-long-long")
-	else()
-	  # Set compiler flags
+	  else()
+	    # Set compiler flags
       set_target_properties(unittests PROPERTIES COMPILE_FLAGS "" )
 
-	  # copy exe file to "Build" directory
+	    # copy exe file to "Build" directory
       # Visual studio will create this file in a subdirectory so we can't use
       # RUNTIME_OUTPUT_DIRECTORY directly here
       add_custom_command (TARGET unittests POST_BUILD
@@ -48,12 +53,13 @@ if(GTEST_FOUND)
                                   copy_if_different
                                     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/unittests.exe
                                     ${CMAKE_BINARY_DIR}/Unittests/unittests.exe)
-	endif()
+	  endif()
 	
     acg_copy_after_build(unittests ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles ${CMAKE_BINARY_DIR}/Unittests/)
 
     add_test(NAME AllTestsIn_OpenMesh_tests WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/Unittests" COMMAND "${CMAKE_BINARY_DIR}/Unittests/unittests")
 
-else(GTEST_FOUND)
-    message("Google testing framework was not found!")
-endif(GTEST_FOUND)
+  else(GTEST_FOUND)
+      message("Google testing framework was not found!")
+  endif(GTEST_FOUND)
+endif()
