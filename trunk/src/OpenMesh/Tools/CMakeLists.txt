@@ -22,6 +22,9 @@ set (directories
 acg_append_files (headers "*.hh" ${directories})
 acg_append_files (sources "*.cc" ${directories})
 
+#Drop the template only cc files
+acg_drop_templates(sources)
+
 IF(WIN32)
   acg_append_files (sources "*.c" ${directories})
 ENDIF(WIN32)

@@ -25,6 +25,10 @@ set (directories
 acg_append_files (headers "*.hh" ${directories})
 acg_append_files (sources "*.cc" ${directories})
 
+#Drop the template only cc files
+acg_drop_templates(sources)
+
+
 # Disable Library installation when not building OpenMesh on its own but as part of another project!
 if ( NOT ${PROJECT_NAME} MATCHES "OpenMesh")
   set(ACG_NO_LIBRARY_INSTALL true)
