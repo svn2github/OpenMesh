@@ -7,10 +7,22 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.1.1</b> (?/?/?,Rev.5314)</td><td>
+<tr valign=top><td><b>2.1.1</b> (2012/03/01,Rev.544)</td><td>
+
+<b>Tools</b>
+<ul>
+<li>Fixed wrong INCLUDE_TEMPLATE include definition headers for NormalCone, and some decimater modules-</li>
+</ul>
+
 <b>Unittests</b>
 <ul>
-<li>Always build the unit tests if google test has been found</li>
+<li>Only build the unit tests if google test has been found</li>
+<li>Added flag to enable/disable building of unit tests</li>
+</ul>
+
+<b>Build system</b>
+<ul>
+<li>Drop Template only cc files (they produce no code and trigger some warnings)</li>
 </ul>
 
 </tr>
