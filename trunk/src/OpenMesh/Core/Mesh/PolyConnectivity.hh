@@ -76,15 +76,15 @@ public:
   */
   //@{
   /// Linear iterator
-  typedef Iterators::VertexIterT<This>                VertexIter;
-  typedef Iterators::HalfedgeIterT<This>              HalfedgeIter;
-  typedef Iterators::EdgeIterT<This>                  EdgeIter;
-  typedef Iterators::FaceIterT<This>                  FaceIter;
+  typedef Iterators::GenericIteratorT<This, This::VertexHandle> VertexIter;
+  typedef Iterators::GenericIteratorT<This, This::HalfedgeHandle> HalfedgeIter;
+  typedef Iterators::GenericIteratorT<This, This::EdgeHandle> EdgeIter;
+  typedef Iterators::GenericIteratorT<This, This::FaceHandle> FaceIter;
 
-  typedef Iterators::ConstVertexIterT<This>           ConstVertexIter;
-  typedef Iterators::ConstHalfedgeIterT<This>         ConstHalfedgeIter;
-  typedef Iterators::ConstEdgeIterT<This>             ConstEdgeIter;
-  typedef Iterators::ConstFaceIterT<This>             ConstFaceIter;
+  typedef VertexIter ConstVertexIter;
+  typedef HalfedgeIter ConstHalfedgeIter;
+  typedef EdgeIter ConstEdgeIter;
+  typedef FaceIter ConstFaceIter;
   //@}
 
   //--- circulators ---
