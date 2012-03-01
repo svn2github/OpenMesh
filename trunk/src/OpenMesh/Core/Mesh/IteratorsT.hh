@@ -77,7 +77,7 @@ template <class Mesh> class ConstFaceIterT;
 template <class Mesh> class FaceIterT;
 
 
-template <class Mesh, class ValueHandle, class PrimitiveStatusFnOwner, bool (PrimitiveStatusFnOwner::*PrimitiveStatusFn)() const>
+template <class Mesh, class ValueHandle, class MemberOwner, bool (MemberOwner::*PrimitiveStatusMember)() const, uint (MemberOwner::*PrimitiveCountMember)() const>
 class GenericIteratorT {
     public:
         //--- Typedefs ---
@@ -103,7 +103,7 @@ class GenericIteratorT {
             if (_skip) enable_skipping();
 
             // Set vertex handle invalid if the mesh contains no vertex
-            if(_mesh.n_vertices() == 0) hnd_ = value_handle(-1);
+            if((mesh_->*PrimitiveCountMember)() == 0) hnd_ = value_handle(-1);
         }
 
         /// Standard dereferencing operator.
@@ -154,7 +154,7 @@ class GenericIteratorT {
 
         /// Turn on skipping: automatically skip deleted/hidden elements
         void enable_skipping() {
-            if (mesh_ && (mesh_->*PrimitiveStatusFn)()) {
+            if (mesh_ && (mesh_->*PrimitiveStatusMember)()) {
                 Attributes::StatusInfo status;
                 status.set_deleted(true);
                 status.set_hidden(true);
@@ -173,7 +173,7 @@ class GenericIteratorT {
 
         void skip_fwd() {
             assert(mesh_ && skip_bits_);
-            while ((hnd_.idx() < (signed) mesh_->n_vertices())
+            while ((hnd_.idx() < (signed) (mesh_->*PrimitiveCountMember)())
                     && (mesh_->status(hnd_).bits() & skip_bits_))
                 hnd_.__increment();
         }
