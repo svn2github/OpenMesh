@@ -77,7 +77,7 @@ template <class Mesh> class ConstFaceIterT;
 template <class Mesh> class FaceIterT;
 
 
-template <class Mesh, class ValueHandle>
+template <class Mesh, class ValueHandle, class PrimitiveStatusFnOwner, bool (PrimitiveStatusFnOwner::*PrimitiveStatusFn)() const>
 class GenericIteratorT {
     public:
         //--- Typedefs ---
@@ -154,7 +154,7 @@ class GenericIteratorT {
 
         /// Turn on skipping: automatically skip deleted/hidden elements
         void enable_skipping() {
-            if (mesh_ && mesh_->has_vertex_status()) {
+            if (mesh_ && (mesh_->*PrimitiveStatusFn)()) {
                 Attributes::StatusInfo status;
                 status.set_deleted(true);
                 status.set_hidden(true);
