@@ -94,12 +94,12 @@ PolyMeshT<Kernel>::
 calc_face_normal(FaceHandle _fh) const
 {
   assert(halfedge_handle(_fh).is_valid());
-  ConstFaceVertexIter fv_it(cfv_iter(_fh));
+  ConstFaceVertexIter fv_it(this->cfv_iter(_fh));
   
-  Point p0 = point(fv_it);
+  Point p0 = this->point(fv_it);
   Point p0i = p0; //save point of vertex 0
   ++fv_it;
-  Point p1 = point(fv_it);
+  Point p1 = this->point(fv_it);
   Point p1i = p1; //save point of vertex 1
   ++fv_it;
   Point p2;
@@ -108,7 +108,7 @@ calc_face_normal(FaceHandle _fh) const
   Normal n(0,0,0);
   for(; fv_it; ++fv_it)
   {
-    p2 = point(fv_it);
+    p2 = this->point(fv_it);
     n += vector_cast<Normal>(calc_face_normal(p0, p1, p2)); 
     p0 = p1;
     p1 = p2;
@@ -170,9 +170,9 @@ calc_face_centroid(FaceHandle _fh, Point& _pt) const
 {
   _pt.vectorize(0);
   uint valence = 0;
-  for (ConstFaceVertexIter cfv_it = cfv_iter(_fh); cfv_it; ++cfv_it, ++valence)
+  for (ConstFaceVertexIter cfv_it = this->cfv_iter(_fh); cfv_it; ++cfv_it, ++valence)
   {
-    _pt += point(cfv_it);
+    _pt += this->point(cfv_it);
   }
   _pt /= valence;
 }
@@ -201,7 +201,7 @@ update_face_normals()
   FaceIter f_it(Kernel::faces_begin()), f_end(Kernel::faces_end());
 
   for (; f_it != f_end; ++f_it)
-    set_normal(f_it.handle(), calc_face_normal(f_it.handle()));
+    this->set_normal(f_it.handle(), calc_face_normal(f_it.handle()));
 }
 
 
@@ -216,7 +216,7 @@ update_halfedge_normals(const double _feature_angle)
   HalfedgeIter h_it(Kernel::halfedges_begin()), h_end(Kernel::halfedges_end());
 
   for (; h_it != h_end; ++h_it)
-    set_normal(h_it.handle(), calc_halfedge_normal(h_it.handle(), _feature_angle));
+    this->set_normal(h_it.handle(), calc_halfedge_normal(h_it.handle(), _feature_angle));
 }
 
 
@@ -324,8 +324,8 @@ void PolyMeshT<Kernel>::
 calc_vertex_normal_fast(VertexHandle _vh, Normal& _n) const
 {
   _n.vectorize(0.0);
-  for (ConstVertexFaceIter vf_it=cvf_iter(_vh); vf_it; ++vf_it)
-    _n += normal(vf_it.handle());
+  for (ConstVertexFaceIter vf_it=this->cvf_iter(_vh); vf_it; ++vf_it)
+    _n += this->normal(vf_it.handle());
 }
 
 //-----------------------------------------------------------------------------
@@ -370,8 +370,8 @@ calc_vertex_normal_loop(VertexHandle _vh, Normal& _n) const
   for (ConstVertexOHalfedgeIter cvoh_it = cvoh_iter(_vh); cvoh_it; ++cvoh_it, ++i)
   {
     VertexHandle r1_v(to_vertex_handle(cvoh_it));
-    t_v += (typename Point::value_type)(loop_scheme_mask__.tang0_weight(vh_val, i))*point(r1_v);
-    t_w += (typename Point::value_type)(loop_scheme_mask__.tang1_weight(vh_val, i))*point(r1_v);
+    t_v += (typename Point::value_type)(loop_scheme_mask__.tang0_weight(vh_val, i))*this->point(r1_v);
+    t_w += (typename Point::value_type)(loop_scheme_mask__.tang1_weight(vh_val, i))*this->point(r1_v);
   }
   _n = cross(t_w, t_v);//hack: should be cross(t_v, t_w), but then the normals are reversed?
 }
@@ -387,7 +387,7 @@ update_vertex_normals()
   VertexIter  v_it(Kernel::vertices_begin()), v_end(Kernel::vertices_end());
 
   for (; v_it!=v_end; ++v_it)
-    set_normal(v_it.handle(), calc_vertex_normal(v_it.handle()));
+    this->set_normal(v_it.handle(), calc_vertex_normal(v_it.handle()));
 }
 
 //=============================================================================

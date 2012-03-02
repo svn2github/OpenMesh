@@ -192,7 +192,7 @@ public:
   inline VertexHandle new_vertex(const Point& _p)
   {
     VertexHandle vh(Kernel::new_vertex());
-    set_point(vh, _p);
+    this->set_point(vh, _p);
     return vh;
   }
 
@@ -211,7 +211,7 @@ public:
 
   /// Update normal for face _fh
   void update_normal(FaceHandle _fh)
-  { set_normal(_fh, calc_face_normal(_fh)); }
+  { this->set_normal(_fh, calc_face_normal(_fh)); }
 
   /** Update normal vectors for all faces.
       \attention Needs the Attributes::Normal attribute for faces. */
@@ -228,7 +228,7 @@ public:
 
   /// Update normal for halfedge _heh
   void update_normal(HalfedgeHandle _heh, const double _feature_angle = 0.8)
-  { set_normal(_heh, calc_halfedge_normal(_heh)); }
+  { this->set_normal(_heh, calc_halfedge_normal(_heh)); }
 
   /** Update normal vectors for all halfedges.
       \attention Needs the Attributes::Normal attribute for faces. */
@@ -245,7 +245,7 @@ public:
 
   /// Update normal for vertex _vh
   void update_normal(VertexHandle _vh)
-  { set_normal(_vh, calc_vertex_normal(_vh)); }
+  { this->set_normal(_vh, calc_vertex_normal(_vh)); }
 
   /** \brief Update normal vectors for all vertices. 
 

@@ -172,7 +172,7 @@ public:
   /// insert the entry _h
   void insert(HeapEntry _h)  
   { 
-    push_back(_h); 
+    this->push_back(_h); 
     upheap(size()-1); 
   }
 

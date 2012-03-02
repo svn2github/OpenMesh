@@ -104,16 +104,16 @@ compute_new_positions_C0()
 
   for (v_it=Base::mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
-    if (is_active(v_it))
+    if (this->is_active(v_it))
     {
       // compute umbrella
       u = zero;
       for (vv_it=Base::mesh_.cvv_iter(v_it); vv_it; ++vv_it)
       {
-        w = weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
+        w = this->weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
         u += vector_cast<typename Mesh::Normal>(Base::mesh_.point(vv_it)) * w;
       }
-      u *= weight(v_it);
+      u *= this->weight(v_it);
       u -= vector_cast<typename Mesh::Normal>(Base::mesh_.point(v_it));
 
       // damping
@@ -122,7 +122,7 @@ compute_new_positions_C0()
       // store new position
       p  = vector_cast<typename Mesh::Normal>(Base::mesh_.point(v_it));
       p += u;
-      set_new_position(v_it, p);
+      this->set_new_position(v_it, p);
     }
   }
 }
@@ -148,10 +148,10 @@ compute_new_positions_C1()
     u = zero;
     for (vv_it=Base::mesh_.cvv_iter(v_it); vv_it; ++vv_it)
     {
-      w  = weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
+      w  = this->weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
       u -= vector_cast<typename Mesh::Normal>(Base::mesh_.point(vv_it))*w;
     }
-    u *= weight(v_it);
+    u *= this->weight(v_it);
     u += vector_cast<typename Mesh::Normal>(Base::mesh_.point(v_it));
 
     Base::mesh_.property(umbrellas_, v_it) = u;
@@ -161,18 +161,18 @@ compute_new_positions_C1()
   // 2nd pass: compute updates
   for (v_it=Base::mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
-    if (is_active(v_it))
+    if (this->is_active(v_it))
     {
       uu   = zero;
       diag = 0.0;   
       for (vv_it=Base::mesh_.cvv_iter(v_it); vv_it; ++vv_it)
       {
-	w     = weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
+	w     = this->weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
 	uu   -= Base::mesh_.property(umbrellas_, vv_it);
-	diag += (w * weight(vv_it) + 1.0) * w;
+	diag += (w * this->weight(vv_it) + 1.0) * w;
       }
-      uu   *= weight(v_it);
-      diag *= weight(v_it);
+      uu   *= this->weight(v_it);
+      diag *= this->weight(v_it);
       uu   += Base::mesh_.property(umbrellas_, v_it);
       if (diag) uu *= 1.0/diag;
 
@@ -182,7 +182,7 @@ compute_new_positions_C1()
       // store new position
       p  = vector_cast<typename Mesh::Normal>(Base::mesh_.point(v_it));
       p -= uu;
-      set_new_position(v_it, p);
+      this->set_new_position(v_it, p);
     }
   }
 }

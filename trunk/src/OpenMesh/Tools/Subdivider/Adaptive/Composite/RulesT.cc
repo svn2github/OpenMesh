@@ -98,7 +98,7 @@ Tvv3<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
 {
   if (MOBJ(_fh).state() < _target_state) 
   {
-    update(_fh, _target_state);
+    this->update(_fh, _target_state);
 
     typename M::VertexVertexIter          vv_it;
     typename M::FaceVertexIter            fv_it;
@@ -314,7 +314,7 @@ void Tvv3<M>::raise(typename M::VertexHandle& _vh, state_t _target_state) {
 
   if (MOBJ(_vh).state() < _target_state) {
 
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     // multiply old position by 3
     MOBJ(_vh).set_position(_target_state, MOBJ(_vh).position(_target_state - 1) * 3.0);
@@ -336,7 +336,7 @@ Tvv4<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
 
   if (MOBJ(_fh).state() < _target_state) {
 
-    update(_fh, _target_state);
+    this->update(_fh, _target_state);
 
     typename M::FaceVertexIter              fv_it;
     typename M::VertexHandle                temp_vh;
@@ -638,7 +638,7 @@ Tvv4<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
   if (MOBJ(_vh).state() < _target_state)
   {
 
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     // multiply old position by 4
     MOBJ(_vh).set_position(_target_state, MOBJ(_vh).position(_target_state - 1) * 4.0);
@@ -654,7 +654,7 @@ Tvv4<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state)
 { 
   if (MOBJ(_eh).state() < _target_state) 
   {
-    update(_eh, _target_state);
+    this->update(_eh, _target_state);
 
     typename M::FaceHandle fh(Base::mesh_.FH(Base::mesh_.HEH(_eh, 0)));
 
@@ -815,7 +815,7 @@ void VF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
 {
   if (MOBJ(_fh).state() < _target_state) {
 
-    update(_fh, _target_state);
+    this->update(_fh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::FaceVertexIter            fv_it;
@@ -872,7 +872,7 @@ void FF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state) {
 
   if (MOBJ(_fh).state() < _target_state) {
 
-    update(_fh, _target_state);
+    this->update(_fh, _target_state);
 
     // raise all neighbour faces to level x-1
     typename M::FaceFaceIter              ff_it;
@@ -936,7 +936,7 @@ void FFc<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
 {
   if (MOBJ(_fh).state() < _target_state) {
 
-    update(_fh, _target_state);
+    this->update(_fh, _target_state);
 
     // raise all neighbour faces to level x-1
     typename M::FaceFaceIter              ff_it(Base::mesh_.ff_iter(_fh));
@@ -1001,7 +1001,7 @@ void FV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
   if (MOBJ(_vh).state() < _target_state) {
 
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexFaceIter            vf_it(Base::mesh_.vf_iter(_vh));
@@ -1070,7 +1070,7 @@ void FVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 {
   if (MOBJ(_vh).state() < _target_state) {
 
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     typename M::VertexOHalfedgeIter       voh_it;
     typename M::FaceHandle                fh;
@@ -1245,7 +1245,7 @@ void VV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 {
   if (MOBJ(_vh).state() < _target_state) 
   {
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexVertexIter              vv_it(Base::mesh_.vv_iter(_vh));
@@ -1315,7 +1315,7 @@ void VVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 {
   if (MOBJ(_vh).state() < _target_state) {
 
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexVertexIter              vv_it(Base::mesh_.vv_iter(_vh));
@@ -1390,7 +1390,7 @@ void VE<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state)
 {
   if (MOBJ(_eh).state() < _target_state) {
 
-    update(_eh, _target_state);
+    this->update(_eh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexHandle          vh;
@@ -1432,7 +1432,7 @@ void VdE<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state)
 {
   if (MOBJ(_eh).state() < _target_state) 
   {
-    update(_eh, _target_state);
+    this->update(_eh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexHandle             vh;
@@ -1509,7 +1509,7 @@ VdEc<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state)
 {
   if (MOBJ(_eh).state() < _target_state) 
   {
-    update(_eh, _target_state);
+    this->update(_eh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexHandle             vh;
@@ -1585,7 +1585,7 @@ void EV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 {
   if (MOBJ(_vh).state() < _target_state) {
 
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexEdgeIter            ve_it(Base::mesh_.ve_iter(_vh));
@@ -1661,7 +1661,7 @@ void EVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 {
   if (MOBJ(_vh).state() < _target_state) 
   {
-    update(_vh, _target_state);
+    this->update(_vh, _target_state);
 
     // raise all neighbour vertices to level x-1
     typename M::VertexOHalfedgeIter       voh_it;
@@ -1783,7 +1783,7 @@ EF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state) {
 
   if (MOBJ(_fh).state() < _target_state) {
 
-    update(_fh, _target_state);
+    this->update(_fh, _target_state);
 
     // raise all neighbour edges to level x-1
     typename M::FaceEdgeIter              fe_it(Base::mesh_.fe_iter(_fh));
@@ -1853,7 +1853,7 @@ FE<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state) {
 
   if (MOBJ(_eh).state() < _target_state) {
 
-    update(_eh, _target_state);
+    this->update(_eh, _target_state);
 
     // raise all neighbour faces to level x-1
     typename M::FaceHandle                fh;
@@ -1898,7 +1898,7 @@ EdE<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state) {
 
   if (MOBJ(_eh).state() < _target_state) {
 
-    update(_eh, _target_state);
+    this->update(_eh, _target_state);
 
     // raise all neighbour faces and edges to level x-1
     typename M::HalfedgeHandle            hh1, hh2;
@@ -1955,7 +1955,7 @@ EdEc<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state)
 {
   if (MOBJ(_eh).state() < _target_state) {
 
-    update(_eh, _target_state);
+    this->update(_eh, _target_state);
 
     // raise all neighbour faces and edges to level x-1
     typename M::HalfedgeHandle            hh1, hh2;
