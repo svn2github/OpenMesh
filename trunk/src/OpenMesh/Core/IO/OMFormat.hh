@@ -384,17 +384,6 @@ namespace OMFormat {
   // calc minimum (power-of-2) number of bits needed
   Chunk::Integer_Size needed_bits( size_t s );
 
-
-  // Return the storage type (Chunk::Header::bits_)
-  template <typename T>
-  inline
-  unsigned int bits(const T& val)
-  {
-    return is_integer(val)
-      ? (static_cast<unsigned int>(integer_size(val)))
-      : (static_cast<unsigned int>(float_size(val)));
-  }
-
   // Convert size of type to Integer_Size
 #ifdef NDEBUG
   template <typename T> Chunk::Integer_Size integer_size(const T&)
@@ -431,6 +420,16 @@ namespace OMFormat {
       case 16: return OMFormat::Chunk::Float_128;
     }
     return Chunk::Float_Size(0);
+  }
+
+  // Return the storage type (Chunk::Header::bits_)
+  template <typename T>
+  inline
+  unsigned int bits(const T& val)
+  {
+    return is_integer(val)
+      ? (static_cast<unsigned int>(integer_size(val)))
+      : (static_cast<unsigned int>(float_size(val)));
   }
 
   // -------------------- create/read version
