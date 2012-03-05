@@ -8,7 +8,18 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.1.2</b> (?/?/?,Rev.545)</td><td>
+<tr valign=top><td><b>2.2</b> (?/?/?,Rev.553)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Simplified iterators and made them integrate better with the STL. Specifically, value_type has changed from {Vertex,Edge,...} to {Vertex,Edge,...}Handle so that dereferenced iterators can actually be put to use, now.</li>
+<li>Consolidated iterator code. Functionally equivalent but way cleaner than before.</li>
+</ul>
+
+<b>General</b>
+<ul>
+<li>Xcode 4.3 compatibility (Fixed issues that caused build errors with XCode 4.3)</li>
+</ul>
 
 </tr>
 
@@ -17,7 +28,7 @@
 
 <b>Tools</b>
 <ul>
-<li>Fixed wrong INCLUDE_TEMPLATE include definition headers for NormalCone, and some decimater modules-</li>
+<li>Fixed wrong INCLUDE_TEMPLATE include definition headers for NormalCone, and some decimater modules.</li>
 </ul>
 
 <b>Unittests</b>
