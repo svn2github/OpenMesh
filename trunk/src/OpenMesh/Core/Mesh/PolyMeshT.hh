@@ -283,13 +283,13 @@ public:
       the points defined by to_vertex_handle() and from_vertex_handle() */
   void calc_edge_vector(HalfedgeHandle _heh, Normal& _edge_vec) const
   {
-    _edge_vec = point(to_vertex_handle(_heh));
-    _edge_vec -= point(from_vertex_handle(_heh));
+    _edge_vec = this->point(this->to_vertex_handle(_heh));
+    _edge_vec -= this->point(this->from_vertex_handle(_heh));
   }
 
   // Calculates the length of the edge _eh
   Scalar calc_edge_length(EdgeHandle _eh) const
-  { return calc_edge_length(halfedge_handle(_eh,0)); }
+  { return calc_edge_length(this->halfedge_handle(_eh,0)); }
 
   /** Calculates the length of the edge _heh
   */
@@ -312,8 +312,8 @@ public:
       _vec0 and _vec1 are resp. the first and the second vectors defining the sector */
   void calc_sector_vectors(HalfedgeHandle _in_heh, Normal& _vec0, Normal& _vec1) const
   {
-    calc_edge_vector(next_halfedge_handle(_in_heh), _vec0);//p2 - p1
-    calc_edge_vector(opposite_halfedge_handle(_in_heh), _vec1);//p0 - p1
+    calc_edge_vector(this->next_halfedge_handle(_in_heh), _vec0);//p2 - p1
+    calc_edge_vector(this->opposite_halfedge_handle(_in_heh), _vec1);//p0 - p1
   }
 
   /** calculates the sector angle.\n
@@ -331,9 +331,9 @@ public:
       return 0;
     }
     Scalar cos_a = dot(v0 , v1) / denom;
-    if (is_boundary(_in_heh))
+    if (this->is_boundary(_in_heh))
     {//determine if the boundary sector is concave or convex
-      FaceHandle fh(face_handle(opposite_halfedge_handle(_in_heh)));
+      FaceHandle fh(this->face_handle(this->opposite_halfedge_handle(_in_heh)));
       Normal f_n(calc_face_normal(fh));//this normal is (for convex fh) OK
       Scalar sign_a = dot(cross(v0, v1), f_n);
       return angle(cos_a, sign_a);
@@ -412,13 +412,13 @@ public:
   // calculates the dihedral angle on the halfedge _heh
   Scalar calc_dihedral_angle(HalfedgeHandle _heh) const
   {
-    if (is_boundary(edge_handle(_heh)))
+    if (this->is_boundary(this->edge_handle(_heh)))
     {//the dihedral angle at a boundary edge is 0
       return 0;
     }
     Normal n0, n1, he;
     calc_sector_normal(_heh, n0);
-    calc_sector_normal(opposite_halfedge_handle(_heh), n1);
+    calc_sector_normal(this->opposite_halfedge_handle(_heh), n1);
     calc_edge_vector(_heh, he);
     Scalar denom = n0.norm()*n1.norm();
     if (denom == Scalar(0))
