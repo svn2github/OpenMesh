@@ -426,6 +426,14 @@ public:
     return *this;
   }
   
+  /** return normalized vector
+  */
+
+  inline const vector_type normalized() const
+  {
+    return *this / norm();
+  }
+
   /** normalize vector, return normalized vector and avoids div by zero 
   */
   inline vector_type& normalize_cond() 
