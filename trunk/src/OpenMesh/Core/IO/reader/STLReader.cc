@@ -365,15 +365,15 @@ check_stl_type(const std::string& _filename) const
   // read number of triangles
   char dummy[100];
   fread(dummy, 1, 80, in);
-  unsigned int nT = read_int(in, swapFlag);
+  size_t nT = read_int(in, swapFlag);
 
 
   // compute file size from nT
-  unsigned int binary_size = 84 + nT*50;
+  size_t binary_size = 84 + nT*50;
 
 
   // get actual file size
-  unsigned int file_size(0);
+  size_t file_size(0);
   rewind(in);
   while (!feof(in))
     file_size += fread(dummy, 1, 100, in);

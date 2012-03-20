@@ -589,7 +589,7 @@ bool _OFFReader_::can_u_read(std::istream& _is) const
   _is.getline(line, LINE_LEN);
   p = line;
 
-  int remainingChars = _is.gcount();
+  size_t remainingChars = _is.gcount();
 
   bool vertexDimensionTooHigh = false;
 
@@ -615,7 +615,12 @@ bool _OFFReader_::can_u_read(std::istream& _is) const
     return false;
 
   p += 4;
-  remainingChars -= 4;
+
+  // Detect possible garbage and make sure, we don't have an underflow
+  if ( remainingChars >= 4 )
+    remainingChars -= 4;
+  else 
+    remainingChars = 0;
 
   if ( ( remainingChars >= 6 ) && ( strncmp(p, "BINARY", 6) == 0 ) )
     options_+= Options::Binary;
