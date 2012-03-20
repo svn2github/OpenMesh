@@ -79,7 +79,7 @@ public:
   FaceHandle add_face(const std::vector<VertexHandle>& _vhandles)
   { return add_face(&_vhandles.front(), _vhandles.size()); }
   
-  FaceHandle add_face(const VertexHandle* _vhandles, uint _vhs_size);
+  FaceHandle add_face(const VertexHandle* _vhandles, size_t _vhs_size);
   
   FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2)
   { 

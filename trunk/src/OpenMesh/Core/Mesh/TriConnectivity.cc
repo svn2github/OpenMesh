@@ -49,7 +49,7 @@ namespace OpenMesh
 {
 
 TriConnectivity::FaceHandle
-TriConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
+TriConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size)
 {
   // need at least 3 vertices
   if (_vhs_size < 3) return InvalidFaceHandle;

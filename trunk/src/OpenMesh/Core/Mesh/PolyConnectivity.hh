@@ -230,7 +230,7 @@ public:
   * @param _vhandles pointer to a sorted list of vertex handles (also defines order in which the vertices are added to the face)
   * @param _vhs_size number of vertex handles in the array
   */
-  FaceHandle add_face(const VertexHandle* _vhandles, uint _vhs_size);
+  FaceHandle add_face(const VertexHandle* _vhandles, size_t _vhs_size);
   //@}
 
   /// \name Deleting mesh items and other connectivity/topology modifications

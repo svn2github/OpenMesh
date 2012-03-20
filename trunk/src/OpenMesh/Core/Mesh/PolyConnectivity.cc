@@ -111,7 +111,7 @@ void PolyConnectivity::adjust_outgoing_halfedge(VertexHandle _vh)
 //-----------------------------------------------------------------------------
 
 PolyConnectivity::FaceHandle
-PolyConnectivity::add_face(const VertexHandle* _vertex_handles, uint _vhs_size)
+PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size)
 {
   VertexHandle                   vh;
   uint                           i, ii, n(_vhs_size), id;
