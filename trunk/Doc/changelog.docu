@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.2</b> (?/?/?,Rev.553)</td><td>
+<tr valign=top><td><b>2.2</b> (?/?/?,Rev.559)</td><td>
 
 <b>Core</b>
 <ul>
@@ -16,9 +16,15 @@
 <li>Consolidated iterator code. Functionally equivalent but way cleaner than before.</li>
 </ul>
 
+<b>Geometry</b>
+<ul>
+<li>Added normalized function to VectorT which returns a normalized vector whithout modifying the current one.</li>
+</ul>
+
 <b>General</b>
 <ul>
 <li>Xcode 4.3 compatibility (Fixed issues that caused build errors with XCode 4.3)</li>
+<li>Fixed some size_t uint conversion warnings</li>
 </ul>
 
 </tr>
