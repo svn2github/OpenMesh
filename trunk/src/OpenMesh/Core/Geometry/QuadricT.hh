@@ -68,7 +68,7 @@ namespace Geometry { //BEGIN_NS_GEOMETRY
 //== CLASS DEFINITION =========================================================
 
 
-/** /class QuadricT QuadricT.hh <OSG/Geometry/Types/QuadricT.hh>
+/** /class QuadricT Geometry/QuadricT.hh
 
     Stores a quadric as a 4x4 symmetrix matrix. Used by the
     error quadric based mesh decimation algorithms.
