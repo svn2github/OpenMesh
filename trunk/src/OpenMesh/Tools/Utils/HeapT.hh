@@ -39,7 +39,7 @@
  *                                                                           *
 \*===========================================================================*/
 
-/** \file HeapT.hh
+/** \file Tools/Utils/HeapT.hh
     A generic heap class
 **/
 /** Martin, 26.12.2004: 

@@ -69,7 +69,7 @@ namespace Utils { // BEGIN_NS_UTILS
 //== CLASS DEFINITION =========================================================
 
 
-/** \class NumLimitsT NumLimitsT.hh <OpenMesh/Utils/NumLimitsT.hh
+/** \class NumLimitsT Tools/Utils/NumLimitsT.hh 
 
     This class provides the maximum and minimum values a certain
     scalar type (\c int, \c float, or \c double) can store. You can
