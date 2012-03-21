@@ -39,7 +39,7 @@
  *                                                                           *
 \*===========================================================================*/
 
-/** \file NumLimitsT.hh
+/** \file Tools/Utils/NumLimitsT.hh
     Temporary solution until std::numeric_limits is standard.
  */
 
