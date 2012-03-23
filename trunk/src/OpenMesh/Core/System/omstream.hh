@@ -60,16 +60,15 @@
     This file provides the streams omlog, omout, and omerr.
 */
 
-//@{
-/** These stream provide replacements for clog, cout, and cerr. They have
+/** \name stream replacements
+    These stream provide replacements for clog, cout, and cerr. They have
     the advantage that they can easily be multiplexed.
     \see OpenMesh::mostream
 */
-
+//@{
 OpenMesh::mostream& omlog();
 OpenMesh::mostream& omout();
 OpenMesh::mostream& omerr();
-
 //@}
 
 //=============================================================================
