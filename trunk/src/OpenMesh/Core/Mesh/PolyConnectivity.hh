@@ -611,12 +611,13 @@ public:
       \attention Needs vertex/edge/face status attribute in order to
       delete the items that degenerate.
 
+      \note The from vertex is marked as deleted while the to vertex will still exist.
+
       \note This function does not perform a garbage collection. It
       only marks degenerate items as deleted.
 
       \attention A halfedge collapse may lead to topological inconsistencies.
       Therefore you should check this using is_collapse_ok().  
-      \todo Implement is_collapse_ok() const for polygonal/triangle meshes
   */
   void collapse(HalfedgeHandle _heh);
   /** return true if the this the only link between the faces adjacent to _eh.
