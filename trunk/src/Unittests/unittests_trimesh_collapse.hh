@@ -33,7 +33,7 @@ class OpenMeshCollapse : public OpenMeshBase {
 /*
  * Collapsing a tetrahedron
  */
-TEST_F(OpenMeshCollapse, CollapseTetrahedron) {
+TEST_F(OpenMeshCollapse, CollapseTetrahedronComplex) {
 
   mesh_.clear();
 
@@ -344,7 +344,7 @@ TEST_F(OpenMeshCollapse, CollapseTetrahedron) {
 /*
  * Collapsing a tetrahedron
  */
-TEST_F(OpenMeshCollapse, CollapseComplex) {
+TEST_F(OpenMeshCollapse, CollapseTetrahedron) {
 
   mesh_.clear();
 
@@ -426,6 +426,111 @@ TEST_F(OpenMeshCollapse, CollapseComplex) {
 
   EXPECT_FALSE( mesh_.is_collapse_ok(heh_collapse3) ) << "Collapse not ok for collapse third halfedge (6)";
 
+
+}
+
+/*
+ * Test collapsing an halfedge in a triangle mesh
+ *
+ */
+TEST_F(OpenMeshCollapse, LargeCollapseHalfEdge) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[7];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point( 0, 1, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point( 1, 0, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point( 2, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point( 0,-1, 0));
+  vhandle[4] = mesh_.add_vertex(Mesh::Point( 2,-1, 0));
+  vhandle[5] = mesh_.add_vertex(Mesh::Point(-1, 0, 0));
+  vhandle[6] = mesh_.add_vertex(Mesh::Point( 3, 0, 0));
+
+  // Add two faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[5]);
+  face_vhandles.push_back(vhandle[1]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[5]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[4]);
+  face_vhandles.push_back(vhandle[6]);
+  mesh_.add_face(face_vhandles);
+
+  /* Test setup:
+      0 ==== 2
+     / \    /|\
+    /   \  / | \
+   5 --- 1   |  6
+    \   /  \ | /
+     \ /    \|/
+      3 ==== 4 */
+
+  // Request the status bits
+  mesh_.request_vertex_status();
+  mesh_.request_edge_status();
+  mesh_.request_face_status();
+
+  // =============================================
+  // Collapse halfedge from 1 to 4
+  // =============================================
+
+  Mesh::HalfedgeHandle heh_collapse;
+
+  // Iterate over all halfedges to find the correct one
+  for ( Mesh::HalfedgeIter he_it = mesh_.halfedges_begin() ; he_it != mesh_.halfedges_end() ; ++he_it ) {
+    if ( mesh_.from_vertex_handle(he_it).idx() == 1 && mesh_.to_vertex_handle(he_it).idx() == 4  )
+      heh_collapse = he_it;
+  }
+
+  // Check our halfedge
+  EXPECT_EQ(4, mesh_.to_vertex_handle(heh_collapse).idx()   ) << "To   vertex of collapse halfedge is wrong";
+  EXPECT_EQ(1, mesh_.from_vertex_handle(heh_collapse).idx() ) << "from vertex of collapse halfedge is wrong";
+  EXPECT_TRUE( mesh_.is_collapse_ok(heh_collapse) ) << "Collapse not ok for collapse first halfedge (0)";
+
+  // Remember the end vertices
+  Mesh::VertexHandle vh_from = mesh_.from_vertex_handle(heh_collapse);
+  Mesh::VertexHandle vh_to   = mesh_.to_vertex_handle(heh_collapse);
+
+  // Collapse it
+  mesh_.collapse(heh_collapse);
+
+  EXPECT_TRUE( mesh_.status(vh_from).deleted() ) << "From vertex not deleted";
+  EXPECT_FALSE( mesh_.status(vh_to).deleted() )  << "To Vertex deleted";
 
 }
 
