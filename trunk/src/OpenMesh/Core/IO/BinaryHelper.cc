@@ -67,17 +67,11 @@ namespace IO {
 
 //== IMPLEMENTATION ===========================================================
 
-
-union u1 { short int s;  unsigned char c[2]; }  sc;
-union u2 { int i;        unsigned char c[4]; }  ic;
-union u3 { float f;      unsigned char c[4]; }  fc;
-union u4 { double d;     unsigned char c[8]; }  dc;
-
-
 //-----------------------------------------------------------------------------
 
 short int read_short(FILE* _in, bool _swap) 
 {
+  union u1 { short int s; unsigned char c[2]; }  sc;
   fread((char*)sc.c, 1, 2, _in);
   if (_swap) std::swap(sc.c[0], sc.c[1]);
   return sc.s;
@@ -89,6 +83,7 @@ short int read_short(FILE* _in, bool _swap)
 
 int read_int(FILE* _in, bool _swap) 
 {
+  union u2 { int i; unsigned char c[4]; } ic;
   fread((char*)ic.c, 1, 4, _in);
   if (_swap) {
     std::swap(ic.c[0], ic.c[3]);
@@ -103,6 +98,7 @@ int read_int(FILE* _in, bool _swap)
 
 float read_float(FILE* _in, bool _swap) 
 {
+  union u3 { float f; unsigned char c[4]; } fc;
   fread((char*)fc.c, 1, 4, _in);
   if (_swap) {
     std::swap(fc.c[0], fc.c[3]);
@@ -117,6 +113,7 @@ float read_float(FILE* _in, bool _swap)
 
 double read_double(FILE* _in, bool _swap) 
 {
+  union u4 { double d; unsigned char c[8]; } dc;
   fread((char*)dc.c, 1, 8, _in);
   if (_swap) {
     std::swap(dc.c[0], dc.c[7]);
@@ -133,6 +130,7 @@ double read_double(FILE* _in, bool _swap)
 
 void write_short(short int _i, FILE* _out, bool _swap) 
 {
+  union u1 { short int s; unsigned char c[2]; } sc;
   sc.s = _i;
   if (_swap) std::swap(sc.c[0], sc.c[1]);
   fwrite((char*)sc.c, 1, 2, _out);
@@ -144,6 +142,7 @@ void write_short(short int _i, FILE* _out, bool _swap)
 
 void write_int(int _i, FILE* _out, bool _swap) 
 {
+  union u2 { int i; unsigned char c[4]; } ic;
   ic.i = _i;
   if (_swap) {
     std::swap(ic.c[0], ic.c[3]);
@@ -158,6 +157,7 @@ void write_int(int _i, FILE* _out, bool _swap)
 
 void write_float(float _f, FILE* _out, bool _swap) 
 {
+  union u3 { float f; unsigned char c[4]; } fc;
   fc.f = _f;
   if (_swap) {
     std::swap(fc.c[0], fc.c[3]);
@@ -172,6 +172,7 @@ void write_float(float _f, FILE* _out, bool _swap)
 
 void write_double(double _d, FILE* _out, bool _swap) 
 {
+  union u4 { double d; unsigned char c[8]; } dc;
   dc.d = _d;
   if (_swap) {
     std::swap(dc.c[0], dc.c[7]);
