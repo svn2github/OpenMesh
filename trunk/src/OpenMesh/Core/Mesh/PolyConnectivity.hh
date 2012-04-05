@@ -660,9 +660,24 @@ public:
     
   /// Face split (= 1-to-n split)
   void split(FaceHandle _fh, VertexHandle _vh);
-  /// triangulate the face _fh
+
+  /** \brief Triangulate the face _fh
+
+    Split an arbitrary face into triangles by connecting
+    each vertex of fh after its second to vh.
+
+    \note _fh will remain valid (it will become one of the
+      triangles)
+
+    \note The halfedge handles of the new triangles will
+      point to the old halfedges
+
+    @param _fh Handle of the face that should be triangulated
+  */
   void triangulate(FaceHandle _fh);
-  /// triangulate the entire mesh
+
+  /** \brief triangulate the entire mesh  
+  */
   void triangulate();
   
   /// Edge split (inserts a vertex on the edge only)
