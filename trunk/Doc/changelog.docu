@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.2</b> (?/?/?,Rev.559)</td><td>
+<tr valign=top><td><b>2.2</b> (?/?/?,Rev.571)</td><td>
 
 <b>Core</b>
 <ul>
@@ -16,10 +16,23 @@
 <li>Consolidated iterator code. Functionally equivalent but way cleaner than before.</li>
 </ul>
 
+<b>IO</b>
+<ul>
+<li>Made Binary IO readers multi-thread safe. (Thanks to Dominic Genest for the patch)</li>
+</ul>
+
 <b>Geometry</b>
 <ul>
 <li>Added normalized function to VectorT which returns a normalized vector whithout modifying the current one.</li>
 </ul>
+
+<b>Documentation</b>
+<ul>
+<li>Fixed doxygen warnings</li>
+<li>Updated collapse function documentation</li>
+<li>Updated triangulation function documentation</li>
+</ul>
+
 
 <b>General</b>
 <ul>
