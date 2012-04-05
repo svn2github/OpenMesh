@@ -246,7 +246,8 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
     }
   }
 
-  fclose(in);
+  if (in)
+    fclose(in);
 
   return true;
 }
