@@ -259,11 +259,12 @@ public:
    *            Call request_face_normals() and request_halfedge_normals() before using it!
    *
    * @param _heh Handle of the halfedge
+   * @param _feature_angle If the dihedral angle across this edge is greater than this value, the edge is considered as a feature edge (angle in radians) 
    */
   virtual Normal calc_halfedge_normal(HalfedgeHandle _heh, const double _feature_angle = 0.8) const;
 
 
-  /** identifies feature edges w.r.t. the minimal dihedral angle for feautre edges (in radians) */
+  /** identifies feature edges w.r.t. the minimal dihedral angle for feature edges (in radians) */
   /** and the status feature tag */
   bool is_estimated_feature_edge(HalfedgeHandle _heh, const double _feature_angle) const;
 
