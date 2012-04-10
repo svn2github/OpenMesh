@@ -81,12 +81,16 @@ TEST_F(OpenMeshNormals, NormalCalculations) {
 
   // Check one Request only vertex normals
   // Face normals are required for vertex and halfedge normals, so 
-  // This will compute no normals and is only a runtime check if the blocks
   // that prevent access to non existing properties are in place
 
   mesh_.request_vertex_normals();
-  mesh_.request_face_normals();
   mesh_.request_halfedge_normals();
+
+  // Check blocks
+  mesh_.update_normals();
+
+  // Request required face normals 
+  mesh_.request_face_normals();
 
   // Automatically compute all normals
   // As only vertex normals are requested and no face normals, this will compute nothing.
