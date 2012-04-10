@@ -8,12 +8,13 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.2</b> (?/?/?,Rev.571)</td><td>
+<tr valign=top><td><b>2.2</b> (?/?/?,Rev.576)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Simplified iterators and made them integrate better with the STL. Specifically, value_type has changed from {Vertex,Edge,...} to {Vertex,Edge,...}Handle so that dereferenced iterators can actually be put to use, now.</li>
 <li>Consolidated iterator code. Functionally equivalent but way cleaner than before.</li>
+<li>Improved block in update_normals(), if there are no face normals (could cause a crash)</li>
 </ul>
 
 <b>IO</b>
@@ -26,11 +27,18 @@
 <li>Added normalized function to VectorT which returns a normalized vector whithout modifying the current one.</li>
 </ul>
 
+<b>Unittests</b>
+<ul>
+<li>Added unittest for calling the normal computations.</li>
+</ul>
+
+
 <b>Documentation</b>
 <ul>
 <li>Fixed doxygen warnings</li>
 <li>Updated collapse function documentation</li>
 <li>Updated triangulation function documentation</li>
+<li>Updated normal computation documentations</li>
 </ul>
 
 
