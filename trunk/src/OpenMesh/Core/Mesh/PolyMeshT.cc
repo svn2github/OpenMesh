@@ -184,9 +184,13 @@ void
 PolyMeshT<Kernel>::
 update_normals()
 {
-  if (Kernel::has_face_normals())     update_face_normals();
-  if (Kernel::has_vertex_normals())   update_vertex_normals();
-  if (Kernel::has_halfedge_normals()) update_halfedge_normals();
+  // Face normals are required to compute the vertex and the halfedge normals
+  if (Kernel::has_face_normals() ) {     
+    update_face_normals();
+
+    if (Kernel::has_vertex_normals() ) update_vertex_normals();
+    if (Kernel::has_halfedge_normals()) update_halfedge_normals();
+  }
 }
 
 

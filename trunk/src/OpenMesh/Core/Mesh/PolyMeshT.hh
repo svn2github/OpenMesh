@@ -205,16 +205,24 @@ public:
   */
   //@{
 
-  /** Calls update_face_normals() and update_vertex_normals() if
-      these normals (i.e. the properties) exist */
+  /** \brief Compute normals for all primitives
+   *
+   * Calls update_face_normals() , update_halfedge_normals()  and update_vertex_normals() if
+   * the normals (i.e. the properties) exist.
+   *
+   * \note Face normals are required to compute vertex and halfedge normals!
+   */
   void update_normals();
 
   /// Update normal for face _fh
   void update_normal(FaceHandle _fh)
   { this->set_normal(_fh, calc_face_normal(_fh)); }
 
-  /** Update normal vectors for all faces.
-      \attention Needs the Attributes::Normal attribute for faces. */
+  /** \brief Update normal vectors for all faces.
+   *
+   * \attention Needs the Attributes::Normal attribute for faces.
+   *            Call request_face_normals() before using it!
+   */
   void update_face_normals();
 
   /** Calculate normal vector for face _fh. */
@@ -223,20 +231,36 @@ public:
   /** Calculate normal vector for face (_p0, _p1, _p2). */
   Normal calc_face_normal(const Point& _p0, const Point& _p1,
                                             const Point& _p2) const;
-  // calculates the average of the vertices defining _fh
+  /// calculates the average of the vertices defining _fh
   void calc_face_centroid(FaceHandle _fh, Point& _pt) const;
 
   /// Update normal for halfedge _heh
   void update_normal(HalfedgeHandle _heh, const double _feature_angle = 0.8)
   { this->set_normal(_heh, calc_halfedge_normal(_heh)); }
 
-  /** Update normal vectors for all halfedges.
-      \attention Needs the Attributes::Normal attribute for faces. */
+  /** \brief Update normal vectors for all halfedges.
+   *
+   * Uses the existing face normals to compute halfedge normals
+   *
+   * \note Face normals have to be computed first!
+   *
+   * \attention Needs the Attributes::Normal attribute for faces and halfedges.
+   *            Call request_face_normals() and request_halfedge_normals() before using it!
+   */
   void update_halfedge_normals(const double _feature_angle = 0.8);
 
-  /** Calculate normal vector for halfedge _heh. */
-  /** requires valid face normals!!! */
-  virtual Normal calc_halfedge_normal(HalfedgeHandle _fh, const double _feature_angle = 0.8) const;
+  /** \brief Calculate halfedge normal for one specific halfedge
+   *
+   * Calculate normal vector for halfedge _heh.
+   *
+   * \note Face normals have to be computed first!
+   *
+   * \attention Needs the Attributes::Normal attribute for faces and vertices.
+   *            Call request_face_normals() and request_halfedge_normals() before using it!
+   *
+   * @param _heh Handle of the halfedge
+   */
+  virtual Normal calc_halfedge_normal(HalfedgeHandle _heh, const double _feature_angle = 0.8) const;
 
 
   /** identifies feature edges w.r.t. the minimal dihedral angle for feautre edges (in radians) */
@@ -247,15 +271,29 @@ public:
   void update_normal(VertexHandle _vh)
   { this->set_normal(_vh, calc_vertex_normal(_vh)); }
 
-  /** \brief Update normal vectors for all vertices. 
-
-      Uses existing face normals to calculate new vertex normals.
-      \attention Needs the Attributes::Normal attribute for faces and vertices. */
+  /** \brief Update normal vectors for all vertices.
+   *
+   * Uses existing face normals to calculate new vertex normals.
+   *
+   * \note Face normals have to be computed first!
+   *
+   * \attention Needs the Attributes::Normal attribute for faces and vertices.
+   *            Call request_face_normals() and request_vertex_normals() before using it!
+   */
   void update_vertex_normals();
 
-  /** Calculate normal vector for vertex _vh by averaging normals
-      of adjacent faces. Face normals have to be computed first.
-      \attention Needs the Attributes::Normal attribute for faces. */
+  /** \brief Calculate vertex normal for one specific vertex
+   *
+   * Calculate normal vector for vertex _vh by averaging normals
+   * of adjacent faces.
+   *
+   * \note Face normals have to be computed first!
+   *
+   * \attention Needs the Attributes::Normal attribute for faces and vertices.
+   *            Call request_face_normals() and request_vertex_normals() before using it!
+   *
+   * @param _vh Handle of the vertex
+   */
   Normal calc_vertex_normal(VertexHandle _vh) const;
 
   /** Different methods for calculation of the normal at _vh:
