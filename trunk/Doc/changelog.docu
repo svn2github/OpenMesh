@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.2</b> (?/?/?,Rev.576)</td><td>
+<tr valign=top><td><b>2.2</b> (?/?/?,Rev.579)</td><td>
 
 <b>Core</b>
 <ul>
@@ -20,6 +20,7 @@
 <b>IO</b>
 <ul>
 <li>Made Binary IO readers multi-thread safe. (Thanks to Dominic Genest for the patch)</li>
+<li>Fixed debug build crash on mac, reading from stringstream into emtpy string crashed when compiling with clang</li>
 </ul>
 
 <b>Geometry</b>
