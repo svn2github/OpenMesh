@@ -69,7 +69,10 @@ _IOManager_  *__IOManager_instance = 0;
 
 _IOManager_& IOManager()
 {
-  if (!__IOManager_instance)  __IOManager_instance = new _IOManager_();
+  
+  if (!__IOManager_instance)
+    __IOManager_instance = new _IOManager_();
+
   return *__IOManager_instance;
 }
 
@@ -260,21 +263,29 @@ update_read_filters()
 {
   std::set<BaseReader*>::const_iterator it     = reader_modules_.begin(),
                                         it_end = reader_modules_.end();
-  std::string s, all, filters;
+  std::string all = "";
+  std::string filters = "";
   
   for(; it != it_end; ++it)
   {
+    // Initialized with space, as a workaround for debug build with clang on mac
+    // which crashes if tmp is initialized with an empty string ?!
+    std::string tmp = " ";
+
     filters += (*it)->get_description() + " (";
     
     std::istringstream iss((*it)->get_extensions());
-    while (iss && !iss.eof() && (iss >> s))
-    { s = " *." + s; filters += s; all += s; }
+
+    while (iss && !iss.eof() && (iss >> tmp) )
+    {
+     tmp = " *." + tmp; filters += tmp; all += tmp; 
+    }
     
     filters += " );;";
   }
 
   all = "All files ( " + all + " );;";
-  
+ 
   read_filters_ = all + filters;
 }
 
@@ -288,10 +299,15 @@ update_write_filters()
 {
   std::set<BaseWriter*>::const_iterator it     = writer_modules_.begin(),
                                         it_end = writer_modules_.end();
-  std::string s, all, filters;
+  std::string all;
+  std::string filters;
     
   for(; it != it_end; ++it)
   {
+    // Initialized with space, as a workaround for debug build with clang on mac
+    // which crashes if tmp is initialized with an empty string ?!
+    std::string s = " ";
+
     filters += (*it)->get_description() + " (";
 
     std::istringstream iss((*it)->get_extensions());
