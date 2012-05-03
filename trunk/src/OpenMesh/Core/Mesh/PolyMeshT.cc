@@ -301,7 +301,7 @@ is_estimated_feature_edge(HalfedgeHandle _heh, const double _feature_angle) cons
   Normal fn1 = Kernel::normal(fh1);
 
   // dihedral angle above angle threshold
-  return ( (fn0|fn1) < cos(_feature_angle) );
+  return ( dot(fn0,fn1) < cos(_feature_angle) );
 }
 
 
