@@ -47,6 +47,7 @@
 #include <map>
 
 #include <float.h>
+#include <fstream>
 
 // OpenMesh
 #include <OpenMesh/Core/System/config.h>
@@ -182,6 +183,19 @@ private:
 
 //-----------------------------------------------------------------------------
 
+void trimStdString( std::string& _string) {
+  // Trim Both leading and trailing spaces
+
+  size_t start = _string.find_first_not_of(" \t\r\n");
+  size_t end   = _string.find_last_not_of(" \t\r\n");
+
+  if(( std::string::npos == start ) || ( std::string::npos == end))
+    _string = "";
+  else
+    _string = _string.substr( start, end-start+1 );
+}
+
+//-----------------------------------------------------------------------------
 
 bool
 _STLReader_::
@@ -189,7 +203,8 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
 {
   omlog() << "[STLReader] : read ascii file\n";
 
-  FILE*  in = fopen(_filename.c_str(), "r");
+  std::fstream in( _filename.c_str(), std::ios_base::in );
+
   if (!in)
   {
     omerr() << "[STLReader] : cannot not open file "
@@ -199,10 +214,9 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
   }
 
 
-
-  char                       line[100], *p;
   unsigned int               i;
   OpenMesh::Vec3f            v;
+  OpenMesh::Vec3f            n;
   unsigned int               cur_idx(0);
   BaseImporter::VHandles     vhandles;
 
@@ -210,44 +224,91 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
   std::map<Vec3f, VertexHandle, CmpVec>            vMap(comp);
   std::map<Vec3f, VertexHandle, CmpVec>::iterator  vMapIt;
 
+  std::string line;
 
-  while (in && !feof(in) && fgets(line, 100, in))
-  {
-    for (p=line; isspace(*p) && *p!='\0'; ++p) {}; // skip white-space
+  bool normal = false;
 
-    if ((strncmp(p, "outer", 5) == 0) || (strncmp(p, "OUTER", 5) == 0))
-    {
+  while( in && !in.eof() ) {
+
+    // Get one line
+    std::getline(in,line);
+    if ( in.bad() ){
+      omerr() << "  Warning! Could not read file properly!\n";
+      in.close();
+      return false;
+    }
+
+    // Trim Both leading and trailing spaces
+    trimStdString(line);
+
+    // Normal found?
+    if (line.find("facet normal") != std::string::npos) {
+      std::stringstream strstream(line);
+
+      std::string garbage;
+
+      // facet
+      strstream >> garbage;
+
+      // normal
+      strstream >> garbage;
+
+      strstream >> n[0];
+      strstream >> n[1];
+      strstream >> n[2];
+
+      normal = true;
+    }
+
+    // Detected a triangle
+    if ( (line.find("outer") != std::string::npos) ||  (line.find("OUTER") != std::string::npos ) ) {
+
       vhandles.clear();
 
-      for (i=0; i<3; ++i)
-      {
- 	fgets(line, 100, in);
-	for (p=line; isspace(*p) && *p!='\0'; ++p) {}; // skip white-space
- 	sscanf(p+6, "%f %f %f", &v[0], &v[1], &v[2]);
+      for (i=0; i<3; ++i) {
+        // Get one vertex
+        std::getline(in,line);
+        trimStdString(line);
 
-	// has vector been referenced before?
-	if ((vMapIt=vMap.find(v)) == vMap.end())
-	{
-	  // No : add vertex and remember idx/vector mapping
-	  _bi.add_vertex(v);
-	  vhandles.push_back(VertexHandle(cur_idx));
-	  vMap[v] = VertexHandle(cur_idx++);
-	}
-	else
-	  // Yes : get index from map
-	  vhandles.push_back(vMapIt->second);
+        std::stringstream strstream(line);
+
+        std::string garbage;
+        strstream >> garbage;
+
+        strstream >> v[0];
+        strstream >> v[1];
+        strstream >> v[2];
+
+        // has vector been referenced before?
+        if ((vMapIt=vMap.find(v)) == vMap.end())
+        {
+          // No : add vertex and remember idx/vector mapping
+          _bi.add_vertex(v);
+          vhandles.push_back(VertexHandle(cur_idx));
+          vMap[v] = VertexHandle(cur_idx++);
+        }
+        else
+          // Yes : get index from map
+          vhandles.push_back(vMapIt->second);
+
       }
 
       // Add face only if it is not degenerated
       if ((vhandles[0] != vhandles[1]) &&
-	  (vhandles[0] != vhandles[2]) &&
-	  (vhandles[1] != vhandles[2]))
-	_bi.add_face(vhandles);
+          (vhandles[0] != vhandles[2]) &&
+          (vhandles[1] != vhandles[2])) {
+
+
+        FaceHandle fh = _bi.add_face(vhandles);
+
+      }
+
+      normal = false;
     }
   }
 
   if (in)
-    fclose(in);
+    in.close();
 
   return true;
 }
