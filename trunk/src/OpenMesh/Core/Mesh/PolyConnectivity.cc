@@ -284,6 +284,12 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size
 //-----------------------------------------------------------------------------
 bool PolyConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
 {
+  //is edge already deleteed?
+  if (status(edge_handle(v0v1)).deleted())
+  {
+    return false;
+  }
+
   HalfedgeHandle v1v0(opposite_halfedge_handle(v0v1));
   VertexHandle v0(to_vertex_handle(v1v0));
   VertexHandle v1(to_vertex_handle(v0v1));  
@@ -303,12 +309,6 @@ bool PolyConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
 
   VertexHandle v_10_p = from_vertex_handle(prev_halfedge_handle(v1v0));
   VertexHandle v_10_n = to_vertex_handle(next_halfedge_handle(v1v0));
-
-  //is edge already deleteed?
-  if (status(edge_handle(v0v1)).deleted())
-  {
-    return false;
-  }
 
   //are the vertices already deleted ?
   if (status(v0).deleted() || status(v1).deleted())

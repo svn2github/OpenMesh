@@ -84,6 +84,10 @@ TriConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size)
 //-----------------------------------------------------------------------------
 bool TriConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
 {
+  // is the edge already deleted?
+  if ( status(edge_handle(v0v1)).deleted() )
+    return false;
+
   HalfedgeHandle  v1v0(opposite_halfedge_handle(v0v1));
   VertexHandle    v0(to_vertex_handle(v1v0));
   VertexHandle    v1(to_vertex_handle(v0v1));
