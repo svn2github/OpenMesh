@@ -49,6 +49,45 @@ TEST_F(OpenMeshLoader, LoadSimpleOFFFile) {
 }
 
 
+
+/*
+ * Just load a simple mesh file in stla format and count whether
+ * the right number of entities has been loaded.
+ */
+TEST_F(OpenMeshLoader, LoadSimpleSTLFile) {
+
+    mesh_.clear();
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1.stl");
+
+    EXPECT_TRUE(ok);
+
+    EXPECT_EQ(7526, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(22572, mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(15048, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+}
+
+
+
+/*
+ * Just load a simple mesh file in stlb format and count whether
+ * the right number of entities has been loaded.
+ */
+TEST_F(OpenMeshLoader, LoadSimpleSTLBinaryFile) {
+
+    mesh_.clear();
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1Binary.stl");
+
+    EXPECT_TRUE(ok);
+
+    EXPECT_EQ(7526, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(22572, mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(15048, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+}
+
+
+
 /*
  * Just load a point file in ply format and count whether
  * the right number of entities has been loaded.
