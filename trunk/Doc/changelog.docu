@@ -8,19 +8,22 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.2</b> (?/?/?,Rev.579)</td><td>
+<tr valign=top><td><b>2.2</b> (?/?/?,Rev.585)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Simplified iterators and made them integrate better with the STL. Specifically, value_type has changed from {Vertex,Edge,...} to {Vertex,Edge,...}Handle so that dereferenced iterators can actually be put to use, now.</li>
 <li>Consolidated iterator code. Functionally equivalent but way cleaner than before.</li>
 <li>Improved block in update_normals(), if there are no face normals (could cause a crash)</li>
+<li>Fixed usage of operator | instead of dot</li>
+<li>Added a check to is_collapse_ok in TriConnectivity if the edge is already deleted or not (Could cause crashes and non-manifold configs before).</li>
 </ul>
 
 <b>IO</b>
 <ul>
 <li>Made Binary IO readers multi-thread safe. (Thanks to Dominic Genest for the patch)</li>
 <li>Fixed debug build crash on mac, reading from stringstream into emtpy string crashed when compiling with clang</li>
+<li>Fixed stl reader by porting it to std string. It had serious problems in utf8 environments</li>
 </ul>
 
 <b>Geometry</b>
@@ -31,6 +34,7 @@
 <b>Unittests</b>
 <ul>
 <li>Added unittest for calling the normal computations.</li>
+<li>Added unittests for ascii and binary stl files.</li>
 </ul>
 
 
