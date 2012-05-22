@@ -62,14 +62,14 @@ namespace OMFormat {
 
   Chunk::Integer_Size needed_bits( size_t s )
   {
-    if (s <= 0x000100)   return Chunk::Integer_8;
+    if (s <= 0x000100) return Chunk::Integer_8;
     if (s <= 0x010000) return Chunk::Integer_16;
 
 #if 0
     // !Not tested yet! This most probably won't work!
     // NEED a 64bit system!
     if ( (sizeof( size_t ) == 8) && (s >= 0x100000000) )
-	return Chunk::Integer_64;
+      return Chunk::Integer_64;
 #endif
 
     return Chunk::Integer_32;    
