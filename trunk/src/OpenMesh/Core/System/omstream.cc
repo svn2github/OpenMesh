@@ -64,6 +64,7 @@ OpenMesh::mostream& omlog()
 #ifdef NDEBUG
     mystream.disable();
 #endif
+    initialized = true;
   }
   return mystream;
 }
@@ -73,7 +74,11 @@ OpenMesh::mostream& omout()
 {
   static bool initialized = false;
   static OpenMesh::mostream mystream;
-  if (!initialized) mystream.connect(std::cout);
+  if (!initialized)
+  {
+    mystream.connect(std::cout);
+    initialized = true;
+  }
   return mystream;
 }
 
@@ -82,7 +87,11 @@ OpenMesh::mostream& omerr()
 {
   static bool initialized = false;
   static OpenMesh::mostream mystream;
-  if (!initialized) mystream.connect(std::cerr);
+  if (!initialized)
+  {
+    mystream.connect(std::cerr);
+    initialized = true;
+  }
   return mystream;
 }
 
