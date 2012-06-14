@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.2</b> (?/?/?,Rev.585)</td><td>
+<tr valign=top><td><b>2.2</b> (2012/06/14,Rev.587)</td><td>
 
 <b>Core</b>
 <ul>
@@ -29,6 +29,11 @@
 <b>Geometry</b>
 <ul>
 <li>Added normalized function to VectorT which returns a normalized vector whithout modifying the current one.</li>
+</ul>
+
+<b>Geometry</b>
+<ul>
+<li>Fixed multiple connections of the omlog streams. (Thanks to Steffen Sauer for the patch)</li>
 </ul>
 
 <b>Unittests</b>
