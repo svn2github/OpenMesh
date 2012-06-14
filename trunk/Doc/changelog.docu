@@ -34,7 +34,7 @@
 <li>Added normalized function to VectorT which returns a normalized vector whithout modifying the current one.</li>
 </ul>
 
-<b>Geometry</b>
+<b>Utilities</b>
 <ul>
 <li>Fixed multiple connections of the omlog streams. (Thanks to Steffen Sauer for the patch)</li>
 </ul>
