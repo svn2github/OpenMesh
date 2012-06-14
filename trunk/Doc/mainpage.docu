@@ -49,7 +49,7 @@ most important topics of %OpenMesh in the following sections:
 The %OpenMeshTools library that contains some useful tools
 for i.e. mesh processing:
     
-    \li \subpage tools_docu
+\li \subpage tools_docu
     
 <br /><br />
 \subpage tutorial
