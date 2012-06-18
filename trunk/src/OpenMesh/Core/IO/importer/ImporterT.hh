@@ -86,7 +86,7 @@ public:
   typedef std::vector<VertexHandle>  VHandles;
 
 
-  ImporterT(Mesh& _mesh) : mesh_(_mesh) {}
+  ImporterT(Mesh& _mesh) : mesh_(_mesh), halfedgeNormals_() {}
 
 
   virtual VertexHandle add_vertex(const Vec3f& _point)
@@ -131,8 +131,24 @@ public:
         failed_faces_.push_back(_indices);
         return fh;
       }
-    }
 
+      //write the half edge normals
+      if (mesh_.has_halfedge_normals())
+      {
+        //iterate over all incoming haldedges of the added face
+        for (typename Mesh::FaceHalfedgeIter fh_iter = mesh_.fh_begin(fh);
+            fh_iter != mesh_.fh_end(fh); ++fh_iter)
+        {
+          //and write the normals to it
+          typename Mesh::HalfedgeHandle heh = fh_iter.current_halfedge_handle();
+          typename Mesh::VertexHandle vh = mesh_.to_vertex_handle(heh);
+          typename std::map<VertexHandle,Normal>::iterator it_heNs = halfedgeNormals_.find(vh);
+          if (it_heNs != halfedgeNormals_.end())
+            mesh_.set_normal(heh,it_heNs->second);
+        }
+        halfedgeNormals_.clear();
+      }
+    }
     return fh;
   }
 
@@ -142,6 +158,11 @@ public:
   {
     if (mesh_.has_vertex_normals())
       mesh_.set_normal(_vh, vector_cast<Normal>(_normal));
+
+    //saves normals for half edges.
+    //they will be written, when the face is added
+    if (mesh_.has_halfedge_normals())
+      halfedgeNormals_[_vh] = _normal;
   }
 
   virtual void set_color(VertexHandle _vh, const Vec4uc& _color)
@@ -309,6 +330,8 @@ private:
 
   Mesh& mesh_;
   std::vector<VHandles>  failed_faces_;
+  // stores normals for halfedges of the next face
+  std::map<VertexHandle,Normal> halfedgeNormals_;
 };
 
 

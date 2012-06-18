@@ -424,6 +424,9 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
       std::getline(stream,faceLine);
       std::stringstream lineData( faceLine );
 
+      FaceHandle fh;
+      BaseImporter::VHandles faceVertices;
+
       // work on the line until nothing left to read
       while ( !lineData.eof() )
       {
@@ -487,6 +490,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
               }
               // Obj counts from 1 and not zero .. array counts from zero therefore -1
               vhandles.push_back(VertexHandle(value-1));
+              faceVertices.push_back(VertexHandle(value-1));
               if (_opt.vertex_has_color())
                 _bi.set_color(vhandles.back(), colors[value-1]);
               break;
@@ -531,11 +535,16 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
         component = 0;
         nV++;
+
+        fh = _bi.add_face(faceVertices);
+
+        //clear vertices handles, so no face will be added twice
+        if (fh.is_valid())
+          faceVertices.clear();
+
       }
 
-
       size_t n_faces = _bi.n_faces();
-      FaceHandle fh = _bi.add_face(vhandles);
 
       if( !vhandles.empty() && fh.is_valid() )
 	     _bi.add_face_texcoords( fh, vhandles[0], face_texcoords );

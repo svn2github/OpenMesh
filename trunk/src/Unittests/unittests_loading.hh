@@ -139,6 +139,112 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJ) {
     EXPECT_EQ(12, mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
+/*
+ * Just load a obj file of a cube and checks the halfedge and vertex normals
+ */
+TEST_F(OpenMeshLoader, LoadSimpleOBJCheckHalfEdgeAndVertexNormals) {
+
+  mesh_.clear();
+
+  mesh_.request_halfedge_normals();
+  mesh_.request_vertex_normals();
+
+  std::string file_name = "cube-minimal.obj";
+
+  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name);
+
+  EXPECT_TRUE(ok) << file_name;
+
+  EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+  EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
+  EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+  EXPECT_EQ(36, mesh_.n_halfedges()) << "The number of loaded halfedges is not correct!";
+
+  ///////////////////////////////////////////////
+  //check vertex normals
+  EXPECT_EQ(0,   mesh_.normal(mesh_.vertex_handle(0))[0] ) << "Wrong vertex normal at vertex 0 component 0";
+  EXPECT_EQ(-1,   mesh_.normal(mesh_.vertex_handle(0))[1] ) << "Wrong vertex normal at vertex 0 component 1";
+  EXPECT_EQ(0,   mesh_.normal(mesh_.vertex_handle(0))[2] ) << "Wrong vertex normal at vertex 0 component 2";
+
+  EXPECT_EQ(0,   mesh_.normal(mesh_.vertex_handle(3))[0] ) << "Wrong vertex normal at vertex 3 component 0";
+  EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(3))[1] ) << "Wrong vertex normal at vertex 3 component 1";
+  EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(3))[2] ) << "Wrong vertex normal at vertex 3 component 2";
+
+  EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(4))[0] ) << "Wrong vertex normal at vertex 4 component 0";
+  EXPECT_EQ(-1,   mesh_.normal(mesh_.vertex_handle(4))[1] ) << "Wrong vertex normal at vertex 4 component 1";
+  EXPECT_EQ(0,   mesh_.normal(mesh_.vertex_handle(4))[2] ) << "Wrong vertex normal at vertex 4 component 2";
+
+  EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(7))[0] ) << "Wrong vertex normal at vertex 7 component 0";
+  EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(7))[1] ) << "Wrong vertex normal at vertex 7 component 1";
+  EXPECT_EQ(1, mesh_.normal(mesh_.vertex_handle(7))[2] ) << "Wrong vertex normal at vertex 7 component 2";
+
+  ///////////////////////////////////////////////
+  //check halfedge normals
+  EXPECT_EQ(0,   mesh_.normal(mesh_.halfedge_handle(0))[0] ) << "Wrong halfedge normal at halfedge 0 component 0";
+  EXPECT_EQ(0,   mesh_.normal(mesh_.halfedge_handle(0))[1] ) << "Wrong halfedge normal at halfedge 0 component 1";
+  EXPECT_EQ(-1,   mesh_.normal(mesh_.halfedge_handle(0))[2] ) << "Wrong halfedge normal at halfedge 0 component 2";
+
+  EXPECT_EQ(-1,   mesh_.normal(mesh_.halfedge_handle(10))[0] ) << "Wrong halfedge normal at halfedge 10 component 0";
+  EXPECT_EQ(0, mesh_.normal(mesh_.halfedge_handle(10))[1] ) << "Wrong halfedge normal at halfedge 10 component 1";
+  EXPECT_EQ(0, mesh_.normal(mesh_.halfedge_handle(10))[2] ) << "Wrong halfedge normal at halfedge 10 component 2";
+
+  EXPECT_EQ(0, mesh_.normal(mesh_.halfedge_handle(19))[0] ) << "Wrong halfedge normal at halfedge 19 component 0";
+  EXPECT_EQ(1,   mesh_.normal(mesh_.halfedge_handle(19))[1] ) << "Wrong halfedge normal at halfedge 19 component 1";
+  EXPECT_EQ(0,   mesh_.normal(mesh_.halfedge_handle(19))[2] ) << "Wrong halfedge normal at halfedge 19 component 2";
+
+  EXPECT_EQ(1, mesh_.normal(mesh_.halfedge_handle(24))[0] ) << "Wrong halfedge normal at halfedge 24 component 0";
+  EXPECT_EQ(0,   mesh_.normal(mesh_.halfedge_handle(24))[1] ) << "Wrong halfedge normal at halfedge 24 component 1";
+  EXPECT_EQ(0,   mesh_.normal(mesh_.halfedge_handle(24))[2] ) << "Wrong halfedge normal at halfedge 24 component 2";
+
+  EXPECT_EQ(0, mesh_.normal(mesh_.halfedge_handle(30))[0] ) << "Wrong halfedge normal at halfedge 30 component 0";
+  EXPECT_EQ(-1,   mesh_.normal(mesh_.halfedge_handle(30))[1] ) << "Wrong halfedge normal at halfedge 30 component 1";
+  EXPECT_EQ(0,   mesh_.normal(mesh_.halfedge_handle(30))[2] ) << "Wrong halfedge normal at halfedge 30 component 2";
+
+  EXPECT_EQ(0, mesh_.normal(mesh_.halfedge_handle(35))[0] ) << "Wrong halfedge normal at halfedge 35 component 0";
+  EXPECT_EQ(0, mesh_.normal(mesh_.halfedge_handle(35))[1] ) << "Wrong halfedge normal at halfedge 35 component 1";
+  EXPECT_EQ(1, mesh_.normal(mesh_.halfedge_handle(35))[2] ) << "Wrong halfedge normal at halfedge 35 component 2";
+
+  mesh_.release_vertex_normals();
+  mesh_.release_halfedge_normals();
+
+}
+
+/*
+ * Just load a obj file of a cube and checks the halfedge texCoords
+ */
+TEST_F(OpenMeshLoader, LoadSimpleOBJCheckTexCoords) {
+
+  mesh_.clear();
+
+  mesh_.request_halfedge_texcoords2D();
+
+  std::string file_name = "cube-minimal-texCoords.obj";
+
+  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name);
+
+  EXPECT_TRUE(ok) << file_name;
+
+  EXPECT_EQ(1, mesh_.texcoord2D(mesh_.halfedge_handle(0))[0] ) << "Wrong texCoord at halfedge 0 component 0";
+  EXPECT_EQ(1, mesh_.texcoord2D(mesh_.halfedge_handle(0))[1] ) << "Wrong texCoord at halfedge 0 component 1";
+
+  EXPECT_EQ(3, mesh_.texcoord2D(mesh_.halfedge_handle(10))[0] ) << "Wrong texCoord at halfedge 1 component 0";
+  EXPECT_EQ(3, mesh_.texcoord2D(mesh_.halfedge_handle(10))[1] ) << "Wrong texCoord at halfedge 1 component 1";
+
+  EXPECT_EQ(6, mesh_.texcoord2D(mesh_.halfedge_handle(19))[0] ) << "Wrong texCoord at halfedge 4 component 0";
+  EXPECT_EQ(6, mesh_.texcoord2D(mesh_.halfedge_handle(19))[1] ) << "Wrong texCoord at halfedge 4 component 1";
+
+  EXPECT_EQ(7, mesh_.texcoord2D(mesh_.halfedge_handle(24))[0] ) << "Wrong texCoord at halfedge 7 component 0";
+  EXPECT_EQ(7, mesh_.texcoord2D(mesh_.halfedge_handle(24))[1] ) << "Wrong texCoord at halfedge 7 component 1";
+
+  EXPECT_EQ(9, mesh_.texcoord2D(mesh_.halfedge_handle(30))[0] ) << "Wrong texCoord at halfedge 9 component 0";
+  EXPECT_EQ(9, mesh_.texcoord2D(mesh_.halfedge_handle(30))[1] ) << "Wrong texCoord at halfedge 9 component 1";
+
+  EXPECT_EQ(12, mesh_.texcoord2D(mesh_.halfedge_handle(35))[0] ) << "Wrong texCoord at halfedge 11 component 0";
+  EXPECT_EQ(12, mesh_.texcoord2D(mesh_.halfedge_handle(35))[1] ) << "Wrong texCoord at halfedge 11 component 1";
+
+  mesh_.release_halfedge_texcoords2D();
+}
+
 
 /*
  * Just load a obj file of a cube with vertex colors defined directly after the vertex definitions
