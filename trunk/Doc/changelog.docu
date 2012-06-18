@@ -7,7 +7,17 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.594)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.597)</td><td>
+
+<b>IO</b>
+<ul>
+<li>Fixed OBJ Reader not correctly setting per halfedge normals. (Thanks to Patrick Rauber for the report)</li>
+</ul>
+
+<b>Unittests</b>
+<ul>
+<li>Added unittest for OBJ texture coordinates.</li>
+</ul>
 
 <b>Documentation</b>
 <ul>
