@@ -255,14 +255,17 @@ calc_halfedge_normal(HalfedgeHandle _heh, const double _feature_angle) const
     {
       heh = Kernel::opposite_halfedge_handle(_heh);
 
-      do
-      {
-        fhs.push_back(Kernel::face_handle(heh));
+      if ( !Kernel::is_boundary(heh) ) {
+        do
+        {
 
-        heh = Kernel::prev_halfedge_handle(heh);
-        heh = Kernel::opposite_halfedge_handle(heh);
+          fhs.push_back(Kernel::face_handle(heh));
+
+          heh = Kernel::prev_halfedge_handle(heh);
+          heh = Kernel::opposite_halfedge_handle(heh);
+        }
+        while(!Kernel::is_boundary(heh) && !is_estimated_feature_edge(heh, _feature_angle));
       }
-      while(!Kernel::is_boundary(heh) && !is_estimated_feature_edge(heh, _feature_angle));
     }
 
     Normal n(0,0,0);
