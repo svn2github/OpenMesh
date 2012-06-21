@@ -293,7 +293,7 @@ int main(int argc, char **argv)
   {
     open_prog_mesh(ifname);
     vdpm_analysis();
-    save_vd_prog_mesh(spmfname.c_str());
+    save_vd_prog_mesh(spmfname);
   }
   catch( std::bad_alloc& )
   {
