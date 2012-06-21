@@ -2,6 +2,45 @@
 # Custom settings for compiler flags and similar
 ################################################################################
 
+if ( WIN32 )
+  ################################################################################
+  # Windows large memory support
+  ################################################################################
+  if ( NOT DEFINED WINDOWS_LARGE_MEMORY_SUPPORT )
+    set( WINDOWS_LARGE_MEMORY_SUPPORT true CACHE BOOL "Enable or disable binary support for large memory" )
+  endif()
+  
+  set( ADDITIONAL_CMAKE_EXE_LINKER_FLAGS )
+  set( ADDITIONAL_CMAKE_SHARED_LINKER_FLAGS )
+  set( ADDITIONAL_CMAKE_MODULE_LINKER_FLAGS )
+  
+  if ( WINDOWS_LARGE_MEMORY_SUPPORT )
+	list(APPEND ADDITIONAL_CMAKE_EXE_LINKER_FLAGS       "/LARGEADDRESSAWARE" )
+	list(APPEND ADDITIONAL_CMAKE_SHARED_LINKER_FLAGS    "/LARGEADDRESSAWARE" )
+	list(APPEND ADDITIONAL_CMAKE_MODULE_LINKER_FLAGS    "/LARGEADDRESSAWARE" )
+  endif()
+  
+  
+  foreach( flag ${ADDITIONAL_CMAKE_EXE_LINKER_FLAGS} )
+    if( NOT CMAKE_EXE_LINKER_FLAGS MATCHES "${flag}" )
+      set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${flag} ")
+    endif()
+  endforeach()
+  
+  foreach( flag ${ADDITIONAL_CMAKE_SHARED_LINKER_FLAGS} )
+    if( NOT CMAKE_SHARED_LINKER_FLAGS MATCHES "${flag}" )
+      set( CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${flag} ")
+    endif()
+  endforeach()
+  
+  foreach( flag ${ADDITIONAL_CMAKE_MODULE_LINKER_FLAGS} )
+    if( NOT CMAKE_MODULE_LINKER_FLAGS MATCHES "${flag}" )
+      set( CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${flag} ")
+    endif()
+  endforeach()
+
+endif( WIN32 )
+
 if (UNIX)
 
   set ( ADDITIONAL_CXX_DEBUG_FLAGS )
@@ -57,22 +96,28 @@ if (UNIX)
   ################################################################################
   # Warnings
   ################################################################################
-  
-  IF( NOT CMAKE_SYSTEM MATCHES "SunOS*")
-    list(APPEND ADDITIONAL_CXX_DEBUG_FLAGS          "-W" "-Wall" "-Wno-unused" )
-    list(APPEND ADDITIONAL_CXX_RELEASE_FLAGS        "-W" "-Wall" "-Wno-unused" )
-    list(APPEND ADDITIONAL_CXX_RELWITHDEBINFO_FLAGS "-W" "-Wall" "-Wno-unused" )    
+ 
+  # Add the standard compiler warnings
+  if ( NOT COMPILER_WARNINGS )
+   
+    IF ( APPLE  )
+      # Skip unused parameters as it has to be used for the documentation via doxygen and the interfaces
+      set ( COMPILER_WARNINGS "-W" "-Wall" "-Wno-unused" "-Wextra" "-Wno-non-virtual-dtor" "-Wno-unused-parameter" CACHE STRINGLIST "This list contains the warning flags used during compilation " )
+    ELSEIF ( CMAKE_SYSTEM MATCHES "SunOS*" )
+      set ( COMPILER_WARNINGS "" CACHE STRINGLIST "This list contains the warning flags used during compilation " )
+    ELSE ()
+      set ( COMPILER_WARNINGS "-W" "-Wall" "-Wno-unused" "-Wextra" CACHE STRINGLIST "This list contains the warning flags used during compilation " )
+    ENDIF()
+
+  endif ( NOT COMPILER_WARNINGS )
+
+  list(APPEND ADDITIONAL_CXX_DEBUG_FLAGS          ${COMPILER_WARNINGS} )
+  list(APPEND ADDITIONAL_CXX_RELEASE_FLAGS        ${COMPILER_WARNINGS} )
+  list(APPEND ADDITIONAL_CXX_RELWITHDEBINFO_FLAGS ${COMPILER_WARNINGS} )    
     
-    list(APPEND ADDITIONAL_C_DEBUG_FLAGS            "-W" "-Wall" "-Wno-unused" )
-    list(APPEND ADDITIONAL_C_RELEASE_FLAGS          "-W" "-Wall" "-Wno-unused" )
-    list(APPEND ADDITIONAL_C_RELWITHDEBINFO_FLAGS   "-W" "-Wall" "-Wno-unused" )
-  ENDIF()
-  
-  if (APPLE)
-    list(APPEND ADDITIONAL_CXX_DEBUG_FLAGS          "-Wno-non-virtual-dtor" )
-    list(APPEND ADDITIONAL_CXX_RELEASE_FLAGS        "-Wno-non-virtual-dtor" )
-    list(APPEND ADDITIONAL_CXX_RELWITHDEBINFO_FLAGS "-Wno-non-virtual-dtor" ) 
-  endif ()  
+  list(APPEND ADDITIONAL_C_DEBUG_FLAGS            ${COMPILER_WARNINGS} )
+  list(APPEND ADDITIONAL_C_RELEASE_FLAGS          ${COMPILER_WARNINGS} )
+  list(APPEND ADDITIONAL_C_RELWITHDEBINFO_FLAGS   ${COMPILER_WARNINGS} )
   
   ################################################################################
   # STL Vector checks
