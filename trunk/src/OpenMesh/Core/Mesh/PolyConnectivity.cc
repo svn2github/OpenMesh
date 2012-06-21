@@ -51,6 +51,7 @@ const PolyConnectivity::EdgeHandle      PolyConnectivity::InvalidEdgeHandle;
 const PolyConnectivity::FaceHandle      PolyConnectivity::InvalidFaceHandle;
 
 //-----------------------------------------------------------------------------
+
 PolyConnectivity::HalfedgeHandle
 PolyConnectivity::find_halfedge(VertexHandle _start_vh, VertexHandle _end_vh ) const
 {
@@ -279,6 +280,26 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size
   return fh;
 }
 
+//-----------------------------------------------------------------------------
+
+FaceHandle PolyConnectivity::add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2, VertexHandle _vh3)
+{
+  VertexHandle vhs[4] = { _vh0, _vh1, _vh2, _vh3 };
+  return add_face(vhs, 4);
+}
+
+//-----------------------------------------------------------------------------
+
+FaceHandle PolyConnectivity::add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2)
+{
+  VertexHandle vhs[3] = { _vh0, _vh1, _vh2 };
+  return add_face(vhs, 3);
+}
+
+//-----------------------------------------------------------------------------
+
+FaceHandle PolyConnectivity::add_face(const std::vector<VertexHandle>& _vhandles)
+{ return add_face(&_vhandles.front(), _vhandles.size()); }
 
 
 //-----------------------------------------------------------------------------

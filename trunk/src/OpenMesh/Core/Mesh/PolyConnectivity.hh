@@ -187,8 +187,7 @@ public:
   *
   * @param _vhandles sorted list of vertex handles (also defines order in which the vertices are added to the face)
   */
-  FaceHandle add_face(const std::vector<VertexHandle>& _vhandles)
-  { return add_face(&_vhandles.front(), _vhandles.size()); }
+  FaceHandle add_face(const std::vector<VertexHandle>& _vhandles);
  
    
   /** \brief Add and connect a new face
@@ -200,11 +199,7 @@ public:
   * @param _vh1 Second vertex handle
   * @param _vh2 Third  vertex handle
   */
-  FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2)
-  { 
-    VertexHandle vhs[3] = { _vh0, _vh1, _vh2 };
-    return add_face(vhs, 3); 
-  }
+  FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2);
 
   /** \brief Add and connect a new face
   *
@@ -216,11 +211,7 @@ public:
   * @param _vh2 Third  vertex handle
   * @param _vh3 Fourth vertex handle
   */
-  FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2, VertexHandle _vh3)
-  { 
-    VertexHandle vhs[4] = { _vh0, _vh1, _vh2, _vh3 };
-    return add_face(vhs, 4); 
-  }
+  FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2, VertexHandle _vh3);
  
   /** \brief Add and connect a new face
   *
@@ -231,6 +222,7 @@ public:
   * @param _vhs_size number of vertex handles in the array
   */
   FaceHandle add_face(const VertexHandle* _vhandles, size_t _vhs_size);
+
   //@}
 
   /// \name Deleting mesh items and other connectivity/topology modifications

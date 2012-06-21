@@ -72,20 +72,40 @@ public:
   
   /** \name Addding items to a mesh
   */
+
   //@{
-  /** Override OpenMesh::Mesh::PolyMeshT::add_face(). Faces that aren't
-      triangles will be triangulated and added. In this case an
-      invalid face handle will be returned.  */
-  FaceHandle add_face(const std::vector<VertexHandle>& _vhandles)
-  { return add_face(&_vhandles.front(), _vhandles.size()); }
-  
+
+  /** \brief Add a face with arbitrary valence to the triangle mesh
+   *
+   * Override OpenMesh::Mesh::PolyMeshT::add_face(). Faces that aren't
+   * triangles will be triangulated and added. In this case an
+   * invalid face handle will be returned.
+   *
+   *
+   * */
   FaceHandle add_face(const VertexHandle* _vhandles, size_t _vhs_size);
   
-  FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2)
-  { 
-    VertexHandle vhs[3] = { _vh0, _vh1, _vh2 };
-    return PolyConnectivity::add_face(vhs, 3); 
-  }
+  /** \brief Add a face with arbitrary valence to the triangle mesh
+     *
+     * Override OpenMesh::Mesh::PolyMeshT::add_face(). Faces that aren't
+     * triangles will be triangulated and added. In this case an
+     * invalid face handle will be returned.
+     *
+     *
+     * */
+  FaceHandle add_face(const std::vector<VertexHandle>& _vhandles);
+
+  /** \brief Add a face to the mesh (triangle)
+   *
+   * This function adds a triangle to the mesh. The triangle is passed directly
+   * to the underlying PolyConnectivity as we don't explicitly need to triangulate something.
+   *
+   * @param _vh0 VertexHandle 1
+   * @param _vh1 VertexHandle 2
+   * @param _vh2 VertexHandle 3
+   * @return FaceHandle of the added face (invalid, if the operation failed)
+   */
+  FaceHandle add_face(VertexHandle _vh0, VertexHandle _vh1, VertexHandle _vh2);
   
   //@}
 

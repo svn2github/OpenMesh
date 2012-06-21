@@ -5,11 +5,14 @@
 #include <OpenMesh/Core/IO/MeshIO.hh>
 
 #include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
+#include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
 
 struct CustomTraits : public OpenMesh::DefaultTraits {
 };
 
 typedef OpenMesh::TriMesh_ArrayKernelT<CustomTraits> Mesh;
+
+typedef OpenMesh::PolyMesh_ArrayKernelT<CustomTraits> PolyMesh;
 
 /*
  * Simple test setting.
@@ -34,5 +37,31 @@ class OpenMeshBase : public testing::Test {
     // This member will be accessible in all tests
     Mesh mesh_;  
 };
+
+/*
+ * Simple test setting.
+ */
+
+class OpenMeshBasePoly : public testing::Test {
+
+    protected:
+
+        // This function is called before each test is run
+        virtual void SetUp() {
+            
+            // Do some initial stuff with the member data here...
+        }
+
+        // This function is called after all tests are through
+        virtual void TearDown() {
+
+            // Do some final stuff with the member data here...
+        }
+
+    // This member will be accessible in all tests
+   PolyMesh mesh_;  
+};
+
+
 
 #endif // INCLUDE GUARD
