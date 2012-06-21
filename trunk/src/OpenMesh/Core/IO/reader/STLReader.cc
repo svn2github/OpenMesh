@@ -226,7 +226,7 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
 
   std::string line;
 
-  bool normal = false;
+  //bool normal = false;
 
   while( in && !in.eof() ) {
 
@@ -257,7 +257,7 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
       strstream >> n[1];
       strstream >> n[2];
 
-      normal = true;
+      //normal = true;
     }
 
     // Detected a triangle
@@ -303,7 +303,7 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
 
       }
 
-      normal = false;
+      //normal = false;
     }
   }
 
