@@ -7,20 +7,23 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.597)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.601)</td><td>
 
 <b>IO</b>
 <ul>
 <li>Fixed OBJ Reader not correctly setting per halfedge normals. (Thanks to Patrick Rauber for the report)</li>
+<li>Fixed bug in halfedge normal computation, where a boundary halfedge was not correctly handled and caused a segfault.</li>
 </ul>
 
 <b>Unittests</b>
 <ul>
 <li>Added unittest for OBJ texture coordinates.</li>
+<li>Added unittests for add_face.</li>
 </ul>
 
 <b>Documentation</b>
 <ul>
+<li>More documentation for the add_face functions (and some code cleanup)</li>
 <li>Updated doxyfile.config.in version</li>
 <li>Fixed typo on main page</li>
 </ul>
