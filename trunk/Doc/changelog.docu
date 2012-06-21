@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.601)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.606)</td><td>
 
 <b>IO</b>
 <ul>
@@ -27,6 +27,15 @@
 <li>Updated doxyfile.config.in version</li>
 <li>Fixed typo on main page</li>
 </ul>
+
+<b>Build system</b>
+<ul>
+<li>Updated the Compiler flags construction to remove some unnecessary warnings with clang</li>
+<li>Don't add the largeaddressaware flag when building with mingw</li>
+</ul>
+
+
+
 
 </tr>
 
