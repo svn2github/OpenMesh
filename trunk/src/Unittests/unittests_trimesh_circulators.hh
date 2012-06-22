@@ -20,6 +20,7 @@ class OpenMeshCirculators : public OpenMeshBase {
             // Do some final stuff with the member data here...
         }
 
+
     // Member already defined in OpenMeshBase
     //Mesh mesh_;  
 };
@@ -510,8 +511,73 @@ TEST_F(OpenMeshCirculators, FaceFaceIterWithoutHoles) {
 
 }
 
+/*
+ * Small FaceFaceIterator Test for getting handles and faces from the facefaceiterator
+ */
+TEST_F(OpenMeshCirculators, FaceFaceIteratorHandleConversion) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[4];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 0, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(1, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
 
 
+  // Add two faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
 
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  Mesh::FaceHandle fh1 = mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[2]);
+  Mesh::FaceHandle fh2 = mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  /* Test setup:
+   *
+   *  1 -------- 2
+   *  | f0  /    |
+   *  |    / f1  |
+   *  0 -------- 3
+   */
+
+  // Check setup
+  EXPECT_EQ(4, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(2, mesh_.n_faces() )    << "Wrong number of faces";
+
+
+  Mesh::ConstFaceFaceIter face_iter = mesh_.cff_iter(fh1);
+
+
+  // Get the face via the handle
+  Mesh::FaceHandle faceHandle1 = mesh_.handle(*face_iter);
+  const Mesh::Face& face1 = mesh_.face(faceHandle1);
+
+  EXPECT_EQ(1, faceHandle1.idx() ) << "Wrong face handle index when getting from iterator via handle";
+
+  // Get the face via the face itself
+  const Mesh::Face& face = *face_iter;
+  Mesh::FaceHandle fh = mesh_.handle(face);
+
+
+  EXPECT_EQ(1, fh.idx() ) << "Wrong face handle index when getting from iterator via face";
+
+  bool correct = (&face == &face1);
+
+  // Compare the faces
+  EXPECT_TRUE(correct) << "The faces are different although both ways should give the same one";
+ 
+}
 
 #endif // INCLUDE GUARD
