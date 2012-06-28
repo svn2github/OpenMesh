@@ -53,6 +53,7 @@
 #include <OpenMesh/Tools/Subdivider/Uniform/CompositeLoopT.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/Sqrt3InterpolatingSubdividerLabsikGreinerT.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/ModifiedButterFlyT.hh>
+#include <OpenMesh/Tools/Subdivider/Uniform/CatmullClarkT.hh>
 
 // ----------------------------------------------------------------------------
 
@@ -68,6 +69,7 @@ typedef Uniform::CompositeSqrt3T< CMesh >                    CompositeSqrt3;
 typedef Uniform::CompositeLoopT< CMesh >                     CompositeLoop;
 typedef Uniform::InterpolatingSqrt3LGT< Mesh >               InterpolatingSqrt3LG;
 typedef Uniform::ModifiedButterflyT< Mesh >                  ModifiedButterfly;
+typedef Uniform::CatmullClarkT< Mesh >                       CatmullClark;
 
 using OpenMesh::Utils::Timer;
 
@@ -195,7 +197,8 @@ int main(int argc, char **argv)
     TypeCompSqrt3,
     TypeCompLoop,
     TypeLabsikGreiner,
-    TypeModButterfly
+    TypeModButterfly,
+    TypeCatmullClark
   } st = TypeSqrt3;
 
   Timer::Format fmt = Timer::Automatic;
@@ -211,6 +214,7 @@ int main(int argc, char **argv)
       case 'L': st = TypeCompLoop; break;
       case 'b': st = TypeLabsikGreiner; break;
       case 'B': st = TypeModButterfly; break;
+      case 'C': st = TypeCatmullClark; std::cerr << "Not yet supported, as it needs a poly mesh!"; break;
       case 'f': 
       {
         switch(*optarg)
@@ -255,6 +259,7 @@ int main(int argc, char **argv)
     rc += mainT<CompositeLoop>          ( n, ifname, "", fmt );
     rc += mainT<InterpolatingSqrt3LG>   ( n, ifname, "", fmt );
     rc += mainT<ModifiedButterfly>      ( n, ifname, "", fmt );
+    rc += mainT<CatmullClark>           ( n, ifname, "", fmt );
     
     if (rc)
       return rc;
@@ -294,6 +299,8 @@ int main(int argc, char **argv)
       return mainT<InterpolatingSqrt3LG> ( n, ifname, ofname, fmt );
     case TypeModButterfly:
       return mainT<ModifiedButterfly> ( n, ifname, ofname, fmt );
+    case TypeCatmullClark:
+      return mainT<CatmullClark> ( n, ifname, ofname, fmt );
   }
   return 1;
 }
@@ -312,6 +319,7 @@ void usage_and_exit(int _xcode)
             << "  -S\tComposite Sqrt3\n"
             << "  -b\tInterpolating Sqrt3 Labsik-Greiner\n"
             << "  -B\tModified Butterfly\n"
+           // << "  -C\tCatmullClark\n"
             << std::endl;
   exit(_xcode);
 }

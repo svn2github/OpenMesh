@@ -85,7 +85,7 @@ public:
     CHECK_EDGES     = 1,
     CHECK_VERTICES  = 2,
     CHECK_FACES     = 4,
-    CHECK_ALL       = 255,
+    CHECK_ALL       = 255
   };
 
   

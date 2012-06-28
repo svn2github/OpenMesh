@@ -72,11 +72,10 @@
 #include <OpenMesh/Tools/Subdivider/Uniform/Sqrt3T.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/Sqrt3InterpolatingSubdividerLabsikGreinerT.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/ModifiedButterFlyT.hh>
+#include <OpenMesh/Tools/Subdivider/Uniform/CatmullClarkT.hh>
 
-// My stuff
 #include <OpenMesh/Apps/Subdivider/SubdivideWidget.hh>
 
-//
 
 using namespace OpenMesh::Subdivider;
 
@@ -149,6 +148,7 @@ SubdivideWidget(QWidget* _parent, const char* _name)
   QRadioButton* radio4 = new QRadioButton( "Sqrt(3)" );
   QRadioButton* radio5 = new QRadioButton( "Interpolating Sqrt3" );
   QRadioButton* radio6 = new QRadioButton( "Modified Butterfly" );
+  // QRadioButton* radio7 = new QRadioButton( "Catmull Clark" ); // Disabled, as it needs a quad mesh!
   radio3->setChecked( TRUE );
   sel_topo_type = SOP_UniformLoop;
 
@@ -158,6 +158,7 @@ SubdivideWidget(QWidget* _parent, const char* _name)
   buttonGroup->addButton(radio4, SOP_UniformSqrt3);
   buttonGroup->addButton(radio5, SOP_UniformInterpolatingSqrt3);
   buttonGroup->addButton(radio6, SOP_ModifiedButterfly);
+  //buttonGroup->addButton(radio7, SOP_CatmullClark);
 
   vbox->addWidget(radio1);
   vbox->addWidget(radio2);
@@ -165,6 +166,7 @@ SubdivideWidget(QWidget* _parent, const char* _name)
   vbox->addWidget(radio4);
   vbox->addWidget(radio5);
   vbox->addWidget(radio6);
+  // vbox->addWidget(radio7);
 
   QObject::connect( buttonGroup, SIGNAL( buttonPressed(int) ),
                           this, SLOT( slot_select_sop(int) ) );
@@ -191,6 +193,7 @@ SubdivideWidget(QWidget* _parent, const char* _name)
   subdivider_[SOP_UniformSqrt3]              = new Uniform::Sqrt3T<Mesh>;
   subdivider_[SOP_UniformInterpolatingSqrt3] = new Uniform::InterpolatingSqrt3LGT< Mesh >;
   subdivider_[SOP_ModifiedButterfly]         = new Uniform::ModifiedButterflyT<Mesh>;
+  subdivider_[SOP_CatmullClark]              = new Uniform::CatmullClarkT<Mesh>;
 
 }
 
@@ -204,9 +207,10 @@ void SubdivideWidget::slot_select_sop(int i)
     case SOP_UniformCompositeLoop:
     case SOP_UniformCompositeSqrt3:
     case SOP_UniformLoop:
+    case SOP_UniformSqrt3:
     case SOP_UniformInterpolatingSqrt3:
     case SOP_ModifiedButterfly:
-    case SOP_UniformSqrt3:          sel_topo_type = (SOPType)i; break;
+    case SOP_CatmullClark:          sel_topo_type = (SOPType)i; break;
     default:                        sel_topo_type = SOP_Undefined;
   }
 }

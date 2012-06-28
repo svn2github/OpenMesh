@@ -7,6 +7,7 @@
 #include "unittests_trimesh_collapse.hh"
 #include "unittests_trimesh_circulators.hh"
 #include "unittests_decimater.hh"
+#include "unittests_subdivider.hh"
 #include "unittests_trimesh_normal_calculations.hh"
 #include "unittests_trimesh_others.hh"
 #include "unittests_add_face.hh"

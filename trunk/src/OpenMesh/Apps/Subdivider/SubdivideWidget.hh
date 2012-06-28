@@ -77,6 +77,7 @@ public:
     SOP_UniformSqrt3,
     SOP_UniformInterpolatingSqrt3,
     SOP_ModifiedButterfly,
+    SOP_CatmullClark,
     SOP_Undefined
   };
 
