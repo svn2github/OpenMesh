@@ -121,7 +121,7 @@ public:
 
 
   /// Pre-compute weights
-  void init_weights(size_t _max_valence=20)
+  void init_weights(size_t _max_valence=30)
   {
     weights.resize(_max_valence);
 
