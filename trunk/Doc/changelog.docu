@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.606)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.610)</td><td>
 
 <b>IO</b>
 <ul>
@@ -19,7 +19,14 @@
 <ul>
 <li>Added unittest for OBJ texture coordinates.</li>
 <li>Added unittests for add_face.</li>
+<li>Added unittest for getting handles and faces from the iterator.</li>
 </ul>
+
+<b>Tools</b>
+<ul>
+<li>Added catmull clark subdivider. Thanks to Leon Kos for the code.</li>
+</ul>
+
 
 <b>Documentation</b>
 <ul>
