@@ -207,7 +207,7 @@ public:
   template <class _AttribKernel>
   void assign(const _AttribKernel& _other)
   {
-    assign_connectivity(_other);
+    this->assign_connectivity(_other);
     for (typename Connectivity::VertexIter v_it = Connectivity::vertices_begin();
          v_it != Connectivity::vertices_end(); ++v_it)
     {//assumes Point constructor supports cast from _AttribKernel::Point
