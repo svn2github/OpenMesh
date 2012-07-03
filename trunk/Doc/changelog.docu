@@ -7,7 +7,12 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.610)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.613)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Fixed some gcc-4.7 incompatibilities</li>
+</ul>
 
 <b>IO</b>
 <ul>
