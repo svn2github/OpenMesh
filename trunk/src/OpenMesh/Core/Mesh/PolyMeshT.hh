@@ -316,7 +316,7 @@ public:
   /** Calculates the edge vector as the vector defined by
       the halfedge with id #0 (see below)  */
   void calc_edge_vector(EdgeHandle _eh, Normal& _edge_vec) const
-  { calc_edge_vector(halfedge_handle(_eh,0), _edge_vec); }
+  { calc_edge_vector( this->halfedge_handle(_eh,0), _edge_vec); }
 
   /** Calculates the edge vector as the difference of the
       the points defined by to_vertex_handle() and from_vertex_handle() */
