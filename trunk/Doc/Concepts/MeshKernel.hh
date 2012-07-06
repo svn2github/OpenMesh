@@ -178,6 +178,9 @@ public:
   void clear();
   /** Remove all items that are marked as deleted from the
       corresponding containers.
+      \note All handles (and indices) to any entity (face, vertex,
+            edge, halfedge) created before garbage collection  
+            will be out of sync with the mesh, do not use them anymore!
       \note Needs the Attributes::Status attribute
       \note This function may not be implemented for all kernels.
   */
