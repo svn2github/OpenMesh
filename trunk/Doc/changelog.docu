@@ -37,6 +37,7 @@
 <ul>
 <li>More documentation for the add_face functions (and some code cleanup)</li>
 <li>Updated doxyfile.config.in version</li>
+<li>Updated documentation for garbage collection</li>
 <li>Fixed typo on main page</li>
 </ul>
 
