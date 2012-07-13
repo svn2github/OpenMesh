@@ -552,10 +552,10 @@ public:
     { return kernel_.status(_hnd).is_bit_set(bit_mask_); }
 
     inline void                             insert(Handle _hnd)
-    { return kernel_.status(_hnd).set_bit(bit_mask_); }
+    { kernel_.status(_hnd).set_bit(bit_mask_); }
 
     inline void                             erase(Handle _hnd)
-    { return kernel_.status(_hnd).unset_bit(bit_mask_); }
+    { kernel_.status(_hnd).unset_bit(bit_mask_); }
 
     /// Note: 0(n) complexity
     uint                                    size() const
