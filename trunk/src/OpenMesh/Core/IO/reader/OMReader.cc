@@ -521,7 +521,7 @@ size_t _OMReader_::restore_binary_custom_data(std::istream& _is, BaseProperty* _
   Chunk::esize_t block_size;
   Chunk::PropertyName custom_prop;
 
-  bytes += binary<Chunk::esize_t>::restore(_is, block_size, _swap);
+  bytes += restore(_is, block_size, OMFormat::Chunk::Integer_32, _swap);
 
   if (_bp) {
     size_t n_bytes = _bp->size_of(_n_elem);
