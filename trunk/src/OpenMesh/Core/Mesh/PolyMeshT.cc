@@ -169,8 +169,8 @@ PolyMeshT<Kernel>::
 calc_face_centroid(FaceHandle _fh, Point& _pt) const
 {
   _pt.vectorize(0);
-  uint valence = 0;
-  for (ConstFaceVertexIter cfv_it = this->cfv_iter(_fh); cfv_it; ++cfv_it, ++valence)
+  Scalar valence = 0.0;
+  for (ConstFaceVertexIter cfv_it = this->cfv_iter(_fh); cfv_it; ++cfv_it, valence += 1.0)
   {
     _pt += this->point(cfv_it);
   }
