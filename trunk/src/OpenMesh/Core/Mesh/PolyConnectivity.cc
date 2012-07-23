@@ -507,6 +507,7 @@ void PolyConnectivity::delete_face(FaceHandle _fh, bool _delete_isolated_vertice
 
 
   // delete all collected (half)edges
+  // these edges were all boundary
   // delete isolated vertices (if _delete_isolated_vertices is true)
   if (!deleted_edges.empty())
   {
@@ -533,6 +534,15 @@ void PolyConnectivity::delete_face(FaceHandle _fh, bool _delete_isolated_vertice
 
       // mark edge deleted
       status(*del_it).set_deleted(true);
+
+
+      // mark corresponding halfedges as deleted
+      // As the deleted edge is boundary,
+      // all corresponding halfedges will also e deleted.
+      if ( has_halfedge_status() ) {
+        status(h0).set_deleted(true);
+        status(h1).set_deleted(true);
+      }
 
       // update v0
       if (halfedge_handle(v0) == h1)

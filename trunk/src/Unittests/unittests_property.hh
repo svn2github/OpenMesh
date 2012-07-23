@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 #include <Unittests/unittests_common.hh>
-#include <iostream>
+
 class OpenMeshProperties : public OpenMeshBase {
 
     protected:
@@ -67,8 +67,8 @@ TEST_F(OpenMeshProperties, VertexPropertyCheckDouble) {
   //  0 === 3
 
   // Check setup
-  EXPECT_EQ(4, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(2, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(4u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(2u, mesh_.n_faces() )    << "Wrong number of faces";
 
   // Add a double vertex property
   OpenMesh::VPropHandleT<double> doubleHandle;
@@ -158,8 +158,8 @@ TEST_F(OpenMeshProperties, VertexPropertyCheckBool) {
   //  0 === 3
 
   // Check setup
-  EXPECT_EQ(4, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(2, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(4u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(2u, mesh_.n_faces() )    << "Wrong number of faces";
 
   // Add a double vertex property
   OpenMesh::VPropHandleT<bool> boolHandle;
@@ -210,5 +210,52 @@ TEST_F(OpenMeshProperties, VertexPropertyCheckBool) {
   EXPECT_EQ( it, end ) << "End iterator not mathing!";
 
 }
+
+/*
+ * Checking for deleted flags of halfedge and edge handles
+ * 
+ * Checks if after deleting a face, all halfedges and edges are arked as deleted as well
+*/
+TEST_F(OpenMeshProperties, CheckStatusPropertiesHalfedgeEdgeAllDeleted) {
+
+  mesh_.clear();
+
+  mesh_.request_vertex_status();
+  mesh_.request_face_status();
+  mesh_.request_halfedge_status();
+  mesh_.request_edge_status();
+
+  // Define positions
+  Mesh::Point p1 = Mesh::Point(0, 0, 0);
+  Mesh::Point p2 = Mesh::Point(0, 1, 0);
+  Mesh::Point p3 = Mesh::Point(1, 1, 0);
+  Mesh::Point p4 = Mesh::Point(0, 0, 1);
+  
+  // Add some vertices
+  Mesh::VertexHandle vh1 = mesh_.add_vertex(p1);
+  Mesh::VertexHandle vh2 = mesh_.add_vertex(p2);
+  Mesh::VertexHandle vh3 = mesh_.add_vertex(p3);
+  Mesh::VertexHandle vh4 = mesh_.add_vertex(p4);
+
+  // Add some faces
+  Mesh::FaceHandle f1 = mesh_.add_face(vh1,vh3,vh2);
+  Mesh::FaceHandle f2 = mesh_.add_face(vh1,vh2,vh4);
+  Mesh::FaceHandle f3 = mesh_.add_face(vh2,vh3,vh4);
+  Mesh::FaceHandle f4 = mesh_.add_face(vh3,vh1,vh4);
+
+  // delete all faces
+  mesh_.delete_face(f1);
+  mesh_.delete_face(f2);
+  mesh_.delete_face(f3);
+  mesh_.delete_face(f4);
+
+  for(typename Mesh::ConstHalfedgeIter he_it = mesh_.halfedges_begin(); he_it != mesh_.halfedges_end(); ++he_it)
+  {
+      EXPECT_TRUE( mesh_.status(mesh_.edge_handle(he_it.handle())).deleted()  ) << "Edge not deleted";
+      EXPECT_TRUE( mesh_.status(he_it.handle()).deleted()                     ) << "Halfedge not deleted";
+  }
+
+}
+
 
 #endif // INCLUDE GUARD

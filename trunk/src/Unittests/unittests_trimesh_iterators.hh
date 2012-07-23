@@ -67,9 +67,8 @@ TEST_F(OpenMeshIterators, VertexIter) {
   //  | /   |
   //  0 === 3
 
-  Mesh::VertexIter v_it=mesh_.vertices_begin(); 
-  Mesh::VertexIter  v_end=mesh_.vertices_end(); 
-
+  Mesh::VertexIter v_it  = mesh_.vertices_begin(); 
+  Mesh::VertexIter v_end = mesh_.vertices_end(); 
 
   EXPECT_EQ(0, v_it.handle().idx()) << "Index wrong for vertex iterator vertices_begin()";
   ++v_it;
