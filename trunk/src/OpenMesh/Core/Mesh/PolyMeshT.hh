@@ -446,7 +446,7 @@ public:
   /** calculates the dihedral angle on the edge _eh
       \attention Needs the Attributes::Normal attribute for faces */
   Scalar calc_dihedral_angle_fast(EdgeHandle _eh) const
-  { return calc_dihedral_angle_fast(halfedge_handle(_eh,0)); }
+  { return calc_dihedral_angle_fast(this->halfedge_handle(_eh,0)); }
 
   // calculates the dihedral angle on the halfedge _heh
   Scalar calc_dihedral_angle(HalfedgeHandle _heh) const
