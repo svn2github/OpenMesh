@@ -89,8 +89,8 @@ TEST_F(OpenMeshAddFaceTriangleMesh, AddTrianglesToTrimesh) {
   //  0 === 3
 
   // Check setup
-  EXPECT_EQ(4, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(2, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(4u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(2u, mesh_.n_faces() )    << "Wrong number of faces";
 
 }
 
@@ -126,8 +126,8 @@ TEST_F(OpenMeshAddFaceTriangleMesh, AddQuadToTrimesh) {
   //  0 === 3
 
   // Check setup
-  EXPECT_EQ(4, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(2, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(4u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(2u, mesh_.n_faces() )    << "Wrong number of faces";
 
 }
 
@@ -163,8 +163,8 @@ TEST_F(OpenMeshAddFacePolyMesh, AddQuadToPolymesh) {
   //  0 === 3
 
   // Check setup
-  EXPECT_EQ(4, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(1, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(4u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(1u, mesh_.n_faces() )    << "Wrong number of faces";
 
 }
 

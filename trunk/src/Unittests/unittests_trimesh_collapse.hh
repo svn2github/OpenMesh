@@ -157,7 +157,7 @@ TEST_F(OpenMeshCollapse, CollapseTetrahedronComplex) {
    */
 
 
-  EXPECT_EQ(4 , mesh_.n_faces() ) << "Wrong number of faces (garbage collection not executed!)";
+  EXPECT_EQ(4u , mesh_.n_faces() ) << "Wrong number of faces (garbage collection not executed!)";
 
   // Check if the right vertices got deleted
   EXPECT_TRUE( mesh_.status(mesh_.face_handle(0)).deleted() ) << "Face 0 not deleted";
@@ -259,7 +259,7 @@ TEST_F(OpenMeshCollapse, CollapseTetrahedronComplex) {
      *
      */
 
-  EXPECT_EQ(2 , mesh_.n_faces() ) << "Wrong number of faces (garbage collection executed!)";
+  EXPECT_EQ(2u , mesh_.n_faces() ) << "Wrong number of faces (garbage collection executed!)";
 
   // Check the vertices of the two remaining faces
   Mesh::FaceHandle fh_0 = mesh_.face_handle(0);

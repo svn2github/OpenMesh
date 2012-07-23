@@ -43,9 +43,9 @@ TEST_F(OpenMeshLoader, LoadSimpleOFFFile) {
 
     EXPECT_TRUE(ok);
 
-    EXPECT_EQ(7526, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(22572, mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(15048, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(7526u , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(22572u, mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(15048u, mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
 
@@ -62,9 +62,9 @@ TEST_F(OpenMeshLoader, LoadSimpleSTLFile) {
 
     EXPECT_TRUE(ok);
 
-    EXPECT_EQ(7526, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(22572, mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(15048, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(7526u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(22572u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(15048u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
 
@@ -81,9 +81,9 @@ TEST_F(OpenMeshLoader, LoadSimpleSTLBinaryFile) {
 
     EXPECT_TRUE(ok);
 
-    EXPECT_EQ(7526, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(22572, mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(15048, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(7526u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(22572u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(15048u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
 
@@ -100,9 +100,9 @@ TEST_F(OpenMeshLoader, LoadSimplePointPLYFileWithBadEncoding) {
 
     EXPECT_TRUE(ok) << "Unable to load pointCloudBadEncoding.ply";
 
-    EXPECT_EQ(10, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(0, mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(0, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(10u , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(0u  , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(0u  , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
 /*
@@ -117,9 +117,9 @@ TEST_F(OpenMeshLoader, LoadSimplePointPLYFileWithGoodEncoding) {
 
     EXPECT_TRUE(ok) << "Unable to load pointCloudGoodEncoding.ply";
 
-    EXPECT_EQ(10, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(0, mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(0, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(10u , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(0u  , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(0u  , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
 
@@ -134,9 +134,9 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJ) {
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal.obj";
 
-    EXPECT_EQ(8, mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(18, mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(12, mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 }
 
 /*
@@ -155,10 +155,10 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJCheckHalfEdgeAndVertexNormals) {
 
   EXPECT_TRUE(ok) << file_name;
 
-  EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-  EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
-  EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
-  EXPECT_EQ(36, mesh_.n_halfedges()) << "The number of loaded halfedges is not correct!";
+  EXPECT_EQ(8u  ,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+  EXPECT_EQ(18u ,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
+  EXPECT_EQ(12u ,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+  EXPECT_EQ(36u , mesh_.n_halfedges()) << "The number of loaded halfedges is not correct!";
 
   ///////////////////////////////////////////////
   //check vertex normals
@@ -259,9 +259,9 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJWithVertexColorsAfterVertices) {
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal-vertex-colors-after-vertex-definition.obj";
 
-    EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
    
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
@@ -295,9 +295,9 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJWithVertexColorsAsVCLines) {
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal-vertex-colors-as-vc-lines.obj";
 
-    EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
@@ -330,9 +330,9 @@ TEST_F(OpenMeshLoader, LoadSimplePLY) {
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal.ply";
 
-    EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 
 }
 
@@ -350,9 +350,9 @@ TEST_F(OpenMeshLoader, LoadSimplePLYWithNormals) {
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal-normals.ply";
 
-    EXPECT_EQ(8,   mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(18,  mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(12,  mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
 
 
     EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(0))[0] ) << "Wrong normal at vertex 0 component 0";

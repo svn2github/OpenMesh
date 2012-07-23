@@ -553,8 +553,8 @@ TEST_F(OpenMeshCirculators, FaceFaceIteratorHandleConversion) {
    */
 
   // Check setup
-  EXPECT_EQ(4, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(2, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(4u , mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(2u , mesh_.n_faces() )    << "Wrong number of faces";
 
 
   Mesh::ConstFaceFaceIter face_iter = mesh_.cff_iter(fh1);

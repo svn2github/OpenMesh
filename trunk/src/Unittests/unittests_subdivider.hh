@@ -144,8 +144,8 @@ TEST_F(OpenMeshSubdivider_Triangle, Subdivider_Loop) {
   OpenMesh::Subdivider::Uniform::Sqrt3T<Mesh> sqrt3;
 
   // Check setup
-  EXPECT_EQ(9, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(8, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(9u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(8u, mesh_.n_faces() )    << "Wrong number of faces";
 
   // Execute 3 subdivision steps
   sqrt3.attach(mesh_);
@@ -153,8 +153,8 @@ TEST_F(OpenMeshSubdivider_Triangle, Subdivider_Loop) {
   sqrt3.detach();
 
   // Check setup
-  EXPECT_EQ(121, mesh_.n_vertices() ) << "Wrong number of vertices after subdivision with sqrt3";
-  EXPECT_EQ(216, mesh_.n_faces() )    << "Wrong number of faces after subdivision with sqrt3";
+  EXPECT_EQ(121u, mesh_.n_vertices() ) << "Wrong number of vertices after subdivision with sqrt3";
+  EXPECT_EQ(216u, mesh_.n_faces() )    << "Wrong number of faces after subdivision with sqrt3";
 
 }
 
@@ -232,16 +232,16 @@ TEST_F(OpenMeshSubdivider_Poly, Subdivider_CatmullClark) {
   OpenMesh::Subdivider::Uniform::CatmullClarkT<PolyMesh> catmull;
 
   // Check setup
-  EXPECT_EQ(9, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(4, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(9u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(4u, mesh_.n_faces() )    << "Wrong number of faces";
 
   // Execute 3 subdivision steps
   catmull.attach(mesh_);
   catmull( 3 );
   catmull.detach();
 
-  EXPECT_EQ(289, mesh_.n_vertices() ) << "Wrong number of vertices after subdivision with catmull clark";
-  EXPECT_EQ(256, mesh_.n_faces() )    << "Wrong number of faces after subdivision with catmull clark";
+  EXPECT_EQ(289u, mesh_.n_vertices() ) << "Wrong number of vertices after subdivision with catmull clark";
+  EXPECT_EQ(256u, mesh_.n_faces() )    << "Wrong number of faces after subdivision with catmull clark";
 
 }
 
