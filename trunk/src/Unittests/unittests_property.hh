@@ -249,7 +249,7 @@ TEST_F(OpenMeshProperties, CheckStatusPropertiesHalfedgeEdgeAllDeleted) {
   mesh_.delete_face(f3);
   mesh_.delete_face(f4);
 
-  for(typename Mesh::ConstHalfedgeIter he_it = mesh_.halfedges_begin(); he_it != mesh_.halfedges_end(); ++he_it)
+  for( Mesh::ConstHalfedgeIter he_it = mesh_.halfedges_begin(); he_it != mesh_.halfedges_end(); ++he_it)
   {
       EXPECT_TRUE( mesh_.status(mesh_.edge_handle(he_it.handle())).deleted()  ) << "Edge not deleted";
       EXPECT_TRUE( mesh_.status(he_it.handle()).deleted()                     ) << "Halfedge not deleted";
