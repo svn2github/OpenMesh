@@ -7,17 +7,20 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.613)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.622)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Fixed some gcc-4.7 incompatibilities</li>
+<li>TriMesh::split now returns the handle of the new vertex</li>
+<li>Fixed delete_face function, not marking halfedges as deleted, if the edge gets deleted.(Thanks to Maxime Quiblier for the bug report)</li>
 </ul>
 
 <b>IO</b>
 <ul>
 <li>Fixed OBJ Reader not correctly setting per halfedge normals. (Thanks to Patrick Rauber for the report)</li>
 <li>Fixed bug in halfedge normal computation, where a boundary halfedge was not correctly handled and caused a segfault.</li>
+<li>Fix: OM Reader used different types on 32/64-bit systems. (Thanks to Martin Bayer for the patch)</li>
 </ul>
 
 <b>Unittests</b>
@@ -45,6 +48,7 @@
 <ul>
 <li>Updated the Compiler flags construction to remove some unnecessary warnings with clang</li>
 <li>Don't add the largeaddressaware flag when building with mingw</li>
+<li>Readded missing DOXY_IGNORE_THIS definition to doxygen file</li>
 </ul>
 
 
