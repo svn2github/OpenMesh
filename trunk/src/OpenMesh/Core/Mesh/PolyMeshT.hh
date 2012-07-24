@@ -429,12 +429,12 @@ public:
     // Make sure that we have face normals on the mesh
     assert(Kernel::has_face_normals());
 
-    if (is_boundary(edge_handle(_heh)))
+    if (this->is_boundary(this->edge_handle(_heh)))
     {//the dihedral angle at a boundary edge is 0
       return 0;
     }
-    const Normal& n0 = normal(face_handle(_heh));
-    const Normal& n1 = normal(face_handle(opposite_halfedge_handle(_heh)));
+    const Normal& n0 = this->normal(this->face_handle(_heh));
+    const Normal& n1 = this->normal(this->face_handle(this->opposite_halfedge_handle(_heh)));
     Normal he;
     calc_edge_vector(_heh, he);
     Scalar da_cos = dot(n0, n1);
