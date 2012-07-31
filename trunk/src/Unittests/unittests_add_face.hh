@@ -133,6 +133,131 @@ TEST_F(OpenMeshAddFaceTriangleMesh, AddQuadToTrimesh) {
 
 /* Adds a quad to a polymesh (should be a quad afterwards)
  */
+TEST_F(OpenMeshAddFaceTriangleMesh, CreateTriangleMeshCube) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[8];
+  vhandle[0] = mesh_.add_vertex(PolyMesh::Point(-1, -1,  1));
+  vhandle[1] = mesh_.add_vertex(PolyMesh::Point( 1, -1,  1));
+  vhandle[2] = mesh_.add_vertex(PolyMesh::Point( 1,  1,  1));
+  vhandle[3] = mesh_.add_vertex(PolyMesh::Point(-1,  1,  1));
+  vhandle[4] = mesh_.add_vertex(PolyMesh::Point(-1, -1, -1));
+  vhandle[5] = mesh_.add_vertex(PolyMesh::Point( 1, -1, -1));
+  vhandle[6] = mesh_.add_vertex(PolyMesh::Point( 1,  1, -1));
+  vhandle[7] = mesh_.add_vertex(PolyMesh::Point(-1,  1, -1));
+
+  // Add six faces to form a cube
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  //=======================
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[7]);
+  face_vhandles.push_back(vhandle[6]);
+  face_vhandles.push_back(vhandle[5]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[7]);
+  face_vhandles.push_back(vhandle[5]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  //=======================
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[4]);
+  face_vhandles.push_back(vhandle[5]);
+  mesh_.add_face(face_vhandles);
+
+  //=======================
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[5]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[5]);
+  face_vhandles.push_back(vhandle[6]);
+  mesh_.add_face(face_vhandles);
+
+
+  //=======================
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[6]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[6]);
+  face_vhandles.push_back(vhandle[7]);
+  mesh_.add_face(face_vhandles);
+
+  //=======================
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[7]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[7]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+
+  // Test setup:
+  //
+  //
+  //    3 ======== 2
+  //   /          /|
+  //  /          / |      z
+  // 0 ======== 1  |      |
+  // |          |  |      |   y
+  // |  7       |  6      |  /
+  // |          | /       | /
+  // |          |/        |/
+  // 4 ======== 5         -------> x
+  //
+
+  // Check setup
+  EXPECT_EQ(8u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(12u, mesh_.n_faces() )   << "Wrong number of faces";
+
+}
+
+
+/* Adds a quad to a polymesh (should be a quad afterwards)
+ */
 TEST_F(OpenMeshAddFacePolyMesh, AddQuadToPolymesh) {
 
   mesh_.clear();
