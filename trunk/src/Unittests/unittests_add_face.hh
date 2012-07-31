@@ -131,7 +131,7 @@ TEST_F(OpenMeshAddFaceTriangleMesh, AddQuadToTrimesh) {
 
 }
 
-/* Adds a quad to a polymesh (should be a quad afterwards)
+/* Adds a cube to a trimesh
  */
 TEST_F(OpenMeshAddFaceTriangleMesh, CreateTriangleMeshCube) {
 
@@ -293,7 +293,7 @@ TEST_F(OpenMeshAddFacePolyMesh, AddQuadToPolymesh) {
 
 }
 
-/* Adds a quad to a polymesh (should be a quad afterwards)
+/* Adds a cube to a polymesh
  */
 TEST_F(OpenMeshAddFacePolyMesh, CreatePolyMeshCube) {
 
