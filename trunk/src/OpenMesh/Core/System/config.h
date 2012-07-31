@@ -67,11 +67,11 @@
 
 #ifdef WIN32
 #  ifdef min
-#    pragma message("Detected min macro! OpenMesh does not compiled with min/max macros active! Please add a define NOMINMAX to your compiler flags !")
+#    pragma message("Detected min macro! OpenMesh does not compiled with min/max macros active! Please add a define NOMINMAX to your compiler flags or add #undef min before including OpenMesh headers !")
 #    error min macro active 
 #  endif
 #  ifdef max
-#    pragma message("Detected max macro! OpenMesh does not compiled with min/max macros active! Please add a define NOMINMAX to your compiler flags !")
+#    pragma message("Detected max macro! OpenMesh does not compiled with min/max macros active! Please add a define NOMINMAX to your compiler flags or add #undef max before including OpenMesh headers !")
 #    error max macro active 
 #  endif
 #endif
