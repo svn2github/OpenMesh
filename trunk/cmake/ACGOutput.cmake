@@ -29,6 +29,7 @@ function (acg_print_configure_header _id _name)
     acg_color_message ("${_escape}[40;37m*                                                          *${_escape}[0m")
     acg_color_message ("${_escape}[40;37m* Package : ${_escape}[32m${_project} ${_escape}[37m      *${_escape}[0m")
     acg_color_message ("${_escape}[40;37m* Version : ${_escape}[32m${_version} ${_escape}[37m      *${_escape}[0m")
+    acg_color_message ("${_escape}[40;37m* Type    : ${_escape}[32m${CMAKE_BUILD_TYPE} ${_escape}[37m                                         *${_escape}[0m")
     acg_color_message ("${_escape}[40;37m************************************************************${_escape}[0m")
 endfunction ()
 
