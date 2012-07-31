@@ -139,14 +139,14 @@ TEST_F(OpenMeshAddFaceTriangleMesh, CreateTriangleMeshCube) {
 
   // Add some vertices
   Mesh::VertexHandle vhandle[8];
-  vhandle[0] = mesh_.add_vertex(PolyMesh::Point(-1, -1,  1));
-  vhandle[1] = mesh_.add_vertex(PolyMesh::Point( 1, -1,  1));
-  vhandle[2] = mesh_.add_vertex(PolyMesh::Point( 1,  1,  1));
-  vhandle[3] = mesh_.add_vertex(PolyMesh::Point(-1,  1,  1));
-  vhandle[4] = mesh_.add_vertex(PolyMesh::Point(-1, -1, -1));
-  vhandle[5] = mesh_.add_vertex(PolyMesh::Point( 1, -1, -1));
-  vhandle[6] = mesh_.add_vertex(PolyMesh::Point( 1,  1, -1));
-  vhandle[7] = mesh_.add_vertex(PolyMesh::Point(-1,  1, -1));
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(-1, -1,  1));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point( 1, -1,  1));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point( 1,  1,  1));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(-1,  1,  1));
+  vhandle[4] = mesh_.add_vertex(Mesh::Point(-1, -1, -1));
+  vhandle[5] = mesh_.add_vertex(Mesh::Point( 1, -1, -1));
+  vhandle[6] = mesh_.add_vertex(Mesh::Point( 1,  1, -1));
+  vhandle[7] = mesh_.add_vertex(Mesh::Point(-1,  1, -1));
 
   // Add six faces to form a cube
   std::vector<Mesh::VertexHandle> face_vhandles;
