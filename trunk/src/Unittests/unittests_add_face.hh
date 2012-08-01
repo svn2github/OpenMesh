@@ -265,10 +265,10 @@ TEST_F(OpenMeshAddFacePolyMesh, AddQuadToPolymesh) {
   // Add some vertices
   Mesh::VertexHandle vhandle[4];
 
-  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 0, 0));
-  vhandle[1] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
-  vhandle[2] = mesh_.add_vertex(Mesh::Point(1, 1, 0));
-  vhandle[3] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+  vhandle[0] = mesh_.add_vertex(PolyMesh::Point(0, 0, 0));
+  vhandle[1] = mesh_.add_vertex(PolyMesh::Point(0, 1, 0));
+  vhandle[2] = mesh_.add_vertex(PolyMesh::Point(1, 1, 0));
+  vhandle[3] = mesh_.add_vertex(PolyMesh::Point(1, 0, 0));
 
   // Add two faces
   std::vector<Mesh::VertexHandle> face_vhandles;
