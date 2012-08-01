@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.622)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.638)</td><td>
 
 <b>Core</b>
 <ul>
@@ -23,11 +23,20 @@
 <li>Fix: OM Reader used different types on 32/64-bit systems. (Thanks to Martin Bayer for the patch)</li>
 </ul>
 
+<b>IO</b>
+<ul>
+<li>Core/Utils: Added PropertyManager class.</li>
+</ul>
+
+
 <b>Unittests</b>
 <ul>
 <li>Added unittest for OBJ texture coordinates.</li>
 <li>Added unittests for add_face.</li>
 <li>Added unittest for getting handles and faces from the iterator.</li>
+<li>Added unittest for creating a cube with 6 quads in a poly mesh.</li>
+<li>Added unittest adding a cube with 12 faces triangulated to a trimesh.</li>
+<li>Fixed gcc-4.7 warnings.</li>
 </ul>
 
 <b>Tools</b>
@@ -49,6 +58,8 @@
 <li>Updated the Compiler flags construction to remove some unnecessary warnings with clang</li>
 <li>Don't add the largeaddressaware flag when building with mingw</li>
 <li>Readded missing DOXY_IGNORE_THIS definition to doxygen file</li>
+<li>Output OpenMesh Build type in cmake header printout</li>
+<li>Windows: Extended min max warning to allow undefs</li>
 </ul>
 
 
