@@ -94,10 +94,10 @@ void ArrayKernel::assign_connectivity(const ArrayKernel& _other)
 #undef COPY_STATUS_PROPERTY
 }
 
-uint ArrayKernel::delete_isolated_vertices()
+unsigned int ArrayKernel::delete_isolated_vertices()
 {
   assert(has_vertex_status());//this function requires vertex status property
-  uint n_isolated = 0;
+  unsigned int n_isolated = 0;
   for (KernelVertexIter v_it = vertices_begin(); v_it != vertices_end(); ++v_it)
   {
     if (is_isolated(handle(*v_it)))
@@ -111,148 +111,10 @@ uint ArrayKernel::delete_isolated_vertices()
 
 void ArrayKernel::garbage_collection(bool _v, bool _e, bool _f)
 {
-  int i, i0, i1, nV(n_vertices()), nE(n_edges()), nH(2*n_edges()), nF(n_faces());
-
-  std::vector<VertexHandle>    vh_map;
-  std::vector<HalfedgeHandle>  hh_map;
-  std::vector<FaceHandle>      fh_map;
-
-  // setup handle mapping:
-  vh_map.reserve(nV);
-  for (i=0; i<nV; ++i) vh_map.push_back(VertexHandle(i));
-
-  hh_map.reserve(nH);
-  for (i=0; i<nH; ++i) hh_map.push_back(HalfedgeHandle(i));
-
-  fh_map.reserve(nF);
-  for (i=0; i<nF; ++i) fh_map.push_back(FaceHandle(i));
-
-  // remove deleted vertices
-  if (_v && n_vertices() > 0)
-  {
-    i0=0;  i1=nV-1;
-
-    while (1)
-    {
-      // find 1st deleted and last un-deleted
-      while (!status(VertexHandle(i0)).deleted() && i0 < i1)  ++i0;
-      while ( status(VertexHandle(i1)).deleted() && i0 < i1)  --i1;
-      if (i0 >= i1) break;
-
-      // swap
-      std::swap(vertices_[i0], vertices_[i1]);
-      std::swap(vh_map[i0],  vh_map[i1]);
-      vprops_swap(i0, i1);
-    };
-
-    vertices_.resize(status(VertexHandle(i0)).deleted() ? i0 : i0+1);
-    vprops_resize(n_vertices());
-  }
-
-
-  // remove deleted edges
-  if (_e && n_edges() > 0)
-  {
-    i0=0;  i1=nE-1;
-
-    while (1)
-    {
-      // find 1st deleted and last un-deleted
-      while (!status(EdgeHandle(i0)).deleted() && i0 < i1)  ++i0;
-      while ( status(EdgeHandle(i1)).deleted() && i0 < i1)  --i1;
-      if (i0 >= i1) break;
-
-      // swap
-      std::swap(edges_[i0], edges_[i1]);
-      std::swap(hh_map[2*i0], hh_map[2*i1]);
-      std::swap(hh_map[2*i0+1], hh_map[2*i1+1]);
-      eprops_swap(i0, i1);
-      hprops_swap(2*i0,   2*i1);
-      hprops_swap(2*i0+1, 2*i1+1);
-    };
-
-    edges_.resize(status(EdgeHandle(i0)).deleted() ? i0 : i0+1);
-    eprops_resize(n_edges());
-    hprops_resize(n_halfedges());
-  }
-
-
-  // remove deleted faces
-  if (_f && n_faces() > 0)
-  {
-    i0=0;  i1=nF-1;
-
-    while (1)
-    {
-      // find 1st deleted and last un-deleted
-      while (!status(FaceHandle(i0)).deleted() && i0 < i1)  ++i0;
-      while ( status(FaceHandle(i1)).deleted() && i0 < i1)  --i1;
-      if (i0 >= i1) break;
-
-      // swap
-      std::swap(faces_[i0], faces_[i1]);
-      std::swap(fh_map[i0], fh_map[i1]);
-      fprops_swap(i0, i1);
-    };
-
-    faces_.resize(status(FaceHandle(i0)).deleted() ? i0 : i0+1);
-    fprops_resize(n_faces());
-  }
-
-
-  // update handles of vertices
-  if (_e)
-  {
-    KernelVertexIter v_it(vertices_begin()), v_end(vertices_end());
-    VertexHandle     vh;
-
-    for (; v_it!=v_end; ++v_it)
-    {
-      vh = handle(*v_it);
-      if (!is_isolated(vh))
-      {
-        set_halfedge_handle(vh, hh_map[halfedge_handle(vh).idx()]);
-      }
-    }
-  }
-
-  HalfedgeHandle hh;
-  // update handles of halfedges
-  for (KernelEdgeIter e_it(edges_begin()); e_it != edges_end(); ++e_it)
-  {//in the first pass update the (half)edges vertices
-    hh = halfedge_handle(handle(*e_it), 0);
-    set_vertex_handle(hh, vh_map[to_vertex_handle(hh).idx()]);
-    hh = halfedge_handle(handle(*e_it), 1);
-    set_vertex_handle(hh, vh_map[to_vertex_handle(hh).idx()]);
-  }
-  for (KernelEdgeIter e_it(edges_begin()); e_it != edges_end(); ++e_it)
-  {//in the second pass update the connectivity of the (half)edges
-    hh = halfedge_handle(handle(*e_it), 0);
-    set_next_halfedge_handle(hh, hh_map[next_halfedge_handle(hh).idx()]);
-    if (!is_boundary(hh))
-    {
-      set_face_handle(hh, fh_map[face_handle(hh).idx()]);
-    }
-    hh = halfedge_handle(handle(*e_it), 1);
-    set_next_halfedge_handle(hh, hh_map[next_halfedge_handle(hh).idx()]);
-    if (!is_boundary(hh))
-    {
-      set_face_handle(hh, fh_map[face_handle(hh).idx()]);
-    }
-  }
-
-  // update handles of faces
-  if (_e)
-  {
-    KernelFaceIter  f_it(faces_begin()), f_end(faces_end());
-    FaceHandle      fh;
-
-    for (; f_it!=f_end; ++f_it)
-    {
-      fh = handle(*f_it);
-      set_halfedge_handle(fh, hh_map[halfedge_handle(fh).idx()]);
-    }
-  }
+  std::vector<VertexHandle*> empty_vh;
+  std::vector<HalfedgeHandle*> empty_hh;
+  std::vector<FaceHandle*> empty_fh;
+  garbage_collection( _v, _e, _f, &empty_vh,&empty_hh,&empty_fh);
 }
 
 void ArrayKernel::clear()
@@ -273,7 +135,7 @@ void ArrayKernel::clear()
 
 }
 
-void ArrayKernel::resize( uint _n_vertices, uint _n_edges, uint _n_faces )
+void ArrayKernel::resize( unsigned int _n_vertices, unsigned int _n_edges, unsigned int _n_faces )
 {
   vertices_.resize(_n_vertices);
   edges_.resize(_n_edges);
@@ -285,7 +147,7 @@ void ArrayKernel::resize( uint _n_vertices, uint _n_edges, uint _n_faces )
   fprops_resize(n_faces());
 }
 
-void ArrayKernel::reserve(uint _n_vertices, uint _n_edges, uint _n_faces )
+void ArrayKernel::reserve(unsigned int _n_vertices, unsigned int _n_edges, unsigned int _n_faces )
 {
   vertices_.reserve(_n_vertices);
   edges_.reserve(_n_edges);
@@ -300,7 +162,7 @@ void ArrayKernel::reserve(uint _n_vertices, uint _n_edges, uint _n_faces )
 // Status Sets API
 void ArrayKernel::init_bit_masks(BitMaskContainer& _bmc)
 {
-  for (uint i = Attributes::UNUSED; i != 0; i <<= 1)
+  for (unsigned int i = Attributes::UNUSED; i != 0; i <<= 1)
   {
     _bmc.push_back(i);
   }

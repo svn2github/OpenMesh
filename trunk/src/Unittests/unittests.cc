@@ -11,6 +11,7 @@
 #include "unittests_trimesh_normal_calculations.hh"
 #include "unittests_trimesh_others.hh"
 #include "unittests_add_face.hh"
+#include "unittests_trimesh_garbage_collection.hh"
 
 int main(int _argc, char** _argv) {
 
