@@ -266,6 +266,9 @@ public:
    * Usually if you delete primitives in OpenMesh, they are only flagged as deleted.
    * Only when you call garbage collection, they will be actually removed.
    *
+   * \note Garbage collection invalidates all handles. If you need to keep track of
+   *       a set of handles, you can pass them to the second garbage collection
+   *       function, which will update a vector of handles.
    *
    * @param _v Remove deleted vertices?
    * @param _e Remove deleted edges?
@@ -273,13 +276,15 @@ public:
    */
   void garbage_collection(bool _v=true, bool _e=true, bool _f=true);
 
-  /** \brief garbage collection
+  /** \brief garbage collection with handle tracking
    *
    * Usually if you delete primitives in OpenMesh, they are only flagged as deleted.
    * Only when you call garbage collection, they will be actually removed.
    *
    * \note Garbage collection invalidates all handles. If you need to keep track of
-   *       a set of handles, you can pass vectors of pointers to the handles to this function
+   *       a set of handles, you can pass them to this function and they will get updated.
+   *
+   *
    *
    * @param vh_to_update Vertex handles that should get updated
    * @param hh_to_update Halfedge handles that should get updated
@@ -291,10 +296,10 @@ public:
   template<typename std_API_Container_VHandlePointer,
            typename std_API_Container_HHandlePointer,
            typename std_API_Container_FHandlePointer>
-  void garbage_collection(bool _v=true, bool _e=true, bool _f=true,
-                          std_API_Container_VHandlePointer* vh_to_update = 0,
-                          std_API_Container_HHandlePointer* hh_to_update = 0,
-                          std_API_Container_FHandlePointer* fh_to_update = 0);
+  void garbage_collection(std_API_Container_VHandlePointer& vh_to_update,
+                          std_API_Container_HHandlePointer& hh_to_update,
+                          std_API_Container_FHandlePointer& fh_to_update,
+                          bool _v=true, bool _e=true, bool _f=true);
 
   void clear();
 

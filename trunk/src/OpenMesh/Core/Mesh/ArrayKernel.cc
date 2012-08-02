@@ -114,7 +114,7 @@ void ArrayKernel::garbage_collection(bool _v, bool _e, bool _f)
   std::vector<VertexHandle*> empty_vh;
   std::vector<HalfedgeHandle*> empty_hh;
   std::vector<FaceHandle*> empty_fh;
-  garbage_collection( _v, _e, _f, &empty_vh,&empty_hh,&empty_fh);
+  garbage_collection( empty_vh,empty_hh,empty_fh,_v, _e, _f);
 }
 
 void ArrayKernel::clear()

@@ -56,11 +56,10 @@ namespace OpenMesh
 template<typename std_API_Container_VHandlePointer,
          typename std_API_Container_HHandlePointer,
          typename std_API_Container_FHandlePointer>
-void ArrayKernel::garbage_collection(bool _v, bool _e, bool _f,
-                                     std_API_Container_VHandlePointer* vh_to_update,
-                                     std_API_Container_HHandlePointer* hh_to_update,
-                                     std_API_Container_FHandlePointer* fh_to_update
-                                     )
+void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_update,
+                                     std_API_Container_HHandlePointer& hh_to_update,
+                                     std_API_Container_FHandlePointer& fh_to_update,
+                                     bool _v, bool _e, bool _f)
 {
     int i, i0, i1, nV(n_vertices()), nE(n_edges()), nH(2*n_edges()), nF(n_faces());
 
@@ -205,47 +204,37 @@ void ArrayKernel::garbage_collection(bool _v, bool _e, bool _f,
         }
     }
 
+    const int vertexCount   = vertices_.size();
+    const int halfedgeCount = edges_.size() * 2;
+    const int faceCount     = faces_.size();
+
     // Update the vertex handles in the vertex handle vector
-    if ( vh_to_update ) {
-
-      const int vertexCount   = vertices_.size();
-      typename std_API_Container_VHandlePointer::iterator v_it(vh_to_update->begin()), v_it_end(vh_to_update->end());
-      for(; v_it != v_it_end; ++v_it)
-      {
-        if ( (*v_it)->idx() >=  vertexCount )
-          (*v_it)->invalidate();
-        else
-          *(*v_it) = vh_map[(*v_it)->idx()];
-      }
-
+    typename std_API_Container_VHandlePointer::iterator v_it(vh_to_update.begin()), v_it_end(vh_to_update.end());
+    for(; v_it != v_it_end; ++v_it)
+    {
+      if ( (*v_it)->idx() >=  vertexCount )
+        (*v_it)->invalidate();
+      else
+        *(*v_it) = vh_map[(*v_it)->idx()];
     }
 
     // Update the halfedge handles in the halfedge handle vector
-    if ( hh_to_update ) {
-      const int halfedgeCount = edges_.size() * 2;
-
-      typename std_API_Container_HHandlePointer::iterator hh_it(hh_to_update->begin()), hh_it_end(hh_to_update->end());
-      for(; hh_it != hh_it_end; ++hh_it)
-      {
-        if ( (*hh_it)->idx() >=  halfedgeCount )
-          (*hh_it)->invalidate();
-        else
-          *(*hh_it) = hh_map[(*hh_it)->idx()];
-      }
+    typename std_API_Container_HHandlePointer::iterator hh_it(hh_to_update.begin()), hh_it_end(hh_to_update.end());
+    for(; hh_it != hh_it_end; ++hh_it)
+    {
+      if ( (*hh_it)->idx() >=  halfedgeCount )
+        (*hh_it)->invalidate();
+      else
+        *(*hh_it) = hh_map[(*hh_it)->idx()];
     }
-
     // Update the face handles in the face handle vector
-    if(fh_to_update) {
-      const int faceCount     = faces_.size();
-
-      typename std_API_Container_FHandlePointer::iterator fh_it(fh_to_update->begin()), fh_it_end(fh_to_update->end());
-      for(; fh_it != fh_it_end; ++fh_it)
-      {
-        if ( (*fh_it)->idx() >=  faceCount )
-          (*fh_it)->invalidate();
-        else
-          *(*fh_it) = fh_map[(*fh_it)->idx()];
-      }
+    typename std_API_Container_FHandlePointer::iterator fh_it(fh_to_update.begin()), fh_it_end(fh_to_update.end());
+    for(; fh_it != fh_it_end; ++fh_it)
+    {
+      if ( (*fh_it)->idx() >=  faceCount )
+        (*fh_it)->invalidate();
+      else
+        *(*fh_it) = fh_map[(*fh_it)->idx()];
     }
 }
 
