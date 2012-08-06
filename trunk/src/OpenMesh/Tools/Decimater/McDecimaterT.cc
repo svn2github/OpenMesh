@@ -34,24 +34,24 @@
 
 /*===========================================================================*\
  *                                                                           *             
- *   $Revision$                                                         *
- *   $Date$                   *
+ *   $Revision: 460 $                                                         *
+ *   $Date: 2011-11-16 10:45:08 +0100 (Mi, 16 Nov 2011) $                   *
  *                                                                           *
  \*===========================================================================*/
 
-/** \file DecimaterT.cc
+/** \file McDecimaterT.cc
  */
 
 //=============================================================================
 //
-//  CLASS DecimaterT - IMPLEMENTATION
+//  CLASS McDecimaterT - IMPLEMENTATION
 //
 //=============================================================================
-#define OPENMESH_DECIMATER_DECIMATERT_CC
+#define OPENMESH_MULTIPLE_CHOICE_DECIMATER_DECIMATERT_CC
 
 //== INCLUDES =================================================================
 
-#include <OpenMesh/Tools/Decimater/DecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/McDecimaterT.hh>
 
 #include <vector>
 #if defined(OM_CC_MIPS)
@@ -68,34 +68,28 @@ namespace Decimater {
 //== IMPLEMENTATION ==========================================================
 
 template<class Mesh>
-DecimaterT<Mesh>::DecimaterT(Mesh& _mesh) :
-    mesh_(_mesh), heap_(NULL), cmodule_(NULL), initialized_(false) {
+McDecimaterT<Mesh>::McDecimaterT(Mesh& _mesh) :
+    mesh_(_mesh), cmodule_(NULL), initialized_(false),randomSamples_(10) {
+
   // default properties
   mesh_.request_vertex_status();
+  mesh_.request_halfedge_status();
   mesh_.request_edge_status();
   mesh_.request_face_status();
   mesh_.request_face_normals();
 
-  // private vertex properties
-  mesh_.add_property(collapse_target_);
-  mesh_.add_property(priority_);
-  mesh_.add_property(heap_position_);
 }
 
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-DecimaterT<Mesh>::~DecimaterT() {
+McDecimaterT<Mesh>::~McDecimaterT() {
   // default properties
   mesh_.release_vertex_status();
   mesh_.release_edge_status();
+  mesh_.release_halfedge_status();
   mesh_.release_face_status();
   mesh_.release_face_normals();
-
-  // private vertex properties
-  mesh_.remove_property(collapse_target_);
-  mesh_.remove_property(priority_);
-  mesh_.remove_property(heap_position_);
 
   // dispose of modules
   {
@@ -110,7 +104,7 @@ DecimaterT<Mesh>::~DecimaterT() {
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-void DecimaterT<Mesh>::info(std::ostream& _os) {
+void McDecimaterT<Mesh>::info(std::ostream& _os) {
   if (initialized_) {
     _os << "initialized : yes" << std::endl;
     _os << "binary modules: " << bmodules_.size() << std::endl;
@@ -141,7 +135,7 @@ void DecimaterT<Mesh>::info(std::ostream& _os) {
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-bool DecimaterT<Mesh>::initialize() {
+bool McDecimaterT<Mesh>::initialize() {
   if (initialized_) {
     return true;
   }
@@ -153,7 +147,7 @@ bool DecimaterT<Mesh>::initialize() {
   // no one else will name their custom module "Quadric".
   // Q: What should be done instead?
   // A: ModBaseT API should support modules that can be both binary
-  // and priority, or BETTER YET, let the DecimaterT API specify the
+  // and priority, or BETTER YET, let the McDecimaterT API specify the
   // priority module explicitly.
 
   // find the priority module: either the only non-binary module in the list, or "Quadric"
@@ -205,8 +199,8 @@ bool DecimaterT<Mesh>::initialize() {
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-bool DecimaterT<Mesh>::is_collapse_legal(const CollapseInfo& _ci) {
-  //   std::clog << "DecimaterT<>::is_collapse_legal()\n";
+bool McDecimaterT<Mesh>::is_collapse_legal(const CollapseInfo& _ci) {
+  //   std::clog << "McDecimaterT<>::is_collapse_legal()\n";
 
   // locked ? deleted ?
   if (mesh_.status(_ci.v0).locked() || mesh_.status(_ci.v0).deleted())
@@ -280,12 +274,12 @@ bool DecimaterT<Mesh>::is_collapse_legal(const CollapseInfo& _ci) {
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-float DecimaterT<Mesh>::collapse_priority(const CollapseInfo& _ci) {
+float McDecimaterT<Mesh>::collapse_priority(const CollapseInfo& _ci) {
   typename ModuleList::iterator m_it, m_end = bmodules_.end();
 
   for (m_it = bmodules_.begin(); m_it != m_end; ++m_it) {
     if ((*m_it)->collapse_priority(_ci) < 0.0)
-      return ModBaseT<DecimaterT<Mesh> >::ILLEGAL_COLLAPSE;
+      return ModBaseT<McDecimaterT<Mesh> >::ILLEGAL_COLLAPSE;
   }
   return cmodule_->collapse_priority(_ci);
 }
@@ -293,54 +287,7 @@ float DecimaterT<Mesh>::collapse_priority(const CollapseInfo& _ci) {
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-void DecimaterT<Mesh>::heap_vertex(VertexHandle _vh) {
-  //   std::clog << "heap_vertex: " << _vh << std::endl;
-
-  float prio, best_prio(FLT_MAX);
-  typename Mesh::HalfedgeHandle heh, collapse_target;
-
-  // find best target in one ring
-  typename Mesh::VertexOHalfedgeIter voh_it(mesh_, _vh);
-  for (; voh_it; ++voh_it) {
-    heh = voh_it.handle();
-    CollapseInfo ci(mesh_, heh);
-
-    if (is_collapse_legal(ci)) {
-      prio = collapse_priority(ci);
-      if (prio >= 0.0 && prio < best_prio) {
-        best_prio = prio;
-        collapse_target = heh;
-      }
-    }
-  }
-
-  // target found -> put vertex on heap
-  if (collapse_target.is_valid()) {
-    //     std::clog << "  added|updated" << std::endl;
-    mesh_.property(collapse_target_, _vh) = collapse_target;
-    mesh_.property(priority_, _vh) = best_prio;
-
-    if (heap_->is_stored(_vh))
-      heap_->update(_vh);
-    else
-      heap_->insert(_vh);
-  }
-
-  // not valid -> remove from heap
-  else {
-    //     std::clog << "  n/a|removed" << std::endl;
-    if (heap_->is_stored(_vh))
-      heap_->remove(_vh);
-
-    mesh_.property(collapse_target_, _vh) = collapse_target;
-    mesh_.property(priority_, _vh) = -1;
-  }
-}
-
-//-----------------------------------------------------------------------------
-
-template<class Mesh>
-void DecimaterT<Mesh>::postprocess_collapse(CollapseInfo& _ci) {
+void McDecimaterT<Mesh>::postprocess_collapse(CollapseInfo& _ci) {
   typename ModuleList::iterator m_it, m_end = bmodules_.end();
 
   for (m_it = bmodules_.begin(); m_it != m_end; ++m_it)
@@ -352,7 +299,7 @@ void DecimaterT<Mesh>::postprocess_collapse(CollapseInfo& _ci) {
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-void DecimaterT<Mesh>::preprocess_collapse(CollapseInfo& _ci) {
+void McDecimaterT<Mesh>::preprocess_collapse(CollapseInfo& _ci) {
   typename ModuleList::iterator m_it, m_end = bmodules_.end();
 
   for (m_it = bmodules_.begin(); m_it != m_end; ++m_it)
@@ -363,80 +310,75 @@ void DecimaterT<Mesh>::preprocess_collapse(CollapseInfo& _ci) {
 
 //-----------------------------------------------------------------------------
 template<class Mesh>
-size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
+size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
+
   if (!is_initialized())
     return 0;
 
-  typename Mesh::VertexIter v_it, v_end(mesh_.vertices_end());
-  typename Mesh::VertexHandle vp;
-  typename Mesh::HalfedgeHandle v0v1;
-  typename Mesh::VertexVertexIter vv_it;
-  typename Mesh::VertexFaceIter vf_it;
   unsigned int n_collapses(0);
 
-  typedef std::vector<typename Mesh::VertexHandle> Support;
-  typedef typename Support::iterator SupportIterator;
+  while ( n_collapses <  _n_collapses) {
 
-  Support support(15);
-  SupportIterator s_it, s_end;
+    // Optimal id and value will be collected during the random sampling
+    typename Mesh::HalfedgeHandle bestHandle(-1);
+    double bestEnergy = FLT_MAX;
 
-  // check _n_collapses
-  if (!_n_collapses)
-    _n_collapses = mesh_.n_vertices();
+    // Generate random samples for collapses
+    for ( unsigned int i = 0; i < randomSamples_; ++i) {
 
-  // initialize heap
-  HeapInterface HI(mesh_, priority_, heap_position_);
-  heap_ = std::auto_ptr<DeciHeap>(new DeciHeap(HI));
-  heap_->reserve(mesh_.n_vertices());
+      // Random halfedge handle
+      typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle(double(rand()) / RAND_MAX * mesh_.n_halfedges() );
 
-  for (v_it = mesh_.vertices_begin(); v_it != v_end; ++v_it) {
-    heap_->reset_heap_position(v_it.handle());
-    if (!mesh_.status(v_it).deleted())
-      heap_vertex(v_it.handle());
-  }
+      // if it is not deleted, we analyse it
+      if ( ! mesh_.status(tmpHandle).deleted()  ) {
 
-  // process heap
-  while ((!heap_->empty()) && (n_collapses < _n_collapses)) {
-    // get 1st heap entry
-    vp = heap_->front();
-    v0v1 = mesh_.property(collapse_target_, vp);
-    heap_->pop_front();
+        CollapseInfo ci(mesh_, tmpHandle);
 
-    // setup collapse info
-    CollapseInfo ci(mesh_, v0v1);
+        // Check if legal we analyze the priority of this collapse operation
+        if (is_collapse_legal(ci)) {
+          double energy = collapse_priority(ci);
 
-    // check topological correctness AGAIN !
-    if (!is_collapse_legal(ci))
-      continue;
+          // Check if the current samples energy is better than any energy before
+          if ( energy < bestEnergy ) {
+            bestEnergy = energy;
+            bestHandle = tmpHandle;
+          }
+        } else {
+          continue;
+        }
+      }
 
-    // store support (= one ring of *vp)
-    vv_it = mesh_.vv_iter(ci.v0);
-    support.clear();
-    for (; vv_it; ++vv_it)
-      support.push_back(vv_it.handle());
-
-    // perform collapse
-    mesh_.collapse(v0v1);
-    ++n_collapses;
-
-    // update triangle normals
-    vf_it = mesh_.vf_iter(ci.v1);
-    for (; vf_it; ++vf_it)
-      if (!mesh_.status(vf_it).deleted())
-        mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
-
-    // post-process collapse
-    postprocess_collapse(ci);
-
-    // update heap (former one ring of decimated vertex)
-    for (s_it = support.begin(), s_end = support.end(); s_it != s_end; ++s_it) {
-      assert(!mesh_.status(*s_it).deleted());
-      heap_vertex(*s_it);
     }
-  }
 
-  // delete heap
-  heap_.reset();
+    // Found the best energy?
+    if ( bestEnergy != FLT_MAX ) {
+
+      // setup collapse info
+      CollapseInfo ci(mesh_, bestHandle);
+
+      // check topological correctness AGAIN !
+      if (!is_collapse_legal(ci))
+        continue;
+
+      // pre-processing
+      preprocess_collapse(ci);
+
+      // perform collapse
+      mesh_.collapse(bestHandle);
+      ++n_collapses;
+
+      // update triangle normals
+      typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
+      for (; vf_it; ++vf_it)
+        if (!mesh_.status(vf_it).deleted())
+          mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
+
+      // post-process collapse
+      postprocess_collapse(ci);
+
+    }
+
+  }
 
   // DON'T do garbage collection here! It's up to the application.
   return n_collapses;
@@ -445,98 +387,96 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
 //-----------------------------------------------------------------------------
 
 template<class Mesh>
-size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
+size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   if (!is_initialized())
     return 0;
 
-  if (_nv >= mesh_.n_vertices() || _nf >= mesh_.n_faces())
-    return 0;
-
-  typename Mesh::VertexIter v_it, v_end(mesh_.vertices_end());
-  typename Mesh::VertexHandle vp;
-  typename Mesh::HalfedgeHandle v0v1;
-  typename Mesh::VertexVertexIter vv_it;
-  typename Mesh::VertexFaceIter vf_it;
   unsigned int nv = mesh_.n_vertices();
   unsigned int nf = mesh_.n_faces();
-  unsigned int n_collapses = 0;
+  unsigned int n_collapses(0);
 
-  typedef std::vector<typename Mesh::VertexHandle> Support;
-  typedef typename Support::iterator SupportIterator;
+  while ( (_nv < nv) && (_nf < nf) ) {
 
-  Support support(15);
-  SupportIterator s_it, s_end;
+    // Optimal id and value will be collected during the random sampling
+    typename Mesh::HalfedgeHandle bestHandle(-1);
+    double bestEnergy = FLT_MAX;
 
-  // initialize heap
-  HeapInterface HI(mesh_, priority_, heap_position_);
-  heap_ = std::auto_ptr<DeciHeap>(new DeciHeap(HI));
-  heap_->reserve(mesh_.n_vertices());
+    // Generate random samples for collapses
+    for ( unsigned int i = 0; i < randomSamples_; ++i) {
 
-  for (v_it = mesh_.vertices_begin(); v_it != v_end; ++v_it) {
-    heap_->reset_heap_position(v_it.handle());
-    if (!mesh_.status(v_it).deleted())
-      heap_vertex(v_it.handle());
-  }
+      // Random halfedge handle
+      typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle(double(rand()) / RAND_MAX * mesh_.n_halfedges() );
 
-  // process heap
-  while ((!heap_->empty()) && (_nv < nv) && (_nf < nf)) {
-    // get 1st heap entry
-    vp = heap_->front();
-    v0v1 = mesh_.property(collapse_target_, vp);
-    heap_->pop_front();
+      // if it is not deleted, we analyse it
+      if ( ! mesh_.status(tmpHandle).deleted()  ) {
 
-    // setup collapse info
-    CollapseInfo ci(mesh_, v0v1);
+        CollapseInfo ci(mesh_, tmpHandle);
 
-    // check topological correctness AGAIN !
-    if (!is_collapse_legal(ci))
-      continue;
+        // Check if legal we analyze the priority of this collapse operation
+        if (is_collapse_legal(ci)) {
+          double energy = collapse_priority(ci);
 
-    // store support (= one ring of *vp)
-    vv_it = mesh_.vv_iter(ci.v0);
-    support.clear();
-    for (; vv_it; ++vv_it)
-      support.push_back(vv_it.handle());
+          // Check if the current samples energy is better than any energy before
+          if ( energy < bestEnergy ) {
+            bestEnergy = energy;
+            bestHandle = tmpHandle;
+          }
+        } else {
+          continue;
+        }
+      }
 
-    // adjust complexity in advance (need boundary status)
-    ++n_collapses;
-    --nv;
-    if (mesh_.is_boundary(ci.v0v1) || mesh_.is_boundary(ci.v1v0))
-      --nf;
-    else
-      nf -= 2;
-
-    // pre-processing
-    preprocess_collapse(ci);
-
-    // perform collapse
-    mesh_.collapse(v0v1);
-
-    // update triangle normals
-    vf_it = mesh_.vf_iter(ci.v1);
-    for (; vf_it; ++vf_it)
-      if (!mesh_.status(vf_it).deleted())
-        mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
-
-    // post-process collapse
-    postprocess_collapse(ci);
-
-    // update heap (former one ring of decimated vertex)
-    for (s_it = support.begin(), s_end = support.end(); s_it != s_end; ++s_it) {
-      assert(!mesh_.status(*s_it).deleted());
-      heap_vertex(*s_it);
     }
-  }
 
-  // delete heap
-  heap_.reset();
+    // Found the best energy?
+    if ( bestEnergy != FLT_MAX ) {
+
+      // setup collapse info
+      CollapseInfo ci(mesh_, bestHandle);
+
+      // check topological correctness AGAIN !
+      if (!is_collapse_legal(ci))
+        continue;
+
+      // adjust complexity in advance (need boundary status)
+      ++n_collapses;
+
+      // One vertex is killed by the collapse
+      --nv;
+
+      // If we are at a boundary, one face is lost,
+      // otherwise two
+      if (mesh_.is_boundary(ci.v0v1) || mesh_.is_boundary(ci.v1v0))
+        --nf;
+      else
+        nf -= 2;
+
+      // pre-processing
+      preprocess_collapse(ci);
+
+      // perform collapse
+      mesh_.collapse(bestHandle);
+      ++n_collapses;
+
+      // update triangle normals
+      typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
+      for (; vf_it; ++vf_it)
+        if (!mesh_.status(vf_it).deleted())
+          mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
+
+      // post-process collapse
+      postprocess_collapse(ci);
+
+    }
+
+  }
 
   // DON'T do garbage collection here! It's up to the application.
   return n_collapses;
 }
 
 //=============================================================================
-}// END_NS_DECIMATER
+}// END_NS_MC_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
 

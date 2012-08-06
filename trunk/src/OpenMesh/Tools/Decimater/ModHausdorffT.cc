@@ -220,8 +220,6 @@ collapse_priority(const CollapseInfo& _ci)
   typename Mesh::CFVIter         fv_it;
   bool                           ok;
 
-
-
   // collect all points to be tested
   // collect all faces to be tested against
   for (vf_it=mesh_.vf_iter(_ci.v0); vf_it; ++vf_it) {
@@ -234,21 +232,16 @@ collapse_priority(const CollapseInfo& _ci)
     std::copy(pts.begin(), pts.end(), std::back_inserter(points));
   }
 
-
   // add point to be removed
   points.push_back(_ci.p0);
-
 
   // setup iterators
   typename std::vector<FaceHandle>::iterator  fh_it, fh_end(faces.end());
   typename Points::const_iterator             p_it, p_end(points.end());
 
 
-
   // simulate collapse
   mesh_.set_point(_ci.v0, _ci.p1);
-
-
 
   // for each point: try to find a face such that error is < tolerance
   ok = true;
@@ -265,12 +258,8 @@ collapse_priority(const CollapseInfo& _ci)
     }
   }
 
-      
-
   // undo simulation changes
   mesh_.set_point(_ci.v0, _ci.p0);
-
-
 
   return ( ok ? Base::LEGAL_COLLAPSE : Base::ILLEGAL_COLLAPSE );
 }

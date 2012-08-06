@@ -69,6 +69,7 @@ namespace Decimater {
 //== FORWARD DECLARATIONS =====================================================
 
 template <typename Mesh> class DecimaterT;
+template <typename Mesh> class McDecimaterT;
 
 
 //== CLASS DEFINITION =========================================================
@@ -100,8 +101,10 @@ private:
 
 #if defined(OM_CC_MSVC)
   friend class DecimaterT;
+  friend class McDecimaterT;
 #else
   template <typename Mesh> friend class DecimaterT;
+  template <typename Mesh> friend class McDecimaterT;
 #endif
 
   void     clear()           { mod_ = NULL; }

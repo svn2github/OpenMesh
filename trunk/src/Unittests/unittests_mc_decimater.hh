@@ -1,13 +1,13 @@
-#ifndef INCLUDE_UNITTESTS_DECIMATER_HH
-#define INCLUDE_UNITTESTS_DECIMATER_HH
+#ifndef INCLUDE_UNITTESTS_MC_DECIMATER_HH
+#define INCLUDE_UNITTESTS_MC_DECIMATER_HH
 
 #include <gtest/gtest.h>
 #include <Unittests/unittests_common.hh>
-#include <OpenMesh/Tools/Decimater/DecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/McDecimaterT.hh>
 #include <OpenMesh/Tools/Decimater/ModQuadricT.hh>
 #include <OpenMesh/Tools/Decimater/ModNormalFlippingT.hh>
 
-class OpenMeshDecimater : public OpenMeshBase {
+class OpenMeshMultipleChoiceDecimater : public OpenMeshBase {
 
     protected:
 
@@ -35,13 +35,13 @@ class OpenMeshDecimater : public OpenMeshBase {
 
 /*
  */
-TEST_F(OpenMeshDecimater, DecimateMesh) {
+TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMesh) {
 
   bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1.off");
     
   ASSERT_TRUE(ok);
 
-  typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
+  typedef OpenMesh::Decimater::McDecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Decimater >::Handle HModQuadric;
   typedef OpenMesh::Decimater::ModNormalFlippingT< Decimater >::Handle HModNormal;
 

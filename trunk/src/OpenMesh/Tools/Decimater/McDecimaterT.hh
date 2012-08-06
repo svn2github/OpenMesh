@@ -34,22 +34,22 @@
 
 /*===========================================================================*\
  *                                                                           *             
- *   $Revision$                                                         *
- *   $Date$                   *
+ *   $Revision: 448 $                                                         *
+ *   $Date: 2011-11-04 13:59:37 +0100 (Fr, 04 Nov 2011) $                   *
  *                                                                           *
 \*===========================================================================*/
 
-/** \file DecimaterT.hh
+/** \file McDecimaterT.hh
  */
 
 //=============================================================================
 //
-//  CLASS DecimaterT
+//  CLASS McDecimaterT
 //
 //=============================================================================
 
-#ifndef OPENMESH_DECIMATER_DECIMATERT_HH
-#define OPENMESH_DECIMATER_DECIMATERT_HH
+#ifndef OPENMESH_MC_DECIMATER_DECIMATERT_HH
+#define OPENMESH_MC_DECIMATER_DECIMATERT_HH
 
 
 //== INCLUDES =================================================================
@@ -57,7 +57,6 @@
 #include <memory>
 
 #include <OpenMesh/Core/Utils/Property.hh>
-#include <OpenMesh/Tools/Utils/HeapT.hh>
 #include <OpenMesh/Tools/Decimater/ModBaseT.hh>
 
 
@@ -71,28 +70,28 @@ namespace Decimater {
 //== CLASS DEFINITION =========================================================
 
 
-/** Decimater framework.
+/** Multiple choice decimater framework
     \see BaseModT, \ref decimater_docu
 */
 template < typename MeshT >
-class DecimaterT
+class McDecimaterT
 {
 public: //-------------------------------------------------------- public types
 
-  typedef DecimaterT< MeshT >        Self;
-  typedef MeshT                      Mesh;
-  typedef CollapseInfoT<MeshT>       CollapseInfo;
-  typedef ModBaseT<Self>             Module;
-  typedef std::vector< Module* >     ModuleList;
+  typedef McDecimaterT< MeshT >         Self;
+  typedef MeshT                         Mesh;
+  typedef CollapseInfoT<MeshT>          CollapseInfo;
+  typedef ModBaseT<Self>                Module;
+  typedef std::vector< Module* >        ModuleList;
   typedef typename ModuleList::iterator ModuleListIterator;
 
 public: //------------------------------------------------------ public methods
 
   /// Constructor
-  DecimaterT( Mesh& _mesh );
+  McDecimaterT( Mesh& _mesh );
 
   /// Destructor
-  ~DecimaterT();
+  ~McDecimaterT();
 
 
   /** Initialize decimater and decimating modules.
@@ -128,7 +127,7 @@ public: //--------------------------------------------------- module management
     all_modules_.push_back( _mh.module() );
 
     set_uninitialized();
-
+    
     return true;
   }
 
@@ -169,7 +168,7 @@ public:
   /** Decimate (perform _n_collapses collapses). Return number of
       performed collapses. If _n_collapses is not given reduce as
       much as possible */
-  size_t decimate( size_t _n_collapses = 0 );
+  size_t decimate( size_t _n_collapses );
 
   /// Decimate to target complexity, returns number of collapses
   size_t decimate_to( size_t  _n_vertices )
@@ -203,42 +202,16 @@ public:
   {
   public:
 
-    HeapInterface(Mesh&               _mesh,
-      VPropHandleT<float> _prio,
-      VPropHandleT<int>   _pos)
-      : mesh_(_mesh), prio_(_prio), pos_(_pos)
+    HeapInterface(Mesh&               _mesh)
+      : mesh_(_mesh)
     { }
-
-    inline bool
-    less( VertexHandle _vh0, VertexHandle _vh1 )
-    { return mesh_.property(prio_, _vh0) < mesh_.property(prio_, _vh1); }
-
-    inline bool
-    greater( VertexHandle _vh0, VertexHandle _vh1 )
-    { return mesh_.property(prio_, _vh0) > mesh_.property(prio_, _vh1); }
-
-    inline int
-    get_heap_position(VertexHandle _vh)
-    { return mesh_.property(pos_, _vh); }
-
-    inline void
-    set_heap_position(VertexHandle _vh, int _pos)
-    { mesh_.property(pos_, _vh) = _pos; }
-
 
   private:
     Mesh&                mesh_;
-    VPropHandleT<float>  prio_;
-    VPropHandleT<int>    pos_;
   };
-
-  typedef Utils::HeapT<VertexHandle, HeapInterface>  DeciHeap;
 
 
 private: //---------------------------------------------------- private methods
-
-  /// Insert vertex in heap
-  void heap_vertex(VertexHandle _vh);
 
   /// Is an edge collapse legal?  Performs topological test only.
   /// The method evaluates the status bit Locked, Deleted, and Feature.
@@ -269,9 +242,6 @@ private: //------------------------------------------------------- private data
   // reference to mesh
   Mesh&      mesh_;
 
-  // heap
-  std::auto_ptr<DeciHeap> heap_;
-
   // list of binary modules
   ModuleList bmodules_;
 
@@ -280,20 +250,14 @@ private: //------------------------------------------------------- private data
 
   // list of all allocated modules (including cmodule_ and all of bmodules_)
   ModuleList all_modules_;
-
+    
   bool       initialized_;
 
-
-  // vertex properties
-  VPropHandleT<HalfedgeHandle>  collapse_target_;
-  VPropHandleT<float>           priority_;
-  VPropHandleT<int>             heap_position_;
-
-
+  unsigned int randomSamples_;
 
 private: // Noncopyable
 
-  DecimaterT(const Self&);
+  McDecimaterT(const Self&);
   Self& operator = (const Self&);
 
 };
@@ -302,9 +266,9 @@ private: // Noncopyable
 } // END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_DECIMATERT_CC)
-#define OPENMESH_DECIMATER_TEMPLATES
-#include "DecimaterT.cc"
+#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_MULTIPLE_CHOICE_DECIMATER_DECIMATERT_CC)
+#define OPENMESH_MULTIPLE_CHOICE_DECIMATER_TEMPLATES
+#include "McDecimaterT.cc"
 #endif
 //=============================================================================
 #endif // OPENMESH_DECIMATER_DECIMATERT_HH defined
