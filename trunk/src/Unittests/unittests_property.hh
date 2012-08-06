@@ -1,5 +1,5 @@
-#ifndef INCLUDE_UNITTESTS_DECIMATER_HH
-#define INCLUDE_UNITTESTS_DECIMATER_HH
+#ifndef INCLUDE_UNITTESTS_PROPERTY_HH
+#define INCLUDE_UNITTESTS_PROPERTY_HH
 
 #include <gtest/gtest.h>
 #include <Unittests/unittests_common.hh>
