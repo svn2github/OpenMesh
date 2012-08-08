@@ -92,7 +92,7 @@ public: //-------------------------------------------------------- public types
 
 public: //------------------------------------------------------ public methods
   BaseDecimaterT(Mesh& _mesh);
-  ~BaseDecimaterT();
+  virtual ~BaseDecimaterT();
 
   /** Initialize decimater and decimating modules.
 
