@@ -103,8 +103,8 @@ public:
   typedef MeshViewerWidget inherited_t;
 
   typedef Decimater::DecimaterT<mesh_t>                decimater_t;  
-  typedef Decimater::ModQuadricT< decimater_t >        mod_quadric_t;
-  typedef Decimater::ModNormalFlippingT< decimater_t > mod_nf_t;
+  typedef Decimater::ModQuadricT< mesh_t >        mod_quadric_t;
+  typedef Decimater::ModNormalFlippingT< mesh_t > mod_nf_t;
 
   // object types
   typedef std::auto_ptr< decimater_t   >   decimater_o;
@@ -149,11 +149,11 @@ public: // inherited
         decimater_ = tmp;
       }
       {
-        mod_quadric_o  tmp( new mod_quadric_t( *decimater_ ) );
+        mod_quadric_o  tmp( new mod_quadric_t( mesh() ) );
         mod_quadric_ = tmp;
       }
       {
-        mod_nf_o       tmp( new mod_nf_t     ( *decimater_ ) );
+        mod_nf_o       tmp( new mod_nf_t     ( mesh() ) );
         mod_nf_      = tmp;
       }
 

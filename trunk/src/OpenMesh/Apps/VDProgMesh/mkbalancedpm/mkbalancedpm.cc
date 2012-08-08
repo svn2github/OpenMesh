@@ -57,10 +57,10 @@
 
 typedef OpenMesh::TriMesh_ArrayKernelT<> Mesh;
 typedef OpenMesh::Decimater::DecimaterT<Mesh> DecimaterProgMesh;
-typedef OpenMesh::Decimater::ModNormalFlippingT<DecimaterProgMesh>  ModNormalFlipping;
-typedef OpenMesh::Decimater::ModQuadricT<DecimaterProgMesh>         ModQuadric;
-typedef OpenMesh::Decimater::ModProgMeshT<DecimaterProgMesh>        ModProgMesh;
-typedef OpenMesh::Decimater::ModIndependentSetsT<DecimaterProgMesh> ModIndependentSets;
+typedef OpenMesh::Decimater::ModNormalFlippingT<Mesh>  ModNormalFlipping;
+typedef OpenMesh::Decimater::ModQuadricT<Mesh>         ModQuadric;
+typedef OpenMesh::Decimater::ModProgMeshT<Mesh>        ModProgMesh;
+typedef OpenMesh::Decimater::ModIndependentSetsT<Mesh> ModIndependentSets;
 
 // ----------------------------------------------------------------------------
 
@@ -168,7 +168,7 @@ private:
 template <typename D>
 const double ModBalancerT<D>::inv_log2_ = 1.0/std::log(2.0);
 
-typedef ModBalancerT<DecimaterProgMesh>  ModBalancer;
+typedef ModBalancerT<Mesh>  ModBalancer;
 
 
 // ----------------------------------------------------------------------------

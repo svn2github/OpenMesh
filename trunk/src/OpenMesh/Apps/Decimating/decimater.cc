@@ -255,7 +255,7 @@ decimate(const std::string &_ifname,
 
 
 
-     typename OpenMesh::Decimater::ModAspectRatioT<DecimaterType>::Handle modAR;
+     typename OpenMesh::Decimater::ModAspectRatioT<Mesh>::Handle modAR;
 
      if (_opt.AR.is_enabled())
      {
@@ -264,7 +264,7 @@ decimate(const std::string &_ifname,
          decimater.module( modAR ).set_aspect_ratio( _opt.AR ) ;
      }
 
-     typename OpenMesh::Decimater::ModEdgeLengthT<DecimaterType>::Handle modEL;
+     typename OpenMesh::Decimater::ModEdgeLengthT<Mesh>::Handle modEL;
 
      if (_opt.EL.is_enabled())
      {
@@ -273,7 +273,7 @@ decimate(const std::string &_ifname,
          decimater.module( modEL ).set_edge_length( _opt.EL ) ;
      }
 
-     typename OpenMesh::Decimater::ModHausdorffT <DecimaterType>::Handle modHD;
+     typename OpenMesh::Decimater::ModHausdorffT <Mesh>::Handle modHD;
 
      if (_opt.HD.is_enabled())
      {
@@ -283,12 +283,12 @@ decimate(const std::string &_ifname,
 
      }
 
-     typename OpenMesh::Decimater::ModIndependentSetsT<DecimaterType>::Handle modIS;
+     typename OpenMesh::Decimater::ModIndependentSetsT<Mesh>::Handle modIS;
 
      if ( _opt.IS.is_enabled() )
        decimater.add(modIS);
 
-     typename OpenMesh::Decimater::ModNormalDeviationT<DecimaterType>::Handle modND;
+     typename OpenMesh::Decimater::ModNormalDeviationT<Mesh>::Handle modND;
 
      if (_opt.ND.is_enabled())
      {
@@ -297,7 +297,7 @@ decimate(const std::string &_ifname,
          decimater.module( modND ).set_normal_deviation( _opt.ND );
      }
 
-     typename OpenMesh::Decimater::ModNormalFlippingT<DecimaterType>::Handle modNF;
+     typename OpenMesh::Decimater::ModNormalFlippingT<Mesh>::Handle modNF;
 
      if (_opt.NF.is_enabled())
      {
@@ -307,12 +307,12 @@ decimate(const std::string &_ifname,
      }
 
 
-     typename OpenMesh::Decimater::ModProgMeshT<DecimaterType>::Handle       modPM;
+     typename OpenMesh::Decimater::ModProgMeshT<Mesh>::Handle       modPM;
 
      if ( _opt.PM.is_enabled() )
        decimater.add(modPM);
 
-     typename OpenMesh::Decimater::ModQuadricT<DecimaterType>::Handle        modQ;
+     typename OpenMesh::Decimater::ModQuadricT<Mesh>::Handle        modQ;
 
      if (_opt.Q.is_enabled())
      {
@@ -321,7 +321,7 @@ decimate(const std::string &_ifname,
          decimater.module( modQ ).set_max_err( _opt.Q );
      }
 
-     typename OpenMesh::Decimater::ModRoundnessT<DecimaterType>::Handle      modR;
+     typename OpenMesh::Decimater::ModRoundnessT<Mesh>::Handle      modR;
 
      if ( _opt.R.is_enabled() )
      {
