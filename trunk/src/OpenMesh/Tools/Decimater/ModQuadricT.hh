@@ -72,22 +72,22 @@ namespace Decimater {
  *
  *  This module can be used as a binary and non-binary module.
  */
-template <class DecimaterType>
-class ModQuadricT : public ModBaseT<DecimaterType>
+template <class MeshT>
+class ModQuadricT : public ModBaseT<MeshT>
 {
 public:
 
   // Defines the types Self, Handle, Base, Mesh, and CollapseInfo
   // and the memberfunction name()
-  DECIMATING_MODULE( ModQuadricT, DecimaterType, Quadric );
+  DECIMATING_MODULE( ModQuadricT, MeshT, Quadric );
 
 public:
 
   /** Constructor
    *  \internal
    */
-  ModQuadricT( DecimaterType &_dec )
-    : Base(_dec, false)
+  ModQuadricT( MeshT &_mesh )
+    : Base(_mesh, false)
   {
     unset_max_err();
     Base::mesh().add_property( quadrics_ );

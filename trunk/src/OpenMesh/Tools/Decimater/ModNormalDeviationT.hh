@@ -83,12 +83,12 @@ namespace Decimater {
   *
   * In continuous mode the maximal deviation is returned
   */
-template <class DecimaterT>
-class ModNormalDeviationT : public ModBaseT< DecimaterT >
+template <class MeshT>
+class ModNormalDeviationT : public ModBaseT< MeshT >
 {
 public:
    
-  DECIMATING_MODULE( ModNormalDeviationT, DecimaterT, NormalDeviation );
+  DECIMATING_MODULE( ModNormalDeviationT, MeshT, NormalDeviation );
 
   typedef typename Mesh::Scalar                     Scalar;
   typedef typename Mesh::Point                      Point;
@@ -103,8 +103,8 @@ public:
 public:
 
   /// Constructor
-  ModNormalDeviationT(DecimaterT& _dec, float _max_dev = 180.0) 
-  : Base(_dec, true), mesh_(Base::mesh())
+  ModNormalDeviationT(MeshT& _mesh, float _max_dev = 180.0)
+  : Base(_mesh, true), mesh_(Base::mesh())
   {
     set_normal_deviation(_max_dev);
     mesh_.add_property(normal_cones_);

@@ -74,9 +74,9 @@ namespace Decimater {
 //== IMPLEMENTATION ========================================================== 
 
 
-template <class DecimaterType>
+template <class MeshT>
 bool 
-ModProgMeshT<DecimaterType>::
+ModProgMeshT<MeshT>::
 write( const std::string& _ofname )
 {
   // sort vertices

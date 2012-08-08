@@ -76,20 +76,20 @@ namespace Decimater {
  *
  *
  */
-template<class DecimaterT>
-class ModAspectRatioT: public ModBaseT<DecimaterT> {
+template<class MeshT>
+class ModAspectRatioT: public ModBaseT<MeshT> {
   public:
 
-    DECIMATING_MODULE( ModAspectRatioT, DecimaterT, Roundness )
+    DECIMATING_MODULE( ModAspectRatioT, MeshT, Roundness )
     ;
 
     typedef typename Mesh::Scalar Scalar;
     typedef typename Mesh::Point Point;
 
     /// constructor
-    ModAspectRatioT(DecimaterT& _dec, float _min_aspect = 5.0, bool _is_binary =
+    ModAspectRatioT(MeshT& _mesh, float _min_aspect = 5.0, bool _is_binary =
         true) :
-        Base(_dec, _is_binary), mesh_(Base::mesh()), min_aspect_(
+        Base(_mesh, _is_binary), mesh_(Base::mesh()), min_aspect_(
             1.0 / _min_aspect) {
       mesh_.add_property(aspect_);
     }

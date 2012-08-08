@@ -65,15 +65,15 @@ namespace Decimater { // BEGIN_NS_DECIMATER
 /** Lock one-ring around remaining vertex after a collapse to prevent
  *  further collapses of halfedges incident to the one-ring vertices.
  */
-template<class DecimaterType>
-class ModIndependentSetsT: public ModBaseT<DecimaterType> {
+template<class MeshT>
+class ModIndependentSetsT: public ModBaseT<MeshT> {
   public:
-    DECIMATING_MODULE( ModIndependentSetsT, DecimaterType, IndependentSets )
+    DECIMATING_MODULE( ModIndependentSetsT, MeshT, IndependentSets )
     ;
 
     /// Constructor
-    ModIndependentSetsT(DecimaterType &_dec) :
-        Base(_dec, true) {
+    ModIndependentSetsT(MeshT &_mesh) :
+        Base(_mesh, true) {
     }
 
     /// override

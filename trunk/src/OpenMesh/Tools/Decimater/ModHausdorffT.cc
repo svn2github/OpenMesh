@@ -64,9 +64,9 @@ namespace Decimater {
 
 //== IMPLEMENTATION ==========================================================
 
-template <class DecimaterT>
-typename ModHausdorffT<DecimaterT>::Scalar
-ModHausdorffT<DecimaterT>::
+template <class MeshT>
+typename ModHausdorffT<MeshT>::Scalar
+ModHausdorffT<MeshT>::
 distPointTriangleSquared( const Point& _p,
                           const Point& _v0,
                           const Point& _v1,
@@ -191,9 +191,9 @@ distPointTriangleSquared( const Point& _p,
 }
 
 
-template <class DecimaterT>
+template <class MeshT>
 void
-ModHausdorffT<DecimaterT>::
+ModHausdorffT<MeshT>::
 initialize()
 {
   typename Mesh::FIter  f_it(mesh_.faces_begin()), f_end(mesh_.faces_end());
@@ -206,9 +206,9 @@ initialize()
 //-----------------------------------------------------------------------------
 
 
-template <class DecimaterT>
+template <class MeshT>
 float
-ModHausdorffT<DecimaterT>::
+ModHausdorffT<MeshT>::
 collapse_priority(const CollapseInfo& _ci)
 {
   static Points                  points;  points.clear();
@@ -268,9 +268,9 @@ collapse_priority(const CollapseInfo& _ci)
 //-----------------------------------------------------------------------------
 
 
-template <class DecimaterT>
+template <class MeshT>
 void
-ModHausdorffT<DecimaterT>::
+ModHausdorffT<MeshT>::
 postprocess_collapse(const CollapseInfo& _ci)
 {
   static Points                  points;
@@ -351,9 +351,9 @@ postprocess_collapse(const CollapseInfo& _ci)
 //-----------------------------------------------------------------------------
 
 
-template <class DecimaterT>
-typename ModHausdorffT<DecimaterT>::Scalar
-ModHausdorffT<DecimaterT>::
+template <class MeshT>
+typename ModHausdorffT<MeshT>::Scalar
+ModHausdorffT<MeshT>::
 compute_sqr_error(FaceHandle _fh, const Point& _p) const
 {
   typename Mesh::CFVIter           fv_it = mesh_.cfv_iter(_fh);

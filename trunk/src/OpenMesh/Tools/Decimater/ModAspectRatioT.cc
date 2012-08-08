@@ -60,8 +60,8 @@ namespace Decimater {
 
 //== IMPLEMENTATION ==========================================================
 
-template<class DecimaterT>
-typename ModAspectRatioT<DecimaterT>::Scalar ModAspectRatioT<DecimaterT>::aspectRatio(
+template<class MeshT>
+typename ModAspectRatioT<MeshT>::Scalar ModAspectRatioT<MeshT>::aspectRatio(
     const Point& _v0, const Point& _v1, const Point& _v2) {
   Point d0 = _v0 - _v1;
   Point d1 = _v1 - _v2;
@@ -91,8 +91,8 @@ typename ModAspectRatioT<DecimaterT>::Scalar ModAspectRatioT<DecimaterT>::aspect
 
 //-----------------------------------------------------------------------------
 
-template<class DecimaterT>
-void ModAspectRatioT<DecimaterT>::initialize() {
+template<class MeshT>
+void ModAspectRatioT<MeshT>::initialize() {
   typename Mesh::FaceIter f_it, f_end(mesh_.faces_end());
   typename Mesh::FVIter fv_it;
 
@@ -107,8 +107,8 @@ void ModAspectRatioT<DecimaterT>::initialize() {
 
 //-----------------------------------------------------------------------------
 
-template<class DecimaterT>
-void ModAspectRatioT<DecimaterT>::preprocess_collapse(const CollapseInfo& _ci) {
+template<class MeshT>
+void ModAspectRatioT<MeshT>::preprocess_collapse(const CollapseInfo& _ci) {
   typename Mesh::FaceHandle fh;
   typename Mesh::FVIter fv_it;
 
@@ -126,8 +126,8 @@ void ModAspectRatioT<DecimaterT>::preprocess_collapse(const CollapseInfo& _ci) {
 
 //-----------------------------------------------------------------------------
 
-template<class DecimaterT>
-float ModAspectRatioT<DecimaterT>::collapse_priority(const CollapseInfo& _ci) {
+template<class MeshT>
+float ModAspectRatioT<MeshT>::collapse_priority(const CollapseInfo& _ci) {
   typename Mesh::VertexHandle v2, v3;
   typename Mesh::FaceHandle fh;
   const typename Mesh::Point *p1(&_ci.p1), *p2, *p3;

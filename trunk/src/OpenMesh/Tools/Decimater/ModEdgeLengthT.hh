@@ -70,15 +70,15 @@ namespace Decimater {
  *  - The length after the collapse is lower than the given tolerance
  *
  */
-template<class DecimaterT>
-class ModEdgeLengthT: public ModBaseT<DecimaterT> {
+template<class MeshT>
+class ModEdgeLengthT: public ModBaseT<MeshT> {
   public:
 
-    DECIMATING_MODULE( ModEdgeLengthT, DecimaterT, EdgeLength )
+    DECIMATING_MODULE( ModEdgeLengthT, MeshT, EdgeLength )
     ;
 
     /// Constructor
-    ModEdgeLengthT(DecimaterT& _dec, float _edge_length = FLT_MAX,
+    ModEdgeLengthT(MeshT& _mesh, float _edge_length = FLT_MAX,
         bool _is_binary = true);
 
     /// get edge_length

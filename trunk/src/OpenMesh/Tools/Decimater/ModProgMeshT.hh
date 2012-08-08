@@ -74,12 +74,12 @@ namespace Decimater {
  *  can be evaluated after the decimation process and (!) before calling
  *  the garbage collection of the decimated mesh.
  */
-template <class DecimaterType>
-class ModProgMeshT : public ModBaseT<DecimaterType>
+template <class MeshT>
+class ModProgMeshT : public ModBaseT<MeshT>
 {
 public:
 
-  DECIMATING_MODULE( ModProgMeshT, DecimaterType, ProgMesh );
+  DECIMATING_MODULE( ModProgMeshT, MeshT, ProgMesh );
 
   /** Struct storing progressive mesh information
    *  \see CollapseInfoT, ModProgMeshT
@@ -106,7 +106,7 @@ public:
 public:
 
    /// Constructor
-  ModProgMeshT( DecimaterType &_dec ) : Base(_dec, true)
+  ModProgMeshT( MeshT &_mesh ) : Base(_mesh, true)
   {
     Base::mesh().add_property( idx_ );
   }

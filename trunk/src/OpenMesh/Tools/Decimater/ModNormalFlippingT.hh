@@ -74,17 +74,17 @@ namespace Decimater { // BEGIN_NS_DECIMATER
  *  collapse. The collapse will pass the test, if the deviation is below
  *  a given threshold.
  */	      
-template <typename DecimaterT>
-class ModNormalFlippingT : public ModBaseT< DecimaterT >
+template <typename MeshT>
+class ModNormalFlippingT : public ModBaseT< MeshT >
 { 
 public:
 
-  DECIMATING_MODULE( ModNormalFlippingT, DecimaterT, NormalFlipping );
+  DECIMATING_MODULE( ModNormalFlippingT, MeshT, NormalFlipping );
 
 public:
   
   /// Constructor
-  ModNormalFlippingT( DecimaterT &_dec) : Base(_dec, true)
+  ModNormalFlippingT( MeshT &_mesh) : Base(_mesh, true)
   {
     set_max_normal_deviation( 90.0f );
   }

@@ -74,11 +74,11 @@ namespace Decimater {
  *
  * No continuous mode
  */
-template<class DecimaterT>
-class ModHausdorffT: public ModBaseT<DecimaterT> {
+template<class MeshT>
+class ModHausdorffT: public ModBaseT<MeshT> {
   public:
 
-    DECIMATING_MODULE( ModHausdorffT, DecimaterT, Roundness );
+    DECIMATING_MODULE( ModHausdorffT, MeshT, Roundness );
 
     typedef typename Mesh::Scalar Scalar;
     typedef typename Mesh::Point Point;
@@ -86,8 +86,8 @@ class ModHausdorffT: public ModBaseT<DecimaterT> {
     typedef std::vector<Point> Points;
 
     /// Constructor
-    ModHausdorffT(DecimaterT& _dec, Scalar _error_tolerance = FLT_MAX) :
-        Base(_dec, true), mesh_(Base::mesh()), tolerance_(_error_tolerance) {
+    ModHausdorffT(MeshT& _mesh, Scalar _error_tolerance = FLT_MAX) :
+        Base(_mesh, true), mesh_(Base::mesh()), tolerance_(_error_tolerance) {
       mesh_.add_property(points_);
     }
 

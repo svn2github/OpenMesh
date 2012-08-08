@@ -80,11 +80,11 @@ namespace Decimater { // BEGIN_NS_DECIMATER
   *
   * In continuous mode the roundness after the collapse is returned
   */
-template <class DecimaterType>
-class ModRoundnessT : public ModBaseT<DecimaterType>
+template <class MeshT>
+class ModRoundnessT : public ModBaseT<MeshT>
 {
   public:
-  DECIMATING_MODULE( ModRoundnessT, DecimaterType, Roundness );
+  DECIMATING_MODULE( ModRoundnessT, MeshT, Roundness );
 
   public:
 
@@ -95,7 +95,7 @@ class ModRoundnessT : public ModBaseT<DecimaterType>
   public:
 
   /// Constructor
-  ModRoundnessT( DecimaterType &_dec ) :
+  ModRoundnessT( MeshT &_dec ) :
     Base(_dec, false), 
     min_r_(-1.0)
   { }
