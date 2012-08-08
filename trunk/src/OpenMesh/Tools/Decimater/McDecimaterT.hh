@@ -55,9 +55,7 @@
 //== INCLUDES =================================================================
 
 #include <memory>
-
-#include <OpenMesh/Core/Utils/Property.hh>
-#include <OpenMesh/Tools/Decimater/ModBaseT.hh>
+#include <OpenMesh/Tools/Decimater/BaseDecimaterT.hh>
 
 
 
@@ -74,14 +72,14 @@ namespace Decimater {
     \see BaseModT, \ref decimater_docu
 */
 template < typename MeshT >
-class McDecimaterT
+class McDecimaterT : public BaseDecimaterT<MeshT>
 {
 public: //-------------------------------------------------------- public types
 
   typedef McDecimaterT< MeshT >         Self;
   typedef MeshT                         Mesh;
   typedef CollapseInfoT<MeshT>          CollapseInfo;
-  typedef ModBaseT<Self>                Module;
+  typedef ModBaseT<MeshT>               Module;
   typedef std::vector< Module* >        ModuleList;
   typedef typename ModuleList::iterator ModuleListIterator;
 
@@ -93,76 +91,6 @@ public: //------------------------------------------------------ public methods
   /// Destructor
   ~McDecimaterT();
 
-
-  /** Initialize decimater and decimating modules.
-
-      Return values:
-      true   ok
-      false  No ore more than one non-binary module exist. In that case
-             the decimater is uninitialized!
-   */
-  bool initialize();
-
-
-  /// Returns whether decimater has been successfully initialized.
-  bool is_initialized() const { return initialized_; }
-
-
-  /// Print information about modules to _os
-  void info( std::ostream& _os );
-
-public: //--------------------------------------------------- module management
-
-  /// access mesh. used in modules.
-  Mesh& mesh() { return mesh_; }
-
-  /// add module to decimater
-  template < typename _Module >
-  bool add( ModHandleT<_Module>& _mh )
-  {
-    if (_mh.is_valid())
-      return false;
-
-    _mh.init( new _Module(*this) );
-    all_modules_.push_back( _mh.module() );
-
-    set_uninitialized();
-    
-    return true;
-  }
-
-
-  /// remove module
-  template < typename _Module >
-  bool remove( ModHandleT<_Module>& _mh )
-  {
-    if (!_mh.is_valid())
-      return false;
-
-    typename ModuleList::iterator it = std::find(all_modules_.begin(),
-                                                 all_modules_.end(),
-                                                 _mh.module() );
-
-    if ( it == all_modules_.end() ) // module not found
-      return false;
-
-    delete *it;
-    all_modules_.erase( it ); // finally remove from list
-    _mh.clear();
-
-    set_uninitialized();
-    return true;
-  }
-
-
-  /// get module referenced by handle _mh
-  template < typename Module >
-  Module& module( ModHandleT<Module>& _mh )
-  {
-    assert( _mh.is_valid() );
-    return *_mh.module();
-  }
-
 public:
 
   /** Decimate (perform _n_collapses collapses). Return number of
@@ -173,8 +101,8 @@ public:
   /// Decimate to target complexity, returns number of collapses
   size_t decimate_to( size_t  _n_vertices )
   {
-    return ( (_n_vertices < mesh().n_vertices()) ?
-	     decimate( mesh().n_vertices() - _n_vertices ) : 0 );
+    return ( (_n_vertices < this->mesh().n_vertices()) ?
+	     decimate( this->mesh().n_vertices() - _n_vertices ) : 0 );
   }
 
   /** Decimate to target complexity (vertices and faces).
@@ -182,83 +110,13 @@ public:
    */
   size_t decimate_to_faces( size_t  _n_vertices=0, size_t _n_faces=0 );
 
-private:
-
-  void update_modules(CollapseInfo& _ci)
-  {
-    typename ModuleList::iterator m_it, m_end = bmodules_.end();
-    for (m_it = bmodules_.begin(); m_it != m_end; ++m_it)
-      (*m_it)->postprocess_collapse(_ci);
-    cmodule_->postprocess_collapse(_ci);
-  }
-
-public:
-
-  typedef typename Mesh::VertexHandle    VertexHandle;
-  typedef typename Mesh::HalfedgeHandle  HalfedgeHandle;
-
-  /// Heap interface
-  class HeapInterface
-  {
-  public:
-
-    HeapInterface(Mesh&               _mesh)
-      : mesh_(_mesh)
-    { }
-
-  private:
-    Mesh&                mesh_;
-  };
-
-
-private: //---------------------------------------------------- private methods
-
-  /// Is an edge collapse legal?  Performs topological test only.
-  /// The method evaluates the status bit Locked, Deleted, and Feature.
-  /// \attention The method temporarily sets the bit Tagged. After usage
-  ///            the bit will be disabled!
-  bool is_collapse_legal(const CollapseInfo& _ci);
-
-  /// Calculate priority of an halfedge collapse (using the modules)
-  float collapse_priority(const CollapseInfo& _ci);
-
-  /// Pre-process a collapse
-  void preprocess_collapse(CollapseInfo& _ci);
-
-  /// Post-process a collapse
-  void postprocess_collapse(CollapseInfo& _ci);
-
-  // Reset the initialized flag, and clear the bmodules_ and cmodule_
-  void set_uninitialized() {
-    initialized_ = false;
-    cmodule_ = 0;
-    bmodules_.clear();
-  }
-
-
 private: //------------------------------------------------------- private data
 
 
   // reference to mesh
   Mesh&      mesh_;
 
-  // list of binary modules
-  ModuleList bmodules_;
-
-  // the current priority module
-  Module*    cmodule_;
-
-  // list of all allocated modules (including cmodule_ and all of bmodules_)
-  ModuleList all_modules_;
-    
-  bool       initialized_;
-
   unsigned int randomSamples_;
-
-private: // Noncopyable
-
-  McDecimaterT(const Self&);
-  Self& operator = (const Self&);
 
 };
 
@@ -271,6 +129,6 @@ private: // Noncopyable
 #include "McDecimaterT.cc"
 #endif
 //=============================================================================
-#endif // OPENMESH_DECIMATER_DECIMATERT_HH defined
+#endif // OPENMESH_MC_DECIMATER_DECIMATERT_HH defined
 //=============================================================================
 

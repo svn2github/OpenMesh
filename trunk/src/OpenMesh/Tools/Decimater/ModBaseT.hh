@@ -68,8 +68,7 @@ namespace Decimater {
 
 //== FORWARD DECLARATIONS =====================================================
 
-template <typename Mesh> class DecimaterT;
-template <typename Mesh> class McDecimaterT;
+template <typename Mesh> class BaseDecimaterT;
 
 
 //== CLASS DEFINITION =========================================================
@@ -77,6 +76,7 @@ template <typename Mesh> class McDecimaterT;
 /** Handle for mesh decimation modules
     \internal
  */
+
 template <typename Module>
 class ModHandleT : private Utils::Noncopyable
 {
@@ -100,11 +100,9 @@ public:
 private:
 
 #if defined(OM_CC_MSVC)
-  friend class DecimaterT;
-  friend class McDecimaterT;
+  friend class BaseDecimaterT;
 #else
-  template <typename Mesh> friend class DecimaterT;
-  template <typename Mesh> friend class McDecimaterT;
+  template <typename Mesh> friend class BaseDecimaterT;
 #endif
 
   void     clear()           { mod_ = NULL; }
@@ -146,10 +144,10 @@ private:
  *                    template parameter passed to ModBaseT.
  *  \param Name       Give the module a name.
  */
-#define DECIMATING_MODULE(Classname, DecimaterT, Name)	\
-  typedef Classname < DecimaterT >    Self;		\
+#define DECIMATING_MODULE(Classname, MeshT, Name)	\
+  typedef Classname < MeshT >    Self;		\
   typedef OpenMesh::Decimater::ModHandleT< Self >     Handle; \
-  typedef OpenMesh::Decimater::ModBaseT< DecimaterT > Base;   \
+  typedef OpenMesh::Decimater::ModBaseT< MeshT > Base;   \
   typedef typename Base::Mesh         Mesh;		\
   typedef typename Base::CollapseInfo CollapseInfo;	\
   DECIMATER_MODNAME( Name )
@@ -187,13 +185,13 @@ private:
     \todo "Tutorial on building a custom decimation module."
 
 */
-template <typename DecimaterType> 
+
+template <typename MeshT>
 class ModBaseT
 {
 public:
-   
-  typedef typename DecimaterType::Mesh        Mesh;
-  typedef CollapseInfoT<Mesh>                 CollapseInfo;
+  typedef MeshT Mesh;
+  typedef CollapseInfoT<MeshT>                 CollapseInfo;
 
   enum {
     ILLEGAL_COLLAPSE = -1, ///< indicates an illegal collapse
@@ -204,8 +202,8 @@ protected:
    
   /// Default constructor
   /// \see \ref decimater_docu
-  ModBaseT(DecimaterType& _dec, bool _is_binary) 
-    : dec_(_dec), is_binary_(_is_binary) {}
+  ModBaseT(MeshT& _mesh, bool _is_binary)
+    : mesh_(_mesh), is_binary_(_is_binary) {}
 
 public:
 
@@ -242,19 +240,19 @@ public: // common interface
     *  \return Collapse priority in the range [0,inf), 
     *          \c LEGAL_COLLAPSE or \c ILLEGAL_COLLAPSE.
     */
-   virtual float collapse_priority(const CollapseInfoT<Mesh>& /* _ci */)
+   virtual float collapse_priority(const CollapseInfoT<MeshT>& /* _ci */)
    { return LEGAL_COLLAPSE; }
 
    /** Before _from_vh has been collapsed into _to_vh, this method
        will be called.
     */
-   virtual void preprocess_collapse(const CollapseInfoT<Mesh>& /* _ci */)
+   virtual void preprocess_collapse(const CollapseInfoT<MeshT>& /* _ci */)
    {}
 
    /** After _from_vh has been collapsed into _to_vh, this method
        will be called. 
     */
-   virtual void postprocess_collapse(const CollapseInfoT<Mesh>& /* _ci */)
+   virtual void postprocess_collapse(const CollapseInfoT<MeshT>& /* _ci */)
    {}
 
 
@@ -262,7 +260,7 @@ public: // common interface
 protected:
 
   /// Access the mesh associated with the decimater.
-  Mesh& mesh() { return dec_.mesh(); }
+  MeshT& mesh() { return mesh_; }
 
 private:
 
@@ -270,8 +268,7 @@ private:
   ModBaseT(const ModBaseT& _cpy);
   ModBaseT& operator=(const ModBaseT& );
 
-  // reference to decimater
-  DecimaterType &dec_;  
+  MeshT& mesh_;
 
   bool is_binary_;
 };

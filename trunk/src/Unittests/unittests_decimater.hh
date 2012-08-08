@@ -42,8 +42,8 @@ TEST_F(OpenMeshDecimater, DecimateMesh) {
   ASSERT_TRUE(ok);
 
   typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
-  typedef OpenMesh::Decimater::ModQuadricT< Decimater >::Handle HModQuadric;
-  typedef OpenMesh::Decimater::ModNormalFlippingT< Decimater >::Handle HModNormal;
+  typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
+  typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
   Decimater decimaterDBG(mesh_);
   HModQuadric hModQuadricDBG;

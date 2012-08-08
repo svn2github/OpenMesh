@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,26 +30,26 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
 \*===========================================================================*/
 
-/** \file DecimaterT.hh
+/** \file BaseDecimaterT.hh
  */
 
 //=============================================================================
 //
-//  CLASS DecimaterT
+//  CLASS McDecimaterT
 //
 //=============================================================================
 
-#ifndef OPENMESH_DECIMATER_DECIMATERT_HH
-#define OPENMESH_DECIMATER_DECIMATERT_HH
+#ifndef OPENMESH_BASE_DECIMATER_DECIMATERT_HH
+#define OPENMESH_BASE_DECIMATER_DECIMATERT_HH
 
 
 //== INCLUDES =================================================================
@@ -57,8 +57,8 @@
 #include <memory>
 
 #include <OpenMesh/Core/Utils/Property.hh>
-#include <OpenMesh/Tools/Utils/HeapT.hh>
-#include <OpenMesh/Tools/Decimater/BaseDecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/ModBaseT.hh>
+#include <OpenMesh/Core/Utils/Noncopyable.hh>
 
 
 
@@ -71,94 +71,133 @@ namespace Decimater {
 //== CLASS DEFINITION =========================================================
 
 
-/** Decimater framework.
-    \see BaseModT, \ref decimater_docu
+/** base class decimater framework
+    \see BaseDecimaterT, \ref decimater_docu
 */
+class BaseDecimaterModule
+{
+};
+
 template < typename MeshT >
-class DecimaterT : public BaseDecimaterT<MeshT>
+class BaseDecimaterT : private Utils::Noncopyable
 {
 public: //-------------------------------------------------------- public types
 
-  typedef DecimaterT< MeshT >           Self;
+  typedef BaseDecimaterT< MeshT >       Self;
   typedef MeshT                         Mesh;
   typedef CollapseInfoT<MeshT>          CollapseInfo;
-  typedef ModBaseT<MeshT>               Module;
+  typedef ModBaseT<MeshT>                Module;
   typedef std::vector< Module* >        ModuleList;
   typedef typename ModuleList::iterator ModuleListIterator;
 
 public: //------------------------------------------------------ public methods
+  BaseDecimaterT(Mesh& _mesh);
+  ~BaseDecimaterT();
 
-  /// Constructor
-  DecimaterT( Mesh& _mesh );
+  /** Initialize decimater and decimating modules.
 
-  /// Destructor
-  ~DecimaterT();
+      Return values:
+      true   ok
+      false  No ore more than one non-binary module exist. In that case
+             the decimater is uninitialized!
+   */
+  bool initialize();
 
-public:
 
-  /** Decimate (perform _n_collapses collapses). Return number of
-      performed collapses. If _n_collapses is not given reduce as
-      much as possible */
-  size_t decimate( size_t _n_collapses = 0 );
+  /// Returns whether decimater has been successfully initialized.
+  bool is_initialized() const { return initialized_; }
 
-  /// Decimate to target complexity, returns number of collapses
-  size_t decimate_to( size_t  _n_vertices )
+
+  /// Print information about modules to _os
+  void info( std::ostream& _os );
+
+public: //--------------------------------------------------- module management
+
+  /// access mesh. used in modules.
+  Mesh& mesh() { return mesh_; }
+
+  /// add module to decimater
+  template < typename _Module >
+  bool add( ModHandleT<_Module>& _mh )
   {
-    return ( (_n_vertices < this->mesh().n_vertices()) ?
-	     decimate( this->mesh().n_vertices() - _n_vertices ) : 0 );
+    if (_mh.is_valid())
+      return false;
+
+    _mh.init( new _Module(mesh()) );
+    all_modules_.push_back( _mh.module() );
+
+    set_uninitialized();
+
+    return true;
   }
 
-  /** Decimate to target complexity (vertices and faces).
-   *  Returns number of performed collapses.
-   */
-  size_t decimate_to_faces( size_t  _n_vertices=0, size_t _n_faces=0 );
 
-public:
-
-  typedef typename Mesh::VertexHandle    VertexHandle;
-  typedef typename Mesh::HalfedgeHandle  HalfedgeHandle;
-
-  /// Heap interface
-  class HeapInterface
+  /// remove module
+  template < typename _Module >
+  bool remove( ModHandleT<_Module>& _mh )
   {
-  public:
+    if (!_mh.is_valid())
+      return false;
 
-    HeapInterface(Mesh&               _mesh,
-      VPropHandleT<float> _prio,
-      VPropHandleT<int>   _pos)
-      : mesh_(_mesh), prio_(_prio), pos_(_pos)
-    { }
+    typename ModuleList::iterator it = std::find(all_modules_.begin(),
+                                                 all_modules_.end(),
+                                                 _mh.module() );
 
-    inline bool
-    less( VertexHandle _vh0, VertexHandle _vh1 )
-    { return mesh_.property(prio_, _vh0) < mesh_.property(prio_, _vh1); }
+    if ( it == all_modules_.end() ) // module not found
+      return false;
 
-    inline bool
-    greater( VertexHandle _vh0, VertexHandle _vh1 )
-    { return mesh_.property(prio_, _vh0) > mesh_.property(prio_, _vh1); }
+    delete *it;
+    all_modules_.erase( it ); // finally remove from list
+    _mh.clear();
 
-    inline int
-    get_heap_position(VertexHandle _vh)
-    { return mesh_.property(pos_, _vh); }
-
-    inline void
-    set_heap_position(VertexHandle _vh, int _pos)
-    { mesh_.property(pos_, _vh) = _pos; }
+    set_uninitialized();
+    return true;
+  }
 
 
-  private:
-    Mesh&                mesh_;
-    VPropHandleT<float>  prio_;
-    VPropHandleT<int>    pos_;
-  };
+  /// get module referenced by handle _mh
+  template < typename Module >
+  Module& module( ModHandleT<Module>& _mh )
+  {
+    assert( _mh.is_valid() );
+    return *_mh.module();
+  }
 
-  typedef Utils::HeapT<VertexHandle, HeapInterface>  DeciHeap;
+
+protected:
+
+  // Reset the initialized flag, and clear the bmodules_ and cmodule_
+  void set_uninitialized() {
+    initialized_ = false;
+    cmodule_ = 0;
+    bmodules_.clear();
+  }
+
+  void update_modules(CollapseInfo& _ci)
+  {
+    typename ModuleList::iterator m_it, m_end = bmodules_.end();
+    for (m_it = bmodules_.begin(); m_it != m_end; ++m_it)
+      (*m_it)->postprocess_collapse(_ci);
+    cmodule_->postprocess_collapse(_ci);
+  }
 
 
-private: //---------------------------------------------------- private methods
+protected: //---------------------------------------------------- private methods
 
-  /// Insert vertex in heap
-  void heap_vertex(VertexHandle _vh);
+  /// Is an edge collapse legal?  Performs topological test only.
+  /// The method evaluates the status bit Locked, Deleted, and Feature.
+  /// \attention The method temporarily sets the bit Tagged. After usage
+  ///            the bit will be disabled!
+  bool is_collapse_legal(const CollapseInfo& _ci);
+
+  /// Calculate priority of an halfedge collapse (using the modules)
+  float collapse_priority(const CollapseInfo& _ci);
+
+  /// Pre-process a collapse
+  void preprocess_collapse(CollapseInfo& _ci);
+
+  /// Post-process a collapse
+  void postprocess_collapse(CollapseInfo& _ci);
 
 private: //------------------------------------------------------- private data
 
@@ -166,25 +205,26 @@ private: //------------------------------------------------------- private data
   // reference to mesh
   Mesh&      mesh_;
 
-  // heap
-  std::auto_ptr<DeciHeap> heap_;
+  // list of binary modules
+  ModuleList bmodules_;
 
-  // vertex properties
-  VPropHandleT<HalfedgeHandle>  collapse_target_;
-  VPropHandleT<float>           priority_;
-  VPropHandleT<int>             heap_position_;
+  // the current priority module
+  Module*    cmodule_;
 
+  // list of all allocated modules (including cmodule_ and all of bmodules_)
+  ModuleList all_modules_;
+
+  bool       initialized_;
 };
 
 //=============================================================================
 } // END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_DECIMATERT_CC)
-#define OPENMESH_DECIMATER_TEMPLATES
-#include "DecimaterT.cc"
+#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_BASE_DECIMATER_DECIMATERT_CC)
+#define OPENMESH_BASE_DECIMATER_TEMPLATES
+#include "BaseDecimaterT.cc"
 #endif
 //=============================================================================
-#endif // OPENMESH_DECIMATER_DECIMATERT_HH defined
+#endif // OPENMESH_BASE_DECIMATER_DECIMATERT_HH defined
 //=============================================================================
-
