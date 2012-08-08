@@ -199,8 +199,8 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
         CollapseInfo ci(mesh_, tmpHandle);
 
         // Check if legal we analyze the priority of this collapse operation
-        if (is_collapse_legal(ci)) {
-          double energy = collapse_priority(ci);
+        if (this->is_collapse_legal(ci)) {
+          double energy = this->collapse_priority(ci);
 
           // Check if the current samples energy is better than any energy before
           if ( energy < bestEnergy ) {
@@ -221,7 +221,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
       CollapseInfo ci(mesh_, bestHandle);
 
       // check topological correctness AGAIN !
-      if (!is_collapse_legal(ci))
+      if (!this->is_collapse_legal(ci))
         continue;
 
       // adjust complexity in advance (need boundary status)
@@ -238,7 +238,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
         nf -= 2;
 
       // pre-processing
-      preprocess_collapse(ci);
+      this->preprocess_collapse(ci);
 
       // perform collapse
       mesh_.collapse(bestHandle);
@@ -251,7 +251,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
           mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
 
       // post-process collapse
-      postprocess_collapse(ci);
+      this->postprocess_collapse(ci);
 
     }
 
