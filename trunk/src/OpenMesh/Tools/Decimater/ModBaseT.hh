@@ -140,7 +140,7 @@ private:
  *  and uses DECIMATER_MODNAME() to define the name of the module.
  * 
  *  \param Classname  The name of the derived class.
- *  \param DecimaterT Pass here the decimater type, which is the 
+ *  \param MeshT      Pass here the mesh type, which is the
  *                    template parameter passed to ModBaseT.
  *  \param Name       Give the module a name.
  */
