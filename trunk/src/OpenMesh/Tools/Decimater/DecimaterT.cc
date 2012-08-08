@@ -265,7 +265,7 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
     CollapseInfo ci(mesh_, v0v1);
 
     // check topological correctness AGAIN !
-    if (!is_collapse_legal(ci))
+    if (!this->is_collapse_legal(ci))
       continue;
 
     // store support (= one ring of *vp)
@@ -283,7 +283,7 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
       nf -= 2;
 
     // pre-processing
-    preprocess_collapse(ci);
+    this->preprocess_collapse(ci);
 
     // perform collapse
     mesh_.collapse(v0v1);
@@ -295,7 +295,7 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
         mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
 
     // post-process collapse
-    postprocess_collapse(ci);
+    this->postprocess_collapse(ci);
 
     // update heap (former one ring of decimated vertex)
     for (s_it = support.begin(), s_end = support.end(); s_it != s_end; ++s_it) {
