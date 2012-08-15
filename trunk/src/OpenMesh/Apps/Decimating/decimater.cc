@@ -271,6 +271,7 @@ decimate(const std::string &_ifname,
        decimater.add(modEL);
        if (_opt.EL.has_value())
          decimater.module( modEL ).set_edge_length( _opt.EL ) ;
+       decimater.module(modEL).set_binary(false);
      }
 
      typename OpenMesh::Decimater::ModHausdorffT <Mesh>::Handle modHD;
@@ -319,6 +320,7 @@ decimate(const std::string &_ifname,
        decimater.add(modQ);
        if (_opt.Q.has_value())
          decimater.module( modQ ).set_max_err( _opt.Q );
+       decimater.module(modQ).set_binary(false);
      }
 
      typename OpenMesh::Decimater::ModRoundnessT<Mesh>::Handle      modR;
@@ -345,6 +347,7 @@ decimate(const std::string &_ifname,
        if (!rc)
        {
          std::cerr << "  initializing failed!" << std::endl;
+         std::cerr << "  maybe no priority module or more than one were defined!" << std::endl;
          return false;
        }
      }
@@ -538,15 +541,16 @@ void usage_and_exit(int xcode)
   std::cerr << std::endl;
   std::cerr << "Modules:\n\n";
   std::cerr << "  AR[:ratio]      - ModAspectRatio\n";
-  std::cerr << "  EL[:legth]      - ModEdgeLength\n";
+  std::cerr << "  EL[:legth]      - ModEdgeLength*\n";
   std::cerr << "  HD[:distance]   - ModHausdorff\n";
   std::cerr << "  IS              - ModIndependentSets\n";
   std::cerr << "  ND[:angle]      - ModNormalDeviation\n";
   std::cerr << "  NF[:angle]      - ModNormalFlipping\n";
   std::cerr << "  PM[:file name]  - ModProgMesh\n";
-  std::cerr << "  Q[:error]       - ModQuadric\n";
+  std::cerr << "  Q[:error]       - ModQuadric*\n";
   std::cerr << "  R[:angle]       - ModRoundness\n";
   std::cerr << "    0 < angle < 60\n";
+  std::cerr << "  *: priority module. Decimater needs one of them (not more).\n";
 
   exit( xcode );
 }

@@ -103,13 +103,11 @@ public:
   typedef MeshViewerWidget inherited_t;
 
   typedef Decimater::DecimaterT<mesh_t>                decimater_t;  
-  typedef Decimater::ModQuadricT< mesh_t >        mod_quadric_t;
-  typedef Decimater::ModNormalFlippingT< mesh_t > mod_nf_t;
+  typedef Decimater::ModQuadricT< mesh_t >::Handle        mod_quadric_t;
+  typedef Decimater::ModNormalFlippingT< mesh_t >::Handle mod_nf_t;
 
   // object types
   typedef std::auto_ptr< decimater_t   >   decimater_o;
-  typedef std::auto_ptr< mod_quadric_t >   mod_quadric_o;
-  typedef std::auto_ptr< mod_nf_t      >   mod_nf_o;
 
   /// default constructor
   DecimaterViewerWidget(QWidget* _parent=0)
@@ -148,14 +146,11 @@ public: // inherited
         decimater_o  tmp( new decimater_t  ( mesh() ) );
         decimater_ = tmp;
       }
-      {
-        mod_quadric_o  tmp( new mod_quadric_t( mesh() ) );
-        mod_quadric_ = tmp;
-      }
-      {
-        mod_nf_o       tmp( new mod_nf_t     ( mesh() ) );
-        mod_nf_      = tmp;
-      }
+
+      decimater_->add(mod_quadric_);
+      decimater_->module(mod_quadric_).set_binary(false);
+
+      decimater_->add(mod_nf_);
 
       decimater_->initialize();
     }
@@ -177,8 +172,8 @@ private:
   QTimer           *timer_;
 
   decimater_o       decimater_;  
-  mod_quadric_o     mod_quadric_;
-  mod_nf_o          mod_nf_;
+  mod_quadric_t     mod_quadric_;
+  mod_nf_t          mod_nf_;
 
   size_t            steps_;
 };
