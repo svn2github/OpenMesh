@@ -1,19 +1,19 @@
-#ifndef INCLUDE_UNITTESTS_MC_DECIMATER_HH
-#define INCLUDE_UNITTESTS_MC_DECIMATER_HH
+#ifndef INCLUDE_UNITTESTS_MIXED_DECIMATER_HH
+#define INCLUDE_UNITTESTS_MIXED_DECIMATER_HH
 
 #include <gtest/gtest.h>
 #include <Unittests/unittests_common.hh>
-#include <OpenMesh/Tools/Decimater/McDecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/MixedDecimaterT.hh>
 #include <OpenMesh/Tools/Decimater/ModQuadricT.hh>
 #include <OpenMesh/Tools/Decimater/ModNormalFlippingT.hh>
 
-class OpenMeshMultipleChoiceDecimater : public OpenMeshBase {
+class OpenMeshMixedDecimater : public OpenMeshBase {
 
     protected:
 
         // This function is called before each test is run
         virtual void SetUp() {
-            
+
             // Do some initial stuff with the member data here...
         }
 
@@ -24,7 +24,7 @@ class OpenMeshMultipleChoiceDecimater : public OpenMeshBase {
         }
 
     // Member already defined in OpenMeshBase
-    //Mesh mesh_;  
+    //Mesh mesh_;
 };
 
 /*
@@ -35,13 +35,13 @@ class OpenMeshMultipleChoiceDecimater : public OpenMeshBase {
 
 /*
  */
-TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMesh) {
+TEST_F(OpenMeshMixedDecimater, DecimateMesh80PercentMc) {
 
   bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1.off");
-    
+
   ASSERT_TRUE(ok);
 
-  typedef OpenMesh::Decimater::McDecimaterT< Mesh >  Decimater;
+  typedef OpenMesh::Decimater::MixedDecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
   typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
@@ -50,7 +50,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMesh) {
   decimaterDBG.add( hModQuadricDBG );
   decimaterDBG.initialize();
   int removedVertices = 0;
-  removedVertices = decimaterDBG.decimate_to(5000);
+  removedVertices = decimaterDBG.decimate_to(5000,0.8);
                     decimaterDBG.mesh().garbage_collection();
 
   EXPECT_EQ(2526, removedVertices) << "The number of remove vertices is not correct!";
@@ -59,13 +59,13 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMesh) {
   EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
 }
 
-TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceVerticesLimit) {
+TEST_F(OpenMeshMixedDecimater, DecimateMeshToFaceVerticesLimit) {
 
   bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1.off");
 
   ASSERT_TRUE(ok);
 
-  typedef OpenMesh::Decimater::McDecimaterT< Mesh >  Decimater;
+  typedef OpenMesh::Decimater::MixedDecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
   typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
@@ -74,7 +74,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceVerticesLimit) {
   decimaterDBG.add( hModQuadricDBG );
   decimaterDBG.initialize();
   int removedVertices = 0;
-  removedVertices = decimaterDBG.decimate_to_faces(5000, 8000);
+  removedVertices = decimaterDBG.decimate_to_faces(5000, 8000, 0.7);
                     decimaterDBG.mesh().garbage_collection();
 
   EXPECT_EQ(2526, removedVertices) << "The number of remove vertices is not correct!";
@@ -83,13 +83,13 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceVerticesLimit) {
   EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
 }
 
-TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceFaceLimit) {
+TEST_F(OpenMeshMixedDecimater, DecimateMeshToFaceFaceLimit) {
 
   bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1.off");
 
   ASSERT_TRUE(ok);
 
-  typedef OpenMesh::Decimater::McDecimaterT< Mesh >  Decimater;
+  typedef OpenMesh::Decimater::MixedDecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
   typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
@@ -98,7 +98,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceFaceLimit) {
   decimaterDBG.add( hModQuadricDBG );
   decimaterDBG.initialize();
   int removedVertices = 0;
-  removedVertices = decimaterDBG.decimate_to_faces(4500, 9996);
+  removedVertices = decimaterDBG.decimate_to_faces(4500, 9996, 0.7);
                     decimaterDBG.mesh().garbage_collection();
 
   EXPECT_EQ(2526, removedVertices) << "The number of remove vertices is not correct!";

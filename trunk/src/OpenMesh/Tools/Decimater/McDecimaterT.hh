@@ -72,7 +72,7 @@ namespace Decimater {
     \see BaseModT, \ref decimater_docu
 */
 template < typename MeshT >
-class McDecimaterT : public BaseDecimaterT<MeshT>
+class McDecimaterT : virtual public BaseDecimaterT<MeshT> //virtual especially for the mixed decimater
 {
 public: //-------------------------------------------------------- public types
 
@@ -106,9 +106,13 @@ public:
   }
 
   /** Decimate to target complexity (vertices and faces).
+   *  Stops when the number of vertices or the number of faces is reached.
    *  Returns number of performed collapses.
    */
   size_t decimate_to_faces( size_t  _n_vertices=0, size_t _n_faces=0 );
+
+  size_t samples(){return randomSamples_;}
+  void set_samples(const size_t _value){randomSamples_ = _value;}
 
 private: //------------------------------------------------------- private data
 

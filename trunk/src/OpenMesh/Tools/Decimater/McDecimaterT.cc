@@ -225,7 +225,6 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
         continue;
 
       // adjust complexity in advance (need boundary status)
-      ++n_collapses;
 
       // One vertex is killed by the collapse
       --nv;

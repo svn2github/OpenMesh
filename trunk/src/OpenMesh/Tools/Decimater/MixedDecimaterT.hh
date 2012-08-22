@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,35 +30,33 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+ \*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
- *   $Revision$                                                         *
- *   $Date$                   *
  *                                                                           *
-\*===========================================================================*/
+ *   $Revision: 460 $                                                         *
+ *   $Date: 2011-11-16 10:45:08 +0100 (Mi, 16 Nov 2011) $                   *
+ *                                                                           *
+ \*===========================================================================*/
 
-/** \file DecimaterT.hh
+/** \file MixedDecimaterT.cc
  */
 
 //=============================================================================
 //
-//  CLASS DecimaterT
+//  CLASS MixedDecimaterT - IMPLEMENTATION
 //
 //=============================================================================
 
-#ifndef OPENMESH_DECIMATER_DECIMATERT_HH
-#define OPENMESH_DECIMATER_DECIMATERT_HH
+#ifndef OPENMESH_MIXED_DECIMATER_DECIMATERT_HH
+#define OPENMESH_MIXED_DECIMATER_DECIMATERT_HH
 
 
 //== INCLUDES =================================================================
 
 #include <memory>
-
-#include <OpenMesh/Core/Utils/Property.hh>
-#include <OpenMesh/Tools/Utils/HeapT.hh>
-#include <OpenMesh/Tools/Decimater/BaseDecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/McDecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/DecimaterT.hh>
 
 
 
@@ -71,15 +69,15 @@ namespace Decimater {
 //== CLASS DEFINITION =========================================================
 
 
-/** Decimater framework.
+/** Mixed decimater framework
     \see BaseModT, \ref decimater_docu
 */
 template < typename MeshT >
-class DecimaterT : virtual public BaseDecimaterT<MeshT> //virtual especially for the mixed decimater
+class MixedDecimaterT : public McDecimaterT<MeshT>, public DecimaterT<MeshT>
 {
 public: //-------------------------------------------------------- public types
 
-  typedef DecimaterT< MeshT >           Self;
+  typedef McDecimaterT< MeshT >         Self;
   typedef MeshT                         Mesh;
   typedef CollapseInfoT<MeshT>          CollapseInfo;
   typedef ModBaseT<MeshT>               Module;
@@ -89,91 +87,32 @@ public: //-------------------------------------------------------- public types
 public: //------------------------------------------------------ public methods
 
   /// Constructor
-  DecimaterT( Mesh& _mesh );
+  MixedDecimaterT( Mesh& _mesh );
 
   /// Destructor
-  ~DecimaterT();
+  ~MixedDecimaterT();
 
 public:
 
   /** Decimate (perform _n_collapses collapses). Return number of
       performed collapses. If _n_collapses is not given reduce as
       much as possible */
-  size_t decimate( size_t _n_collapses = 0 );
+  size_t decimate( const size_t _n_collapses, const float _mc_factor );
 
   /// Decimate to target complexity, returns number of collapses
-  size_t decimate_to( size_t  _n_vertices )
+  size_t decimate_to( size_t  _n_vertices, const float _mc_factor )
   {
     return ( (_n_vertices < this->mesh().n_vertices()) ?
-	     decimate( this->mesh().n_vertices() - _n_vertices ) : 0 );
+       decimate( this->mesh().n_vertices() - _n_vertices, _mc_factor ) : 0 );
   }
 
   /** Decimate to target complexity (vertices and faces).
    *  Stops when the number of vertices or the number of faces is reached.
    *  Returns number of performed collapses.
    */
-  size_t decimate_to_faces( size_t  _n_vertices=0, size_t _n_faces=0 );
-
-public:
-
-  typedef typename Mesh::VertexHandle    VertexHandle;
-  typedef typename Mesh::HalfedgeHandle  HalfedgeHandle;
-
-  /// Heap interface
-  class HeapInterface
-  {
-  public:
-
-    HeapInterface(Mesh&               _mesh,
-      VPropHandleT<float> _prio,
-      VPropHandleT<int>   _pos)
-      : mesh_(_mesh), prio_(_prio), pos_(_pos)
-    { }
-
-    inline bool
-    less( VertexHandle _vh0, VertexHandle _vh1 )
-    { return mesh_.property(prio_, _vh0) < mesh_.property(prio_, _vh1); }
-
-    inline bool
-    greater( VertexHandle _vh0, VertexHandle _vh1 )
-    { return mesh_.property(prio_, _vh0) > mesh_.property(prio_, _vh1); }
-
-    inline int
-    get_heap_position(VertexHandle _vh)
-    { return mesh_.property(pos_, _vh); }
-
-    inline void
-    set_heap_position(VertexHandle _vh, int _pos)
-    { mesh_.property(pos_, _vh) = _pos; }
-
-
-  private:
-    Mesh&                mesh_;
-    VPropHandleT<float>  prio_;
-    VPropHandleT<int>    pos_;
-  };
-
-  typedef Utils::HeapT<VertexHandle, HeapInterface>  DeciHeap;
-
-
-private: //---------------------------------------------------- private methods
-
-  /// Insert vertex in heap
-  void heap_vertex(VertexHandle _vh);
+  size_t decimate_to_faces( const size_t  _n_vertices=0, const size_t _n_faces=0 , const float _mc_factor = 0.8);
 
 private: //------------------------------------------------------- private data
-
-
-  // reference to mesh
-  Mesh&      mesh_;
-
-  // heap
-  std::auto_ptr<DeciHeap> heap_;
-
-  // vertex properties
-  VPropHandleT<HalfedgeHandle>  collapse_target_;
-  VPropHandleT<float>           priority_;
-  VPropHandleT<int>             heap_position_;
 
 };
 
@@ -181,11 +120,10 @@ private: //------------------------------------------------------- private data
 } // END_NS_DECIMATER
 } // END_NS_OPENMESH
 //=============================================================================
-#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_DECIMATER_DECIMATERT_CC)
-#define OPENMESH_DECIMATER_TEMPLATES
-#include "DecimaterT.cc"
+#if defined(OM_INCLUDE_TEMPLATES) && !defined(OPENMESH_MIXED_DECIMATER_DECIMATERT_CC)
+#define OPENMESH_MIXED_DECIMATER_TEMPLATES
+#include "MixedDecimaterT.cc"
 #endif
 //=============================================================================
-#endif // OPENMESH_DECIMATER_DECIMATERT_HH defined
+#endif // OPENMESH_MIXED_DECIMATER_DECIMATERT_HH
 //=============================================================================
-
