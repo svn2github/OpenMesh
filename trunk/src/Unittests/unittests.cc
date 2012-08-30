@@ -8,7 +8,6 @@
 #include "unittests_trimesh_circulators.hh"
 #include "unittests_decimater.hh"
 #include "unittests_mc_decimater.hh"
-#include "unittests_mixed_decimater.hh"
 #include "unittests_subdivider.hh"
 #include "unittests_trimesh_normal_calculations.hh"
 #include "unittests_trimesh_others.hh"
