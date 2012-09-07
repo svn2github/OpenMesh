@@ -56,10 +56,10 @@
 
 // ----------------------------------------------------------------------------
 
-#define OM_VERSION 0x10000
+#define OM_VERSION 0x20300
 
 // only defined, if it is a beta version
-#define OM_VERSION_BETA 4
+//#define OM_VERSION_BETA 4
 
 #define OM_GET_VER ((OM_VERSION && 0xf0000) >> 16)
 #define OM_GET_MAJ ((OM_VERSION && 0x0ff00) >> 8)
