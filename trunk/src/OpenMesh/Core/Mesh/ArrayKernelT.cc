@@ -72,11 +72,19 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
   #endif
 #endif
 
+  const bool track_vhandles = ( !vh_to_update.empty() );
+  const bool track_hhandles = ( !hh_to_update.empty() );
+  const bool track_fhandles = ( !fh_to_update.empty() );
+
   int i, i0, i1, nV(n_vertices()), nE(n_edges()), nH(2*n_edges()), nF(n_faces());
 
   std::vector<VertexHandle>    vh_map;
   std::vector<HalfedgeHandle>  hh_map;
   std::vector<FaceHandle>      fh_map;
+
+  std::map <int, int> vertex_inverse_map;
+  std::map <int, int> halfedge_inverse_map;
+  std::map <int, int> face_inverse_map;
 
   // setup handle mapping:
   vh_map.reserve(nV);
@@ -99,6 +107,13 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
       while (!status(VertexHandle(i0)).deleted() && i0 < i1)  ++i0;
       while ( status(VertexHandle(i1)).deleted() && i0 < i1)  --i1;
       if (i0 >= i1) break;
+
+      // If we keep track of the vertex handles for updates,
+      // we need to have the opposite direction
+      if ( track_vhandles ) {
+        vertex_inverse_map[i1] = i0;
+        vertex_inverse_map[i0] = -1;
+      }
 
       // swap
       std::swap(vertices_[i0], vertices_[i1]);
@@ -149,6 +164,13 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
       while (!status(FaceHandle(i0)).deleted() && i0 < i1)  ++i0;
       while ( status(FaceHandle(i1)).deleted() && i0 < i1)  --i1;
       if (i0 >= i1) break;
+
+      // If we keep track of the face handles for updates,
+      // we need to have the opposite direction
+      if ( track_fhandles ) {
+        face_inverse_map[i1] = i0;
+        face_inverse_map[i0] = -1;
+      }
 
       // swap
       std::swap(faces_[i0], faces_[i1]);
@@ -223,11 +245,19 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
   typename std_API_Container_VHandlePointer::iterator v_it(vh_to_update.begin()), v_it_end(vh_to_update.end());
   for(; v_it != v_it_end; ++v_it)
   {
-    if ( (*v_it)->idx() >=  vertexCount )
+
+    // Only changed vertices need to be considered
+    if ( (*v_it)->idx() != vh_map[(*v_it)->idx()].idx() ) {
+      *(*v_it) = VertexHandle(vertex_inverse_map[(*v_it)->idx()]);
+
+      // Vertices above the vertex count have to be already mapped, or they are invalid now!
+    } else if ( ((*v_it)->idx() >= vertexCount) && (vertex_inverse_map.find((*v_it)->idx()) == vertex_inverse_map.end()) ) {
       (*v_it)->invalidate();
-    else
-      *(*v_it) = vh_map[(*v_it)->idx()];
+    }
+
   }
+
+  // TODO :  fix garbage collection for halfedges!!!
 
   // Update the halfedge handles in the halfedge handle vector
   typename std_API_Container_HHandlePointer::iterator hh_it(hh_to_update.begin()), hh_it_end(hh_to_update.end());
@@ -238,14 +268,21 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
     else
       *(*hh_it) = hh_map[(*hh_it)->idx()];
   }
+
+
   // Update the face handles in the face handle vector
   typename std_API_Container_FHandlePointer::iterator fh_it(fh_to_update.begin()), fh_it_end(fh_to_update.end());
   for(; fh_it != fh_it_end; ++fh_it)
   {
-    if ( (*fh_it)->idx() >=  faceCount )
+
+    // Only changed faces need to be considered
+    if ( (*fh_it)->idx() != fh_map[(*fh_it)->idx()].idx() ) {
+      *(*fh_it) = FaceHandle(face_inverse_map[(*fh_it)->idx()]);
+
+      // Vertices above the face count have to be already mapped, or they are invalid now!
+    } else if ( ((*fh_it)->idx() >= faceCount) && (face_inverse_map.find((*fh_it)->idx()) == face_inverse_map.end()) ) {
       (*fh_it)->invalidate();
-    else
-      *(*fh_it) = fh_map[(*fh_it)->idx()];
+    }
   }
 }
 

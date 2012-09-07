@@ -337,7 +337,7 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
     faceHandlesP.push_back(&(faceHandles[i]));
 
 
-//  // REMOVE
+////  // REMOVE
 //  std::cerr << "Vertex   : ";
 //  for ( unsigned int i = 0 ; i < vertexHandles.size() ; ++i)
 //    std::cerr <<  vertexHandles[i].idx() << " ";
@@ -359,6 +359,7 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
   // -> deletes vertex 0
   // -> deletes faces 0,4,10,11
   mesh_.delete_vertex(vhandle[0]);
+  //mesh_.delete_vertex(vhandle[7]);
 
   // Check setup
   EXPECT_EQ(8u, mesh_.n_vertices() ) << "Wrong number of vertices after deletion";
@@ -374,32 +375,7 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
   // Check the updated handles
   //================================
 
-  // Check setup of vertices
-  EXPECT_EQ(7 , vertexHandles[0].idx() )  << "Wrong vertex handle after update";
-  EXPECT_EQ(1 , vertexHandles[1].idx() )  << "Wrong vertex handle after update";
-  EXPECT_EQ(2 , vertexHandles[2].idx() )  << "Wrong vertex handle after update";
-  EXPECT_EQ(3 , vertexHandles[3].idx() )  << "Wrong vertex handle after update";
-  EXPECT_EQ(4 , vertexHandles[4].idx() )  << "Wrong vertex handle after update";
-  EXPECT_EQ(5 , vertexHandles[5].idx() )  << "Wrong vertex handle after update";
-  EXPECT_EQ(6 , vertexHandles[6].idx() )  << "Wrong vertex handle after update";
-  EXPECT_EQ(-1, vertexHandles[7].idx() )  << "Wrong vertex handle after update";
-
-  // Check setup of faces
-  EXPECT_EQ(9  , faceHandles[0 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(1  , faceHandles[1 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(2  , faceHandles[2 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(3  , faceHandles[3 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(8  , faceHandles[4 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(5  , faceHandles[5 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(6  , faceHandles[6 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(7  , faceHandles[7 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(-1 , faceHandles[8 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(-1 , faceHandles[9 ].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(-1 , faceHandles[10].idx() )  << "Wrong face handle after update";
-  EXPECT_EQ(-1 , faceHandles[11].idx() )  << "Wrong face handle after update";
-
-
-//  // REMOVE
+//  //  // REMOVE
 //  std::cerr << "Vertex   : ";
 //  for ( unsigned int i = 0 ; i < vertexHandles.size() ; ++i)
 //    std::cerr <<  vertexHandles[i].idx() << " ";
@@ -415,6 +391,30 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
 //    std::cerr <<  faceHandles[i].idx() << " ";
 //  std::cerr << std::endl;
 //  // REMOVE END
+
+  // Check setup of vertices
+  EXPECT_EQ(-1, vertexHandles[0].idx() )  << "Wrong vertex handle after update";
+  EXPECT_EQ(1 , vertexHandles[1].idx() )  << "Wrong vertex handle after update";
+  EXPECT_EQ(2 , vertexHandles[2].idx() )  << "Wrong vertex handle after update";
+  EXPECT_EQ(3 , vertexHandles[3].idx() )  << "Wrong vertex handle after update";
+  EXPECT_EQ(4 , vertexHandles[4].idx() )  << "Wrong vertex handle after update";
+  EXPECT_EQ(5 , vertexHandles[5].idx() )  << "Wrong vertex handle after update";
+  EXPECT_EQ(6 , vertexHandles[6].idx() )  << "Wrong vertex handle after update";
+  EXPECT_EQ(0 , vertexHandles[7].idx() )  << "Wrong vertex handle after update";
+
+  // Check setup of faces
+  EXPECT_EQ(-1 , faceHandles[0 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(1  , faceHandles[1 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(2  , faceHandles[2 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(3  , faceHandles[3 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(-1 , faceHandles[4 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(5  , faceHandles[5 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(6  , faceHandles[6 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(7  , faceHandles[7 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(4  , faceHandles[8 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(0  , faceHandles[9 ].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(-1 , faceHandles[10].idx() )  << "Wrong face handle after update";
+  EXPECT_EQ(-1 , faceHandles[11].idx() )  << "Wrong face handle after update";
 
 }
 
