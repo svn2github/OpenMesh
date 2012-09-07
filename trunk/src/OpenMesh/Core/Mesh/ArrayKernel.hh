@@ -282,13 +282,14 @@ public:
    * Only when you call garbage collection, they will be actually removed.
    *
    * \note Garbage collection invalidates all handles. If you need to keep track of
-   *       a set of handles, you can pass them to this function and they will get updated.
+   *       a set of handles, you can pass them to this function. The handles that the
+   *       given pointers point to are updated in place.
    *
    *
    *
-   * @param vh_to_update Vertex handles that should get updated
-   * @param hh_to_update Halfedge handles that should get updated
-   * @param fh_to_update Face handles that should get updated
+   * @param vh_to_update Pointers to vertex handles that should get updated
+   * @param hh_to_update Pointers to halfedge handles that should get updated
+   * @param fh_to_update Pointers to face handles that should get updated
    * @param _v Remove deleted vertices?
    * @param _e Remove deleted edges?
    * @param _f Remove deleted faces?
