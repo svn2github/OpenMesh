@@ -44,7 +44,6 @@
 //== INCLUDES =================================================================
 
 #include <OpenMesh/Core/Mesh/ArrayKernel.hh>
-//#include <vector>
 
 //== NAMESPACES ===============================================================
 
@@ -61,6 +60,17 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
                                      std_API_Container_FHandlePointer& fh_to_update,
                                      bool _v, bool _e, bool _f)
 {
+
+#ifdef DEBUG
+  #ifndef OM_GARBAGE_NO_STATUS_WARNING
+    if ( !this->has_vertex_status() )
+      omerr() << "garbage_collection: No vertex status available. You can request it: mesh.request_vertex_status() or define OM_GARBAGE_NO_STATUS_WARNING to silence this warning." << std::endl;
+    if ( !this->has_edge_status() )
+      omerr() << "garbage_collection: No edge status available. You can request it: mesh.request_edge_status() or define OM_GARBAGE_NO_STATUS_WARNING to silence this warning." << std::endl;
+    if ( !this->has_face_status() )
+      omerr() << "garbage_collection: No face status available. You can request it: mesh.request_face_status() or define OM_GARBAGE_NO_STATUS_WARNING to silence this warning." << std::endl;
+  #endif
+#endif
 
   int i, i0, i1, nV(n_vertices()), nE(n_edges()), nH(2*n_edges()), nF(n_faces());
 
