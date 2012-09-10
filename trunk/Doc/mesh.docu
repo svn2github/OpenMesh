@@ -58,7 +58,7 @@ The main features of the underlying data structure are:
      one vertex).
 
 
-The goals/features of the C++ implementation are: 
+The goals/features of the C++ implementation are:
 
 <ul>
 <li> Flexibility:
@@ -71,7 +71,7 @@ The goals/features of the C++ implementation are:
           Vertex.</li>
     </ul>
 </li>
-<li> Efficiency: 
+<li> Efficiency:
     <ul>
     <li>  Avoid the overhead of virtual inheritance and virtual function calls.</li>
     <li>  Resolve as many type/attribute dependencies as possible at
@@ -83,9 +83,9 @@ The goals/features of the C++ implementation are:
      (Half-)Edges, Faces know each other and their corresponding
      handles.
 
-     <b>(*)</b> Since version 0.10.0 the Microsoft VisualC++ compiler is 
+     <b>(*)</b> Since version 0.10.0 the Microsoft VisualC++ compiler is
      supported. Due to the compilers inaptitude to process forwards on template
-     functions correctly, the type-safety had to be given up to some extend. 
+     functions correctly, the type-safety had to be given up to some extend.
      Though under the hood void pointers are used, the casting is done
      within the mesh, and the user transparently uses his handles as before.<br>
      As soon as the compiler adheres to the C++ standard the type-safe version
@@ -102,7 +102,7 @@ The goals/features of the C++ implementation are:
 If one takes a look at the goals and features section it soon becomes
 obvious that these goals cannot be achieved using trivial C++ features
 only. We make heavy use of templates, (partial) template specialization,
-generative and generic programming, and the STL. This may be a challenge 
+generative and generic programming, and the STL. This may be a challenge
 for you as well as for your compiler, as these are quite late features
 of the C++ language.
 
@@ -115,13 +115,13 @@ books:
 
 \li Bjarne Stroustrup, <em> The C++ Programming Language </em>,
 
-\li Matthew H. Austern, <em> Generic Programming and the STL: Using 
+\li Matthew H. Austern, <em> Generic Programming and the STL: Using
     and Extending the C++ Standard Template Library </em>,
 
-\li Andrei Alexandrescu, <em> Modern C++ Design: Generic Programming 
+\li Andrei Alexandrescu, <em> Modern C++ Design: Generic Programming
     and Design Patterns Applied </em>,
 
-\li Krzysztof Czarnecki, Ulrich Eisenecker, <em> Generative Programming: 
+\li Krzysztof Czarnecki, Ulrich Eisenecker, <em> Generative Programming:
     Methods, Tools, and Applications </em>.
 
 */
@@ -157,7 +157,7 @@ illustrates the way connectivity is stored in this structure:
 <li> Each \b vertex references one outgoing halfedge, i.e. a halfedge that
   starts at this vertex (1).
 <li> Each \b face references one of the halfedges bounding it (2).
-<li> Each \b halfedge provides a handle to 
+<li> Each \b halfedge provides a handle to
   <ul>
   <li> the vertex it points to (3),
   <li> the face it belongs to (4)
@@ -181,7 +181,7 @@ encapsulated into the so-called <em> circulators </em>, described in
 
 \attention In order to efficiently classify a boundary
 vertex, the outgoing halfedge of these vertices <b> must be a boundary
-halfedge </b> (see OpenMesh::PolyMeshT::is_boundary()). 
+halfedge </b> (see OpenMesh::PolyMeshT::is_boundary()).
 \attention Whenever you modify the
 topology using low-level topology changing functions, be sure to
 guarantee this behaviour (see
@@ -207,7 +207,7 @@ advantages:
 
 \li Circulating around a vertex in order to get its one-ring neighbors is an
     important operation for many kinds of algorithms on polygonal meshes.
-    For face-based structures this leads to many <tt>if-then</tt> branchings, 
+    For face-based structures this leads to many <tt>if-then</tt> branchings,
     the halfedge structure provides this funcionality without
     conditional branching in constant time.
 
@@ -245,9 +245,9 @@ shows the overall concept.
 \section ch_kernel Building the kernel
 
 -# The BaseKernel defines the basic operations on properties like
-add/remove/access. 
+add/remove/access.
 -# Next the AttribKernelT adds the standard properties all associated
-methods. 
+methods.
 -# Finally the ArrayKernelT provides the methods to add/remove/access
 the mesh items vertices, (half-)edges, and faces. The base class is passed
 as a template parameter, since depending on the underlying storage type the
@@ -289,11 +289,11 @@ MyMesh. As we have seen in the section on goals and features there are
 some parameters to be specified for a mesh. This is done in the
 following four steps:
 
-<ol> 
+<ol>
 
 <li> Choose between triangle mesh and general polygonal mesh.
 
-<li> Select the mesh kernel 
+<li> Select the mesh kernel
 
 <li> Parameterize the mesh by a so-called \em Traits class. You can
 add arbitrary classes to the mesh items, specify the types \c Scalar,
@@ -351,11 +351,11 @@ environment one might be better off using \c OSG_Kernel::ArrayKernelT.
 
 While the last two sections only have chosen from a list of predefined
 meshes or kernels, respectively, we now come to the user-defined
-customization. 
+customization.
 
 The resulting mesh \c MyMesh will provide the following types:
 
-<ul> 
+<ul>
 <li> The <i>point</i> and <i>scalar</i> type: \c MyMesh::Point and \c
      MyMesh::Scalar.
 <li> The <i>mesh items</i>: \c MyMesh::Vertex, \c MyMesh::Halfedge, \c
@@ -383,8 +383,8 @@ by a so-called \em traits class. Using this mechanism one can
 All these customizations are encapsulated in one class \c MyTraits,
 that is used as template argument to the mesh, e.g.
 \code
-struct MyTraits { 
-  // your customization 
+struct MyTraits {
+  // your customization
 };
 typedef PolyMesh_ArrayKernelT<MyTraits>  MyMesh;
 \endcode
@@ -441,7 +441,7 @@ vectors per vertex/face.
 
 Adding these predefined attributes is quite simple. You provide an
 <tt>unsigned int</tt> in the traits class, whose bits control whether
-or not a certain attribute should be attached or not. 
+or not a certain attribute should be attached or not.
 
 If you want to add a normal vector to your vertices and faces, and also
 want to have color information for vertices, the code would look like this:
@@ -454,8 +454,8 @@ together). From its set/unset bits you can see whether a certain
 attribute is used. OpenMesh provides the macro OM_Check_Attrib for
 doing this:
 
-\code 
-if (OM_Check_Attrib(MyMesh::Vertex, Normal) 
+\code
+if (OM_Check_Attrib(MyMesh::Vertex, Normal)
   do_something_with_normals();
 \endcode
 
@@ -608,17 +608,17 @@ This section explains the methods used to read a mesh from a file or
 write it to a file. The corresponding functions are defined in the
 namespace OpenMesh::MeshIO. This section is divided into three steps.
 Step one will give a short example on how to use the %OpenMesh IOManager,
-step two will give some background information on how IOManager works and 
+step two will give some background information on how IOManager works and
 finally step three will show you how to add your own modules to IOManager.
 
 \section mesh_io_quick Step 1 - IOManager quick start
 
 For a quick start you can copy the following code directly to your project.
 
-\note 
+\note
 <ul>
 <li>If you link statically against OpenMesh, you have to add the define
-OM_STATIC_BUILD to your application. This will ensure that readers and writers 
+OM_STATIC_BUILD to your application. This will ensure that readers and writers
 get initialized correctly.</li>
 <li>IOManager uses the filename extension to determine which reader/writer
 to use. I.e. if passing "inputmesh.obj" as filename parameter, the OBJ-File
@@ -686,7 +686,7 @@ the same way as reader modules.
 \subsection mesh_io_extend_datastruct Adding support for a new data structure
 
 As we have already seen, Importers receive information from the reader modules.
-Reader modules pass information through a specified interface : 
+Reader modules pass information through a specified interface :
 
 \include BaseImporter.hh
 
@@ -699,10 +699,10 @@ vectors/texcoords/faces. Therefore an exporter has to provide these iterators :
 
 There might be the need for the exporter to cache data from the structure it
 refers to. The update() function should be called at the beginning of
-each BaseWriter::save() method and it should make sure that cached information 
+each BaseWriter::save() method and it should make sure that cached information
 is up to date.
 
-For further information you are encouraged to take a look at the modules 
+For further information you are encouraged to take a look at the modules
 provided by %OpenMesh which can be found in the IO subdirectory.
 
 */
@@ -724,7 +724,7 @@ provided by %OpenMesh which can be found in the IO subdirectory.
 The mesh provides linear iterators (that enumerate vertices,
 halfedges, edges, and faces). These can be used to easily navigate
 through a mesh. Each iterator \c XYZIter also exists in a const
-version \c ConstXYZIter. 
+version \c ConstXYZIter.
 
 All iterators are defined in the namespace
 OpenMesh::Iterators. They are template classes that expect a mesh as
@@ -744,7 +744,7 @@ The corresponding \c const counterparts are
 \arg \c ConstFaceIter.
 
 
-The linear iterators are (almost) conformant to STL iterators. For a 
+The linear iterators are (almost) conformant to STL iterators. For a
 description of their interface see OpenMesh::Concepts::IteratorT.
 
 For efficiency reasons the \c operation++(int) (post-increment)
@@ -755,9 +755,20 @@ Additionally to the standard operations, each linear iterator
 provides a method \c handle(), which returns the handle of the
 item referred to by the iterator.
 
-\note 
+\subsection deletedElements Deleted Elements
+If no elements of a mesh are marked as deleted, the indices provided by \c idx()
+are consecutive numbers from 0 to <I>number of elements</I>-1 (in the case of vertices this would be
+from 0 to n_vertices()-1).
+
+However, note that this is <B>not</B> the case when elements are marked
+as deleted and OpenMesh::ArrayKernel::garbage_collection() has not yet been called.
+
+After garbage_collection() has been called the elements are reorganized and their handles and
+iterators are guaranteed to be consecutive numbers again.
+
+\note
 <ul>
-<li>If you delete elements on the mesh, they will still be 
+<li>If you delete elements on the mesh, they will still be
 enumerated by the standard iterators. To skip deleted elements,
 use the \ref it_iters_skipping</li>
 <li>An iterator to an item usually needs more memory than a
@@ -913,7 +924,7 @@ of templates especially in the kernels, there's no direct inheritence
 relationship of the kernel classes. For a conceptual overview of the
 inheritance graph see \ref mesh_hierarchy. For a list of available
 methods see OpenMesh::Concepts::KernelT.
-  
+
 \see \ref mesh_hierarchy, OpenMesh::Concepts::KernelT
 
 */
@@ -926,7 +937,7 @@ methods see OpenMesh::Concepts::KernelT.
 
 This group holds all the predefind mesh types, i.e. all combinations
 of triangle/polygonal mesh and the set of kernels.
-  
+
 */
 
 
@@ -940,7 +951,7 @@ a specific interface by pure virtual functions. Therefore these
 interfaces will be described in this group. Everyone implementing
 e.g. a new mesh kernel should at least implement the
 OpenMesh::Concepts::Kernel concept.
-  
+
 */
 
 

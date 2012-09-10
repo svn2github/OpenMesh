@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -103,14 +103,14 @@ public:
   ArrayKernel();
   virtual ~ArrayKernel();
 
-  /** ArrayKernel uses the default copy constructor and assignment operator, which means 
+  /** ArrayKernel uses the default copy constructor and assignment operator, which means
       that the connectivity and all properties are copied, including reference
-      counters, allocated bit status masks, etc.. In contrast assign_connectivity 
+      counters, allocated bit status masks, etc.. In contrast assign_connectivity
       copies only the connectivity, i.e. vertices, edges, faces and their status fields.
-      NOTE: The geometry (the points property) is NOT copied. Poly/TriConnectivity 
+      NOTE: The geometry (the points property) is NOT copied. Poly/TriConnectivity
       override(and hide) that function to provide connectivity consistence.*/
   void                                      assign_connectivity(const ArrayKernel& _other);
-  
+
   // --- handle -> item ---
   VertexHandle handle(const Vertex& _v) const
   {return VertexHandle(&_v - &vertices_.front()); }
@@ -128,10 +128,10 @@ public:
                       HalfedgeHandle(eh<<1) : HalfedgeHandle((eh<<1)+1));
   }
 
-  EdgeHandle handle(const Edge& _e) const 
+  EdgeHandle handle(const Edge& _e) const
   { return EdgeHandle(&_e - &edges_.front()); }
 
-  FaceHandle handle(const Face& _f) const 
+  FaceHandle handle(const Face& _f) const
   { return FaceHandle(&_f - &faces_.front()); }
 
 #define SIGNED(x) signed( (x) )
@@ -269,10 +269,12 @@ public:
    * \note Garbage collection invalidates all handles. If you need to keep track of
    *       a set of handles, you can pass them to the second garbage collection
    *       function, which will update a vector of handles.
+   *       See also \ref deletedElements.
    *
    * @param _v Remove deleted vertices?
    * @param _e Remove deleted edges?
    * @param _f Remove deleted faces?
+   *
    */
   void garbage_collection(bool _v=true, bool _e=true, bool _f=true);
 
@@ -284,8 +286,7 @@ public:
    * \note Garbage collection invalidates all handles. If you need to keep track of
    *       a set of handles, you can pass them to this function. The handles that the
    *       given pointers point to are updated in place.
-   *
-   *
+   *       See also \ref deletedElements.
    *
    * @param vh_to_update Pointers to vertex handles that should get updated
    * @param hh_to_update Pointers to halfedge handles that should get updated
@@ -609,7 +610,7 @@ public:
       }
       return sz;
     }
-    
+
     /// Note: O(n) complexity
     void                                    clear()
     {
@@ -628,7 +629,7 @@ public:
   friend class StatusSetT<HalfedgeHandle>;
 
   /// --- AutoStatusSet API ---
-  
+
   template <class Handle>
   class AutoStatusSetT : public StatusSetT<Handle>
   {
@@ -657,7 +658,7 @@ public:
   typedef AutoStatusSetT<HalfedgeHandle>    HalfedgeStatusSet;
 
   /// --- ExtStatusSet API --- (hybrid between a set and an array)
-  
+
   template <class Handle>
   class ExtStatusSetT : public AutoStatusSetT<Handle>
   {
@@ -753,7 +754,7 @@ public:
   typedef ExtStatusSetT<VertexHandle>       ExtVertexStatusSet;
   typedef ExtStatusSetT<EdgeHandle>         ExtEdgeStatusSet;
   typedef ExtStatusSetT<HalfedgeHandle>     ExtHalfedgeStatusSet;
-  
+
 private:
   // iterators
   typedef std::vector<Vertex>                VertexContainer;
@@ -812,7 +813,7 @@ private:
 
   void                                      init_bit_masks(BitMaskContainer& _bmc);
   void                                      init_bit_masks();
-  
+
 private:
   VertexContainer                           vertices_;
   EdgeContainer                             edges_;

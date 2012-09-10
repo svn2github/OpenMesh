@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -179,8 +179,9 @@ public:
   /** Remove all items that are marked as deleted from the
       corresponding containers.
       \note All handles (and indices) to any entity (face, vertex,
-            edge, halfedge) created before garbage collection  
+            edge, halfedge) created before garbage collection
             will be out of sync with the mesh, do not use them anymore!
+            See also \ref deletedElements.
       \note Needs the Attributes::Status attribute
       \note This function may not be implemented for all kernels.
   */
@@ -322,19 +323,19 @@ public: // Standard Property Management
 
   const TexCoord2D& texcoord2D(VertexHandle _vh) const; ///< Get texture coordinate.
   void set_texcoord2D(VertexHandle _vh, const TexCoord2D& _t); ///< Set texture coordinate.
-  
+
   const TexCoord3D& texcoord3D(VertexHandle _vh) const; ///< Get texture coordinate.
   void set_texcoord3D(VertexHandle _vh, const TexCoord3D& _t); ///< Set texture coordinate.
-  
+
   const TexCoord1D& texcoord1D(HalfedgeHandle _hh) const; ///< Get texture coordinate of the to vertex for the current face (per face per vertex texcoords)
   void set_texcoord1D(HalfedgeHandle _hh, const TexCoord1D& _t); ///< Set texture coordinate of the to vertex of the given Halfedge (per face per vertex texcoords)
 
   const TexCoord2D& texcoord2D(HalfedgeHandle _hh) const; ///< Get texture coordinate of the to vertex for the current face (per face per vertex texcoords)
   void set_texcoord2D(HalfedgeHandle _hh, const TexCoord2D& _t); ///< Set texture coordinate of the to vertex of the given Halfedge (per face per vertex texcoords)
-  
+
   const TexCoord3D& texcoord3D(HalfedgeHandle _hh) const; ///< Get texture coordinate of the to vertex for the current face (per face per vertex texcoords)
   void set_texcoord3D(HalfedgeHandle _hh, const TexCoord3D& _t); ///< Set texture coordinate of the to vertex of the given Halfedge (per face per vertex texcoords)
-  
+
   const StatusInfo& status(VertexHandle _vh) const; ///< Get status
   StatusInfo& status(VertexHandle _vh); ///< Get status
 
