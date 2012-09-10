@@ -7,13 +7,24 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.638)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.662)</td><td>
 
 <b>Core</b>
 <ul>
+<li>New garbage collection function with possibility to update existing handles</li>
+<li>Fixed crash in garbage collection, if certain status flags are not available (warns in debug mode!)</li>
 <li>Fixed some gcc-4.7 incompatibilities</li>
 <li>TriMesh::split now returns the handle of the new vertex</li>
 <li>Fixed delete_face function, not marking halfedges as deleted, if the edge gets deleted.(Thanks to Maxime Quiblier for the bug report)</li>
+</ul>
+
+<b>Decimater</b>
+<ul>
+<li>Added multiple choice decimater (~4 times faster than the heap one, but no guarantee on accuracy)</li>
+<li>Added mixed decimater, switching between mc decimater and standard decimater</li>
+<li>Decimater modules don't need a decimater type as template argument anymore</li>
+<li>Module parameters renamed</li>
+<li>Added Decimater base class</li>
 </ul>
 
 <b>IO</b>
