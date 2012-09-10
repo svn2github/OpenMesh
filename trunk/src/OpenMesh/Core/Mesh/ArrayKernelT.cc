@@ -138,6 +138,16 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
       while ( status(EdgeHandle(i1)).deleted() && i0 < i1)  --i1;
       if (i0 >= i1) break;
 
+      // If we keep track of the vertex handles for updates,
+      // we need to have the opposite direction
+      if ( track_hhandles ) {
+        halfedge_inverse_map[2*i1] = 2 * i0;
+        halfedge_inverse_map[2*i0] = -1;
+
+        halfedge_inverse_map[2*i1 + 1] = 2 * i0 + 1;
+        halfedge_inverse_map[2*i0 + 1] = -1;
+      }
+
       // swap
       std::swap(edges_[i0], edges_[i1]);
       std::swap(hh_map[2*i0], hh_map[2*i1]);
@@ -257,18 +267,20 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
 
   }
 
-  // TODO :  fix garbage collection for halfedges!!!
-
   // Update the halfedge handles in the halfedge handle vector
   typename std_API_Container_HHandlePointer::iterator hh_it(hh_to_update.begin()), hh_it_end(hh_to_update.end());
   for(; hh_it != hh_it_end; ++hh_it)
   {
-    if ( (*hh_it)->idx() >=  halfedgeCount )
-      (*hh_it)->invalidate();
-    else
-      *(*hh_it) = hh_map[(*hh_it)->idx()];
-  }
+    // Only changed faces need to be considered
+    if ( (*hh_it)->idx() != hh_map[(*hh_it)->idx()].idx() ) {
+      *(*hh_it) = HalfedgeHandle(halfedge_inverse_map[(*hh_it)->idx()]);
 
+      // Vertices above the face count have to be already mapped, or they are invalid now!
+    } else if ( ((*hh_it)->idx() >= halfedgeCount) && (halfedge_inverse_map.find((*hh_it)->idx()) == halfedge_inverse_map.end()) ) {
+      (*hh_it)->invalidate();
+    }
+
+  }
 
   // Update the face handles in the face handle vector
   typename std_API_Container_FHandlePointer::iterator fh_it(fh_to_update.begin()), fh_it_end(fh_to_update.end());
@@ -283,6 +295,7 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
     } else if ( ((*fh_it)->idx() >= faceCount) && (face_inverse_map.find((*fh_it)->idx()) == face_inverse_map.end()) ) {
       (*fh_it)->invalidate();
     }
+
   }
 }
 

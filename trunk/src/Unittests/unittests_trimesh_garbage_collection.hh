@@ -311,6 +311,9 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
   EXPECT_EQ(8u, mesh_.n_vertices() ) << "Wrong initial number of vertices";
   EXPECT_EQ(12u, mesh_.n_faces() )   << "Wrong initial number of faces";
 
+  //==================================================
+  // Create vectors containing the current handles
+  //==================================================
   std::vector<Mesh::VertexHandle>   vertexHandles;
   for ( Mesh::VertexIter v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it)
     vertexHandles.push_back(v_it.handle());
@@ -323,21 +326,35 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
   for ( Mesh::FaceIter f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it)
     faceHandles.push_back(f_it.handle());
 
-
+  //==================================================
+  // Create vectors containing pointers current handles
+  //==================================================
   std::vector<Mesh::VertexHandle*>   vertexHandlesP;
   for ( unsigned int i = 0 ; i < vertexHandles.size() ; ++i)
     vertexHandlesP.push_back(&(vertexHandles[i]));
 
   std::vector<Mesh::HalfedgeHandle*> halfedgeHandlesP;
-  for ( unsigned int i = 0 ; i < halfedgeHandles.size() ; ++i)
+  for ( unsigned int i = 0 ; i < halfedgeHandles.size() ; ++i) {
     halfedgeHandlesP.push_back(&(halfedgeHandles[i]));
+  }
 
   std::vector<Mesh::FaceHandle*>     faceHandlesP;
   for ( unsigned int i = 0 ; i < faceHandles.size() ; ++i)
     faceHandlesP.push_back(&(faceHandles[i]));
 
+//  // REMOVE
+//
+//  OpenMesh::HPropHandleT<int> handle;
+//   mesh_.add_property(handle,"tmp");
+//
+//
+//  int count = 0;
+//
+//  for ( Mesh::HalfedgeIter he_it = mesh_.halfedges_begin(); he_it !=  mesh_.halfedges_end() ; ++he_it) {
+//    mesh_.property(handle,he_it) =count;
+//    ++count;
+//  }
 
-////  // REMOVE
 //  std::cerr << "Vertex   : ";
 //  for ( unsigned int i = 0 ; i < vertexHandles.size() ; ++i)
 //    std::cerr <<  vertexHandles[i].idx() << " ";
@@ -348,11 +365,17 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
 //    std::cerr <<  halfedgeHandles[i].idx() << " ";
 //  std::cerr << std::endl;
 //
+//  std::cerr << "Halfedge property : ";
+//  for ( Mesh::HalfedgeIter he_it = mesh_.halfedges_begin(); he_it !=  mesh_.halfedges_end() ; ++he_it) {
+//    std::cerr <<  mesh_.property(handle,he_it) << " ";
+//  }
+//  std::cerr << std::endl;
+//
 //  std::cerr << "Face     : ";
 //  for ( unsigned int i = 0 ; i < faceHandles.size() ; ++i)
 //    std::cerr <<  faceHandles[i].idx() << " ";
 //  std::cerr << std::endl;
-//  // REMOVE END
+  // REMOVE END
 
 
   // Deleting vertex 0
@@ -386,11 +409,17 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
 //    std::cerr <<  halfedgeHandles[i].idx() << " ";
 //  std::cerr << std::endl;
 //
+//  std::cerr << "Halfedge property : ";
+//  for ( Mesh::HalfedgeIter he_it = mesh_.halfedges_begin(); he_it !=  mesh_.halfedges_end() ; ++he_it) {
+//    std::cerr <<  mesh_.property(handle,he_it) << " ";
+//  }
+//  std::cerr << std::endl;
+//
 //  std::cerr << "Face     : ";
 //  for ( unsigned int i = 0 ; i < faceHandles.size() ; ++i)
 //    std::cerr <<  faceHandles[i].idx() << " ";
 //  std::cerr << std::endl;
-//  // REMOVE END
+  // REMOVE END
 
   // Check setup of vertices
   EXPECT_EQ(-1, vertexHandles[0].idx() )  << "Wrong vertex handle after update";
@@ -401,6 +430,44 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
   EXPECT_EQ(5 , vertexHandles[5].idx() )  << "Wrong vertex handle after update";
   EXPECT_EQ(6 , vertexHandles[6].idx() )  << "Wrong vertex handle after update";
   EXPECT_EQ(0 , vertexHandles[7].idx() )  << "Wrong vertex handle after update";
+
+  // Check setup of halfedge handles
+  EXPECT_EQ(-1, halfedgeHandles[0 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(-1, halfedgeHandles[1 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 2, halfedgeHandles[2 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 3, halfedgeHandles[3 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(-1, halfedgeHandles[4 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(-1, halfedgeHandles[5 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 6, halfedgeHandles[6 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 7, halfedgeHandles[7 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 8, halfedgeHandles[8 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 9, halfedgeHandles[9 ].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(10, halfedgeHandles[10].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(11, halfedgeHandles[11].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(12, halfedgeHandles[12].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(13, halfedgeHandles[13].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(14, halfedgeHandles[14].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(15, halfedgeHandles[15].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(16, halfedgeHandles[16].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(17, halfedgeHandles[17].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(18, halfedgeHandles[18].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(19, halfedgeHandles[19].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(-1, halfedgeHandles[20].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(-1, halfedgeHandles[21].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(22, halfedgeHandles[22].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(23, halfedgeHandles[23].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(24, halfedgeHandles[24].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(25, halfedgeHandles[25].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(26, halfedgeHandles[26].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(27, halfedgeHandles[27].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(20, halfedgeHandles[28].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(21, halfedgeHandles[29].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 4, halfedgeHandles[30].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 5, halfedgeHandles[31].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 0, halfedgeHandles[32].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ( 1, halfedgeHandles[33].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(-1, halfedgeHandles[34].idx() )  << "Wrong halfedge handle after update";
+  EXPECT_EQ(-1, halfedgeHandles[35].idx() )  << "Wrong halfedge handle after update";
 
   // Check setup of faces
   EXPECT_EQ(-1 , faceHandles[0 ].idx() )  << "Wrong face handle after update";
