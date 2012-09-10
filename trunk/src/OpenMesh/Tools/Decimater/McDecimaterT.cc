@@ -113,7 +113,7 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
     for ( unsigned int i = 0; i < randomSamples_; ++i) {
 
       // Random halfedge handle
-      typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle(double(rand()) / RAND_MAX * mesh_.n_halfedges() );
+      typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges()-1) );
 
       // if it is not deleted, we analyse it
       if ( ! mesh_.status(tmpHandle).deleted()  ) {
@@ -191,7 +191,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
     for ( unsigned int i = 0; i < randomSamples_; ++i) {
 
       // Random halfedge handle
-      typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle(double(rand()) / RAND_MAX * mesh_.n_halfedges() );
+      typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges()-1) );
 
       // if it is not deleted, we analyse it
       if ( ! mesh_.status(tmpHandle).deleted()  ) {
