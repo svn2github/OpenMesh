@@ -131,6 +131,18 @@ class PropertyManager {
 
             return *this;
         }
+
+        /**
+         * Create a property manager for the supplied property and mesh.
+         * If the property doesn't exist, it is created. In any case,
+         * lifecycle management is disabled.
+         */
+        static PropertyManager createIfNotExists(MeshT &mesh, const char *propname) {
+            PROPTYPE dummy_prop;
+            PropertyManager pm(mesh, propname, mesh.get_property_handle(dummy_prop, propname));
+            pm.retain();
+            return std::move(pm);
+        }
 #endif
 
         /**
