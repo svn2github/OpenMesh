@@ -151,8 +151,8 @@ class PropertyManager {
          * If this method is called, the encapsulated property will not be deleted
          * upon destruction of the PropertyManager instance.
          */
-        inline void retain() {
-            retain_ = true;
+        inline void retain(bool doRetain = true) {
+            retain_ = doRetain;
         }
 
         /**
