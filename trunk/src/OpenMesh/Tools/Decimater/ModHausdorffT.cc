@@ -55,6 +55,9 @@
 //== INCLUDES =================================================================
 
 #include "ModHausdorffT.hh"
+#ifdef USE_OPENMP
+#include <omp.h>
+#endif
 
 
 //== NAMESPACES ===============================================================
@@ -73,10 +76,10 @@ distPointTriangleSquared( const Point& _p,
                           const Point& _v2,
                           Point& _nearestPoint )
 {
-  Point v0v1 = _v1 - _v0;
-  Point v0v2 = _v2 - _v0;
-  Point n = v0v1 % v0v2; // not normalized !
-  double d = n.sqrnorm();
+  const Point v0v1 = _v1 - _v0;
+  const Point v0v2 = _v2 - _v0;
+  const Point n = v0v1 % v0v2; // not normalized !
+  const double d = n.sqrnorm();
 
 
   // Check if the triangle is degenerated
@@ -86,22 +89,22 @@ distPointTriangleSquared( const Point& _p,
 //    std::cerr << "d is " << d << std::endl;
     return -1.0;
   }
-  double invD = 1.0 / d;
+  const double invD = 1.0 / d;
 
 
   // these are not needed for every point, should still perform
   // better with many points against one triangle
-  Point v1v2 = _v2 - _v1;
-  double inv_v0v2_2 = 1.0 / v0v2.sqrnorm();
-  double inv_v0v1_2 = 1.0 / v0v1.sqrnorm();
-  double inv_v1v2_2 = 1.0 / v1v2.sqrnorm();
+  const Point v1v2 = _v2 - _v1;
+  const double inv_v0v2_2 = 1.0 / v0v2.sqrnorm();
+  const double inv_v0v1_2 = 1.0 / v0v1.sqrnorm();
+  const double inv_v1v2_2 = 1.0 / v1v2.sqrnorm();
 
 
   Point v0p = _p - _v0;
   Point t = v0p % n;
   double  s01, s02, s12;
-  double a = (t | v0v2) * -invD;
-  double b = (t | v0v1) * invD;
+  const double a = (t | v0v2) * -invD;
+  const double b = (t | v0v1) * invD;
 
 
   if (a < 0)
@@ -135,6 +138,7 @@ distPointTriangleSquared( const Point& _p,
     s01 = ( v0v1 | v0p ) * inv_v0v1_2;
     if (s01 < 0.0)
     {
+  const Point n = v0v1 % v0v2; // not normalized !
       s02 = ( v0v2 |  v0p ) * inv_v0v2_2;
       if (s02 <= 0.0) {
         v0p = _v0;
@@ -245,6 +249,7 @@ collapse_priority(const CollapseInfo& _ci)
 
   // for each point: try to find a face such that error is < tolerance
   ok = true;
+
   for (p_it=points.begin(); ok && p_it!=p_end; ++p_it) {
     ok = false;
 
@@ -330,6 +335,22 @@ postprocess_collapse(const CollapseInfo& _ci)
   for (p_it=points.begin(); p_it!=p_end; ++p_it) {
     emin = FLT_MAX;
 
+#ifdef USE_OPENMP
+    int facesCount = faces.size();
+#pragma omp parallel for private(e) shared(emin)
+    for (int i = 0; i < facesCount; ++i) {
+      const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(faces[i]));
+      const Point& p1 = mesh_.point(++fv_it);
+      const Point& p2 = mesh_.point(++fv_it);
+
+      e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
+      if (e < emin) {
+        emin = e;
+        fh   = faces[i];
+      }
+
+    }
+#else
     for (fh_it=faces.begin(); fh_it!=fh_end; ++fh_it) {
       const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(*fh_it));
       const Point& p1 = mesh_.point(++fv_it);
@@ -342,6 +363,7 @@ postprocess_collapse(const CollapseInfo& _ci)
       }
 
     }
+#endif
 
     mesh_.property(points_, fh).push_back(*p_it);
   }
@@ -369,11 +391,22 @@ compute_sqr_error(FaceHandle _fh, const Point& _p) const
   Scalar e;
   Scalar emax =  distPointTriangleSquared(_p, p0, p1, p2, dummy);
 
+
+#ifdef USE_OPENMP
+  int pointsCount = points.size();
+#pragma omp parallel for private(e) shared(emax)
+  for (int i = 0; i < pointsCount; ++i) {
+    e =  distPointTriangleSquared(points[i], p0, p1, p2, dummy);
+    if (e > emax)
+      emax = e;
+  }
+#else
   for (; p_it!=p_end; ++p_it) {
     e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
     if (e > emax)
       emax = e;
   }
+#endif
 
   return emax;
 }
