@@ -218,7 +218,7 @@ public: //--------------------------------------------------- remove properties
   }
 
   //@}
-
+  
 public: //------------------------------------------------ get handle from name
 
   /// \name Get property handle by name
@@ -404,6 +404,42 @@ public: //-------------------------------------------- access property elements
 
   //@}
 
+
+public: //------------------------------------------------ copy property
+  //@{
+
+  /** Copies a single property from one mesh element to another (of the same type)
+   *
+   * \param _ph A property handle.
+   *
+   */
+
+  template <class T>
+  void copy_property(VPropHandleT<T>& _ph, VertexHandle _vh_from, VertexHandle _vh_to) {
+    if(_vh_from.is_valid() && _vh_to.is_valid())
+      vprops_.property(_ph)[_vh_from.idx()] = vprops_.property(_ph)[_vh_from.idx()];
+  }
+
+  template <class T>
+  void copy_property(HPropHandleT<T> _ph, HalfedgeHandle _hh_from, HalfedgeHandle _hh_to) {
+    if(_hh_from.is_valid() && _hh_to.is_valid())
+      hprops_.property(_ph)[_hh_from.idx()] = hprops_.property(_ph)[_hh_from.idx()];
+  }
+
+  template <class T>
+  void copy_property(EPropHandleT<T> _ph, EdgeHandle _eh_from, EdgeHandle _eh_to) {
+    if(_eh_from.is_valid() && _eh_to.is_valid())
+      eprops_.property(_ph)[_eh_from.idx()] = eprops_.property(_ph)[_eh_from.idx()];
+  }
+
+  template <class T>
+  void copy_property(FPropHandleT<T> _ph, FaceHandle _fh_from, FaceHandle _fh_to) {
+    if(_fh_from.is_valid() && _fh_to.is_valid())
+      fprops_.property(_ph)[_fh_from.idx()] = fprops_.property(_ph)[_fh_from.idx()];
+  }
+
+  //@}
+  
 protected: //------------------------------------------------- low-level access
 
 public: // used by non-native kernel and MeshIO, should be protected
