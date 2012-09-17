@@ -109,6 +109,12 @@ class PropertyManager {
             deleteProperty();
         }
 
+        void swap(PropertyManager &rhs) {
+            std::swap(mesh_, rhs.mesh_);
+            std::swap(prop_, rhs.prop_);
+            std::swap(retain_, rhs.retain_);
+        }
+
 #if __cplusplus > 199711L or __GXX_EXPERIMENTAL_CXX0X__
         /**
          * Move constructor. Transfers ownership (delete responsibility).
@@ -142,6 +148,44 @@ class PropertyManager {
             PropertyManager pm(mesh, propname, mesh.get_property_handle(dummy_prop, propname));
             pm.retain();
             return std::move(pm);
+        }
+
+#else
+        class Proxy {
+            private:
+                Proxy(MeshT *mesh_, PROPTYPE prop_, bool retain_) :
+                    mesh_(mesh_), prop_(prop_), retain_(retain_) {}
+                MeshT *mesh_;
+                PROPTYPE prop_;
+                bool retain_;
+
+                friend class PropertyManager;
+        };
+
+        operator Proxy() {
+            Proxy p(mesh_, prop_, retain_);
+            mesh_ = 0;
+            retain_ = true;
+            return p;
+        }
+
+        PropertyManager(Proxy p) : mesh_(p.mesh_), prop_(p.prop_), retain_(p.retain_) {}
+
+        PropertyManager &operator=(Proxy p) {
+            PropertyManager(p).swap(*this);
+            return *this;
+        }
+
+        /**
+         * Create a property manager for the supplied property and mesh.
+         * If the property doesn't exist, it is created. In any case,
+         * lifecycle management is disabled.
+         */
+        static Proxy createIfNotExists(MeshT &mesh, const char *propname) {
+            PROPTYPE dummy_prop;
+            PropertyManager pm(mesh, propname, mesh.get_property_handle(dummy_prop, propname));
+            pm.retain();
+            return (Proxy)pm;
         }
 #endif
 
