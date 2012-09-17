@@ -439,6 +439,46 @@ public: //------------------------------------------------ copy property
   }
 
   //@}
+
+
+public:
+  //------------------------------------------------ copy all properties
+  //@{
+
+  /** Copies all properties from one mesh element to another (of the same type)
+   *
+   * \param _vh_from A vertex handle - source
+   * \param _vh_to A vertex handle - target
+   *
+   */
+  void copy_all_properties(VertexHandle _vh_from, VertexHandle _vh_to) {
+    for( PropertyContainer::iterator p_it = vprops_.begin();
+	 p_it != vprops_.end(); ++p_it) {
+      (*p_it)->copy(_vh_from.idx(), _vh_to.idx());
+    }
+  }
+
+  void copy_all_properties(HalfedgeHandle _hh_from, HalfedgeHandle _hh_to) {
+    for( PropertyContainer::iterator p_it = hprops_.begin();
+	 p_it != hprops_.end(); ++p_it) {
+      (*p_it)->copy(_hh_from.idx(), _hh_to.idx());
+    }
+  }
+
+  void copy_all_properties(EdgeHandle _eh_from, EdgeHandle _eh_to) {
+    for( PropertyContainer::iterator p_it = eprops_.begin();
+	 p_it != eprops_.end(); ++p_it) {
+      (*p_it)->copy(_eh_from.idx(), _eh_to.idx());
+    }
+  }
+
+  void copy_all_properties(FaceHandle _fh_from, FaceHandle _fh_to) {
+    for( PropertyContainer::iterator p_it = fprops_.begin();
+	 p_it != fprops_.end(); ++p_it) {
+      (*p_it)->copy(_fh_from.idx(), _fh_to.idx());
+    }
+  }
+  //@}
   
 protected: //------------------------------------------------- low-level access
 

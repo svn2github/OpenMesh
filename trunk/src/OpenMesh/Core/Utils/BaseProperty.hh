@@ -106,6 +106,9 @@ public: // synchronized array interface
   /// Let two elements swap their storage place.
   virtual void swap(size_t _i0, size_t _i1) = 0;
 
+  /// Copy one element to another
+  virtual void copy(size_t _io, size_t _i1) = 0;
+  
   /// Return a deep copy of self.
   virtual BaseProperty* clone () const = 0;
 

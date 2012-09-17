@@ -113,6 +113,8 @@ public: // inherited from BaseProperty
   virtual void push_back()        { data_.push_back(T()); }
   virtual void swap(size_t _i0, size_t _i1)
   { std::swap(data_[_i0], data_[_i1]); }
+  virtual void copy(size_t _i0, size_t _i1)
+  { data_[_i1] = data_[_i0]; }
 
 public:
 
@@ -234,6 +236,8 @@ public: // inherited from BaseProperty
   virtual void push_back()        { data_.push_back(bool()); }
   virtual void swap(size_t _i0, size_t _i1)
   { bool t(data_[_i0]); data_[_i0]=data_[_i1]; data_[_i1]=t; }
+  virtual void copy(size_t _i0, size_t _i1)
+  { data_[_i1] = data_[_i0]; }
 
 public:
 
@@ -397,6 +401,8 @@ public: // inherited from BaseProperty
   virtual void swap(size_t _i0, size_t _i1) {
     std::swap(data_[_i0], data_[_i1]);
   }
+  virtual void copy(size_t _i0, size_t _i1)
+  { data_[_i1] = data_[_i0]; }
 
 public:
 
@@ -443,8 +449,6 @@ public:
     PropertyT<value_type>* p = new PropertyT<value_type>( *this );
     return p;
   }
-
-
 private:
 
   vector_type data_;
