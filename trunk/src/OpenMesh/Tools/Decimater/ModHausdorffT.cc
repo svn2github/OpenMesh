@@ -335,22 +335,6 @@ postprocess_collapse(const CollapseInfo& _ci)
   for (p_it=points.begin(); p_it!=p_end; ++p_it) {
     emin = FLT_MAX;
 
-#ifdef USE_OPENMP
-    int facesCount = faces.size();
-#pragma omp parallel for private(e) shared(emin)
-    for (int i = 0; i < facesCount; ++i) {
-      const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(faces[i]));
-      const Point& p1 = mesh_.point(++fv_it);
-      const Point& p2 = mesh_.point(++fv_it);
-
-      e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
-      if (e < emin) {
-        emin = e;
-        fh   = faces[i];
-      }
-
-    }
-#else
     for (fh_it=faces.begin(); fh_it!=fh_end; ++fh_it) {
       const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(*fh_it));
       const Point& p1 = mesh_.point(++fv_it);
@@ -363,7 +347,6 @@ postprocess_collapse(const CollapseInfo& _ci)
       }
 
     }
-#endif
 
     mesh_.property(points_, fh).push_back(*p_it);
   }
