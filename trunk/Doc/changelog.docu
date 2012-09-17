@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.662)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.675)</td><td>
 
 <b>Core</b>
 <ul>
@@ -15,7 +15,10 @@
 <li>Fixed crash in garbage collection, if certain status flags are not available (warns in debug mode!)</li>
 <li>Fixed some gcc-4.7 incompatibilities</li>
 <li>TriMesh::split now returns the handle of the new vertex</li>
-<li>Fixed delete_face function, not marking halfedges as deleted, if the edge gets deleted.(Thanks to Maxime Quiblier for the bug report)</li>
+<li>Fixed delete_face function, not mariking halfedges as deleted, if the edge gets deleted.(Thanks to Maxime Quiblier for the bug report)</li>
+<li>Added range based for loops compatible ranges to PolyConnectivity.</li>
+<li>Added a function to copy single properties between entities of same type. (Thanks to Duncan Paterson for the patch)</li>
+<li>Added functions to copy all properties between entities. (Thanks to Duncan Paterson for the patch)</li>
 </ul>
 
 <b>Decimater</b>
@@ -25,6 +28,7 @@
 <li>Decimater modules don't need a decimater type as template argument anymore</li>
 <li>Module parameters renamed</li>
 <li>Added Decimater base class</li>
+<li>Added some OpenMP loops to ModHausdorffT for speedup</li>
 </ul>
 
 <b>IO</b>
@@ -47,6 +51,7 @@
 <li>Added unittest for getting handles and faces from the iterator.</li>
 <li>Added unittest for creating a cube with 6 quads in a poly mesh.</li>
 <li>Added unittest adding a cube with 12 faces triangulated to a trimesh.</li>
+<li>Added unittest for MCDecimater</li>
 <li>Fixed gcc-4.7 warnings.</li>
 </ul>
 
