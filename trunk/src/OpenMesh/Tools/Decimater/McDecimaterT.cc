@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -33,7 +33,7 @@
  \*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision: 460 $                                                         *
  *   $Date: 2011-11-16 10:45:08 +0100 (Mi, 16 Nov 2011) $                   *
  *                                                                           *
@@ -181,13 +181,26 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   unsigned int nf = mesh_.n_faces();
   unsigned int n_collapses(0);
 
-  while ( (_nv < nv) && (_nf < nf) ) {
+
+  // check if no vertex or face contraints were set
+  bool contraintsOnly = (_nv == 0) && (_nf == 1);
+
+  // check if no legal collapses were found three times in a row
+  // for the sampled halfedges
+  bool foundNoLegalCollapsesThrice = false;
+
+  // store the last two amount of legal collapses found
+  int lastLegalCollapses = -1;
+  int beforeLastLegalCollapses = -1;
+
+  while ( (contraintsOnly && !foundNoLegalCollapsesThrice) && (_nv < nv) && (_nf < nf) ) {
 
     // Optimal id and value will be collected during the random sampling
     typename Mesh::HalfedgeHandle bestHandle(-1);
     double bestEnergy = FLT_MAX;
 
     // Generate random samples for collapses
+    unsigned int legalCollapses = 0;
     for ( unsigned int i = 0; i < randomSamples_; ++i) {
 
       // Random halfedge handle
@@ -200,6 +213,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 
         // Check if legal we analyze the priority of this collapse operation
         if (this->is_collapse_legal(ci)) {
+          ++legalCollapses;
           double energy = this->collapse_priority(ci);
 
           // Check if the current samples energy is better than any energy before
@@ -212,6 +226,15 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
         }
       }
 
+    }
+
+    if (contraintsOnly) {
+      // check if no legal collapses were found three times in a row
+      foundNoLegalCollapsesThrice = (beforeLastLegalCollapses == 0) && (lastLegalCollapses == 0) && (legalCollapses == 0);
+
+      // store amount of last legal collapses found
+      beforeLastLegalCollapses = lastLegalCollapses;
+      lastLegalCollapses = legalCollapses;
     }
 
     // Found the best energy?
@@ -235,6 +258,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
         --nf;
       else
         nf -= 2;
+
 
       // pre-processing
       this->preprocess_collapse(ci);
