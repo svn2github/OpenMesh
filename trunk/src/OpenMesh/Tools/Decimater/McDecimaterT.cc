@@ -193,7 +193,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   int lastLegalCollapses = -1;
   int beforeLastLegalCollapses = -1;
 
-  while ( (contraintsOnly && !foundNoLegalCollapsesThrice) && (_nv < nv) && (_nf < nf) ) {
+  while ( !foundNoLegalCollapsesThrice && (_nv < nv) && (_nf < nf) ) {
 
     // Optimal id and value will be collected during the random sampling
     typename Mesh::HalfedgeHandle bestHandle(-1);
