@@ -60,6 +60,10 @@
 #  include <cfloat>
 #endif
 
+#ifdef USE_OPENMP
+#include <omp.h>
+#endif
+
 //== NAMESPACE ===============================================================
 
 namespace OpenMesh {
@@ -110,6 +114,9 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
     double bestEnergy = FLT_MAX;
 
     // Generate random samples for collapses
+#ifdef USE_OPENMP
+#pragma omp parallel for shared(bestEnergy, bestHandle)
+#endif
     for ( unsigned int i = 0; i < randomSamples_; ++i) {
 
       // Random halfedge handle
@@ -201,6 +208,9 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 
     // Generate random samples for collapses
     unsigned int legalCollapses = 0;
+#ifdef USE_OPENMP
+#pragma omp parallel for shared(bestEnergy, bestHandle, legalCollapses)
+#endif
     for ( unsigned int i = 0; i < randomSamples_; ++i) {
 
       // Random halfedge handle
