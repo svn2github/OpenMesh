@@ -117,7 +117,7 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
 #ifdef USE_OPENMP
 #pragma omp parallel for shared(bestEnergy, bestHandle)
 #endif
-    for ( unsigned int i = 0; i < randomSamples_; ++i) {
+    for ( int i = 0; i < (int)randomSamples_; ++i) {
 
       // Random halfedge handle
       typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges()-1) );
@@ -211,7 +211,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 #ifdef USE_OPENMP
 #pragma omp parallel for shared(bestEnergy, bestHandle, legalCollapses)
 #endif
-    for ( unsigned int i = 0; i < randomSamples_; ++i) {
+    for ( int i = 0; i < (int)randomSamples_; ++i) {
 
       // Random halfedge handle
       typename Mesh::HalfedgeHandle tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges()-1) );
