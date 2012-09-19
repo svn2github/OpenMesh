@@ -406,49 +406,63 @@ public: //-------------------------------------------- access property elements
 
 
 public: //------------------------------------------------ copy property
-  //@{
 
   /** Copies a single property from one mesh element to another (of the same type)
    *
-   * \param _ph A property handle.
-   *
+   * @param _ph       A vertex property handle
+   * @param _vh_from  From vertex handle
+   * @param _vh_to    To vertex handle
    */
-
   template <class T>
   void copy_property(VPropHandleT<T>& _ph, VertexHandle _vh_from, VertexHandle _vh_to) {
     if(_vh_from.is_valid() && _vh_to.is_valid())
       vprops_.property(_ph)[_vh_from.idx()] = vprops_.property(_ph)[_vh_from.idx()];
   }
 
+  /** Copies a single property from one mesh element to another (of the same type)
+    *
+    * @param _ph       A halfedge property handle
+    * @param _hh_from  From halfedge handle
+    * @param _hh_to    To halfedge handle
+    */
   template <class T>
   void copy_property(HPropHandleT<T> _ph, HalfedgeHandle _hh_from, HalfedgeHandle _hh_to) {
     if(_hh_from.is_valid() && _hh_to.is_valid())
       hprops_.property(_ph)[_hh_from.idx()] = hprops_.property(_ph)[_hh_from.idx()];
   }
 
+  /** Copies a single property from one mesh element to another (of the same type)
+    *
+    * @param _ph       An edge property handle
+    * @param _eh_from  From edge handle
+    * @param _eh_to    To edge handle
+    */
   template <class T>
   void copy_property(EPropHandleT<T> _ph, EdgeHandle _eh_from, EdgeHandle _eh_to) {
     if(_eh_from.is_valid() && _eh_to.is_valid())
       eprops_.property(_ph)[_eh_from.idx()] = eprops_.property(_ph)[_eh_from.idx()];
   }
 
+  /** Copies a single property from one mesh element to another (of the same type)
+    *
+    * @param _ph       A face property handle
+    * @param _fh_from  From face handle
+    * @param _fh_to    To face handle
+    */
   template <class T>
   void copy_property(FPropHandleT<T> _ph, FaceHandle _fh_from, FaceHandle _fh_to) {
     if(_fh_from.is_valid() && _fh_to.is_valid())
       fprops_.property(_ph)[_fh_from.idx()] = fprops_.property(_ph)[_fh_from.idx()];
   }
 
-  //@}
-
 
 public:
   //------------------------------------------------ copy all properties
-  //@{
 
   /** Copies all properties from one mesh element to another (of the same type)
    *
    * \param _vh_from A vertex handle - source
-   * \param _vh_to A vertex handle - target
+   * \param _vh_to   A vertex handle - target
    *
    */
   void copy_all_properties(VertexHandle _vh_from, VertexHandle _vh_to) {
@@ -458,6 +472,12 @@ public:
     }
   }
 
+  /** Copies all properties from one mesh element to another (of the same type)
+   *
+   * \param _hh_from A halfedge handle - source
+   * \param _hh_to   A halfedge handle - target
+   *
+   */
   void copy_all_properties(HalfedgeHandle _hh_from, HalfedgeHandle _hh_to) {
     for( PropertyContainer::iterator p_it = hprops_.begin();
 	 p_it != hprops_.end(); ++p_it) {
@@ -465,6 +485,12 @@ public:
     }
   }
 
+  /** Copies all properties from one mesh element to another (of the same type)
+   *
+   * \param _eh_from An edge handle - source
+   * \param _eh_to   An edge handle - target
+   *
+   */
   void copy_all_properties(EdgeHandle _eh_from, EdgeHandle _eh_to) {
     for( PropertyContainer::iterator p_it = eprops_.begin();
 	 p_it != eprops_.end(); ++p_it) {
@@ -472,14 +498,19 @@ public:
     }
   }
 
+  /** Copies all properties from one mesh element to another (of the same type)
+    *
+    * \param _fh_from A face handle - source
+    * \param _fh_to   A face handle - target
+    *
+    */
   void copy_all_properties(FaceHandle _fh_from, FaceHandle _fh_to) {
     for( PropertyContainer::iterator p_it = fprops_.begin();
 	 p_it != fprops_.end(); ++p_it) {
       (*p_it)->copy(_fh_from.idx(), _fh_to.idx());
     }
   }
-  //@}
-  
+
 protected: //------------------------------------------------- low-level access
 
 public: // used by non-native kernel and MeshIO, should be protected
