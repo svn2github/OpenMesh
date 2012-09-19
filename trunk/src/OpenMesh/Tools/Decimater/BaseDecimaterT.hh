@@ -205,7 +205,7 @@ protected: //---------------------------------------------------- private method
    *
    * Note that some modules might re-initialize in their
    * set_error_tolerance_factor function as necessary
-   * @param factor_ has to be in the closed interval between 0.0 and 1.0
+   * @param _factor has to be in the closed interval between 0.0 and 1.0
    */
   void set_error_tolerance_factor(double _factor);
 

@@ -261,7 +261,7 @@ public: // common interface
     *
     * Note that the module might need to be re-initialized again after
     * setting the percentage
-    * @param factor_ has to be in the closed interval between 0.0 and 1.0
+    * @param _factor has to be in the closed interval between 0.0 and 1.0
     */
    virtual void set_error_tolerance_factor(double _factor) {
      if (_factor >= 0.0 && _factor <= 1.0)
