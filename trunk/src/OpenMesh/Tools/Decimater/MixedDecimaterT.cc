@@ -94,6 +94,7 @@ size_t MixedDecimaterT<Mesh>::decimate(const size_t _n_collapses, const float _m
     r_collapses = McDecimaterT<Mesh>::decimate(n_collapses_mc);
   if (_mc_factor < 1.0)
     r_collapses += DecimaterT<Mesh>::decimate(n_collapses_inc);
+
   return r_collapses;
 
 }
@@ -106,13 +107,18 @@ size_t MixedDecimaterT<Mesh>::decimate_to_faces(const size_t  _n_vertices,const 
   std::size_t r_collapses = 0;
   if (_mc_factor > 0.0)
   {
-    size_t mesh_faces = this->mesh().n_faces();
-    size_t mesh_vertices = this->mesh().n_vertices();
-    //reduce the mesh only for _mc_factor
-    size_t n_vertices_mc = static_cast<size_t>(mesh_vertices - _mc_factor * (mesh_vertices - _n_vertices));
-    size_t n_faces_mc = static_cast<size_t>(mesh_faces - _mc_factor * (mesh_faces - _n_faces));
+    bool constraintsOnly = (_n_vertices == 0) && (_n_faces == 1);
+    if (!constraintsOnly) {
+      size_t mesh_faces = this->mesh().n_faces();
+      size_t mesh_vertices = this->mesh().n_vertices();
+      //reduce the mesh only for _mc_factor
+      size_t n_vertices_mc = static_cast<size_t>(mesh_vertices - _mc_factor * (mesh_vertices - _n_vertices));
+      size_t n_faces_mc = static_cast<size_t>(mesh_faces - _mc_factor * (mesh_faces - _n_faces));
 
-    r_collapses = McDecimaterT<Mesh>::decimate_to_faces(n_vertices_mc, n_faces_mc);
+      r_collapses = McDecimaterT<Mesh>::decimate_to_faces(n_vertices_mc, n_faces_mc);
+    } else {
+      r_collapses = McDecimaterT<Mesh>::decimate_constraints_only(_mc_factor);
+    }
   }
 
   //update the mesh::n_vertices function, otherwise the next Decimater function will delete to much
@@ -121,6 +127,7 @@ size_t MixedDecimaterT<Mesh>::decimate_to_faces(const size_t  _n_vertices,const 
   //reduce the rest of the mesh
   if (_mc_factor < 1.0)
     r_collapses += DecimaterT<Mesh>::decimate_to_faces(_n_vertices,_n_faces);
+
 
   return r_collapses;
 }

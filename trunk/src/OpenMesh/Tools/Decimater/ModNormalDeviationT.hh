@@ -87,7 +87,7 @@ template <class MeshT>
 class ModNormalDeviationT : public ModBaseT< MeshT >
 {
 public:
-   
+
   DECIMATING_MODULE( ModNormalDeviationT, MeshT, NormalDeviation );
 
   typedef typename Mesh::Scalar                     Scalar;
@@ -189,6 +189,18 @@ public:
 
 
     return (max_angle < 0.5 * normal_deviation_ ? max_angle : float( Base::ILLEGAL_COLLAPSE ));
+  }
+
+  /// set the percentage of normal deviation
+  void set_error_tolerance_factor(double _factor) {
+    if (_factor >= 0.0 && _factor <= 1.0) {
+      // the smaller the factor, the smaller normal_deviation_ gets
+      // thus creating a stricter constraint
+      // division by error_tolerance_factor_ is for normalization
+      Scalar normal_deviation = (normal_deviation_ * 180.0/M_PI) * _factor / this->error_tolerance_factor_;
+      set_normal_deviation(normal_deviation);
+      this->error_tolerance_factor_ = _factor;
+    }
   }
 
 

@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision: 448 $                                                         *
  *   $Date: 2011-11-04 13:59:37 +0100 (Fr, 04 Nov 2011) $                   *
  *                                                                           *
@@ -110,6 +110,12 @@ public:
    *  Returns number of performed collapses.
    */
   size_t decimate_to_faces( size_t  _n_vertices=0, size_t _n_faces=0 );
+
+  /**
+   * Decimate only with constraints, while _factor gives the
+   * percentage of the constraints that should be used
+   */
+  size_t decimate_constraints_only(float _factor);
 
   size_t samples(){return randomSamples_;}
   void set_samples(const size_t _value){randomSamples_ = _value;}

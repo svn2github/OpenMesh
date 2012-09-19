@@ -199,6 +199,16 @@ protected: //---------------------------------------------------- private method
   /// Post-process a collapse
   void postprocess_collapse(CollapseInfo& _ci);
 
+  /**
+   * This provides a function that allows the setting of a percentage
+   * of the original contraint of the modules
+   *
+   * Note that some modules might re-initialize in their
+   * set_error_tolerance_factor function as necessary
+   * @param factor_ has to be in the closed interval between 0.0 and 1.0
+   */
+  void set_error_tolerance_factor(double _factor);
+
 private: //------------------------------------------------------- private data
 
 

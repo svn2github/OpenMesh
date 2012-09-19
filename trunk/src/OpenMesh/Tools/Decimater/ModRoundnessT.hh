@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -96,7 +96,7 @@ class ModRoundnessT : public ModBaseT<MeshT>
 
   /// Constructor
   ModRoundnessT( MeshT &_dec ) :
-    Base(_dec, false), 
+    Base(_dec, false),
     min_r_(-1.0)
   { }
 
@@ -109,14 +109,14 @@ class ModRoundnessT : public ModBaseT<MeshT>
    *
    *  The roundness is computed by dividing the radius of the
    *  circumference by the length of the shortest edge. The result is
-   *  normalized.  
+   *  normalized.
    *
    * \return [0:1] or ILLEGAL_COLLAPSE in non-binary mode
    * \return LEGAL_COLLAPSE or ILLEGAL_COLLAPSE in binary mode
    * \see set_min_roundness()
    */
-  float collapse_priority(const CollapseInfo& _ci)  
-  {    
+  float collapse_priority(const CollapseInfo& _ci)
+  {
     //     using namespace OpenMesh;
 
     typename Mesh::ConstVertexOHalfedgeIter voh_it(Base::mesh(), _ci.v0);
@@ -126,11 +126,11 @@ class ModRoundnessT : public ModBaseT<MeshT>
     Vec3f                                   B,C;
 
     if ( min_r_ < 0.0 ) // continues mode
-    {      
+    {
       C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(voh_it)));
       fhC = Base::mesh().face_handle( voh_it.handle() );
 
-      for (++voh_it; voh_it; ++voh_it) 
+      for (++voh_it; voh_it; ++voh_it)
       {
         B   = C;
         fhB = fhC;
@@ -153,7 +153,7 @@ class ModRoundnessT : public ModBaseT<MeshT>
       C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(voh_it)));
       fhC = Base::mesh().face_handle( voh_it.handle() );
 
-      for (++voh_it; voh_it && (priority==Base::LEGAL_COLLAPSE); ++voh_it) 
+      for (++voh_it; voh_it && (priority==Base::LEGAL_COLLAPSE); ++voh_it)
       {
         B   = C;
         fhB = fhC;
@@ -171,6 +171,19 @@ class ModRoundnessT : public ModBaseT<MeshT>
     return (float) priority;
   }
 
+  /// set the percentage of minimum roundness
+  void set_error_tolerance_factor(double _factor) {
+    if (this->is_binary()) {
+      if (_factor >= 0.0 && _factor <= 1.0) {
+        // the smaller the factor, the smaller min_r_ gets
+        // thus creating a stricter constraint
+        // division by error_tolerance_factor_ is for normalization
+        value_type min_roundness = min_r_ * _factor / this->error_tolerance_factor_;
+        set_min_roundness(min_roundness);
+        this->error_tolerance_factor_ = _factor;
+      }
+}
+  }
 
 
 public: // specific methods
@@ -197,12 +210,12 @@ public: // specific methods
 
     double r2 = roundness(A,B,C);
 
-    set_min_roundness( value_type(std::min(r1,r2)), true ); 
+    set_min_roundness( value_type(std::min(r1,r2)), true );
   }
 
   /** Set a minimum roundness value.
    *  \param _min_roundness in range (0,1)
-   *  \param _binary Set true, if the binary mode should be enabled, 
+   *  \param _binary Set true, if the binary mode should be enabled,
    *                 else false. In latter case the collapse_priority()
    *                 returns a float value if the constraint does not apply
    *                 and ILLEGAL_COLLAPSE else.
@@ -230,11 +243,11 @@ public: // specific methods
   //
   // then define
   //
-  //      radius of circumference 
+  //      radius of circumference
   // R := -----------------------
   //      length of shortest edge
   //
-  //       ||a|| * ||b|| * ||c||    
+  //       ||a|| * ||b|| * ||c||
   //       ---------------------
   //             4 * Area                 ||a|| * ||b|| * ||c||
   //    = ----------------------- = -----------------------------------
@@ -254,7 +267,7 @@ public: // specific methods
   //
   // At angle 60� R has it's minimum for all edge lengths = sqrt(1/3)
   //
-  // Define normalized roundness 
+  // Define normalized roundness
   //
   // nR := sqrt(1/3) / R
   //
@@ -266,7 +279,7 @@ public: // specific methods
   {
     const value_type epsilon = value_type(1e-15);
 
-    static const value_type sqrt43 = value_type(sqrt(4.0/3.0)); // 60�,a=b=c, **)    
+    static const value_type sqrt43 = value_type(sqrt(4.0/3.0)); // 60�,a=b=c, **)
 
     Vec3f vecAC     = C-A;
     Vec3f vecAB     = B-A;
@@ -281,7 +294,7 @@ public: // specific methods
       return 0.0;
 
     double nom   = AA * std::min( std::min(aa,bb),cc );
-    double denom = aa * bb * cc;    
+    double denom = aa * bb * cc;
     double nR    = sqrt43 * sqrt(nom/denom);
 
     return nR;

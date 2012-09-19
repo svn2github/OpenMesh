@@ -269,9 +269,21 @@ collapse_priority(const CollapseInfo& _ci)
   return ( ok ? Base::LEGAL_COLLAPSE : Base::ILLEGAL_COLLAPSE );
 }
 
-
 //-----------------------------------------------------------------------------
 
+template<class MeshT>
+void ModHausdorffT<MeshT>::set_error_tolerance_factor(double _factor) {
+  if (_factor >= 0.0 && _factor <= 1.0) {
+    // the smaller the factor, the smaller tolerance gets
+    // thus creating a stricter constraint
+    // division by error_tolerance_factor_ is for normalization
+    Scalar tolerance = tolerance_ * _factor / this->error_tolerance_factor_;
+    set_tolerance(tolerance);
+    this->error_tolerance_factor_ = _factor;
+  }
+}
+
+//-----------------------------------------------------------------------------
 
 template <class MeshT>
 void
@@ -380,8 +392,11 @@ compute_sqr_error(FaceHandle _fh, const Point& _p) const
 #pragma omp parallel for private(e) shared(emax)
   for (int i = 0; i < pointsCount; ++i) {
     e =  distPointTriangleSquared(points[i], p0, p1, p2, dummy);
+#pragma omp critical(emaxUpdate)
+    {
     if (e > emax)
       emax = e;
+    }
   }
 #else
   for (; p_it!=p_end; ++p_it) {

@@ -173,6 +173,20 @@ float ModAspectRatioT<MeshT>::collapse_priority(const CollapseInfo& _ci) {
   }
 }
 
+//-----------------------------------------------------------------------------
+
+template<class MeshT>
+void ModAspectRatioT<MeshT>::set_error_tolerance_factor(double _factor) {
+  if (_factor >= 0.0 && _factor <= 1.0) {
+    // the smaller the factor, the larger min_aspect_ gets
+    // thus creating a stricter constraint
+    // division by (2.0 - error_tolerance_factor_) is for normalization
+    double min_aspect = min_aspect_ * (2.0 - _factor) / (2.0 - this->error_tolerance_factor_);
+    set_aspect_ratio(1.0/min_aspect);
+    this->error_tolerance_factor_ = _factor;
+  }
+}
+
 //=============================================================================
 }
 }

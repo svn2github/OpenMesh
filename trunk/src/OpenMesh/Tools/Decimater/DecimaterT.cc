@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -33,7 +33,7 @@
  \*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -214,6 +214,7 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
   // delete heap
   heap_.reset();
 
+
   // DON'T do garbage collection here! It's up to the application.
   return n_collapses;
 }
@@ -306,6 +307,7 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 
   // delete heap
   heap_.reset();
+
 
   // DON'T do garbage collection here! It's up to the application.
   return n_collapses;

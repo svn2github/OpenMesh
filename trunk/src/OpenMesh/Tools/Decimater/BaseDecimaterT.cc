@@ -207,6 +207,19 @@ void BaseDecimaterT<Mesh>::preprocess_collapse(CollapseInfo& _ci) {
   cmodule_->preprocess_collapse(_ci);
 }
 
+//-----------------------------------------------------------------------------
+
+template<class Mesh>
+void BaseDecimaterT<Mesh>::set_error_tolerance_factor(double _factor) {
+  if (_factor >= 0.0 && _factor <= 1.0) {
+    typename ModuleList::iterator m_it, m_end = bmodules_.end();
+
+    for (m_it = bmodules_.begin(); m_it != m_end; ++m_it)
+      (*m_it)->set_error_tolerance_factor(_factor);
+
+    cmodule_->set_error_tolerance_factor(_factor);
+  }
+}
 
 //-----------------------------------------------------------------------------
 

@@ -118,6 +118,9 @@ class ModAspectRatioT: public ModBaseT<MeshT> {
     /// update aspect ratio of one-ring
     void preprocess_collapse(const CollapseInfo& _ci);
 
+    /// set percentage of aspect ratio
+    void set_error_tolerance_factor(double _factor);
+
   private:
 
     /** \brief return aspect ratio (length/height) of triangle

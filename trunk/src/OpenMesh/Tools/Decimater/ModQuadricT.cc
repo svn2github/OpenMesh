@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -129,6 +129,23 @@ initialize()
   }
 }
 
+//-----------------------------------------------------------------------------
+
+template<class MeshT>
+void ModQuadricT<MeshT>::set_error_tolerance_factor(double _factor) {
+  if (this->is_binary()) {
+    if (_factor >= 0.0 && _factor <= 1.0) {
+      // the smaller the factor, the smaller max_err_ gets
+      // thus creating a stricter constraint
+      // division by error_tolerance_factor_ is for normalization
+      double max_err = max_err_ * _factor / this->error_tolerance_factor_;
+      set_max_err(max_err);
+      this->error_tolerance_factor_ = _factor;
+
+      initialize();
+    }
+  }
+}
 
 //=============================================================================
 } // END_NS_DECIMATER

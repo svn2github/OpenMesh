@@ -99,6 +99,9 @@ class ModEdgeLengthT: public ModBaseT<MeshT> {
      */
     float collapse_priority(const CollapseInfo& _ci);
 
+    /// set the percentage of edge length
+    void set_error_tolerance_factor(double _factor);
+
   private:
 
     Mesh& mesh_;

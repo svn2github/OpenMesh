@@ -124,6 +124,9 @@ class ModHausdorffT: public ModBaseT<MeshT> {
     /// re-distribute points
     virtual void postprocess_collapse(const CollapseInfo& _ci);
 
+    /// set the percentage of tolerance
+    void set_error_tolerance_factor(double _factor);
+
   private:
 
     /// squared distance from point _p to triangle (_v0, _v1, _v2)

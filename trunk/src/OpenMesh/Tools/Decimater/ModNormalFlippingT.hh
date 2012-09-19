@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,17 +30,17 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
 \*===========================================================================*/
 
 /** \file ModNormalFlippingT.hh
-    
+
  */
 
 //=============================================================================
@@ -67,44 +67,44 @@ namespace Decimater { // BEGIN_NS_DECIMATER
 //== CLASS DEFINITION =========================================================
 
 /** Decimating module to avoid flipping of faces.
- *  
+ *
  *  This module can be used only as a binary module. The criterion
  *  of allowing/disallowing the collapse is the angular deviation between
  *  the face normal of the original faces and normals of the faces after the
  *  collapse. The collapse will pass the test, if the deviation is below
  *  a given threshold.
- */	      
+ */
 template <typename MeshT>
 class ModNormalFlippingT : public ModBaseT< MeshT >
-{ 
+{
 public:
 
   DECIMATING_MODULE( ModNormalFlippingT, MeshT, NormalFlipping );
 
 public:
-  
+
   /// Constructor
   ModNormalFlippingT( MeshT &_mesh) : Base(_mesh, true)
   {
     set_max_normal_deviation( 90.0f );
   }
-  
 
-  ~ModNormalFlippingT() 
+
+  ~ModNormalFlippingT()
   { }
-  
+
 
 public:
-  
+
   /** Compute collapse priority due to angular deviation of face normals
    *  before and after a collapse.
    *
    *  -# Compute for each adjacent face of \c _ci.v0 the face
-   *  normal if the collpase would be executed.  
+   *  normal if the collpase would be executed.
    *
    *  -# Prevent the collapse, if the cosine of the angle between the
    *     original and the new normal is below a given threshold.
-   *  
+   *
    *  \param _ci The collapse description
    *  \return LEGAL_COLLAPSE or ILLEGAL_COLLAPSE
    *
@@ -114,13 +114,13 @@ public:
   {
     // simulate collapse
     Base::mesh().set_point(_ci.v0, _ci.p1);
-    
+
     // check for flipping normals
     typename Mesh::ConstVertexFaceIter vf_it(Base::mesh(), _ci.v0);
     typename Mesh::FaceHandle          fh;
     typename Mesh::Scalar              c(1.0);
-    
-    for (; vf_it; ++vf_it) 
+
+    for (; vf_it; ++vf_it)
     {
       fh = vf_it.handle();
       if (fh != _ci.fl && fh != _ci.fr)
@@ -129,40 +129,51 @@ public:
         typename Mesh::Normal n2 = Base::mesh().calc_face_normal(fh);
 
         c = dot(n1, n2);
-        
+
         if (c < min_cos_)
           break;
       }
     }
-      
+
     // undo simulation changes
     Base::mesh().set_point(_ci.v0, _ci.p0);
 
     return float( (c < min_cos_) ? Base::ILLEGAL_COLLAPSE : Base::LEGAL_COLLAPSE );
   }
 
+  /// set the percentage of maximum normal deviation
+  void set_error_tolerance_factor(double _factor) {
+    if (_factor >= 0.0 && _factor <= 1.0) {
+      // the smaller the factor, the smaller max_deviation_ gets
+      // thus creating a stricter constraint
+      // division by error_tolerance_factor_ is for normalization
+      float max_normal_deviation = (max_deviation_ * 180.0/M_PI) * _factor / this->error_tolerance_factor_;
+      set_max_normal_deviation(max_normal_deviation);
+      this->error_tolerance_factor_ = _factor;
+    }
+  }
 
 
 public:
-   
+
   /// get normal deviation
   float max_normal_deviation() const { return max_deviation_ / M_PI * 180.0; }
-  
+
   /** Set normal deviation
-   *  
+   *
    *  Set the maximum angular deviation of the orignal normal and the new
    *  normal in degrees.
    */
-  void set_max_normal_deviation(float _f) { 
-    max_deviation_ = _f / 180.0 * M_PI; 
+  void set_max_normal_deviation(float _f) {
+    max_deviation_ = _f / 180.0 * M_PI;
     min_cos_       = cos(max_deviation_);
   }
-  
+
 private:
 
   // hide this method
   void set_binary(bool _b) {}
-   
+
 private:
 
   // maximum normal deviation
