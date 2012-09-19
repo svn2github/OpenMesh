@@ -146,12 +146,48 @@ public:
       Check for topological correctness first using is_flip_ok(). */
   void flip(EdgeHandle _eh);
 
-  /// Edge split (= 2-to-4 split)
+
+  /** \brief Edge split (= 2-to-4 split)
+   *
+   *
+   * The function will introduce two new faces ( non-boundary case) or
+   * one additional face (if edge is boundary)
+   *
+   * \note The properties of the new edges, halfedges, and faces will be undefined!
+   *
+   * @param _eh Edge handle that should be splitted
+   * @param _vh Vertex handle that will be inserted at the edge
+   */
   void split(EdgeHandle _eh, VertexHandle _vh);
 
-  /// Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
+  /** \brief Edge split (= 2-to-4 split)
+   *
+   * The function will introduce two new faces ( non-boundary case) or
+   * one additional face (if edge is boundary)
+   *
+   * \note The properties of the new edges will be adjusted to the properties of the original edge
+   * \note The properties of the new faces and halfedges will be undefined
+   *
+   * @param _eh Edge handle that should be splitted
+   * @param _vh Vertex handle that will be inserted at the edge
+   */
+  void split_copy(EdgeHandle _eh, VertexHandle _vh);
+
+  /** \brief Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
+   *
+   * @param _fh Face handle that should be splitted
+   * @param _vh Vertex handle that will be inserted at the face
+   */
   inline void split(FaceHandle _fh, VertexHandle _vh)
   { PolyConnectivity::split(_fh, _vh); }
+
+  /** \brief Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
+   *
+   * @param _fh Face handle that should be splitted
+   * @param _vh Vertex handle that will be inserted at the face
+   */
+  inline void split_copy(FaceHandle _fh, VertexHandle _vh)
+  { PolyConnectivity::split_copy(_fh, _vh); }
 
   //@}
 

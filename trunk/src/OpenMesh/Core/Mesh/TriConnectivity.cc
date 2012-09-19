@@ -384,6 +384,7 @@ void TriConnectivity::flip(EdgeHandle _eh)
 
 
 //-----------------------------------------------------------------------------
+
 void TriConnectivity::split(EdgeHandle _eh, VertexHandle _vh)
 {
   HalfedgeHandle h0 = halfedge_handle(_eh, 0);
@@ -477,6 +478,19 @@ void TriConnectivity::split(EdgeHandle _eh, VertexHandle _vh)
 
   if (halfedge_handle(v2) == h0)
     set_halfedge_handle(v2, t1);
+}
+
+//-----------------------------------------------------------------------------
+
+void TriConnectivity::split_copy(EdgeHandle _eh, VertexHandle _vh)
+{
+  // Split the halfedge ( handle will be preserved)
+  split(_eh, _vh);
+
+  // Copy the properties of the original edge to all neighbor edges that
+  // have been created
+  for(VEIter ve_it = ve_iter(_vh); ve_it; ++ve_it)
+    copy_all_properties(_eh, ve_it);
 }
 
 }// namespace OpenMesh

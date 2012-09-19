@@ -939,16 +939,6 @@ void PolyConnectivity::triangulate()
 //-----------------------------------------------------------------------------
 void PolyConnectivity::split(FaceHandle fh, VertexHandle vh)
 {
-  /*
-    Split an arbitrary face into triangles by connecting
-    each vertex of fh to vh.
-
-    - fh will remain valid (it will become one of the
-      triangles)
-    - the halfedge handles of the new triangles will
-      point to the old halfeges
-  */
-
   HalfedgeHandle hend = halfedge_handle(fh);
   HalfedgeHandle hh   = next_halfedge_handle(hend);
 
@@ -987,6 +977,17 @@ void PolyConnectivity::split(FaceHandle fh, VertexHandle vh)
   set_face_handle(hold, fh);
 
   set_halfedge_handle(vh, hold);
+}
+
+
+void PolyConnectivity::split_copy(FaceHandle fh, VertexHandle vh) {
+
+  // Split the given face (fh will still be valid)
+  split(fh, vh);
+
+  // Copy the property of the original face to all new faces
+  for(VertexFaceIter vf_it =  vf_iter(vh); vf_it; ++vf_it)
+    copy_all_properties(fh, vf_it);
 }
 
 //-----------------------------------------------------------------------------
@@ -1071,5 +1072,19 @@ void PolyConnectivity::split_edge(EdgeHandle _eh, VertexHandle _vh)
   }
 }
 
-}//namespace OpenMesh
+//-----------------------------------------------------------------------------
+
+void PolyConnectivity::split_edge_copy(EdgeHandle _eh, VertexHandle _vh)
+{
+  // Split the edge (handle is kept!)
+  split_edge(_eh, _vh);
+
+  // Navigate to the new edge
+  EdgeHandle eh0 = edge_handle( next_halfedge_handle( halfedge_handle(_eh, 1) ) );
+
+  // Copy the property from the original to the new edge
+  copy_all_properties(_eh, eh0);
+}
+
+} // namespace OpenMesh
 

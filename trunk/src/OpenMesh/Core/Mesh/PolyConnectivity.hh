@@ -684,9 +684,35 @@ public:
   */
   HalfedgeHandle insert_edge(HalfedgeHandle _prev_heh, HalfedgeHandle _next_heh);
     
-  /// Face split (= 1-to-n split)
+  /** \brief Face split (= 1-to-n split).
+     *
+     * Split an arbitrary face into triangles by connecting each vertex of fh to vh.
+     *
+     * \note fh will remain valid (it will become one of the triangles)
+     * \note the halfedge handles of the new triangles will point to the old halfeges
+     *
+     * \note The properties of the new faces and all other new primitives will be undefined!
+     *
+     * @param _fh Face handle that should be splitted
+     * @param _vh Vertex handle of the new vertex that will be inserted in the face
+     */
   void split(FaceHandle _fh, VertexHandle _vh);
 
+  /** \brief Face split (= 1-to-n split).
+   *
+   * Split an arbitrary face into triangles by connecting each vertex of fh to vh.
+   *
+   * \note fh will remain valid (it will become one of the triangles)
+   * \note the halfedge handles of the new triangles will point to the old halfeges
+   *
+   * \note The properties of the new faces will be adjusted to the properties of the original faces
+   * \note Properties of the new edges and halfedges will be undefined
+   *
+   * @param _fh Face handle that should be splitted
+   * @param _vh Vertex handle of the new vertex that will be inserted in the face
+   */
+  void split_copy(FaceHandle _fh, VertexHandle _vh);
+  
   /** \brief Triangulate the face _fh
 
     Split an arbitrary face into triangles by connecting
@@ -706,8 +732,30 @@ public:
   */
   void triangulate();
   
-  /// Edge split (inserts a vertex on the edge only)
+  /** Edge split (inserts a vertex on the edge only)
+   *
+   * This edge split only splits the edge without introducing new faces!
+   * As this is for polygonal meshes, we can have valence 2 vertices here.
+   *
+   * \note The properties of the new edges and halfedges will be undefined!
+   *
+   * @param _eh Handle of the edge, that will be splitted
+   * @param _vh Handle of the vertex that will be inserted at the edge
+   */
   void split_edge(EdgeHandle _eh, VertexHandle _vh);
+
+  /** Edge split (inserts a vertex on the edge only)
+   *
+   * This edge split only splits the edge without introducing new faces!
+   * As this is for polygonal meshes, we can have valence 2 vertices here.
+   *
+   * \note The properties of the new edge will be copied from the splitted edge
+   * \note Properties of the new halfedges will be undefined
+   *
+   * @param _eh Handle of the edge, that will be splitted
+   * @param _vh Handle of the vertex that will be inserted at the edge
+   */
+  void split_edge_copy(EdgeHandle _eh, VertexHandle _vh);
 
 
   /** \name Generic handle derefertiation.
