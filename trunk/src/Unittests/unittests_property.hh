@@ -211,6 +211,167 @@ TEST_F(OpenMeshProperties, VertexPropertyCheckBool) {
 
 }
 
+/* Creates an int property and checks if it the copy operation works
+ */
+TEST_F(OpenMeshProperties, VertexPropertyCopypropertiesInt) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[4];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 0, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(1, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+
+  // Add two faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[0]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  // Test setup:
+  //  1 === 2
+  //  |   / |
+  //  |  /  |
+  //  | /   |
+  //  0 === 3
+
+  // Check setup
+  EXPECT_EQ(4u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(2u, mesh_.n_faces() )    << "Wrong number of faces";
+
+  // Add a double vertex property
+  OpenMesh::VPropHandleT<int> intHandle;
+
+  EXPECT_FALSE( mesh_.get_property_handle(intHandle,"intProp") );
+
+  mesh_.add_property(intHandle,"intProp");
+
+  EXPECT_TRUE(mesh_.get_property_handle(intHandle,"intProp"));
+
+  // Fill property
+  for ( Mesh::VertexIter v_it = mesh_.vertices_begin() ; v_it != mesh_.vertices_end(); ++v_it ) {
+    mesh_.property(intHandle,v_it) = v_it.handle().idx();
+  }
+
+  // Check if property it is ok.
+  Mesh::VertexIter v_it = mesh_.vertices_begin();
+  EXPECT_EQ( 0, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 0";
+  ++v_it;
+
+  EXPECT_EQ( 1, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 1";
+  ++v_it;
+
+  EXPECT_EQ( 2, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 2";
+  ++v_it;
+
+  EXPECT_EQ( 3, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 3";
+
+  // Check vertex positions
+  v_it = mesh_.vertices_begin();
+
+  EXPECT_EQ( 0, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 0";
+  EXPECT_EQ( 0, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 0";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 0";
+  ++v_it;
+
+  EXPECT_EQ( 0, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 1";
+  EXPECT_EQ( 1, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 1";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 1";
+  ++v_it;
+
+  EXPECT_EQ( 1, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 2";
+  EXPECT_EQ( 1, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 2";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 2";
+  ++v_it;
+
+  EXPECT_EQ( 1, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 3";
+  EXPECT_EQ( 0, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 3";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 3";
+  ++v_it;
+
+  //===========================================================
+  // Copy from vertex 1 to 0, with skipping build in properties
+  //===========================================================
+  mesh_.copy_all_properties(vhandle[1], vhandle[0]);
+
+  // Check vertex positions
+  v_it = mesh_.vertices_begin();
+
+  EXPECT_EQ( 0, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 0 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 0 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 0 after copy";
+  ++v_it;
+
+  EXPECT_EQ( 0, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 1 after copy";
+  EXPECT_EQ( 1, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 1 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 1 after copy";
+  ++v_it;
+
+  EXPECT_EQ( 1, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 2 after copy";
+  EXPECT_EQ( 1, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 2 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 2 after copy";
+  ++v_it;
+
+  EXPECT_EQ( 1, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 3 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 3 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 3 after copy";
+  ++v_it;
+
+  v_it = mesh_.vertices_begin();
+  EXPECT_EQ( 1, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 0 after copy"; ++v_it;
+  EXPECT_EQ( 1, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 1 after copy"; ++v_it;
+  EXPECT_EQ( 2, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 2 after copy"; ++v_it;
+  EXPECT_EQ( 3, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 3 after copy";
+
+  //===========================================================
+  // Copy from vertex 2 to 3, including build in properties
+  //===========================================================
+  mesh_.copy_all_properties(vhandle[2], vhandle[3], true);
+
+  // Check vertex positions
+  v_it = mesh_.vertices_begin();
+
+  EXPECT_EQ( 0, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 0 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 0 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 0 after copy";
+  ++v_it;
+
+  EXPECT_EQ( 0, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 1 after copy";
+  EXPECT_EQ( 1, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 1 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 1 after copy";
+  ++v_it;
+
+  EXPECT_EQ( 1, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 2 after copy";
+  EXPECT_EQ( 1, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 2 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 2 after copy";
+  ++v_it;
+
+  EXPECT_EQ( 1, mesh_.point(v_it)[0] ) << "Invalid x position for vertex 3 after copy";
+  EXPECT_EQ( 1, mesh_.point(v_it)[1] ) << "Invalid y position for vertex 3 after copy";
+  EXPECT_EQ( 0, mesh_.point(v_it)[2] ) << "Invalid z position for vertex 3 after copy";
+  ++v_it;
+
+  v_it = mesh_.vertices_begin();
+  EXPECT_EQ( 1, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 0 after copy"; ++v_it;
+  EXPECT_EQ( 1, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 1 after copy"; ++v_it;
+  EXPECT_EQ( 2, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 2 after copy"; ++v_it;
+  EXPECT_EQ( 2, mesh_.property(intHandle,v_it) ) << "Invalid int value for vertex 3 after copy";
+
+
+}
+
 /*
  * Checking for deleted flags of halfedge and edge handles
  * 
