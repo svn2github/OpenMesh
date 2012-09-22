@@ -7,7 +7,9 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.675)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.688)</td><td>
+
+<b>Todo changelogs : 685</b>
 
 <b>Core</b>
 <ul>
@@ -19,6 +21,7 @@
 <li>Added range based for loops compatible ranges to PolyConnectivity.</li>
 <li>Added a function to copy single properties between entities of same type. (Thanks to Duncan Paterson for the patch)</li>
 <li>Added functions to copy all properties between entities. (Thanks to Duncan Paterson for the patch)</li>
+<li>Added split copy operations, which copy properties of splitted elements to the newly created ones. ( Thanks to Duncan Paterson for the patch )</li>
 </ul>
 
 <b>Decimater</b>
@@ -66,6 +69,7 @@
 <li>More documentation for the add_face functions (and some code cleanup)</li>
 <li>Updated doxyfile.config.in version</li>
 <li>Updated documentation for garbage collection</li>
+<li>Updated documentation for the vertex_split operation</li>
 <li>Fixed typo on main page</li>
 </ul>
 
