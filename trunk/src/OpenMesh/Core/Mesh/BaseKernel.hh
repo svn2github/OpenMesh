@@ -88,7 +88,7 @@ namespace OpenMesh {
 /// \attention Since the class PolyMeshT derives from a kernel, hence all public
 /// elements of %BaseKernel are usable.
 
-class BaseKernel
+class OPENMESHDLLEXPORT BaseKernel
 {
 public: //-------------------------------------------- constructor / destructor
 

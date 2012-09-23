@@ -51,7 +51,7 @@ namespace OpenMesh
 
 /** \brief Connectivity Class for polygonal meshes
 */
-class PolyConnectivity : public ArrayKernel
+class OPENMESHDLLEXPORT PolyConnectivity : public ArrayKernel
 {
 public:
   /// \name Mesh Handles
