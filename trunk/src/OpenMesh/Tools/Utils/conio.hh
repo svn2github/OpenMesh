@@ -52,6 +52,7 @@ namespace Utils {
  *
  *  \see getch(), getche()
  */
+OPENMESHDLLEXPORT
 int kbhit(void);
 
 
@@ -61,6 +62,7 @@ int kbhit(void);
  *
  *  \see getche(), kbhit()
  */
+OPENMESHDLLEXPORT
 int getch(void);
 
 /** A blocking single character input from stdin with echo.
@@ -68,6 +70,7 @@ int getch(void);
  *  \return Character, or -1 if an input error occurs.
  *  \see getch(), kbhit()
  */
+OPENMESHDLLEXPORT
 int getche(void);
 
 // ----------------------------------------------------------------------------

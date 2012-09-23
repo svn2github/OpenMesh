@@ -77,7 +77,7 @@ class TimerImpl;
 
 /** Timer class
  */
-class Timer
+class OPENMESHDLLEXPORT Timer
 {
 public:
 

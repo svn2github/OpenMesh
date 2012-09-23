@@ -1,13 +1,13 @@
 /*===========================================================================*\
  *                                                                           *
  *                               OpenMesh                                    *
- *      Copyright (C) 2001-2009 by Computer Graphics Group, RWTH Aachen      *
+ *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,54 +30,36 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
- *   $Revision$                                                         *
- *   $Date$                   *
+ *                                                                           *
+ *   $Revision: 566 $                                                         *
+ *   $Date: 2012-03-23 18:00:57 +0100 (Fr, 23 Mär 2012) $                   *
  *                                                                           *
 \*===========================================================================*/
 
-/** \file config.h
- *  \todo Move content to config.hh and include it to be compatible with old
- *  source.
- */
-
-//=============================================================================
-
-#ifndef OPENMESH_CONFIG_H
-#define OPENMESH_CONFIG_H
-
-//=============================================================================
-
-#include <assert.h>
-#include <OpenMesh/Core/System/compiler.hh>
-#include <OpenMesh/Core/System/OpenMeshDLLMacros.hh>
-
-// ----------------------------------------------------------------------------
-
-#define OM_VERSION 0x20300
-
-// only defined, if it is a beta version
-//#define OM_VERSION_BETA 4
-
-#define OM_GET_VER ((OM_VERSION && 0xf0000) >> 16)
-#define OM_GET_MAJ ((OM_VERSION && 0x0ff00) >> 8)
-#define OM_GET_MIN  (OM_VERSION && 0x000ff)
-
+// Disable the warnings about needs to have DLL interface as we have tons of vector templates
 #ifdef WIN32
-#  ifdef min
-#    pragma message("Detected min macro! OpenMesh does not compiled with min/max macros active! Please add a define NOMINMAX to your compiler flags or add #undef min before including OpenMesh headers !")
-#    error min macro active 
-#  endif
-#  ifdef max
-#    pragma message("Detected max macro! OpenMesh does not compiled with min/max macros active! Please add a define NOMINMAX to your compiler flags or add #undef max before including OpenMesh headers !")
-#    error max macro active 
-#  endif
+  #pragma warning( disable: 4251 )
 #endif
 
-typedef unsigned int uint;
-//=============================================================================
-#endif // OPENMESH_CONFIG_H defined
-//=============================================================================
+#ifndef OPENMESHDLLEXPORT
+	#ifdef WIN32
+		#ifdef OPENMESHDLL
+			#ifdef USEOPENMESH
+				#define OPENMESHDLLEXPORT __declspec(dllimport)
+				#define OPENMESHDLLEXPORTONLY
+			#else
+				#define OPENMESHDLLEXPORT __declspec(dllexport)
+				#define OPENMESHDLLEXPORTONLY __declspec(dllexport)
+			#endif
+		#else		
+			#define OPENMESHDLLEXPORT
+			#define OPENMESHDLLEXPORTONLY
+		#endif
+	#else
+		#define OPENMESHDLLEXPORT
+		#define OPENMESHDLLEXPORTONLY
+	#endif
+#endif

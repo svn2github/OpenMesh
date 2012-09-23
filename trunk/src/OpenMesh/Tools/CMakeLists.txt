@@ -39,6 +39,7 @@ if (WIN32)
 
   if ( OPENMESH_BUILD_SHARED )
     # Experimental Feature!!!!
+    add_definitions( -DOPENMESHDLL)
     acg_add_library (OpenMeshTools SHARED ${sources} ${headers})
   else()
     # OpenMesh has no dll exports so we have to build a static library on windows
