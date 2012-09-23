@@ -114,6 +114,7 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
   unsigned int noCollapses = 0;
 
   while ( n_collapses <  _n_collapses) {
+
     if (noCollapses > 20) {
       omlog() << "[McDecimater] : no collapses performed in over 20 iterations in a row\n";
       break;
@@ -126,9 +127,9 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
     double energy = FLT_MAX;
 
     // Generate random samples for collapses
-#ifdef USE_OPENMP
-#pragma omp parallel for private(energy,tmpHandle) shared(bestEnergy,bestHandle)
-#endif
+    #ifdef USE_OPENMP
+    #pragma omp parallel for private(energy,tmpHandle) shared(bestEnergy,bestHandle)
+    #endif
     for ( int i = 0; i < (int)randomSamples_; ++i) {
 
       // Random halfedge handle
@@ -141,22 +142,22 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
 
         // Check if legal we analyze the priority of this collapse operation
         if (this->is_collapse_legal(ci)) {
-#ifdef USE_OPENMP
-#pragma omp critical(energyUpdate)
+          #ifdef USE_OPENMP
+          #pragma omp critical(energyUpdate)
           {
-#endif
-          energy = this->collapse_priority(ci);
+          #endif
+            energy = this->collapse_priority(ci);
 
-          if (energy != ModBaseT<Mesh>::ILLEGAL_COLLAPSE) {
-            // Check if the current samples energy is better than any energy before
-            if ( energy < bestEnergy ) {
-              bestEnergy = energy;
-              bestHandle = tmpHandle;
+            if (energy != ModBaseT<Mesh>::ILLEGAL_COLLAPSE) {
+              // Check if the current samples energy is better than any energy before
+              if ( energy < bestEnergy ) {
+                bestEnergy = energy;
+                bestHandle = tmpHandle;
+              }
             }
+          #ifdef USE_OPENMP
           }
-#ifdef USE_OPENMP
-          }
-#endif
+          #endif
         } else {
           continue;
         }
@@ -235,7 +236,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   // performed in a row
   unsigned int noCollapses = 0;
 
-  while ( (_nv < nv) && (_nf < nf) ) {
+  while ((_nv < nv) && (_nf < nf)) {
     if (noCollapses > 20) {
       omlog() << "[McDecimater] : no collapses performed in over 20 iterations in a row\n";
       break;
@@ -247,39 +248,38 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
     double bestEnergy = FLT_MAX;
     double energy = FLT_MAX;
 
-
     // Generate random samples for collapses
-#ifdef USE_OPENMP
-#pragma omp parallel for private(energy,tmpHandle) shared(bestEnergy,bestHandle)
-#endif
-    for ( int i = 0; i < (int)randomSamples_; ++i) {
+    #ifdef USE_OPENMP
+    #pragma omp parallel for private(energy,tmpHandle) shared(bestEnergy,bestHandle)
+    #endif
+    for (int i = 0; i < (int) randomSamples_; ++i) {
 
       // Random halfedge handle
-      tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges()-1) );
+      tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges() - 1));
 
       // if it is not deleted, we analyse it
-      if ( ! mesh_.status(tmpHandle).deleted()  ) {
+      if (!mesh_.status(tmpHandle).deleted()) {
 
         CollapseInfo ci(mesh_, tmpHandle);
 
         // Check if legal we analyze the priority of this collapse operation
         if (this->is_collapse_legal(ci)) {
-#ifdef USE_OPENMP
-#pragma omp critical(energyUpdate)
+          #ifdef USE_OPENMP
+          #pragma omp critical(energyUpdate)
           {
-#endif
-          energy = this->collapse_priority(ci);
+          #endif
+            energy = this->collapse_priority(ci);
 
-          if (energy != ModBaseT<Mesh>::ILLEGAL_COLLAPSE) {
-            // Check if the current samples energy is better than any energy before
-            if ( energy < bestEnergy ) {
-              bestEnergy = energy;
-              bestHandle = tmpHandle;
+            if (energy != ModBaseT<Mesh>::ILLEGAL_COLLAPSE) {
+              // Check if the current samples energy is better than any energy before
+              if (energy < bestEnergy) {
+                bestEnergy = energy;
+                bestHandle = tmpHandle;
+              }
             }
-            }
-#ifdef USE_OPENMP
+          #ifdef USE_OPENMP
           }
-#endif
+          #endif
         } else {
           continue;
         }
@@ -374,7 +374,7 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
   unsigned int noCollapses = 0;
 
 
-  while ( (noCollapses <= 20) && (illegalCollapses <= 10) && (nv > 0) && (nf > 1) ) {
+  while ((noCollapses <= 20) && (illegalCollapses <= 10) && (nv > 0) && (nf > 1)) {
 
     // Optimal id and value will be collected during the random sampling
     typename Mesh::HalfedgeHandle bestHandle(-1);
@@ -383,48 +383,48 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
     double energy = FLT_MAX;
 
     // Generate random samples for collapses
-#ifdef USE_OPENMP
-#pragma omp parallel for private(energy,tmpHandle) shared(bestEnergy,bestHandle)
-#endif
-    for ( int i = 0; i < (int)randomSamples_; ++i) {
+    #ifdef USE_OPENMP
+    #pragma omp parallel for private(energy,tmpHandle) shared(bestEnergy,bestHandle)
+    #endif
+    for (int i = 0; i < (int) randomSamples_; ++i) {
 
       // Random halfedge handle
-      tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges()-1) );
+      tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges() - 1));
 
       // if it is not deleted, we analyse it
-      if ( ! mesh_.status(tmpHandle).deleted()  ) {
+      if (!mesh_.status(tmpHandle).deleted()) {
 
         CollapseInfo ci(mesh_, tmpHandle);
 
         // Check if legal we analyze the priority of this collapse operation
         if (this->is_collapse_legal(ci)) {
-#ifdef USE_OPENMP
-#pragma omp critical(energyUpdate)
+          #ifdef USE_OPENMP
+          #pragma omp critical(energyUpdate)
           {
-#endif
+          #endif
 
-          energy = this->collapse_priority(ci);
+            energy = this->collapse_priority(ci);
 
-          if (energy == ModBaseT<Mesh>::ILLEGAL_COLLAPSE){
-            if (lastCollapseIllegal) {
-              illegalCollapses++;
+            if (energy == ModBaseT<Mesh>::ILLEGAL_COLLAPSE) {
+              if (lastCollapseIllegal) {
+                illegalCollapses++;
+              } else {
+                illegalCollapses = 1;
+                lastCollapseIllegal = true;
+              }
             } else {
-              illegalCollapses = 1;
-              lastCollapseIllegal = true;
-            }
-          } else {
-            illegalCollapses = 0;
-            lastCollapseIllegal = false;
+              illegalCollapses = 0;
+              lastCollapseIllegal = false;
 
-            // Check if the current samples energy is better than any energy before
-            if ( energy < bestEnergy ) {
-              bestEnergy = energy;
-              bestHandle = tmpHandle;
+              // Check if the current samples energy is better than any energy before
+              if (energy < bestEnergy) {
+                bestEnergy = energy;
+                bestHandle = tmpHandle;
+              }
             }
+          #ifdef USE_OPENMP
           }
-#ifdef USE_OPENMP
-          }
-#endif
+          #endif
         } else {
           continue;
         }
