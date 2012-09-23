@@ -28,6 +28,17 @@ if (WIN32)
   )
 endif ()
 
+
+# ========================================================================
+# Windows build style control
+# ========================================================================
+
+if ( WIN32 )
+  if ( NOT DEFINED OPENMESH_BUILD_SHARED )
+    set( OPENMESH_BUILD_SHARED false CACHE BOOL "Build as shared library? (!!!Experimental Feature!!!) " )
+  endif()
+endif()
+
 # ========================================================================
 # Add bundle targets here
 # ========================================================================

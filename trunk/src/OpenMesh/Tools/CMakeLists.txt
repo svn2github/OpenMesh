@@ -36,8 +36,15 @@ endif()
 
 
 if (WIN32)
-  # OpenMesh has no dll exports so we have to build a static library on windows
-  acg_add_library (OpenMeshTools STATIC ${sources} ${headers})
+
+  if ( OPENMESH_BUILD_SHARED )
+    # Experimental Feature!!!!
+    acg_add_library (OpenMeshTools SHARED ${sources} ${headers})
+  else()
+    # OpenMesh has no dll exports so we have to build a static library on windows
+    acg_add_library (OpenMeshCore STATIC ${sources} ${headers})
+  endif()
+
 else ()
   acg_add_library (OpenMeshTools SHAREDANDSTATIC ${sources} ${headers})
   set_target_properties (OpenMeshTools PROPERTIES VERSION ${OPENMESH_VERSION_MAJOR}.${OPENMESH_VERSION_MINOR}
