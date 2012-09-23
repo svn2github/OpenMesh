@@ -55,7 +55,7 @@ namespace OpenMesh {
     Abstract class defining the basic interface of a dynamic property.
 **/
 
-class BaseProperty
+class OPENMESHDLLEXPORT BaseProperty
 {
 public:
 

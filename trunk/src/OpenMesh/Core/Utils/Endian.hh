@@ -69,7 +69,7 @@ namespace OpenMesh {
 
 /**  Determine byte order of host system.
  */
-class Endian
+class OPENMESHDLLEXPORT Endian
 {
 public:
    
