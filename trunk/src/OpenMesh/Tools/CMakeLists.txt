@@ -43,7 +43,7 @@ if (WIN32)
     acg_add_library (OpenMeshTools SHARED ${sources} ${headers})
   else()
     # OpenMesh has no dll exports so we have to build a static library on windows
-    acg_add_library (OpenMeshCore STATIC ${sources} ${headers})
+    acg_add_library (OpenMeshTools STATIC ${sources} ${headers})
   endif()
 
 else ()
