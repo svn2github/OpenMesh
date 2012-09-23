@@ -78,7 +78,7 @@ namespace IO {
    Base class for all writer modules. The module should register itself at
    the IOManager by calling the register_module function.
 */
-class BaseWriter
+class OPENMESHDLLEXPORT BaseWriter
 {
 public:
 

@@ -77,7 +77,7 @@ namespace IO {
     This class defines the OBJ writer. This class is further singleton'ed
     by SingletonT to OBJWriter.
 */
-class _OBJWriter_ : public BaseWriter
+class OPENMESHDLLEXPORT _OBJWriter_ : public BaseWriter
 {
 public:
 

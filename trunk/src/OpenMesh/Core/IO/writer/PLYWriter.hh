@@ -83,7 +83,7 @@ namespace IO {
     - Binary
     - Binary -> MSB
 */
-class _PLYWriter_ : public BaseWriter
+class OPENMESHDLLEXPORT _PLYWriter_ : public BaseWriter
 {
 public:
 

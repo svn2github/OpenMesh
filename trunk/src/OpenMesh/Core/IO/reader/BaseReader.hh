@@ -82,7 +82,7 @@ namespace IO {
    data structure by the means of a BaseImporter derivative.
    All reader modules must be derived from this class.
 */
-class BaseReader
+class OPENMESHDLLEXPORT BaseReader
 {
 public:
 

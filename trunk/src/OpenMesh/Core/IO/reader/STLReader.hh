@@ -83,7 +83,7 @@ class BaseImporter;
     Implementation of the STL format reader. This class is singleton'ed by
     SingletonT to STLReader.
 */
-class _STLReader_ : public BaseReader
+class OPENMESHDLLEXPORT _STLReader_ : public BaseReader
 {
 public:
 

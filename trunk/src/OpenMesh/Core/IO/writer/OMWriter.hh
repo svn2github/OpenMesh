@@ -86,7 +86,7 @@ class BaseExporter;
  *  Implementation of the OM format writer. This class is singleton'ed by 
  *  SingletonT to OMWriter.
  */
-class _OMWriter_ : public BaseWriter
+class OPENMESHDLLEXPORT _OMWriter_ : public BaseWriter
 {
 public:
 

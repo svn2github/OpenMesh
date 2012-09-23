@@ -89,7 +89,7 @@ namespace IO {
     ColorAlpha
 
 */
-class _OFFWriter_ : public BaseWriter
+class OPENMESHDLLEXPORT _OFFWriter_ : public BaseWriter
 {
 public:
 

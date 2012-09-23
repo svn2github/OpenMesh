@@ -79,7 +79,7 @@ namespace IO {
 /**
     Implementation of the OBJ format reader.
 */
-class _OBJReader_ : public BaseReader
+class OPENMESHDLLEXPORT _OBJReader_ : public BaseReader
 {
 public:
 

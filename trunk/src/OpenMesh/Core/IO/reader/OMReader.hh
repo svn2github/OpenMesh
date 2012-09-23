@@ -80,7 +80,7 @@ namespace IO {
     Implementation of the OM format reader. This class is singleton'ed by 
     SingletonT to OMReader.
 */
-class _OMReader_ : public BaseReader
+class OPENMESHDLLEXPORT _OMReader_ : public BaseReader
 {
 public:
 

@@ -89,7 +89,7 @@ class BaseImporter;
 
 */
 
-class _PLYReader_ : public BaseReader
+class OPENMESHDLLEXPORT _PLYReader_ : public BaseReader
 {
 public:
 

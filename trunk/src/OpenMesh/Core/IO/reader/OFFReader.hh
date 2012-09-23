@@ -111,7 +111,7 @@ class BaseImporter;
 
 */
 
-class _OFFReader_ : public BaseReader
+class OPENMESHDLLEXPORT _OFFReader_ : public BaseReader
 {
 public:
 

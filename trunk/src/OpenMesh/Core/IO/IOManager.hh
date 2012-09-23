@@ -97,7 +97,7 @@ namespace IO {
     \see \ref mesh_io
 */
 
-class _IOManager_
+class OPENMESHDLLEXPORT _IOManager_
 {
 private:
   

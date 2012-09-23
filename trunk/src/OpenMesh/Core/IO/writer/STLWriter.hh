@@ -81,7 +81,7 @@ namespace IO {
     Implementation of the STL format writer. This class is singleton'ed by 
     SingletonT to STLWriter.
 */
-class _STLWriter_ : public BaseWriter
+class OPENMESHDLLEXPORT _STLWriter_ : public BaseWriter
 {
 public:
   
