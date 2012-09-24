@@ -38,7 +38,6 @@ endif()
 if (WIN32)
 
   if ( OPENMESH_BUILD_SHARED )
-    # Experimental Feature!!!!
     add_definitions( -DOPENMESHDLL -DBUILDOPENMESHDLL)
     acg_add_library (OpenMeshTools SHARED ${sources} ${headers})
   else()

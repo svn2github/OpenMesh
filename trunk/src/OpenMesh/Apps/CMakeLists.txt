@@ -10,8 +10,7 @@ if ( BUILD_APPS )
   if(${PROJECT_NAME} MATCHES "OpenMesh")
 
     if ( WIN32 AND OPENMESH_BUILD_SHARED )
-        #!!!! Experimental Feature!!!
-	add_definitions(-DOPENMESHDLL )
+	  add_definitions(-DOPENMESHDLL )
     endif()
 
     add_subdirectory (Dualizer)
@@ -77,22 +76,22 @@ if ( BUILD_APPS )
       endif()
 
       if ( WIN32 )
-	FILE(GLOB files_install_app_dlls "${CMAKE_BINARY_DIR}/Build/*.dll" )
-	INSTALL(FILES ${files_install_app_dlls} DESTINATION . )
+	    FILE(GLOB files_install_app_dlls "${CMAKE_BINARY_DIR}/Build/*.dll" )
+	    INSTALL(FILES ${files_install_app_dlls} DESTINATION . )
       endif()
 
     else () # QT ,Opengl or glut not found
       
       if (NOT QT4_FOUND)
-	message ("QT 4 not found! Skipping some apps.")
+	    message ("QT 4 not found! Skipping some apps.")
       endif ()
 
       if (NOT OPENGL_FOUND)
-	message ("OpengGL not found! Skipping some apps.")
+	    message ("OpengGL not found! Skipping some apps.")
       endif ()
 
       if (NOT GLUT_FOUND)
-	message ("GLUT not found! Skipping some apps.")
+	    message ("GLUT not found! Skipping some apps.")
       endif ()
       
     endif ()

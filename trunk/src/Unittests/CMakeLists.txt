@@ -43,10 +43,10 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
 	
 
     
-	  if ( NOT WIN32 )
+	if ( NOT WIN32 )
 	    # Set compiler flags
       set_target_properties(unittests PROPERTIES COMPILE_FLAGS "-g -pedantic -ansi -Wno-long-long")
-	  else()
+	else()
 	    # Set compiler flags
       set_target_properties(unittests PROPERTIES COMPILE_FLAGS "" )
 
@@ -58,21 +58,34 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
                                   copy_if_different
                                     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/unittests.exe
                                     ${CMAKE_BINARY_DIR}/Unittests/unittests.exe)
-  endif()
-  if ( OPENMESH_BUILD_SHARED )
-	#!!!! Experimental Feature!!!
+
+      # If OpenMesh is build as a shared library, we need to copy the dlls to the directory for the unittests!
+      if ( OPENMESH_BUILD_SHARED )
+         #!!!! Experimental Feature!!!
+         add_custom_command (TARGET unittests POST_BUILD
+                          COMMAND ${CMAKE_COMMAND} -E
+                                  copy_if_different
+				    ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/OpenMesh*.dll
+                                    ${CMAKE_BINARY_DIR}/Unittests/)
+
+          message("Copy from ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/OpenMesh*.dll to ${CMAKE_BINARY_DIR}/Unittests/")
+      endif()
+
+    endif()
+    
+    if ( OPENMESH_BUILD_SHARED )
 	
-	#-------- copy dlls to unittests --------
-	SET(OPENMESH_TARGETS "OpenMeshTools" "OpenMeshCore")
-	
-	foreach(TAR ${OPENMESH_TARGETS} )
-	add_custom_command(TARGET unittests POST_BUILD 
-	COMMAND "${CMAKE_COMMAND}" -E copy 
-	"$<TARGET_FILE:${TAR}>"
-	"${CMAKE_BINARY_DIR}/Unittests/$<TARGET_FILE_NAME:${TAR}>" 
-	COMMENT "Copying OpenMesh targets to unittests directory")
-	endforeach(TAR)
-  endif()
+      #-------- copy dlls to unittests --------
+      SET(OPENMESH_TARGETS "OpenMeshTools" "OpenMeshCore")
+    
+       foreach(TAR ${OPENMESH_TARGETS} )
+         add_custom_command(TARGET unittests POST_BUILD 
+                            COMMAND "${CMAKE_COMMAND}" -E copy 
+                            "$<TARGET_FILE:${TAR}>"
+                            "${CMAKE_BINARY_DIR}/Unittests/$<TARGET_FILE_NAME:${TAR}>" 
+                            COMMENT "Copying OpenMesh targets to unittests directory")
+       endforeach(TAR)
+     endif()
 	
     acg_copy_after_build(unittests ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles ${CMAKE_BINARY_DIR}/Unittests/)
 
