@@ -11,7 +11,7 @@ if ( BUILD_APPS )
 
     if ( WIN32 AND OPENMESH_BUILD_SHARED )
         #!!!! Experimental Feature!!!
-	add_definitions(-DOPENMESHDLL ...)
+	add_definitions(-DOPENMESHDLL )
     endif()
 
     add_subdirectory (Dualizer)
