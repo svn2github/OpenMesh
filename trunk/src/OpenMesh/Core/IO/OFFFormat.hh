@@ -71,7 +71,7 @@ namespace IO   {
 
 #ifndef DOXY_IGNORE_THIS
 
-struct OFFFormat
+struct OPENMESHDLLEXPORT OFFFormat
 {
    typedef int   integer_type;
    typedef float float_type;

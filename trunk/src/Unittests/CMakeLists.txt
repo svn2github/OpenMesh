@@ -24,7 +24,7 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
     # Create new target named unittests_hexmeshing
     add_executable(unittests unittests.cc)
 	
-	  if ( NOT WIN32)
+	if ( NOT WIN32)
       # Link against all necessary libraries
       target_link_libraries(unittests OpenMeshCore OpenMeshTools ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} pthread)
 	  
@@ -33,8 +33,12 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
 	
     else()
 	    # Link against all necessary libraries
+		if ( OPENMESH_BUILD_SHARED )
+			#!!!! Experimental Feature!!!
+			add_definitions( -DOPENMESHDLL )
+		endif()
       target_link_libraries(unittests OpenMeshCore OpenMeshTools ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}) 
-	  endif()
+    endif()
 	
 
     
@@ -53,7 +57,7 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
                                   copy_if_different
                                     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/unittests.exe
                                     ${CMAKE_BINARY_DIR}/Unittests/unittests.exe)
-	  endif()
+  endif()
 	
     acg_copy_after_build(unittests ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles ${CMAKE_BINARY_DIR}/Unittests/)
 

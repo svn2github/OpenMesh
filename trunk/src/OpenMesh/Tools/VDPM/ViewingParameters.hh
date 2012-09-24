@@ -69,7 +69,7 @@ namespace VDPM {
 	      
 /** \todo ViewerParameters documentation
  */
-class ViewingParameters
+class OPENMESHDLLEXPORT ViewingParameters
 {
 private:
   double    modelview_matrix_[16];

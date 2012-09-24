@@ -118,7 +118,7 @@ private:
 
 /// Declare the single entity of the OBJ writer
 extern _OBJWriter_  __OBJWriterinstance;
-_OBJWriter_& OBJWriter();
+OPENMESHDLLEXPORT _OBJWriter_& OBJWriter();
 
 
 //=============================================================================

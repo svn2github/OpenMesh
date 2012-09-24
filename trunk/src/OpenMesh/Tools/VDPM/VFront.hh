@@ -70,7 +70,7 @@ namespace VDPM {
 /** Active nodes in vertex hierarchy.
     \todo VFront documentation
 */
-class VFront
+class OPENMESHDLLEXPORT VFront
 {
 private:
 

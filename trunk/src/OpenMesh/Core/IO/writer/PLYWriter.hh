@@ -126,7 +126,7 @@ protected:
 
 /// Declare the single entity of the PLY writer.
 extern _PLYWriter_  __PLYWriterInstance;
-_PLYWriter_& PLYWriter();
+OPENMESHDLLEXPORT _PLYWriter_& PLYWriter();
 
 
 //=============================================================================

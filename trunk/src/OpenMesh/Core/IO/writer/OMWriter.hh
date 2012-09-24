@@ -129,7 +129,7 @@ protected:
 
 /// Declare the single entity of the OM writer.
 extern _OMWriter_  __OMWriterInstance;
-_OMWriter_& OMWriter();
+OPENMESHDLLEXPORT _OMWriter_& OMWriter();
 
 
 //=============================================================================

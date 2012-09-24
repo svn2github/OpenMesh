@@ -183,7 +183,7 @@ private:
 
 /// Declare the single entity of the PLY reader
 extern _PLYReader_  __PLYReaderInstance;
-_PLYReader_&  PLYReader();
+OPENMESHDLLEXPORT _PLYReader_&  PLYReader();
 
 
 //=============================================================================

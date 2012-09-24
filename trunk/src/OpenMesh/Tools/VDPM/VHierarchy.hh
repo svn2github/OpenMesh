@@ -68,7 +68,7 @@ namespace VDPM {
 	      
 /** Keeps the vertex hierarchy build during analyzing a progressive mesh.
  */
-class VHierarchy
+class OPENMESHDLLEXPORT VHierarchy
 {
 public:
 

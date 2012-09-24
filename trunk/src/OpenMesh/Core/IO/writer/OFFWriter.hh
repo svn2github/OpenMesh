@@ -122,7 +122,7 @@ protected:
 
 /// Declare the single entity of the OFF writer.
 extern _OFFWriter_  __OFFWriterInstance;
-_OFFWriter_& OFFWriter();
+OPENMESHDLLEXPORT _OFFWriter_& OFFWriter();
 
 
 //=============================================================================

@@ -82,7 +82,7 @@ namespace OpenMesh {
     \see OpenMesh::Concepts::KernelT, \ref mesh_type
 */
 
-class ArrayKernel : public BaseKernel, public ArrayItems
+class OPENMESHDLLEXPORT ArrayKernel : public BaseKernel, public ArrayItems
 {
 public:
 

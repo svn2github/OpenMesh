@@ -73,7 +73,7 @@ namespace VDPM {
     Mesh traits for View Dependent Progressive Meshes  
 */
 
-struct MeshTraits : public DefaultTraits
+struct OPENMESHDLLEXPORT MeshTraits : public DefaultTraits
 {
   VertexTraits
   {

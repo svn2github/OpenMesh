@@ -135,7 +135,7 @@ private:
 
 /// Declare the single entity of the STL reader
 extern _STLReader_  __STLReaderInstance;
-_STLReader_&  STLReader();
+OPENMESHDLLEXPORT _STLReader_&  STLReader();
 
 
 //=============================================================================

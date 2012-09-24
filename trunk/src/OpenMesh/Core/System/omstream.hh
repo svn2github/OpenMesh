@@ -66,9 +66,9 @@
     \see OpenMesh::mostream
 */
 //@{
-OpenMesh::mostream& omlog();
-OpenMesh::mostream& omout();
-OpenMesh::mostream& omerr();
+OPENMESHDLLEXPORT OpenMesh::mostream& omlog();
+OPENMESHDLLEXPORT OpenMesh::mostream& omout();
+OPENMESHDLLEXPORT OpenMesh::mostream& omerr();
 //@}
 
 //=============================================================================

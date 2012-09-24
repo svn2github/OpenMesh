@@ -102,7 +102,7 @@ class OPENMESHDLLEXPORT _IOManager_
 private:
   
   _IOManager_() {}
-  friend _IOManager_& IOManager();
+  friend OPENMESHDLLEXPORT _IOManager_& IOManager();
 
 
 public:
@@ -247,7 +247,7 @@ private:
 
 extern _IOManager_*  __IOManager_instance;
 
-_IOManager_& IOManager();
+OPENMESHDLLEXPORT _IOManager_& IOManager();
 
 
 

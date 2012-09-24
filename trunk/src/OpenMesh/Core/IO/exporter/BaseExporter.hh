@@ -79,7 +79,7 @@ namespace IO {
    the target data structure. 
 */
 
-class BaseExporter
+class OPENMESHDLLEXPORT BaseExporter
 {
 public:
 

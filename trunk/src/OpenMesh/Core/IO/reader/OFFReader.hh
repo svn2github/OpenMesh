@@ -157,7 +157,7 @@ private:
 
 /// Declare the single entity of the OFF reader
 extern _OFFReader_  __OFFReaderInstance;
-_OFFReader_&  OFFReader();
+OPENMESHDLLEXPORT _OFFReader_& OFFReader();
 
 
 //=============================================================================

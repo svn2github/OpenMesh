@@ -110,7 +110,7 @@ private:
 
 // Declare the single entity of STL writer.
 extern _STLWriter_  __STLWriterInstance;
-_STLWriter_& STLWriter();
+OPENMESHDLLEXPORT _STLWriter_& STLWriter();
 
 
 //=============================================================================

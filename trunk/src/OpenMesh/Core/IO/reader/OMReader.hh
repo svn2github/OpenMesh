@@ -159,7 +159,7 @@ private:
 
 /// Declare the single entity of the OM reader.
 extern _OMReader_  __OMReaderInstance;
-_OMReader_&  OMReader();
+OPENMESHDLLEXPORT _OMReader_&  OMReader();
 
 
 //=============================================================================

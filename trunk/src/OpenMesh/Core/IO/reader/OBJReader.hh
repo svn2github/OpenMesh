@@ -176,7 +176,7 @@ private:
 
 
 extern _OBJReader_  __OBJReaderInstance;
-_OBJReader_& OBJReader();
+OPENMESHDLLEXPORT _OBJReader_& OBJReader();
 
 
 //=============================================================================

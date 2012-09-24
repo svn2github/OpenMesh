@@ -78,7 +78,7 @@ namespace IO {
  *   structure. This is basically a wrapper providing virtual versions
  *   for the required mesh functions.
  */
-class BaseImporter
+class OPENMESHDLLEXPORT BaseImporter
 {
 public:
 

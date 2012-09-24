@@ -71,7 +71,7 @@ namespace VDPM {
 */
 
 
-class Plane3d
+class OPENMESHDLLEXPORT Plane3d
 {
 public:
 
