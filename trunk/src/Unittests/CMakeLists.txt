@@ -36,6 +36,7 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
 		if ( OPENMESH_BUILD_SHARED )
 			#!!!! Experimental Feature!!!
 			add_definitions( -DOPENMESHDLL )
+
 		endif()
       target_link_libraries(unittests OpenMeshCore OpenMeshTools ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}) 
     endif()
@@ -49,7 +50,7 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
 	    # Set compiler flags
       set_target_properties(unittests PROPERTIES COMPILE_FLAGS "" )
 
-	    # copy exe file to "Build" directory
+	  #-------- copy exe file to "Build" directory --------
       # Visual studio will create this file in a subdirectory so we can't use
       # RUNTIME_OUTPUT_DIRECTORY directly here
       add_custom_command (TARGET unittests POST_BUILD
@@ -57,6 +58,20 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
                                   copy_if_different
                                     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/unittests.exe
                                     ${CMAKE_BINARY_DIR}/Unittests/unittests.exe)
+  endif()
+  if ( OPENMESH_BUILD_SHARED )
+	#!!!! Experimental Feature!!!
+	
+	#-------- copy dlls to unittests --------
+	SET(OPENMESH_TARGETS "OpenMeshTools" "OpenMeshCore")
+	
+	foreach(TAR ${OPENMESH_TARGETS} )
+	add_custom_command(TARGET unittests POST_BUILD 
+	COMMAND "${CMAKE_COMMAND}" -E copy 
+	"$<TARGET_FILE:${TAR}>"
+	"${CMAKE_BINARY_DIR}/Unittests/$<TARGET_FILE_NAME:${TAR}>" 
+	COMMENT "Copying OpenMesh targets to unittests directory")
+	endforeach(TAR)
   endif()
 	
     acg_copy_after_build(unittests ${CMAKE_CURRENT_SOURCE_DIR}/TestFiles ${CMAKE_BINARY_DIR}/Unittests/)
