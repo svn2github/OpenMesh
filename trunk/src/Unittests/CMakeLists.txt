@@ -59,18 +59,6 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
                                     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/unittests.exe
                                     ${CMAKE_BINARY_DIR}/Unittests/unittests.exe)
 
-      # If OpenMesh is build as a shared library, we need to copy the dlls to the directory for the unittests!
-      if ( OPENMESH_BUILD_SHARED )
-         #!!!! Experimental Feature!!!
-         add_custom_command (TARGET unittests POST_BUILD
-                          COMMAND ${CMAKE_COMMAND} -E
-                                  copy_if_different
-				    ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/OpenMesh*.dll
-                                    ${CMAKE_BINARY_DIR}/Unittests/)
-
-          message("Copy from ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}/OpenMesh*.dll to ${CMAKE_BINARY_DIR}/Unittests/")
-      endif()
-
     endif()
     
     if ( OPENMESH_BUILD_SHARED )
