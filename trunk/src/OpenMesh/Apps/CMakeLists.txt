@@ -9,6 +9,11 @@ if ( BUILD_APPS )
   # Only build and fixbundle apps, when we are building OpenMesh standalone
   if(${PROJECT_NAME} MATCHES "OpenMesh")
 
+    if ( WIN32 AND OPENMESH_BUILD_SHARED )
+        #!!!! Experimental Feature!!!
+	add_definitions(-DOPENMESHDLL ...)
+    endif()
+
     add_subdirectory (Dualizer)
     add_subdirectory (Decimating/commandlineDecimater)
     add_subdirectory (Smoothing)

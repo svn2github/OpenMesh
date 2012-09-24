@@ -47,12 +47,12 @@
 #ifndef OPENMESHDLLEXPORT
 	#ifdef WIN32
 		#ifdef OPENMESHDLL
-			#ifdef USEOPENMESH
-				#define OPENMESHDLLEXPORT __declspec(dllimport)
-				#define OPENMESHDLLEXPORTONLY
+			#ifdef BUILDOPENMESHDLL
+        #define OPENMESHDLLEXPORT __declspec(dllexport)
+        #define OPENMESHDLLEXPORTONLY __declspec(dllexport)
 			#else
-				#define OPENMESHDLLEXPORT __declspec(dllexport)
-				#define OPENMESHDLLEXPORTONLY __declspec(dllexport)
+        #define OPENMESHDLLEXPORT __declspec(dllimport)
+        #define OPENMESHDLLEXPORTONLY
 			#endif
 		#else		
 			#define OPENMESHDLLEXPORT
