@@ -101,10 +101,19 @@ template<class Mesh>
 bool BaseDecimaterT<Mesh>::is_collapse_legal(const CollapseInfo& _ci) {
   //   std::clog << "McDecimaterT<>::is_collapse_legal()\n";
 
-  // locked ? deleted ?
-  if (mesh_.status(_ci.v0).locked() || mesh_.status(_ci.v0).deleted())
+  // locked ?
+  if (mesh_.status(_ci.v0).locked())
     return false;
 
+  // this test checks:
+  // is v0v1 deleted?
+  // is v0 deleted?
+  // is v1 deleted?
+  // are both vlv0 and v1vl boundary edges?
+  // are both v0vr and vrv1 boundary edges?
+  // are vl and vr equal or both invalid?
+  // one ring intersection test
+  // edge between two boundary vertices should be a boundary edge
   if (!mesh_.is_collapse_ok(_ci.v0v1))
     return false;
 
@@ -119,47 +128,17 @@ bool BaseDecimaterT<Mesh>::is_collapse_legal(const CollapseInfo& _ci) {
       && !mesh_.status(mesh_.edge_handle(_ci.v0v1)).feature())
     return false;
 
-  //--- test one ring intersection ---
-
-  typename Mesh::VertexVertexIter vv_it;
-
-  for (vv_it = mesh_.vv_iter(_ci.v0); vv_it; ++vv_it)
-    mesh_.status(vv_it).set_tagged(false);
-
-  for (vv_it = mesh_.vv_iter(_ci.v1); vv_it; ++vv_it)
-    mesh_.status(vv_it).set_tagged(true);
-
-  for (vv_it = mesh_.vv_iter(_ci.v0); vv_it; ++vv_it)
-    if (mesh_.status(vv_it).tagged() && vv_it.handle() != _ci.vl
-        && vv_it.handle() != _ci.vr)
-      return false;
-
-  // if both are invalid OR equal -> fail
-  if (_ci.vl == _ci.vr)
-    return false;
-
   //--- test boundary cases ---
   if (mesh_.is_boundary(_ci.v0)) {
-    if (!mesh_.is_boundary(_ci.v1)) { // don't collapse a boundary vertex to an inner one
+
+    // don't collapse a boundary vertex to an inner one
+    if (!mesh_.is_boundary(_ci.v1))
       return false;
-    } else { // edge between two boundary vertices has to be a boundary edge
-      if (!(mesh_.is_boundary(_ci.v0v1) || mesh_.is_boundary(_ci.v1v0)))
-        return false;
-    }
+
     // only one one ring intersection
     if (_ci.vl.is_valid() && _ci.vr.is_valid())
       return false;
   }
-
-  // v0vl and v1vl must not both be boundary edges
-  if (_ci.vl.is_valid() && mesh_.is_boundary(_ci.vlv1)
-      && mesh_.is_boundary(_ci.v0vl))
-    return false;
-
-  // v0vr and v1vr must not be both boundary edges
-  if (_ci.vr.is_valid() && mesh_.is_boundary(_ci.vrv0)
-      && mesh_.is_boundary(_ci.v1vr))
-    return false;
 
   // there have to be at least 2 incident faces at v0
   if (mesh_.cw_rotated_halfedge_handle(
