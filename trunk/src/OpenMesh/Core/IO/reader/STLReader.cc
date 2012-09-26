@@ -144,9 +144,14 @@ _STLReader_::read(std::istream& _is,
 		 Options& _opt)
 {
 
-    omerr() << "[OMReader] : STL Streams are not supported " << std::endl;
+  bool result = false;
 
-  return false;
+  if (_opt & Options::Binary)
+    result = read_stlb(_is, _bi);
+  else
+    result = read_stla(_is, _bi);
+
+  return result;
 }
 
 
@@ -313,9 +318,111 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
   return true;
 }
 
-
 //-----------------------------------------------------------------------------
 
+bool
+_STLReader_::
+read_stla(std::istream& _in, BaseImporter& _bi) const
+{
+  omlog() << "[STLReader] : read ascii stream\n";
+
+
+  unsigned int               i;
+  OpenMesh::Vec3f            v;
+  OpenMesh::Vec3f            n;
+  unsigned int               cur_idx(0);
+  BaseImporter::VHandles     vhandles;
+
+  CmpVec comp(eps_);
+  std::map<Vec3f, VertexHandle, CmpVec>            vMap(comp);
+  std::map<Vec3f, VertexHandle, CmpVec>::iterator  vMapIt;
+
+  std::string line;
+
+  //bool normal = false;
+
+  while( _in && !_in.eof() ) {
+
+    // Get one line
+    std::getline(_in, line);
+    if ( _in.bad() ){
+      omerr() << "  Warning! Could not read stream properly!\n";
+      return false;
+    }
+
+    // Trim Both leading and trailing spaces
+    trimStdString(line);
+
+    // Normal found?
+    if (line.find("facet normal") != std::string::npos) {
+      std::stringstream strstream(line);
+
+      std::string garbage;
+
+      // facet
+      strstream >> garbage;
+
+      // normal
+      strstream >> garbage;
+
+      strstream >> n[0];
+      strstream >> n[1];
+      strstream >> n[2];
+
+      //normal = true;
+    }
+
+    // Detected a triangle
+    if ( (line.find("outer") != std::string::npos) ||  (line.find("OUTER") != std::string::npos ) ) {
+
+      vhandles.clear();
+
+      for (i=0; i<3; ++i) {
+        // Get one vertex
+        std::getline(_in, line);
+        trimStdString(line);
+
+        std::stringstream strstream(line);
+
+        std::string garbage;
+        strstream >> garbage;
+
+        strstream >> v[0];
+        strstream >> v[1];
+        strstream >> v[2];
+
+        // has vector been referenced before?
+        if ((vMapIt=vMap.find(v)) == vMap.end())
+        {
+          // No : add vertex and remember idx/vector mapping
+          _bi.add_vertex(v);
+          vhandles.push_back(VertexHandle(cur_idx));
+          vMap[v] = VertexHandle(cur_idx++);
+        }
+        else
+          // Yes : get index from map
+          vhandles.push_back(vMapIt->second);
+
+      }
+
+      // Add face only if it is not degenerated
+      if ((vhandles[0] != vhandles[1]) &&
+          (vhandles[0] != vhandles[2]) &&
+          (vhandles[1] != vhandles[2])) {
+
+
+        FaceHandle fh = _bi.add_face(vhandles);
+
+      }
+
+      //normal = false;
+    }
+  }
+
+  return true;
+}
+
+//-----------------------------------------------------------------------------
 
 bool
 _STLReader_::
@@ -403,9 +510,84 @@ read_stlb(const std::string& _filename, BaseImporter& _bi) const
   return true;
 }
 
-
 //-----------------------------------------------------------------------------
 
+bool
+_STLReader_::
+read_stlb(std::istream& _in, BaseImporter& _bi) const
+{
+  omlog() << "[STLReader] : read binary stream\n";
+
+  char                       dummy[100];
+  bool                       swapFlag;
+  unsigned int               i, nT;
+  OpenMesh::Vec3f            v;
+  unsigned int               cur_idx(0);
+  BaseImporter::VHandles     vhandles;
+
+  std::map<Vec3f, VertexHandle, CmpVec>  vMap;
+  std::map<Vec3f, VertexHandle, CmpVec>::iterator vMapIt;
+
+
+  // check size of types
+  if ((sizeof(float) != 4) || (sizeof(int) != 4)) {
+    omerr() << "[STLReader] : wrong type size\n";
+    return false;
+  }
+
+  // determine endian mode
+  union { unsigned int i; unsigned char c[4]; } endian_test;
+  endian_test.i = 1;
+  swapFlag = (endian_test.c[3] == 1);
+
+  // read number of triangles
+  //fread(dummy, 1, 80, in);
+  _in.read(dummy, 80);
+  nT = read_int(_in, swapFlag);
+
+  // read triangles
+  while (nT)
+  {
+    vhandles.clear();
+
+    // skip triangle normal
+    _in.read(dummy, 12);
+
+    // triangle's vertices
+    for (i=0; i<3; ++i)
+    {
+      v[0] = read_float(_in, swapFlag);
+      v[1] = read_float(_in, swapFlag);
+      v[2] = read_float(_in, swapFlag);
+
+      // has vector been referenced before?
+      if ((vMapIt=vMap.find(v)) == vMap.end())
+      {
+	// No : add vertex and remember idx/vector mapping
+	_bi.add_vertex(v);
+	vhandles.push_back(VertexHandle(cur_idx));
+	vMap[v] = VertexHandle(cur_idx++);
+      }
+      else
+	// Yes : get index from map
+	vhandles.push_back(vMapIt->second);
+    }
+
+
+    // Add face only if it is not degenerated
+    if ((vhandles[0] != vhandles[1]) &&
+	(vhandles[0] != vhandles[2]) &&
+	(vhandles[1] != vhandles[2]))
+      _bi.add_face(vhandles);
+
+    _in.read(dummy, 2);
+    --nT;
+  }
+
+  return true;
+}
+
+//-----------------------------------------------------------------------------
 
 _STLReader_::STL_Type
 _STLReader_::
