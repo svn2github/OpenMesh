@@ -129,6 +129,21 @@ void write_float(float _f, FILE* _out, bool _swap=false);
     \c _swap is true */
 void write_double(double _d, FILE* _out, bool _swap=false);
 
+/** Binary write a \c short to \c _os and perform byte swapping if
+    \c _swap is true */
+void write_short(short int _i, std::ostream& _out, bool _swap=false);
+
+/** Binary write an \c int to \c _os and perform byte swapping if
+    \c _swap is true */
+void write_int(int _i, std::ostream& _out, bool _swap=false);
+
+/** Binary write a \c float to \c _os and perform byte swapping if
+    \c _swap is true */
+void write_float(float _f, std::ostream& _out, bool _swap=false);
+
+/** Binary write a \c double to \c _os and perform byte swapping if
+    \c _swap is true */
+void write_double(double _d, std::ostream& _out, bool _swap=false);
 
 //@}
 

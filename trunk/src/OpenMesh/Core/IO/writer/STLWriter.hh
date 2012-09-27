@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -77,31 +77,33 @@ namespace IO {
 //=== IMPLEMENTATION ==========================================================
 
 
-/** 
-    Implementation of the STL format writer. This class is singleton'ed by 
+/**
+    Implementation of the STL format writer. This class is singleton'ed by
     SingletonT to STLWriter.
 */
 class OPENMESHDLLEXPORT _STLWriter_ : public BaseWriter
 {
 public:
-  
+
   _STLWriter_();
 
   /// Destructor
   virtual ~_STLWriter_() {};
-  
+
   std::string get_description() const { return "Stereolithography Format"; }
   std::string get_extensions()  const { return "stla stlb"; }
-  
+
   bool write(const std::string&, BaseExporter&, Options) const;
-  
+
   bool write(std::ostream&, BaseExporter&, Options) const;
-  
+
   size_t binary_size(BaseExporter&, Options) const;
 
 private:
   bool write_stla(const std::string&, BaseExporter&, Options) const;
+  bool write_stla(std::ostream&, BaseExporter&, Options) const;
   bool write_stlb(const std::string&, BaseExporter&, Options) const;
+  bool write_stlb(std::ostream&, BaseExporter&, Options) const;
 };
 
 

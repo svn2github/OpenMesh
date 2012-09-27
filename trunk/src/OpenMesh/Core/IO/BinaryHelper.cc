@@ -240,6 +240,66 @@ void write_double(double _d, FILE* _out, bool _swap)
   fwrite((char*)dc.c, 1, 8, _out);
 }
 
+
+//-----------------------------------------------------------------------------
+
+
+void write_short(short int _i, std::ostream& _out, bool _swap)
+{
+  union u1 { short int s; unsigned char c[2]; } sc;
+  sc.s = _i;
+  if (_swap) std::swap(sc.c[0], sc.c[1]);
+  _out.write((char*)sc.c, 2);
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+void write_int(int _i, std::ostream& _out, bool _swap)
+{
+  union u2 { int i; unsigned char c[4]; } ic;
+  ic.i = _i;
+  if (_swap) {
+    std::swap(ic.c[0], ic.c[3]);
+    std::swap(ic.c[1], ic.c[2]);
+  }
+  _out.write((char*)ic.c, 4);
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+void write_float(float _f, std::ostream& _out, bool _swap)
+{
+  union u3 { float f; unsigned char c[4]; } fc;
+  fc.f = _f;
+  if (_swap) {
+    std::swap(fc.c[0], fc.c[3]);
+    std::swap(fc.c[1], fc.c[2]);
+  }
+  _out.write((char*)fc.c, 4);
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+void write_double(double _d, std::ostream& _out, bool _swap)
+{
+  union u4 { double d; unsigned char c[8]; } dc;
+  dc.d = _d;
+  if (_swap) {
+    std::swap(dc.c[0], dc.c[7]);
+    std::swap(dc.c[1], dc.c[6]);
+    std::swap(dc.c[2], dc.c[5]);
+    std::swap(dc.c[3], dc.c[4]);
+  }
+  _out.write((char*)dc.c, 8);
+}
+
+
 #endif
 
 //=============================================================================
