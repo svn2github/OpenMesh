@@ -130,8 +130,7 @@ class ModHausdorffT: public ModBaseT<MeshT> {
   private:
 
     /// squared distance from point _p to triangle (_v0, _v1, _v2)
-    Scalar distPointTriangleSquared(const Point& _p, const Point& _v0,
-        const Point& _v1, const Point& _v2, Point& _nearestPoint);
+    Scalar distPointTriangleSquared(const Point& _p, const Point& _v0, const Point& _v1, const Point& _v2);
 
     /// compute max error for face _fh w.r.t. its point list and _p
     Scalar compute_sqr_error(FaceHandle _fh, const Point& _p) const;
