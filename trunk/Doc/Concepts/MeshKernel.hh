@@ -174,8 +174,16 @@ public:
 
   /// \name Delete items
   //@{
-  /// Delete all items, i.e. clear all item containers.
+  /**  Delete all items, i.e. clear all item containers.
+   *   The properties will also be removed from the mesh
+   */
   void clear();
+
+  /**  Delete all items, i.e. clear all item containers.
+   *   The properties will be kept
+   */
+  void clean();
+
   /** Remove all items that are marked as deleted from the
       corresponding containers.
       \note All handles (and indices) to any entity (face, vertex,
