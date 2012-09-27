@@ -117,6 +117,21 @@ void ArrayKernel::garbage_collection(bool _v, bool _e, bool _f)
   garbage_collection( empty_vh,empty_hh,empty_fh,_v, _e, _f);
 }
 
+void ArrayKernel::clean()
+{
+
+  vertices_.clear();
+  VertexContainer().swap( vertices_ );
+
+  edges_.clear();
+  EdgeContainer().swap( edges_ );
+
+  faces_.clear();
+  FaceContainer().swap( faces_ );
+
+}
+
+
 void ArrayKernel::clear()
 {
   vprops_clear();
@@ -124,16 +139,10 @@ void ArrayKernel::clear()
   hprops_clear();
   fprops_clear();
 
-  vertices_.clear();
-  VertexContainer().swap( vertices_ );
-
-  edges_.clear();
-  EdgeContainer().swap( edges_ );
-  
-  faces_.clear();
-  FaceContainer().swap( faces_ );
-
+  clean();
 }
+
+
 
 void ArrayKernel::resize( unsigned int _n_vertices, unsigned int _n_edges, unsigned int _n_faces )
 {

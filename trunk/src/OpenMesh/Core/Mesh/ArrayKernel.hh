@@ -303,7 +303,17 @@ public:
                           std_API_Container_FHandlePointer& fh_to_update,
                           bool _v=true, bool _e=true, bool _f=true);
 
+  /** \brief Clear the whole mesh
+   *
+   *  This will remove all properties and elements from the mesh
+   */
   void clear();
+
+  /** \brief Reset the whole mesh
+   *
+   *  This will remove all elements from the mesh but keeps the properties
+   */
+  void clean();
 
   // --- number of items ---
   unsigned int n_vertices()  const { return vertices_.size(); }
