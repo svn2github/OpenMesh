@@ -136,7 +136,7 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
 
       // Random halfedge handle
 #ifdef WIN32
-      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand() * (mesh_.n_halfedges() - 1)) );
+      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand() * double(mesh_.n_halfedges() - 1.0)) );
 #else
       tmpHandle = typename Mesh::HalfedgeHandle( (double(rand()) / double(RAND_MAX) ) * double(mesh_.n_halfedges()-1) );
 #endif
@@ -258,7 +258,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 
       // Random halfedge handle
 #ifdef WIN32
-      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand() * (mesh_.n_halfedges() - 1)) );
+      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand() * double(mesh_.n_halfedges() - 1.0)) );
 #else
       tmpHandle = typename Mesh::HalfedgeHandle( ( double(rand()) / double(RAND_MAX) ) * double(mesh_.n_halfedges() - 1));
 #endif
@@ -396,7 +396,7 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
 
       // Random halfedge handle
 #ifdef WIN32
-      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand()  * (mesh_.n_halfedges() - 1)) );
+      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand()  * double(mesh_.n_halfedges() - 1.0)) );
 #else
       tmpHandle = typename Mesh::HalfedgeHandle(int(rand() * randomNormalizer ) );
 #endif
