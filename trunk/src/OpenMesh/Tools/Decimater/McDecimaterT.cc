@@ -60,6 +60,9 @@
 #  include <cfloat>
 #endif
 
+#ifdef WIN32
+# include <OpenMesh/Core/Utils/RandomNumberGenerator.hh>
+#endif
 
 //== NAMESPACE ===============================================================
 
@@ -111,6 +114,10 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
   // performed in a row
   unsigned int noCollapses = 0;
 
+#ifdef WIN32
+  RandomNumberGenerator randGen(mesh_.n_halfedges());
+#endif
+
   while ( n_collapses <  _n_collapses) {
 
     if (noCollapses > 20) {
@@ -128,7 +135,11 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
     for ( int i = 0; i < (int)randomSamples_; ++i) {
 
       // Random halfedge handle
+#ifdef WIN32
+      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand()  * (mesh_.n_halfedges() - 1)) );
+#else
       tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges()-1) );
+#endif
 
       // if it is not deleted, we analyse it
       if ( ! mesh_.status(tmpHandle).deleted()  ) {
@@ -225,6 +236,10 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   // performed in a row
   unsigned int noCollapses = 0;
 
+#ifdef WIN32
+  RandomNumberGenerator randGen(mesh_.n_halfedges());
+#endif
+
   while ((_nv < nv) && (_nf < nf)) {
 
     if (noCollapses > 20) {
@@ -242,7 +257,11 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
     for (int i = 0; i < (int) randomSamples_; ++i) {
 
       // Random halfedge handle
+#ifdef WIN32
+      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand()  * (mesh_.n_halfedges() - 1)) );
+#else
       tmpHandle = typename Mesh::HalfedgeHandle((static_cast<double>(rand()) / RAND_MAX) * (mesh_.n_halfedges() - 1));
+#endif
 
       // if it is not deleted, we analyse it
       if (!mesh_.status(tmpHandle).deleted()) {
@@ -356,6 +375,10 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
   double energy     = FLT_MAX;
   double bestEnergy = FLT_MAX;
 
+#ifdef WIN32
+  RandomNumberGenerator randGen(mesh_.n_halfedges());
+#endif
+
   while ((noCollapses <= 50) && (illegalCollapses <= 50) && (nv > 0) && (nf > 1)) {
 
     // Optimal id and value will be collected during the random sampling
@@ -363,13 +386,20 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
     typename Mesh::HalfedgeHandle tmpHandle(-1);
     bestEnergy = FLT_MAX;
 
+
+#ifndef WIN32
     const double randomNormalizer = (1.0 / RAND_MAX) * (mesh_.n_halfedges() - 1);
+#endif
 
     // Generate random samples for collapses
     for (int i = 0; i < (int) randomSamples_; ++i) {
 
       // Random halfedge handle
+#ifdef WIN32
+      tmpHandle = typename Mesh::HalfedgeHandle(int(randGen.getRand()  * (mesh_.n_halfedges() - 1)) );
+#else
       tmpHandle = typename Mesh::HalfedgeHandle(int(rand() * randomNormalizer ) );
+#endif
 
       // if it is not deleted, we analyze it
       if (!mesh_.status(mesh_.edge_handle(tmpHandle)).deleted()) {
