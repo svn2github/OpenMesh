@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision: 362 $                                                         *
  *   $Date: 2011-01-26 10:21:12 +0100 (Mi, 26 Jan 2011) $                   *
  *                                                                           *
@@ -52,6 +52,7 @@
 
 
 #include <OpenMesh/Core/Utils/RandomNumberGenerator.hh>
+#include <cstdlib>
 
 
 //== NAMESPACES ===============================================================
@@ -68,13 +69,13 @@ RandomNumberGenerator::RandomNumberGenerator(const double _resolution) :
   maxNum_(RAND_MAX)
 {
   double tmp = resolution_;
-  while (tmp > (double(RAND_MAX) + 1) ) {
+  while (tmp > (double(RAND_MAX) + 1.0) ) {
     iterations_++;
-    tmp /= (double(RAND_MAX) + 1);
-  } 
+    tmp /= (double(RAND_MAX) + 1.0);
+  }
 
   for ( unsigned int i = 0 ; i < iterations_ - 1; ++i ) {
-    maxNum_ *= (RAND_MAX + 1);
+    maxNum_ *= (RAND_MAX + 1.0);
   }
 }
 
@@ -83,13 +84,13 @@ RandomNumberGenerator::RandomNumberGenerator(const double _resolution) :
 double RandomNumberGenerator::getRand() const {
   double randNum = 0.0;
   for ( unsigned int i = 0 ; i < iterations_; ++i ) {
-    randNum *= (RAND_MAX + 1);
+    randNum *= (RAND_MAX + 1.0);
     randNum += rand();
   }
 
   return randNum / maxNum_;
 }
-   
+
 //=============================================================================
 } // namespace OpenMesh
 //=============================================================================

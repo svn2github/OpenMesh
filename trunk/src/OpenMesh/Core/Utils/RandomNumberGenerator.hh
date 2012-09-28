@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision: 693 $                                                         *
  *   $Date: 2012-09-23 16:25:16 +0200 (So, 23 Sep 2012) $                   *
  *                                                                           *
@@ -56,7 +56,6 @@
 
 
 #include <OpenMesh/Core/System/config.h>
-#include <iostream>
 
 
 //== NAMESPACES ===============================================================
@@ -72,19 +71,19 @@ namespace OpenMesh {
  */
 class OPENMESHDLLEXPORT RandomNumberGenerator
 {
-public: 
-  
+public:
+
   /** \brief Constructor
-  * 
+  *
   * @param _resolution specifies the desired resolution for the random number generated
   */
   RandomNumberGenerator(const double _resolution);
-  
+
   /// returns a random double between 0.0 and 1.0 with a garantueed resolution
   double getRand() const;
 
 private:
-  
+
   /// desired resolution
   const double resolution_;
 
