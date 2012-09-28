@@ -201,13 +201,20 @@ protected: //---------------------------------------------------- private method
 
   /**
    * This provides a function that allows the setting of a percentage
-   * of the original contraint of the modules
+   * of the original constraint of the modules
    *
    * Note that some modules might re-initialize in their
    * set_error_tolerance_factor function as necessary
    * @param _factor has to be in the closed interval between 0.0 and 1.0
    */
   void set_error_tolerance_factor(double _factor);
+
+  /** Reset the status of this class
+   *
+   * You have to call initialize again!!
+   */
+  void reset(){ initialized_ = false; };
+
 
 private: //------------------------------------------------------- private data
 
@@ -224,7 +231,10 @@ private: //------------------------------------------------------- private data
   // list of all allocated modules (including cmodule_ and all of bmodules_)
   ModuleList all_modules_;
 
+  // Flag if all modules were initialized
   bool       initialized_;
+
+
 };
 
 //=============================================================================
