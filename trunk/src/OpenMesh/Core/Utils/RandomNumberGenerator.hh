@@ -67,7 +67,10 @@ namespace OpenMesh {
 //=============================================================================
 
 
-/**  Generate a random number between 0.0 and 1.0 with a garantueed resolution
+/**  Generate a random number between 0.0 and 1.0 with a guaranteed resolution
+ *
+ * Especially useful on windows, as there MAX_RAND is often only 32k which is
+ * not enough resolution for a lot of applications
  */
 class OPENMESHDLLEXPORT RandomNumberGenerator
 {
@@ -79,7 +82,7 @@ public:
   */
   RandomNumberGenerator(const double _resolution);
 
-  /// returns a random double between 0.0 and 1.0 with a garantueed resolution
+  /// returns a random double between 0.0 and 1.0 with a guaranteed resolution
   double getRand() const;
 
 private:
