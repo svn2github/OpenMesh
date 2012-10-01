@@ -66,7 +66,7 @@ namespace OpenMesh {
 RandomNumberGenerator::RandomNumberGenerator(const double _resolution) :
   resolution_(_resolution),
   iterations_(1),
-  maxNum_(RAND_MAX)
+  maxNum_(RAND_MAX + 1.0)
 {
   double tmp = resolution_;
   while (tmp > (double(RAND_MAX) + 1.0) ) {
