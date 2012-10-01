@@ -141,11 +141,6 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
       tmpHandle = typename Mesh::HalfedgeHandle( (double(rand()) / double(RAND_MAX) ) * double(mesh_.n_halfedges()-1) );
 #endif
 
-      // Only take valid Handles!
-      if ( tmpHandle.idx() >=mesh_.n_halfedges()  )  {
-        continue;
-      }
-
       // if it is not deleted, we analyse it
       if ( ! mesh_.status(tmpHandle).deleted()  ) {
 
@@ -267,11 +262,6 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 #else
       tmpHandle = typename Mesh::HalfedgeHandle( ( double(rand()) / double(RAND_MAX) ) * double(mesh_.n_halfedges() - 1));
 #endif
-
-      // Only take valid Handles!
-      if ( tmpHandle.idx() >=mesh_.n_halfedges()  )  {
-        continue;
-      }
 
       // if it is not deleted, we analyse it
       if (!mesh_.status(tmpHandle).deleted()) {
@@ -410,11 +400,6 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
 #else
       tmpHandle = typename Mesh::HalfedgeHandle(int(rand() * randomNormalizer ) );
 #endif
-
-      // Only take valid Handles!
-      if ( tmpHandle.idx() >=mesh_.n_halfedges()  )  {
-        continue;
-      }
 
       // if it is not deleted, we analyze it
       if (!mesh_.status(mesh_.edge_handle(tmpHandle)).deleted()) {
