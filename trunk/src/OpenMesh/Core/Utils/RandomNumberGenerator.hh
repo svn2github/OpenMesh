@@ -85,6 +85,8 @@ public:
   /// returns a random double between 0.0 and 1.0 with a guaranteed resolution
   double getRand() const;
 
+  double resolution() const;
+
 private:
 
   /// desired resolution

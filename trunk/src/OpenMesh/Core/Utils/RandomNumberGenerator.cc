@@ -91,6 +91,10 @@ double RandomNumberGenerator::getRand() const {
   return randNum / maxNum_;
 }
 
+double RandomNumberGenerator::resolution() const {
+  return maxNum_;
+}
+
 //=============================================================================
 } // namespace OpenMesh
 //=============================================================================
