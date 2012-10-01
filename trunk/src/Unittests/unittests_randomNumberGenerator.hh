@@ -74,8 +74,11 @@ TEST_F(RandomNumberGenerator, RandomNumberGeneratorMaxTestLowres) {
      if ( randomNumber < 0.0  )
        lowerZero++;
 
-     if ( randomNumber > 1.0  )
+     if ( randomNumber > 1.0  ) {
        above1++;
+       std::cerr << "randomNumber " << randomNumber << std::endl;
+       std::cerr << "resolution   " << rng.resolution() << std::endl;
+     }
 
      average += randomNumber;
   }
