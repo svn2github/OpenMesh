@@ -118,7 +118,7 @@ void DecimaterT<Mesh>::heap_vertex(VertexHandle _vh) {
   if (collapse_target.is_valid()) {
     //     std::clog << "  added|updated" << std::endl;
     mesh_.property(collapse_target_, _vh) = collapse_target;
-    mesh_.property(priority_, _vh) = best_prio;
+    mesh_.property(priority_, _vh)        = best_prio;
 
     if (heap_->is_stored(_vh))
       heap_->update(_vh);
@@ -140,6 +140,7 @@ void DecimaterT<Mesh>::heap_vertex(VertexHandle _vh) {
 //-----------------------------------------------------------------------------
 template<class Mesh>
 size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
+
   if (!this->is_initialized())
     return 0;
 
@@ -215,6 +216,7 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
   heap_.reset();
 
 
+
   // DON'T do garbage collection here! It's up to the application.
   return n_collapses;
 }
@@ -223,6 +225,7 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
 
 template<class Mesh>
 size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
+
   if (!this->is_initialized())
     return 0;
 
