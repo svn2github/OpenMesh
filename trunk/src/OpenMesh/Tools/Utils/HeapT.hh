@@ -82,7 +82,7 @@ namespace Utils { // BEGIN_NS_UTILS
 
 
 /** This class demonstrates the HeapInterface's interface.  If you
- *  want to build your customized heap you will have to specity a heap
+ *  want to build your customized heap you will have to specify a heap
  *  interface class and use this class as a template parameter for the
  *  class HeapT. This class defines the interface that this heap
  *  interface has to implement.
@@ -111,8 +111,8 @@ struct HeapInterfaceT
  *
  *  An efficient, highly customizable heap.
  *
- *  The main difference (and performace boost) of this heap compared
- *  to e.g. the heap of the STL is that here to positions of the
+ *  The main difference (and performance boost) of this heap compared
+ *  to e.g. the heap of the STL is that here the positions of the
  *  heap's elements are accessible from the elements themself.
  *  Therefore if one changes the priority of an element one does not
  *  have to remove and re-insert this element, but can just call the
@@ -244,13 +244,13 @@ public:
     {
       if (((j=left(i))<size()) && interface_.greater(entry(i), entry(j))) 
       {
-	omerr() << "Heap condition violated\n";
-	ok=false;
+        omerr() << "Heap condition violated\n";
+        ok=false;
       }
       if (((j=right(i))<size()) && interface_.greater(entry(i), entry(j)))
       {
-	omerr() << "Heap condition violated\n";
-	ok=false;
+        omerr() << "Heap condition violated\n";
+        ok=false;
       }
     }
     return ok;
@@ -341,8 +341,7 @@ downheap(unsigned int _idx)
     childIdx = left(_idx);
     if (childIdx >= s) break;
     
-    if ((childIdx+1 < s) &&
-	(interface_.less(entry(childIdx+1), entry(childIdx))))
+    if ((childIdx + 1 < s) && (interface_.less(entry(childIdx + 1), entry(childIdx))))
       ++childIdx;
     
     if (interface_.less(h, entry(childIdx))) break;
