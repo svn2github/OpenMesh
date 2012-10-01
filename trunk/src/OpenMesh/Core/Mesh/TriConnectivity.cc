@@ -113,19 +113,19 @@ bool TriConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
   if (status(v0).deleted() || status(v1).deleted())
     return false;
 
-
   VertexHandle    vl, vr;
   HalfedgeHandle  h1, h2;
-
 
   // the edges v1-vl and vl-v0 must not be both boundary edges
   if (!is_boundary(v0v1))
   {
-    vl = to_vertex_handle(next_halfedge_handle(v0v1));
 
     h1 = next_halfedge_handle(v0v1);
     h2 = next_halfedge_handle(h1);
-    if (is_boundary(opposite_halfedge_handle(h1)) && 
+
+    vl = to_vertex_handle(h1);
+
+    if (is_boundary(opposite_halfedge_handle(h1)) &&
         is_boundary(opposite_halfedge_handle(h2)))
     {
       return false;
@@ -136,22 +136,21 @@ bool TriConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
   // the edges v0-vr and vr-v1 must not be both boundary edges
   if (!is_boundary(v1v0))
   {
-    vr = to_vertex_handle(next_halfedge_handle(v1v0));
 
     h1 = next_halfedge_handle(v1v0);
     h2 = next_halfedge_handle(h1);
+
+    vr = to_vertex_handle(h1);
+
     if (is_boundary(opposite_halfedge_handle(h1)) &&
         is_boundary(opposite_halfedge_handle(h2)))
       return false;
   }
 
-
   // if vl and vr are equal or both invalid -> fail
   if (vl == vr) return false;
 
-
   VertexVertexIter  vv_it;
-
 
   // test intersection of the one-rings of v0 and v1
   for (vv_it = vv_iter(v0); vv_it; ++vv_it)
@@ -163,7 +162,6 @@ bool TriConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
   for (vv_it = vv_iter(v0); vv_it; ++vv_it)
     if (status(vv_it).tagged() && vv_it.handle() != vl && vv_it.handle() != vr)
       return false;
-
 
 
   // edge between two boundary vertices should be a boundary edge
