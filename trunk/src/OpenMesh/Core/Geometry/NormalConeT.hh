@@ -102,7 +102,7 @@ public:
   const Vec3& center_normal() const { return center_normal_; }
 
   //! returns size of cone (radius in radians)
-  Scalar angle() const { return angle_; }
+  inline Scalar angle() const { return angle_; }
 
 private:
 

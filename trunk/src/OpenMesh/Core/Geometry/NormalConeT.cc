@@ -132,8 +132,8 @@ merge(const NormalConeT& _cone)
     // axis by SLERP
     Scalar axisAngle = 0.5*(minAngle + maxAngle);
     center_normal_ = ((center_normal_ * sin(centerAngle-axisAngle)
-		       + _cone.center_normal_ * sin(axisAngle))
-		       / sin(centerAngle));
+		                   + _cone.center_normal_ * sin(axisAngle))
+		                    / sin(centerAngle));
   }
   else
   {
@@ -143,7 +143,7 @@ merge(const NormalConeT& _cone)
 
     // axes point in opposite directions
     else
-      angle_ = 2*M_PI;
+      angle_ = 2.0 * M_PI;
   }
 }
 
