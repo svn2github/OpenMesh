@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.688)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.729)</td><td>
 
 <b>Todo changelogs : 685</b>
 
@@ -22,6 +22,9 @@
 <li>Added a function to copy single properties between entities of same type. (Thanks to Duncan Paterson for the patch)</li>
 <li>Added functions to copy all properties between entities. (Thanks to Duncan Paterson for the patch)</li>
 <li>Added split copy operations, which copy properties of splitted elements to the newly created ones. ( Thanks to Duncan Paterson for the patch )</li>
+<li>Added flag to the property copy functions, if the standard properties should be copied along with the user defined ones</li>
+<li>Added function to remove all primitives from the mesh, but leaving properties attached (mesh.clean() ) </li>
+<li>Avoid double next_halfedge_handle call in collapse_ok</li>
 </ul>
 
 <b>Decimater</b>
@@ -31,7 +34,9 @@
 <li>Decimater modules don't need a decimater type as template argument anymore</li>
 <li>Module parameters renamed</li>
 <li>Added Decimater base class</li>
-<li>Added some OpenMP loops to ModHausdorffT for speedup</li>
+<li>Added the set_error_tolerance_factor function to ModBaseT and implemented it in inherited classes as necessary</li>
+<li>Removed redundant tests in is_collapse_legal that where already performed in is_collapse_ok</li>
+<li>ModHausdorff: Removed unused parameter</li>
 </ul>
 
 <b>IO</b>
@@ -39,11 +44,14 @@
 <li>Fixed OBJ Reader not correctly setting per halfedge normals. (Thanks to Patrick Rauber for the report)</li>
 <li>Fixed bug in halfedge normal computation, where a boundary halfedge was not correctly handled and caused a segfault.</li>
 <li>Fix: OM Reader used different types on 32/64-bit systems. (Thanks to Martin Bayer for the patch)</li>
+<li>STL Reader: Added the functionality to read meshes from istreams</li>
+<li>STL Reader: Added the functionality to write meshes to ostreams</li>
 </ul>
 
-<b>IO</b>
+<b>Utils</b>
 <ul>
 <li>Core/Utils: Added PropertyManager class.</li>
+<li>Core/Utils: Added a Random Number generator with larger resolution (Windows supports only ~32k which is extended by this generator </li>
 </ul>
 
 
@@ -80,6 +88,7 @@
 <li>Readded missing DOXY_IGNORE_THIS definition to doxygen file</li>
 <li>Output OpenMesh Build type in cmake header printout</li>
 <li>Windows: Extended min max warning to allow undefs</li>
+<li>Windows: Support DLL build of OpenMesh</li>
 </ul>
 
 
