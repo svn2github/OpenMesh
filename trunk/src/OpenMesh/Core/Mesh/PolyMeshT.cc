@@ -118,12 +118,12 @@ calc_face_normal(FaceHandle _fh) const
   n += vector_cast<Normal>(calc_face_normal(p0i, p0, p1)); 
   n += vector_cast<Normal>(calc_face_normal(p1i, p0i, p1));
 
-  typename Normal::value_type norm = n.length();
+  typename vector_traits<Normal>::value_type norm = n.length();
   
   // The expression ((n *= (1.0/norm)),n) is used because the OpenSG
   // vector class does not return self after component-wise
   // self-multiplication with a scalar!!!
-  return (norm != typename Normal::value_type(0)) ? ((n *= (typename Normal::value_type(1)/norm)),n) : Normal(0,0,0);
+  return (norm != typename vector_traits<Normal>::value_type(0)) ? ((n *= (typename vector_traits<Normal>::value_type(1)/norm)),n) : Normal(0,0,0);
 }
 
 //-----------------------------------------------------------------------------
@@ -144,18 +144,18 @@ calc_face_normal(const Point& _p0,
   Normal p1p2(vector_cast<Normal>(_p2));  p1p2 -= vector_cast<Normal>(_p1);
 
   Normal n    = cross(p1p2, p1p0);
-  typename Normal::value_type norm = n.length();
+  typename vector_traits<Normal>::value_type norm = n.length();
 
   // The expression ((n *= (1.0/norm)),n) is used because the OpenSG
   // vector class does not return self after component-wise
   // self-multiplication with a scalar!!!
-  return (norm != typename Normal::value_type(0)) ? ((n *= (typename Normal::value_type(1)/norm)),n) : Normal(0,0,0);
+  return (norm != typename vector_traits<Normal>::value_type(0)) ? ((n *= (typename vector_traits<Normal>::value_type(1)/norm)),n) : Normal(0,0,0);
 #else
   Point p1p0 = _p0;  p1p0 -= _p1;
   Point p1p2 = _p2;  p1p2 -= _p1;
 
   Normal n = vector_cast<Normal>(cross(p1p2, p1p0));
-  typename Normal::value_type norm = n.length();
+  typename vector_traits<Normal>::value_type norm = n.length();
 
   return (norm != 0.0) ? n *= (1.0/norm) : Normal(0,0,0);
 #endif
@@ -377,8 +377,8 @@ calc_vertex_normal_loop(VertexHandle _vh, Normal& _n) const
   for (ConstVertexOHalfedgeIter cvoh_it = cvoh_iter(_vh); cvoh_it; ++cvoh_it, ++i)
   {
     VertexHandle r1_v(to_vertex_handle(cvoh_it));
-    t_v += (typename Point::value_type)(loop_scheme_mask__.tang0_weight(vh_val, i))*this->point(r1_v);
-    t_w += (typename Point::value_type)(loop_scheme_mask__.tang1_weight(vh_val, i))*this->point(r1_v);
+    t_v += (typename vector_traits<Point>::value_type)(loop_scheme_mask__.tang0_weight(vh_val, i))*this->point(r1_v);
+    t_w += (typename vector_traits<Point>::value_type)(loop_scheme_mask__.tang1_weight(vh_val, i))*this->point(r1_v);
   }
   _n = cross(t_w, t_v);//hack: should be cross(t_v, t_w), but then the normals are reversed?
 }
