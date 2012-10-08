@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -59,7 +59,7 @@
 
 #include "MeshViewerWidget.hh"
 
-  
+
 void create_menu(QMainWindow &w);
 void usage_and_exit(int xcode);
 
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 
   int c;
   OpenMesh::IO::Options opt;
-  
+
   while ( (c=getopt(argc,argv,"hbs"))!=-1 )
   {
      switch(c)
@@ -93,6 +93,15 @@ int main(int argc, char **argv)
           usage_and_exit(1);
      }
   }
+
+  // enable most options for now
+  opt += OpenMesh::IO::Options::VertexColor;
+  opt += OpenMesh::IO::Options::VertexNormal;
+  opt += OpenMesh::IO::Options::VertexTexCoord;
+  opt += OpenMesh::IO::Options::FaceColor;
+  opt += OpenMesh::IO::Options::FaceNormal;
+  opt += OpenMesh::IO::Options::FaceTexCoord;
+
   // create widget
   QMainWindow mainWin;
   MeshViewerWidget w(&mainWin);
@@ -105,10 +114,10 @@ int main(int argc, char **argv)
   w.enable_strips();
 
   mainWin.resize(640, 480);
-  mainWin.show(); 
+  mainWin.show();
 
   // load scene if specified on the command line
-  if ( optind < argc )  
+  if ( optind < argc )
   {
     w.open_mesh_gui(argv[optind]);
   }
