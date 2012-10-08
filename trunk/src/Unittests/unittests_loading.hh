@@ -531,5 +531,87 @@ TEST_F(OpenMeshLoader, LoadSimplePLYWithNormals) {
 }
 
 
+/*
+ * Just load an om file of a cube with vertex texCoords
+ */
+TEST_F(OpenMeshLoader, LoadSimpleOMWithTexCoords) {
+
+    mesh_.clear();
+
+    mesh_.request_vertex_texcoords2D();
+
+    OpenMesh::IO::Options options;
+    options += OpenMesh::IO::Options::VertexTexCoord;
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-texCoords.om",options);
+
+    EXPECT_TRUE(ok) << "Unable to load cube-minimal-texCoords.om";
+
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges())    << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces())    << "The number of loaded faces is not correct!";
+
+    EXPECT_EQ(10,   mesh_.texcoord2D(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
+    EXPECT_EQ(10,   mesh_.texcoord2D(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
+
+    EXPECT_EQ(6,   mesh_.texcoord2D(mesh_.vertex_handle(2))[0] ) << "Wrong vertex color at vertex 2 component 0";
+    EXPECT_EQ(6,   mesh_.texcoord2D(mesh_.vertex_handle(2))[1] ) << "Wrong vertex color at vertex 2 component 1";
+
+    EXPECT_EQ(9,   mesh_.texcoord2D(mesh_.vertex_handle(4))[0] ) << "Wrong vertex color at vertex 4 component 0";
+    EXPECT_EQ(9,   mesh_.texcoord2D(mesh_.vertex_handle(4))[1] ) << "Wrong vertex color at vertex 4 component 1";
+
+    EXPECT_EQ(12,   mesh_.texcoord2D(mesh_.vertex_handle(7))[0] ) << "Wrong vertex color at vertex 7 component 0";
+    EXPECT_EQ(12,   mesh_.texcoord2D(mesh_.vertex_handle(7))[1] ) << "Wrong vertex color at vertex 7 component 1";
+
+
+    EXPECT_FALSE(options.vertex_has_normal()) << "Wrong user options are returned!";
+    EXPECT_TRUE(options.vertex_has_texcoord()) << "Wrong user options are returned!";
+    EXPECT_FALSE(options.vertex_has_color()) << "Wrong user options are returned!";
+
+    mesh_.release_vertex_texcoords2D();
+}
+
+/*
+ * Just load an om file of a cube with vertex colors
+ */
+TEST_F(OpenMeshLoader, LoadSimpleOMWithVertexColors) {
+
+    mesh_.clear();
+
+    mesh_.request_vertex_colors();
+
+    OpenMesh::IO::Options options;
+    options += OpenMesh::IO::Options::VertexColor;
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-vertexColors.om",options);
+
+    EXPECT_TRUE(ok) << "Unable to load cube-minimal-vertexColors.om";
+
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges())    << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces())    << "The number of loaded faces is not correct!";
+
+    EXPECT_EQ(255,   mesh_.color(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[2] ) << "Wrong vertex color at vertex 0 component 2";
+
+    EXPECT_EQ(255,   mesh_.color(mesh_.vertex_handle(3))[0] ) << "Wrong vertex color at vertex 3 component 0";
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(3))[1] ) << "Wrong vertex color at vertex 3 component 1";
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(3))[2] ) << "Wrong vertex color at vertex 3 component 2";
+
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(4))[0] ) << "Wrong vertex color at vertex 4 component 0";
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(4))[1] ) << "Wrong vertex color at vertex 4 component 1";
+    EXPECT_EQ(255,   mesh_.color(mesh_.vertex_handle(4))[2] ) << "Wrong vertex color at vertex 4 component 2";
+
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(7))[0] ) << "Wrong vertex color at vertex 7 component 0";
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(7))[1] ) << "Wrong vertex color at vertex 7 component 1";
+    EXPECT_EQ(255, mesh_.color(mesh_.vertex_handle(7))[2] ) << "Wrong vertex color at vertex 7 component 2";
+
+    EXPECT_FALSE(options.vertex_has_normal()) << "Wrong user options are returned!";
+    EXPECT_FALSE(options.vertex_has_texcoord()) << "Wrong user options are returned!";
+    EXPECT_TRUE(options.vertex_has_color()) << "Wrong user options are returned!";
+
+    mesh_.release_vertex_colors();
+}
 
 #endif // INCLUDE GUARD

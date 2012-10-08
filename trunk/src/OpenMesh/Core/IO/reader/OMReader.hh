@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -76,8 +76,8 @@ namespace IO {
 //== IMPLEMENTATION ===========================================================
 
 
-/** 
-    Implementation of the OM format reader. This class is singleton'ed by 
+/**
+    Implementation of the OM format reader. This class is singleton'ed by
     SingletonT to OMReader.
 */
 class OPENMESHDLLEXPORT _OMReader_ : public BaseReader
@@ -90,20 +90,20 @@ public:
   std::string get_description() const { return "OpenMesh File Format"; }
   std::string get_extensions()  const { return "om"; }
   std::string get_magic()       const { return "OM"; }
-   
-  bool read(const std::string& _filename, 
-	    BaseImporter& _bi, 
+
+  bool read(const std::string& _filename,
+	    BaseImporter& _bi,
 	    Options& _opt );
 
 //!  Stream Reader for std::istream input in binary format
-  bool read(std::istream& _is, 
-	    BaseImporter& _bi, 
+  bool read(std::istream& _is,
+	    BaseImporter& _bi,
 	    Options& _opt );
-	    
+
   virtual bool can_u_read(const std::string& _filename) const;
   virtual bool can_u_read(std::istream& _is) const;
 
-  
+
 private:
 
   bool supports( const OMFormat::uint8 version ) const;
@@ -117,38 +117,39 @@ private:
 
   // initialized/updated by read_binary*/read_ascii*
   mutable size_t       bytes_;
+  mutable Options      fileOptions_;
   mutable Header       header_;
   mutable ChunkHeader  chunk_header_;
   mutable PropertyName property_name_;
 
-  bool read_binary_vertex_chunk(   std::istream      &_is, 
-				   BaseImporter      &_bi, 
+  bool read_binary_vertex_chunk(   std::istream      &_is,
+				   BaseImporter      &_bi,
 				   Options           &_opt,
 				   bool              _swap) const;
 
-  bool read_binary_face_chunk(     std::istream      &_is, 
-			           BaseImporter      &_bi, 
+  bool read_binary_face_chunk(     std::istream      &_is,
+			           BaseImporter      &_bi,
 			           Options           &_opt,
 				   bool              _swap) const;
 
-  bool read_binary_edge_chunk(     std::istream      &_is, 
-			           BaseImporter      &_bi, 
+  bool read_binary_edge_chunk(     std::istream      &_is,
+			           BaseImporter      &_bi,
 			           Options           &_opt,
 				   bool              _swap) const;
 
-  bool read_binary_halfedge_chunk( std::istream      &_is, 
-				   BaseImporter      &_bi, 
+  bool read_binary_halfedge_chunk( std::istream      &_is,
+				   BaseImporter      &_bi,
 				   Options           &_opt,
 				   bool              _swap) const;
 
-  bool read_binary_mesh_chunk(     std::istream      &_is, 
-				   BaseImporter      &_bi, 
+  bool read_binary_mesh_chunk(     std::istream      &_is,
+				   BaseImporter      &_bi,
 				   Options           &_opt,
 				   bool              _swap) const;
 
-  size_t restore_binary_custom_data( std::istream& _is, 
+  size_t restore_binary_custom_data( std::istream& _is,
 				     BaseProperty* _bp,
-				     size_t _n_elem, 
+				     size_t _n_elem,
 				     bool _swap) const;
 
 };

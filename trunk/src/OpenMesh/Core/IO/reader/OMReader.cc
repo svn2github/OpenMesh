@@ -89,6 +89,7 @@ bool _OMReader_::read(const std::string& _filename, BaseImporter& _bi, Options& 
     return false;
 
   _opt += Options::Binary; // only binary format supported!
+  fileOptions_ = Options::Binary;
 
   // Open file
   std::ifstream ifs(_filename.c_str(), std::ios::binary);
@@ -103,6 +104,8 @@ bool _OMReader_::read(const std::string& _filename, BaseImporter& _bi, Options& 
   // close input stream
   ifs.close();
 
+  _opt = _opt & fileOptions_;
+
   return result;
 }
 
@@ -116,6 +119,7 @@ bool _OMReader_::read(std::istream& _is, BaseImporter& _bi, Options& _opt)
     return false;
 
   _opt += Options::Binary; // only binary format supported!
+  fileOptions_ = Options::Binary;
 
   if (!_is.good()) {
     omerr() << "[OMReader] : cannot read from stream " << std::endl;
@@ -127,6 +131,8 @@ bool _OMReader_::read(std::istream& _is, BaseImporter& _bi, Options& _opt)
 
   if (result)
     _opt += Options::Binary;
+
+  _opt = _opt & fileOptions_;
 
   return result;
 }
@@ -289,20 +295,22 @@ bool _OMReader_::read_binary_vertex_chunk(std::istream &_is, BaseImporter &_bi, 
     case Chunk::Type_Normal:
       assert( OMFormat::dimensions(chunk_header_) == size_t(OpenMesh::Vec3f::dim()));
 
-      _opt += Options::VertexNormal;
+      fileOptions_ += Options::VertexNormal;
       for (; vidx < header_.n_vertices_ && !_is.eof(); ++vidx) {
         bytes_ += vector_restore(_is, v3f, _swap);
-        _bi.set_normal(VertexHandle(vidx), v3f);
+        if (fileOptions_.vertex_has_normal() && _opt.vertex_has_normal())
+          _bi.set_normal(VertexHandle(vidx), v3f);
       }
       break;
 
     case Chunk::Type_Texcoord:
       assert( OMFormat::dimensions(chunk_header_) == size_t(OpenMesh::Vec2f::dim()));
 
-      _opt += Options::VertexTexCoord;
+      fileOptions_ += Options::VertexTexCoord;
       for (; vidx < header_.n_vertices_ && !_is.eof(); ++vidx) {
         bytes_ += vector_restore(_is, v2f, _swap);
-        _bi.set_texcoord(VertexHandle(vidx), v2f);
+        if (fileOptions_.vertex_has_texcoord() && _opt.vertex_has_texcoord())
+          _bi.set_texcoord(VertexHandle(vidx), v2f);
       }
       break;
 
@@ -310,11 +318,12 @@ bool _OMReader_::read_binary_vertex_chunk(std::istream &_is, BaseImporter &_bi, 
 
       assert( OMFormat::dimensions(chunk_header_) == 3);
 
-      _opt += Options::VertexColor;
+      fileOptions_ += Options::VertexColor;
 
       for (; vidx < header_.n_vertices_ && !_is.eof(); ++vidx) {
         bytes_ += vector_restore(_is, v3uc, _swap);
-        _bi.set_color(VertexHandle(vidx), v3uc);
+        if (fileOptions_.vertex_has_color() && _opt.vertex_has_color())
+          _bi.set_color(VertexHandle(vidx), v3uc);
       }
       break;
 
@@ -386,10 +395,11 @@ bool _OMReader_::read_binary_face_chunk(std::istream &_is, BaseImporter &_bi, Op
     case Chunk::Type_Normal:
       assert( OMFormat::dimensions(chunk_header_) == size_t(OpenMesh::Vec3f::dim()));
 
-      _opt += Options::FaceNormal;
+      fileOptions_ += Options::FaceNormal;
       for (; fidx < header_.n_faces_ && !_is.eof(); ++fidx) {
         bytes_ += vector_restore(_is, v3f, _swap);
-        _bi.set_normal(FaceHandle(fidx), v3f);
+        if( fileOptions_.face_has_normal() && _opt.face_has_normal())
+          _bi.set_normal(FaceHandle(fidx), v3f);
       }
       break;
 
@@ -397,10 +407,11 @@ bool _OMReader_::read_binary_face_chunk(std::istream &_is, BaseImporter &_bi, Op
 
       assert( OMFormat::dimensions(chunk_header_) == 3);
 
-      _opt += Options::FaceColor;
+      fileOptions_ += Options::FaceColor;
       for (; fidx < header_.n_faces_ && !_is.eof(); ++fidx) {
         bytes_ += vector_restore(_is, v3uc, _swap);
-        _bi.set_color(FaceHandle(fidx), v3uc);
+        if( fileOptions_.face_has_color() && _opt.face_has_color())
+          _bi.set_color(FaceHandle(fidx), v3uc);
       }
       break;
 
