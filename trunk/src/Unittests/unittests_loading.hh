@@ -530,6 +530,33 @@ TEST_F(OpenMeshLoader, LoadSimplePLYWithNormals) {
 
 }
 
+/*
+ * Just load an om file and set vertex color option before loading
+ */
+TEST_F(OpenMeshLoader, LoadSimpleOMForceVertexColorsAlthoughNotAvailable) {
+
+  mesh_.clear();
+
+  mesh_.request_vertex_colors();
+
+  std::string file_name = "cube-minimal.om";
+
+  OpenMesh::IO::Options options;
+  options += OpenMesh::IO::Options::VertexColor;
+
+  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name,options);
+
+  EXPECT_TRUE(ok) << file_name;
+
+  EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+  EXPECT_EQ(18u , mesh_.n_edges())     << "The number of loaded edges is not correct!";
+  EXPECT_EQ(12u , mesh_.n_faces())     << "The number of loaded faces is not correct!";
+  EXPECT_EQ(36u , mesh_.n_halfedges())  << "The number of loaded halfedges is not correct!";
+
+  EXPECT_FALSE(options.vertex_has_normal()) << "Wrong user options are returned!";
+  EXPECT_FALSE(options.vertex_has_texcoord()) << "Wrong user options are returned!";
+  EXPECT_FALSE(options.vertex_has_color()) << "Wrong user options are returned!";
+}
 
 /*
  * Just load an om file of a cube with vertex texCoords
