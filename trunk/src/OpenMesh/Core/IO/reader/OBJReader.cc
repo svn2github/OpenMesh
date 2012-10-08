@@ -669,6 +669,9 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
   }
 
+  // Return, what we actually read
+  _opt = fileOptions;
+
   return true;
 }
 
