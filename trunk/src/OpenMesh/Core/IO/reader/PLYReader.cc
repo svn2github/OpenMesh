@@ -158,7 +158,7 @@ bool _PLYReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt) {
     //    if ( options_.is_binary() && userOptions_.color_has_alpha() )
     //      options_ += Options::ColorAlpha;
 
-    return (options_.is_binary() ? read_binary(_in, _bi, swap) : read_ascii(_in, _bi));
+    return (options_.is_binary() ? read_binary(_in, _bi, swap, _opt) : read_ascii(_in, _bi, _opt));
 
 }
 
@@ -166,7 +166,7 @@ bool _PLYReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt) {
 
 //-----------------------------------------------------------------------------
 
-bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
+bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options& _opt) const {
 
     omlog() << "[PLYReader] : read ascii file\n";
 
@@ -276,9 +276,12 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
         }
 
         vh = _bi.add_vertex(v);
-        _bi.set_normal(vh, n);
-        _bi.set_texcoord(vh, t);
-        _bi.set_color(vh, Vec4uc(c));
+        if (_opt.vertex_has_normal())
+          _bi.set_normal(vh, n);
+        if (_opt.vertex_has_texcoord())
+          _bi.set_texcoord(vh, t);
+        if (_opt.vertex_has_color())
+          _bi.set_color(vh, Vec4uc(c));
     }
 
     // faces
@@ -314,7 +317,7 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const {
 
 //-----------------------------------------------------------------------------
 
-bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) const {
+bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/, const Options& _opt) const {
 
     omlog() << "[PLYReader] : read binary file format\n";
 
@@ -425,9 +428,12 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
         }
 
         vh = _bi.add_vertex(v);
-        _bi.set_normal(vh, n);
-        _bi.set_texcoord(vh, t);
-        _bi.set_color(vh, Vec4uc(c));
+        if (_opt.vertex_has_normal())
+          _bi.set_normal(vh, n);
+        if (_opt.vertex_has_texcoord())
+          _bi.set_texcoord(vh, t);
+        if (_opt.vertex_has_color())
+          _bi.set_color(vh, Vec4uc(c));
     }
 
     for (i = 0; i < faceCount_; ++i) {
@@ -484,7 +490,7 @@ void _PLYReader_::readValue(ValueType _type, std::istream& _in, float& _value) c
 void _PLYReader_::readValue(ValueType _type, std::istream& _in, double& _value) const {
 
     switch (_type) {
-        
+
         case ValueTypeFLOAT64:
 
         case ValueTypeDOUBLE:
@@ -519,7 +525,7 @@ void _PLYReader_::readValue(ValueType _type, std::istream& _in, unsigned int& _v
         case ValueTypeUINT:
 
         case ValueTypeUINT32:
-    
+
             restore(_in, tmp_uint32_t, options_.check(Options::MSB));
             _value = tmp_uint32_t;
 
@@ -628,7 +634,7 @@ void _PLYReader_::readInteger(ValueType _type, std::istream& _in, int& _value) c
 
             restore(_in, tmp_uint32_t, options_.check(Options::MSB));
             _value = tmp_uint32_t;
-    
+
             break;
 
         case ValueTypeCHAR:
@@ -721,7 +727,7 @@ void _PLYReader_::readInteger(ValueType _type, std::istream& _in, unsigned int& 
 
 
 bool _PLYReader_::can_u_read(const std::string& _filename) const {
-    
+
     // !!! Assuming BaseReader::can_u_parse( std::string& )
     // does not call BaseReader::read_magic()!!!
 
@@ -740,7 +746,7 @@ bool _PLYReader_::can_u_read(const std::string& _filename) const {
 //-----------------------------------------------------------------------------
 
 std::string get_property_name(std::string _string1, std::string _string2) {
-    
+
     if (_string1 == "float32" || _string1 == "float64" || _string1 == "float" || _string1 == "double" ||
         _string1 == "int8" || _string1 == "uint8" || _string1 == "char" || _string1 == "uchar" ||
         _string1 == "int32" || _string1 == "uint32" || _string1 == "int" || _string1 == "uint" ||
@@ -1005,7 +1011,7 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
                     } else if (propertyName == "diffuse_blue") {
                       std::pair<VertexProperty, ValueType> entry(COLORBLUE, valueType);
                       vertexPropertyMap_[vertexPropertyCount_] = entry;
-                      options_ += Options::VertexColor;                        
+                      options_ += Options::VertexColor;
                     } else if (propertyName == "alpha") {
                         std::pair<VertexProperty, ValueType> entry(COLORALPHA, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;

@@ -125,8 +125,8 @@ private:
 
   bool can_u_read(std::istream& _is) const;
 
-  bool read_ascii(std::istream& _in, BaseImporter& _bi) const;
-  bool read_binary(std::istream& _in, BaseImporter& _bi, bool swap) const;
+  bool read_ascii(std::istream& _in, BaseImporter& _bi, const Options& _opt) const;
+  bool read_binary(std::istream& _in, BaseImporter& _bi, bool swap, const Options& _opt) const;
 
   float readToFloatValue(ValueType _type , std::fstream& _in) const;
 
@@ -138,14 +138,14 @@ private:
   void readInteger(ValueType _type, std::istream& _in, int& _value) const;
   void readInteger(ValueType _type, std::istream& _in, unsigned int& _value) const;
 
-  /// Read unsupported properties in PLY file 
+  /// Read unsupported properties in PLY file
   void consume_input(std::istream& _in, int _count) const {
 	  _in.read(reinterpret_cast<char*>(&buff[0]), _count);
   }
 
   mutable unsigned char buff[8];
 
-  /// Available options for reading
+  /// Available per file options for reading
   mutable Options options_;
 
   /// Options that the user wants to read

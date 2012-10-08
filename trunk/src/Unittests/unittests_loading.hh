@@ -11,7 +11,7 @@ class OpenMeshLoader : public OpenMeshBase {
 
         // This function is called before each test is run
         virtual void SetUp() {
-            
+
             // Do some initial stuff with the member data here...
         }
 
@@ -22,7 +22,7 @@ class OpenMeshLoader : public OpenMeshBase {
         }
 
     // Member already defined in OpenMeshBase
-    //Mesh mesh_;  
+    //Mesh mesh_;
 };
 
 /*
@@ -297,7 +297,7 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJWithVertexColorsAfterVertices) {
     EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
     EXPECT_EQ(18u , mesh_.n_edges())    << "The number of loaded edges is not correct!";
     EXPECT_EQ(12u , mesh_.n_faces())    << "The number of loaded faces is not correct!";
-   
+
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[2] ) << "Wrong vertex color at vertex 0 component 2";
@@ -383,14 +383,21 @@ TEST_F(OpenMeshLoader, LoadSimplePLYWithNormals) {
     mesh_.clear();
 
     mesh_.request_vertex_normals();
- 
-    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-normals.ply");
+
+    OpenMesh::IO::Options options;
+    options += OpenMesh::IO::Options::VertexNormal;
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-normals.ply", options);
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal-normals.ply";
 
     EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
     EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
     EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
+
+    EXPECT_TRUE(options.vertex_has_normal()) << "Wrong user options are returned!";
+    EXPECT_FALSE(options.vertex_has_texcoord()) << "Wrong user options are returned!";
+    EXPECT_FALSE(options.vertex_has_color()) << "Wrong user options are returned!";
 
 
     EXPECT_EQ(0, mesh_.normal(mesh_.vertex_handle(0))[0] ) << "Wrong normal at vertex 0 component 0";
