@@ -16,6 +16,7 @@
 #include "unittests_faceless_mesh.hh"
 #include "unittests_trimesh_garbage_collection.hh"
 #include "unittests_randomNumberGenerator.hh"
+#include "unittests_split_copy.hh"
 
 int main(int _argc, char** _argv) {
 
