@@ -149,9 +149,12 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJCheckHalfEdgeAndVertexNormals) {
   mesh_.request_halfedge_normals();
   mesh_.request_vertex_normals();
 
+  OpenMesh::IO::Options options;
+  options += OpenMesh::IO::Options::VertexNormal;
+
   std::string file_name = "cube-minimal.obj";
 
-  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name);
+  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name,options);
 
   EXPECT_TRUE(ok) << file_name;
 
@@ -210,6 +213,32 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJCheckHalfEdgeAndVertexNormals) {
 }
 
 /*
+ * Just load a obj file and set vertex color option before loading
+ */
+TEST_F(OpenMeshLoader, LoadSimpleOBJForceVertexColorsAlthoughNotAvailable) {
+
+  mesh_.clear();
+
+  mesh_.request_vertex_colors();
+
+  std::string file_name = "cube-minimal.obj";
+
+  OpenMesh::IO::Options options;
+  options += OpenMesh::IO::Options::VertexColor;
+
+  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name,options);
+
+  EXPECT_TRUE(ok) << file_name;
+
+  EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+  EXPECT_EQ(18u , mesh_.n_edges())     << "The number of loaded edges is not correct!";
+  EXPECT_EQ(12u , mesh_.n_faces())     << "The number of loaded faces is not correct!";
+  EXPECT_EQ(36u , mesh_.n_halfedges())  << "The number of loaded halfedges is not correct!";
+
+}
+
+
+/*
  * Just load a obj file of a cube and checks the halfedge texCoords
  */
 TEST_F(OpenMeshLoader, LoadSimpleOBJCheckTexCoords) {
@@ -218,9 +247,12 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJCheckTexCoords) {
 
   mesh_.request_halfedge_texcoords2D();
 
+  OpenMesh::IO::Options options;
+  options += OpenMesh::IO::Options::FaceTexCoord;
+
   std::string file_name = "cube-minimal-texCoords.obj";
 
-  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name);
+  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name,options);
 
   EXPECT_TRUE(ok) << file_name;
 
@@ -255,13 +287,16 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJWithVertexColorsAfterVertices) {
 
     mesh_.request_vertex_colors();
 
-    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-vertex-colors-after-vertex-definition.obj");
+    OpenMesh::IO::Options options;
+    options += OpenMesh::IO::Options::VertexColor;
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-vertex-colors-after-vertex-definition.obj",options);
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal-vertex-colors-after-vertex-definition.obj";
 
     EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
-    EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
-    EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges())    << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces())    << "The number of loaded faces is not correct!";
    
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
     EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
@@ -291,7 +326,10 @@ TEST_F(OpenMeshLoader, LoadSimpleOBJWithVertexColorsAsVCLines) {
 
     mesh_.request_vertex_colors();
 
-    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-vertex-colors-as-vc-lines.obj");
+    OpenMesh::IO::Options options;
+    options += OpenMesh::IO::Options::VertexColor;
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-vertex-colors-as-vc-lines.obj",options);
 
     EXPECT_TRUE(ok) << "Unable to load cube-minimal-vertex-colors-as-vc-lines.obj";
 

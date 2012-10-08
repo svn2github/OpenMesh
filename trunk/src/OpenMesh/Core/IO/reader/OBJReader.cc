@@ -283,6 +283,13 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
   std::string               matname;
 
 
+  // Options supplied by the user
+  Options userOptions = _opt;
+
+  // Options collected via file parsing
+  Options fileOptions;
+
+
   while( _in && !_in.eof() )
   {
     std::getline(_in,line);
@@ -363,8 +370,10 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
         if ( !stream.fail() )
         {
-          _opt += Options::VertexColor;
-          colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
+          if (  userOptions.vertex_has_color() ) {
+            fileOptions += Options::VertexColor;
+            colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
+          }
         }
       }
     }
@@ -374,10 +383,15 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
     {
       stream >> u; stream >> v;
 
-      if ( !stream.fail() ){
+      if ( !stream.fail()  ){
 
-        texcoords.push_back(OpenMesh::Vec2f(u, v));
-        _opt += Options::VertexTexCoord;
+        if ( userOptions.vertex_has_texcoord() || userOptions.face_has_texcoord() ) {
+          texcoords.push_back(OpenMesh::Vec2f(u, v));
+
+          // Can be used for both!
+          fileOptions += Options::VertexTexCoord;
+          fileOptions += Options::FaceTexCoord;
+        }
 
       }else{
 
@@ -392,9 +406,11 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
     {
       stream >> r; stream >> g; stream >> b;
 
-      if ( !stream.fail() ){
-        colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
-        _opt += Options::VertexColor;
+      if ( !stream.fail()   ){
+        if ( userOptions.vertex_has_color() ) {
+          colors.push_back(OpenMesh::Vec3uc((unsigned char)r,(unsigned char)g,(unsigned char)b));
+          fileOptions += Options::VertexColor;
+        }
       }
     }
 
@@ -403,9 +419,11 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
     {
       stream >> x; stream >> y; stream >> z;
 
-      if ( !stream.fail() ){
-        normals.push_back(OpenMesh::Vec3f(x,y,z));
-        _opt += Options::VertexNormal;
+      if ( !stream.fail() ) {
+        if (userOptions.vertex_has_normal() ){
+          normals.push_back(OpenMesh::Vec3f(x,y,z));
+          fileOptions += Options::VertexNormal;
+        }
       }
     }
 
@@ -491,7 +509,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
               // Obj counts from 1 and not zero .. array counts from zero therefore -1
               vhandles.push_back(VertexHandle(value-1));
               faceVertices.push_back(VertexHandle(value-1));
-              if (_opt.vertex_has_color())
+              if (fileOptions.vertex_has_color() )
                 _bi.set_color(vhandles.back(), colors[value-1]);
               break;
 	      
@@ -503,13 +521,28 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
                 value = texcoords.size() + value + 1;
               }
               assert(!vhandles.empty());
-              if ( ! texcoords.empty() && (unsigned int)(value-1) < texcoords.size() ) {
-                // Obj counts from 1 and not zero .. array counts from zero therefore -1
-                _bi.set_texcoord(vhandles.back(), texcoords[value-1]);
-                face_texcoords.push_back( texcoords[value-1] );
-              } else {
-                omerr() << "Error setting Texture coordinates" << std::endl;
-              }
+
+
+              if ( fileOptions.vertex_has_texcoord() && userOptions.vertex_has_texcoord() ) {
+
+                if (!texcoords.empty() && (unsigned int) (value - 1) < texcoords.size()) {
+                  // Obj counts from 1 and not zero .. array counts from zero therefore -1
+                  _bi.set_texcoord(vhandles.back(), texcoords[value - 1]);
+                } else {
+                  omerr() << "Error setting Texture coordinates" << std::endl;
+                }
+
+                }
+
+                if (fileOptions.face_has_texcoord() && userOptions.face_has_texcoord() ) {
+
+                  if (!texcoords.empty() && (unsigned int) (value - 1) < texcoords.size()) {
+                    face_texcoords.push_back( texcoords[value-1] );
+                  } else {
+                    omerr() << "Error setting Texture coordinates" << std::endl;
+                  }
+                }
+
 
               break;
 
@@ -520,10 +553,13 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
                 // As obj counts from 1 and not zero add +1
                 value = normals.size() + value + 1;
               }
-              assert(!vhandles.empty());
-              assert((unsigned int)(value-1) < normals.size());
+
               // Obj counts from 1 and not zero .. array counts from zero therefore -1
-              _bi.set_normal(vhandles.back(), normals[value-1]);
+              if (fileOptions.vertex_has_normal() ) {
+                assert(!vhandles.empty());
+                assert((unsigned int)(value-1) < normals.size());
+                _bi.set_normal(vhandles.back(), normals[value-1]);
+              }
               break;
           }
 
@@ -546,8 +582,8 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
       size_t n_faces = _bi.n_faces();
 
-      if( !vhandles.empty() && fh.is_valid() )
-	     _bi.add_face_texcoords( fh, vhandles[0], face_texcoords );
+      if (!vhandles.empty() && fh.is_valid() )
+        _bi.add_face_texcoords(fh, vhandles[0], face_texcoords);
 
       if ( !matname.empty()  )
       {
@@ -561,25 +597,36 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
         if ( mat.has_Kd() ) {
           Vec3uc fc = color_cast<Vec3uc, Vec3f>(mat.Kd());
 
-          for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
-                                                 it != newfaces.end(); ++it)
-            _bi.set_color( *it, fc );
+          if ( userOptions.face_has_color()) {
 
-          _opt += Options::FaceColor;
+            for (std::vector<FaceHandle>::iterator it = newfaces.begin(); it != newfaces.end(); ++it)
+              _bi.set_color(*it, fc);
+
+            fileOptions += Options::FaceColor;
+          }
         }
 
         // Set the texture index in the face index property
         if ( mat.has_map_Kd() ) {
 
-          for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
-                                                 it != newfaces.end(); ++it)
-            _bi.set_face_texindex( *it, mat.map_Kd_index() );
+          if (userOptions.face_has_texcoord()) {
+
+            for (std::vector<FaceHandle>::iterator it = newfaces.begin(); it != newfaces.end(); ++it)
+              _bi.set_face_texindex(*it, mat.map_Kd_index());
+
+            fileOptions += Options::FaceTexCoord;
+
+          }
 
         } else {
+
           // If we don't have the info, set it to no texture
-          for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
-                                                 it != newfaces.end(); ++it)
-            _bi.set_face_texindex( *it, 0 );
+          if (userOptions.face_has_texcoord()) {
+
+            for (std::vector<FaceHandle>::iterator it = newfaces.begin(); it != newfaces.end(); ++it)
+              _bi.set_face_texindex(*it, 0);
+
+          }
         }
 
       } else {
@@ -589,9 +636,9 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
           newfaces.push_back(FaceHandle(n_faces+i));
 
         // Set the texture index to zero as we don't have any information
-        for (std::vector<FaceHandle>::iterator it  = newfaces.begin();
-                                              it != newfaces.end(); ++it)
-          _bi.set_face_texindex( *it, 0 );
+        if ( userOptions.face_has_texcoord() )
+          for (std::vector<FaceHandle>::iterator it = newfaces.begin(); it != newfaces.end(); ++it)
+            _bi.set_face_texindex(*it, 0);
       }
 
     }
@@ -600,23 +647,24 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
   // If we do not have any faces,
   // assume this is a point cloud and read the normals and colors directly
-  if (_bi.n_faces()==0)
+  if (_bi.n_faces() == 0)
   {
-    int i=0;
+    int i = 0;
     // add normal per vertex
-    if ( normals.size() == _bi.n_vertices() )
-      for (std::vector<VertexHandle>::iterator it  = vertexHandles.begin();
-          it != vertexHandles.end(); ++it, i++) {
-          _bi.set_normal( *it, normals[i] );
-      }
 
+    if (normals.size() == _bi.n_vertices()) {
+      if ( fileOptions.vertex_has_normal() && userOptions.vertex_has_normal() ) {
+        for (std::vector<VertexHandle>::iterator it = vertexHandles.begin(); it != vertexHandles.end(); ++it, i++)
+          _bi.set_normal(*it, normals[i]);
+      }
+    }
 
     // add color per vertex
-    i=0;
-    if ( colors.size() >= _bi.n_vertices() )
-      for (std::vector<VertexHandle>::iterator it  = vertexHandles.begin();
-          it != vertexHandles.end(); ++it, i++) {
-        _bi.set_color( *it, colors[i] );
+    i = 0;
+    if (colors.size() >= _bi.n_vertices())
+      if (fileOptions.vertex_has_color() && userOptions.vertex_has_color()) {
+        for (std::vector<VertexHandle>::iterator it = vertexHandles.begin(); it != vertexHandles.end(); ++it, i++)
+          _bi.set_color(*it, colors[i]);
       }
 
   }

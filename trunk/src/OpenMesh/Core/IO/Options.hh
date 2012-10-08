@@ -105,7 +105,8 @@ public:
       EdgeColor      = 0x0080, ///< Has (r) / store (w) edge colors
       FaceNormal     = 0x0100, ///< Has (r) / store (w) face normals
       FaceColor      = 0x0200, ///< Has (r) / store (w) face colors
-      ColorAlpha     = 0x0400  ///< Has (r) / store (w) alpha values for colors
+      FaceTexCoord   = 0x0400, ///< Has (r) / store (w) face texture coordinates
+      ColorAlpha     = 0x0800  ///< Has (r) / store (w) alpha values for colors
   };
 
 public:
@@ -199,6 +200,7 @@ public:
   bool edge_has_color()      const { return check(EdgeColor); }
   bool face_has_normal()     const { return check(FaceNormal); }
   bool face_has_color()      const { return check(FaceColor); }
+  bool face_has_texcoord()   const { return check(FaceTexCoord); }
   bool color_has_alpha()     const { return check(ColorAlpha); }
 
 
