@@ -1,7 +1,7 @@
 /*===========================================================================*\
  *                                                                           *
  *                               OpenMesh                                    *
- *      Copyright (C) 2001-2011 by Computer Graphics Group, RWTH Aachen      *
+ *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
  *---------------------------------------------------------------------------* 
@@ -127,7 +127,7 @@ protected:
       double operator()(void) // Loop weights for non-boundary vertices
       {
         // 1      3          2 * pi
-        // - * ( --- + cos ( ------- ) )² - 1.0
+        // - * ( --- + cos ( ------- ) )ï¿½ - 1.0
         // 2      2          valence        
         double f1 = 1.5 + cos(2.0*M_PI/val_++);
         return 0.5 * f1 * f1 - 1.0;
