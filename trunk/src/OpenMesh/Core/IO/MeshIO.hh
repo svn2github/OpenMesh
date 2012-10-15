@@ -184,6 +184,7 @@ read_mesh(Mesh&         _mesh,
     @param _filename output filename
     @param _opt      Writer options (e.g. writing of normals ... depends
                      on the writer capabilities)
+    @param _precision specifies stream precision for ascii files
 
     @return Successful?
 */
@@ -215,6 +216,7 @@ bool write_mesh(const Mesh&        _mesh,
     @param _ext      extension defining the type of output
     @param _opt      Writer options (e.g. writing of normals ... depends
                      on the writer capabilities)
+    @param _precision specifies stream precision for ascii files
 
     @return Successful?
 */
