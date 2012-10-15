@@ -96,13 +96,23 @@ public:
   /// Returns true if writer can parse _filename (checks extension)
   virtual bool can_u_write(const std::string& _filename) const;
 
-  /// Write to file _filename. Data source specified by BaseExporter _be.
+  /** Write to a file
+   * @param _filename write to file with the given filename
+   * @param _be BaseExporter, which specifies the data source
+   * @param _opt writing options
+   * @param _precision can be used to specify the precision of the floating point notation.
+   */
   virtual bool write(const std::string& _filename,
 		     BaseExporter& _be,
                      Options _opt,
                      std::streamsize _precision = 6) const = 0;
 
-  /// Write to std::ostream  _os. Data source specified by BaseExporter _be.
+  /** Write to a std::ostream
+   * @param _os write to std::ostream
+   * @param _be BaseExporter, which specifies the data source
+   * @param _opt writing options
+   * @param _precision can be used to specify the precision of the floating point notation.
+   */
   virtual bool write(std::ostream& _os,
 		     BaseExporter& _be,
                      Options _opt,
