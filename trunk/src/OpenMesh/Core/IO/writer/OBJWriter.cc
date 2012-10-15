@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -80,7 +80,7 @@ _OBJWriter_::_OBJWriter_() { IOManager().register_module(this); }
 
 bool
 _OBJWriter_::
-write(const std::string& _filename, BaseExporter& _be, Options _opt) const
+write(const std::string& _filename, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
   std::fstream out(_filename.c_str(), std::ios_base::out );
 
@@ -90,6 +90,8 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
 	  << _filename << std::endl;
     return false;
   }
+
+  out.precision(_precision);
 
   {
 #if defined(WIN32)
@@ -196,7 +198,7 @@ writeMaterial(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
 bool
 _OBJWriter_::
-write(std::ostream& _out, BaseExporter& _be, Options _opt) const
+write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
   unsigned int i, j, nV, nF, idx;
   Vec3f v, n;
@@ -209,6 +211,7 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
   omlog() << "[OBJWriter] : write file\n";
 
+  _out.precision(_precision);
 
   // check exporter features
   if (!check( _be, _opt))
@@ -297,18 +300,18 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
     for (j=0; j< vhandles.size(); ++j)
     {
-      
+
       // Write vertex index
       idx = vhandles[j].idx() + 1;
       _out << " " << idx;
 
       // write separator
       _out << "/" ;
-      
+
       // write vertex texture coordinate index
       if (_opt.check(Options::VertexTexCoord))
         _out  << idx;
-      
+
       // write separator
       _out << "/" ;
 

@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -83,27 +83,28 @@ const OMFormat::uint8 _OMWriter_::version_  = OMFormat::mk_version(1,2);
 
 
 _OMWriter_::
-_OMWriter_() 
-{ 
-  IOManager().register_module(this); 
+_OMWriter_()
+{
+  IOManager().register_module(this);
 }
 
 
 bool
 _OMWriter_::write(const std::string& _filename, BaseExporter& _be,
-                   Options _opt) const
+                   Options _opt, std::streamsize _precision) const
 {
   // check whether exporter can give us an OpenMesh BaseKernel
   if (!_be.kernel()) return false;
 
 
-  // check for om extension in filename, we can only handle OM  
-  if (_filename.rfind(".om") == std::string::npos)  
+  // check for om extension in filename, we can only handle OM
+  if (_filename.rfind(".om") == std::string::npos)
     return false;
 
   _opt += Options::Binary; // only binary format supported
 
   std::ofstream ofs(_filename.c_str(), std::ios::binary);
+  ofs.precision(_precision);
 
   // check if file is open
   if (!ofs.is_open())
@@ -114,7 +115,7 @@ _OMWriter_::write(const std::string& _filename, BaseExporter& _be,
 
   // call stream save method
   bool rc = write(ofs, _be, _opt);
-  
+
   // close filestream
   ofs.close();
 
@@ -126,9 +127,10 @@ _OMWriter_::write(const std::string& _filename, BaseExporter& _be,
 //-----------------------------------------------------------------------------
 
 bool
-_OMWriter_::write(std::ostream& _os, BaseExporter& _be, Options _opt) const
+_OMWriter_::write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
 //   std::clog << "[OMWriter]::write( stream )\n";
+  _os.precision(_precision);
 
   // check exporter features
   if ( !check( _be, _opt ) )
@@ -187,7 +189,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
   // -------------------- write header
   OMFormat::Header header;
-  
+
   header.magic_[0]   = 'O';
   header.magic_[1]   = 'M';
   header.mesh_       = _be.is_triangle_mesh() ? 'T' : 'P';
@@ -195,16 +197,16 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   header.n_vertices_ = _be.n_vertices();
   header.n_faces_    = _be.n_faces();
   header.n_edges_    = _be.n_edges();
-  
+
   bytes += store( _os, header, swap );
-  
+
   // ---------------------------------------- write chunks
-  
+
   OMFormat::Chunk::Header chunk_header;
-  
-  
+
+
   // -------------------- write vertex data
-  
+
   // ---------- write vertex position
   if (_be.n_vertices())
   {
@@ -217,7 +219,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.float_    = OMFormat::is_float(v[0]);
     chunk_header.dim_      = OMFormat::dim(v);
     chunk_header.bits_     = OMFormat::bits(v[0]);
-  
+
     bytes += store( _os, chunk_header, swap );
     for (i=0, nV=_be.n_vertices(); i<nV; ++i)
       bytes += vector_store( _os, _be.point(VertexHandle(i)), swap );
@@ -236,7 +238,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.float_    = OMFormat::is_float(n[0]);
     chunk_header.dim_      = OMFormat::dim(n);
     chunk_header.bits_     = OMFormat::bits(n[0]);
-  
+
     bytes += store( _os, chunk_header, swap );
     for (i=0, nV=_be.n_vertices(); i<nV; ++i)
       bytes += vector_store( _os, _be.normal(VertexHandle(i)), swap );
@@ -244,16 +246,16 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
   // ---------- write vertex color
   if (_opt.check( Options::VertexColor ) && _be.has_vertex_colors() )
-  {  
+  {
     Vec3uc c = _be.color(VertexHandle(0));
-    
+
     chunk_header.name_     = false;
     chunk_header.entity_   = OMFormat::Chunk::Entity_Vertex;
     chunk_header.type_     = OMFormat::Chunk::Type_Color;
     chunk_header.signed_   = OMFormat::is_signed( c );
     chunk_header.float_    = OMFormat::is_float( c );
     chunk_header.dim_      = OMFormat::dim( c );
-    chunk_header.bits_     = OMFormat::bits( c );    
+    chunk_header.bits_     = OMFormat::bits( c );
 
     bytes += store( _os, chunk_header, swap );
     for (i=0, nV=_be.n_vertices(); i<nV; ++i)
@@ -272,7 +274,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.float_    = OMFormat::is_float(t[0]);
     chunk_header.dim_      = OMFormat::dim(t);
     chunk_header.bits_     = OMFormat::bits(t[0]);
-  
+
     // std::clog << chunk_header << std::endl;
     bytes += store( _os, chunk_header, swap );
 
@@ -290,7 +292,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.signed_   = 0;
     chunk_header.float_    = 0;
     chunk_header.dim_      = OMFormat::Chunk::Dim_1D; // ignored
-    chunk_header.bits_     = OMFormat::needed_bits(_be.n_vertices());    
+    chunk_header.bits_     = OMFormat::needed_bits(_be.n_vertices());
 
     bytes += store( _os, chunk_header, swap );
 
@@ -298,14 +300,14 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     {
       nV = _be.get_vhandles(FaceHandle(i), vhandles);
       if ( header.mesh_ == 'P' )
-	bytes += store( _os, vhandles.size(), 
+	bytes += store( _os, vhandles.size(),
 			OMFormat::Chunk::Integer_16, swap );
-      
+
       for (size_t j=0; j < vhandles.size(); ++j)
       {
 	using namespace OMFormat;
 	using namespace GenProg;
-	
+
 	bytes += store( _os, vhandles[j].idx(),
 			Chunk::Integer_Size(chunk_header.bits_), swap );
       }
@@ -332,7 +334,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
       chunk_header.float_    = OMFormat::is_float(n[0]);
       chunk_header.dim_      = OMFormat::dim(n);
       chunk_header.bits_     = OMFormat::bits(n[0]);
-  
+
       bytes += store( _os, chunk_header, swap );
 #if !NEW_STYLE
       for (i=0, nF=_be.n_faces(); i<nF; ++i)
@@ -350,16 +352,16 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   // ---------- write face color
 
   if (_be.has_face_colors() && _opt.check( Options::FaceColor ))
-  {  
+  {
 #define NEW_STYLE 0
 #if NEW_STYLE
     const BaseProperty *bp = _be.kernel()._get_fprop("f:colors");
-    
+
     if (bp)
     {
 #endif
       Vec3uc c;
-      
+
       chunk_header.name_     = false;
       chunk_header.entity_   = OMFormat::Chunk::Entity_Face;
       chunk_header.type_     = OMFormat::Chunk::Type_Color;
@@ -367,11 +369,11 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
       chunk_header.float_    = OMFormat::is_float( c[0] );
       chunk_header.dim_      = OMFormat::dim( c );
       chunk_header.bits_     = OMFormat::bits( c[0] );
-      
+
       bytes += store( _os, chunk_header, swap );
 #if !NEW_STYLE
       for (i=0, nF=_be.n_faces(); i<nF; ++i)
-        bytes += vector_store( _os, _be.color(FaceHandle(i)), swap );      
+        bytes += vector_store( _os, _be.color(FaceHandle(i)), swap );
 #else
       bytes += bp->store(_os, swap);
     }
@@ -382,15 +384,15 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
   // -------------------- write custom properties
 
-  
+
   BaseKernel::const_prop_iterator prop;
-  
+
   for (prop  = _be.kernel()->vprops_begin();
        prop != _be.kernel()->vprops_end(); ++prop)
   {
     if ( !*prop ) continue;
     if ( (*prop)->name()[1]==':') continue;
-    bytes += store_binary_custom_chunk(_os, **prop, 
+    bytes += store_binary_custom_chunk(_os, **prop,
 				       OMFormat::Chunk::Entity_Vertex, swap );
   }
   for (prop  = _be.kernel()->fprops_begin();
@@ -398,7 +400,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   {
     if ( !*prop ) continue;
     if ( (*prop)->name()[1]==':') continue;
-    bytes += store_binary_custom_chunk(_os, **prop, 
+    bytes += store_binary_custom_chunk(_os, **prop,
 				       OMFormat::Chunk::Entity_Face, swap );
   }
   for (prop  = _be.kernel()->eprops_begin();
@@ -406,7 +408,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   {
     if ( !*prop ) continue;
     if ( (*prop)->name()[1]==':') continue;
-    bytes += store_binary_custom_chunk(_os, **prop, 
+    bytes += store_binary_custom_chunk(_os, **prop,
 				       OMFormat::Chunk::Entity_Edge, swap );
   }
   for (prop  = _be.kernel()->hprops_begin();
@@ -414,7 +416,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   {
     if ( !*prop ) continue;
     if ( (*prop)->name()[1]==':') continue;
-    bytes += store_binary_custom_chunk(_os, **prop, 
+    bytes += store_binary_custom_chunk(_os, **prop,
 				       OMFormat::Chunk::Entity_Halfedge, swap );
   }
   for (prop  = _be.kernel()->mprops_begin();
@@ -422,7 +424,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   {
     if ( !*prop ) continue;
     if ( (*prop)->name()[1]==':') continue;
-    bytes += store_binary_custom_chunk(_os, **prop, 
+    bytes += store_binary_custom_chunk(_os, **prop,
 				       OMFormat::Chunk::Entity_Mesh, swap );
   }
 
@@ -433,7 +435,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
 // ----------------------------------------------------------------------------
 
-size_t _OMWriter_::store_binary_custom_chunk(std::ostream& _os, 
+size_t _OMWriter_::store_binary_custom_chunk(std::ostream& _os,
 					     const BaseProperty& _bp,
 					     OMFormat::Chunk::Entity _entity,
 					     bool _swap) const
@@ -441,7 +443,7 @@ size_t _OMWriter_::store_binary_custom_chunk(std::ostream& _os,
   omlog() << "Custom Property " << OMFormat::as_string(_entity) << " property ["
 	<< _bp.name() << "]" << std::endl;
 
-  // Don't store if 
+  // Don't store if
   // 1. it is not persistent
   // 2. it's name is empty
   if ( !_bp.persistent() || _bp.name().empty() )
@@ -467,7 +469,7 @@ size_t _OMWriter_::store_binary_custom_chunk(std::ostream& _os,
 
   // write custom chunk
 
-  // 1. chunk header       
+  // 1. chunk header
   bytes += store( _os, chdr, _swap );
 
   // 2. property name

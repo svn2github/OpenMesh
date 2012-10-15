@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -73,7 +73,7 @@ namespace IO {
 //=== IMPLEMENTATION ==========================================================
 
 
-/** 
+/**
     This class defines the OBJ writer. This class is further singleton'ed
     by SingletonT to OBJWriter.
 */
@@ -89,9 +89,9 @@ public:
   std::string get_description() const  { return "Alias/Wavefront"; }
   std::string get_extensions()  const  { return "obj"; }
 
-  bool write(const std::string&, BaseExporter&, Options) const;
-  
-  bool write(std::ostream&, BaseExporter&, Options) const;
+  bool write(const std::string&, BaseExporter&, Options, std::streamsize _precision = 6) const;
+
+  bool write(std::ostream&, BaseExporter&, Options, std::streamsize _precision = 6) const;
 
   size_t binary_size(BaseExporter&, Options) const { return 0; }
 

@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -82,8 +82,8 @@ class BaseExporter;
 //=== IMPLEMENTATION ==========================================================
 
 
-/** 
- *  Implementation of the OM format writer. This class is singleton'ed by 
+/**
+ *  Implementation of the OM format writer. This class is singleton'ed by
  *  SingletonT to OMWriter.
  */
 class OPENMESHDLLEXPORT _OMWriter_ : public BaseWriter
@@ -98,12 +98,12 @@ public:
 
   std::string get_description() const
   { return "OpenMesh Format"; }
-  
+
   std::string get_extensions() const
   { return "om"; }
 
-  bool write(std::ostream&, BaseExporter&, Options) const;
-  
+  bool write(std::ostream&, BaseExporter&, Options, std::streamsize _precision = 6) const;
+
 
 
   size_t binary_size(BaseExporter& _be, Options _opt) const;
@@ -114,10 +114,10 @@ protected:
   static const OMFormat::uchar magic_[3];
   static const OMFormat::uint8 version_;
 
-  bool write(const std::string&, BaseExporter&, Options) const;
+  bool write(const std::string&, BaseExporter&, Options, std::streamsize _precision = 6) const;
 
   bool write_binary(std::ostream&, BaseExporter&, Options) const;
- 
+
 
   size_t store_binary_custom_chunk( std::ostream&, const BaseProperty&,
 				    OMFormat::Chunk::Entity, bool) const;

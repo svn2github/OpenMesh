@@ -99,12 +99,14 @@ public:
   /// Write to file _filename. Data source specified by BaseExporter _be.
   virtual bool write(const std::string& _filename,
 		     BaseExporter& _be,
-             Options _opt) const = 0;
+                     Options _opt,
+                     std::streamsize _precision = 6) const = 0;
 
   /// Write to std::ostream  _os. Data source specified by BaseExporter _be.
   virtual bool write(std::ostream& _os,
 		     BaseExporter& _be,
-             Options _opt) const = 0;
+                     Options _opt,
+                     std::streamsize _precision = 6) const = 0;
 
   /// Returns expected size of file if binary format is supported else 0.
   virtual size_t binary_size(BaseExporter&, Options) const { return 0; }

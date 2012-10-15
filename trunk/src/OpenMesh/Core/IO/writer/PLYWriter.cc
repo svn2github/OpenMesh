@@ -78,7 +78,7 @@ _PLYWriter_::_PLYWriter_() { IOManager().register_module(this); }
 
 bool
 _PLYWriter_::
-write(const std::string& _filename, BaseExporter& _be, Options _opt) const
+write(const std::string& _filename, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
   // check exporter features
   if ( !check( _be, _opt ) )
@@ -93,7 +93,7 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
     _opt.unset(Options::FaceNormal);
     omerr() << "[PLYWriter] : Warning: Face normals are not supported and thus not exported! " << std::endl;
   }
-  
+
   if ( _opt.check(Options::FaceColor) ) {
     // Face normals are not supported
     // Uncheck these options and output message that
@@ -115,6 +115,8 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
     return false;
   }
 
+  out.precision(_precision);
+
   // write to file
   bool result = (_opt.check(Options::Binary) ?
      write_binary(out, _be, _opt) :
@@ -130,7 +132,7 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt) const
 
 bool
 _PLYWriter_::
-write(std::ostream& _os, BaseExporter& _be, Options _opt) const
+write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
   // check exporter features
   if ( !check( _be, _opt ) )
@@ -143,13 +145,15 @@ write(std::ostream& _os, BaseExporter& _be, Options _opt) const
 
   options_ = _opt;
 
-                                                        
+
   if (!_os.good())
   {
     omerr() << "[PLYWriter] : cannot write to stream "
     << std::endl;
     return false;
   }
+
+  _os.precision(_precision);
 
   // write to file
   bool result = (_opt.check(Options::Binary) ?
@@ -396,7 +400,7 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   _out << "property float32 x" << std::endl;
   _out << "property float32 y" << std::endl;
   _out << "property float32 z" << std::endl;
-  
+
   if ( _opt.vertex_has_normal() ){
     _out << "property float32 nx" << std::endl;
     _out << "property float32 ny" << std::endl;
