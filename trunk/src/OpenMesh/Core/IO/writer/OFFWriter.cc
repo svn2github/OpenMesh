@@ -100,8 +100,6 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt, std::stream
     return false;
   }
 
-  out.precision(_precision);
-
   // write header line
   if (_opt.check(Options::VertexTexCoord)) out << "ST";
   if (_opt.check(Options::VertexColor) || _opt.check(Options::FaceColor))    out << "C";
@@ -110,6 +108,9 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt, std::stream
   if (_opt.check(Options::Binary)) out << " BINARY";
   out << "\n";
 
+
+  if (!_opt.check(Options::Binary))
+    out.precision(_precision);
 
   // write to file
   bool result = (_opt.check(Options::Binary) ?
@@ -146,8 +147,6 @@ write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _preci
     return false;
   }
 
-  _os.precision(_precision);
-
   // write header line
   if (_opt.check(Options::VertexTexCoord)) _os << "ST";
   if (_opt.check(Options::VertexColor) || _opt.check(Options::FaceColor))    _os << "C";
@@ -156,6 +155,8 @@ write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _preci
   if (_opt.check(Options::Binary)) _os << " BINARY";
   _os << "\n";
 
+  if (!_opt.check(Options::Binary))
+    _os.precision(_precision);
 
   // write to file
   bool result = (_opt.check(Options::Binary) ?

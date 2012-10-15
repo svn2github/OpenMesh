@@ -115,7 +115,8 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt, std::stream
     return false;
   }
 
-  out.precision(_precision);
+  if (!_opt.check(Options::Binary))
+    out.precision(_precision);
 
   // write to file
   bool result = (_opt.check(Options::Binary) ?
@@ -153,7 +154,8 @@ write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _preci
     return false;
   }
 
-  _os.precision(_precision);
+  if (!_opt.check(Options::Binary))
+    _os.precision(_precision);
 
   // write to file
   bool result = (_opt.check(Options::Binary) ?

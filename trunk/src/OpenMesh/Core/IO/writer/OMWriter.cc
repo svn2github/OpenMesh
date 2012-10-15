@@ -91,7 +91,7 @@ _OMWriter_()
 
 bool
 _OMWriter_::write(const std::string& _filename, BaseExporter& _be,
-                   Options _opt, std::streamsize _precision) const
+                   Options _opt, std::streamsize /*_precision*/) const
 {
   // check whether exporter can give us an OpenMesh BaseKernel
   if (!_be.kernel()) return false;
@@ -104,7 +104,6 @@ _OMWriter_::write(const std::string& _filename, BaseExporter& _be,
   _opt += Options::Binary; // only binary format supported
 
   std::ofstream ofs(_filename.c_str(), std::ios::binary);
-  ofs.precision(_precision);
 
   // check if file is open
   if (!ofs.is_open())
@@ -127,10 +126,9 @@ _OMWriter_::write(const std::string& _filename, BaseExporter& _be,
 //-----------------------------------------------------------------------------
 
 bool
-_OMWriter_::write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _precision) const
+_OMWriter_::write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize /*_precision*/) const
 {
 //   std::clog << "[OMWriter]::write( stream )\n";
-  _os.precision(_precision);
 
   // check exporter features
   if ( !check( _be, _opt ) )

@@ -81,36 +81,25 @@ bool
 _STLWriter_::
 write(const std::string& _filename, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
-  // check exporter features
-  if (!check(_be, _opt)) return false;
-
-
-  // check writer features
-  if (_opt.check(Options::VertexNormal)   ||
-      _opt.check(Options::VertexTexCoord) ||
-      _opt.check(Options::FaceColor))
-    return false;
-
-
   // binary or ascii ?
   if (_filename.rfind(".stla") != std::string::npos)
   {
     _opt -= Options::Binary;
-    return write_stla(_filename, _be, _opt);
   }
   else if (_filename.rfind(".stlb") != std::string::npos)
   {
     _opt += Options::Binary;
-    return write_stlb(_filename, _be, _opt);
-  }
-  else if (_filename.rfind(".stl") != std::string::npos)
-  {
-    return (_opt.check( Options::Binary )
-	    ? write_stlb(_filename, _be, _opt)
-	    : write_stla(_filename, _be, _opt) );
   }
 
-  return false;
+  // open file
+  std::fstream out(_filename.c_str(), (_opt.check(Options::Binary) ? std::ios_base::binary | std::ios_base::out
+                                                                   : std::ios_base::out) );
+
+  bool result = write(out, _be, _opt, _precision);
+
+  out.close();
+
+  return result;
 }
 
 //-----------------------------------------------------------------------------
@@ -129,7 +118,8 @@ write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _preci
       _opt.check(Options::FaceColor))
     return false;
 
-  _os.precision(_precision);
+  if (!_opt.check(Options::Binary))
+    _os.precision(_precision);
 
   if (_opt & Options::Binary)
     return write_stlb(_os, _be, _opt);
