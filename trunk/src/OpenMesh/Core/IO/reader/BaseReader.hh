@@ -114,7 +114,9 @@ public:
 		
  /** Reads a mesh given by a std::stream. This method usually uses the same stream reading method
     that read uses. Options can be passed via _opt. After execution _opt contains the Options
-      that were available
+      that were available.
+
+      Please make sure that if _is is std::ifstream, the correct std::ios_base::openmode flags are set. 
   */
   virtual bool read(std::istream& _is, 
 		    BaseImporter& _bi,
