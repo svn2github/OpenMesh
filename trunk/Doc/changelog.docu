@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.729)</td><td>
+<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.750)</td><td>
 
 <b>Todo changelogs : 685</b>
 
@@ -25,6 +25,8 @@
 <li>Added flag to the property copy functions, if the standard properties should be copied along with the user defined ones</li>
 <li>Added function to remove all primitives from the mesh, but leaving properties attached (mesh.clean() ) </li>
 <li>Avoid double next_halfedge_handle call in collapse_ok</li>
+<li>Fixed the usage of vector traits such that the traits are used and not the vector types value_type. (Thanks to Mario Deuss for the patch)</li>
+<li>Fixed bug in halfedge normal computation, where a boundary halfedge was not correctly handled and caused a segfault.</li>
 </ul>
 
 <b>Decimater</b>
@@ -41,11 +43,14 @@
 
 <b>IO</b>
 <ul>
+<li>Added precision option to openmesh writers</li>
 <li>Fixed OBJ Reader not correctly setting per halfedge normals. (Thanks to Patrick Rauber for the report)</li>
-<li>Fixed bug in halfedge normal computation, where a boundary halfedge was not correctly handled and caused a segfault.</li>
-<li>Fix: OM Reader used different types on 32/64-bit systems. (Thanks to Martin Bayer for the patch)</li>
+<li>OM  Reader: Reader used different types on 32/64-bit systems. (Thanks to Martin Bayer for the patch)</li>
+<li>OM  Reader: Also checks user options</li>
 <li>STL Reader: Added the functionality to read meshes from istreams</li>
 <li>STL Reader: Added the functionality to write meshes to ostreams</li>
+<li>OBJ Reader: Follow of user requests (Warning! Old default behaviour was wrong, because the reader read everything, without checking for the user options!)</li>
+<li>PLY Reader: Reader now checks the options set by the user and will skip components that are not requested
 </ul>
 
 <b>Utils</b>
@@ -54,6 +59,10 @@
 <li>Core/Utils: Added a Random Number generator with larger resolution (Windows supports only ~32k which is extended by this generator </li>
 </ul>
 
+<b>Apps</b>
+<ul>
+<li>QtViewer App tries to load textures for PLY (and other formats) too, if possible</li>
+</ul>
 
 <b>Unittests</b>
 <ul>
@@ -63,6 +72,9 @@
 <li>Added unittest for creating a cube with 6 quads in a poly mesh.</li>
 <li>Added unittest adding a cube with 12 faces triangulated to a trimesh.</li>
 <li>Added unittest for MCDecimater</li>
+<li>Added unittest for obj crash when colors are requested but not available</li>
+<li>Added unittests (trimesh and polymesh) for split_copy</li>
+<li>Added some more unittests for the PLY loader with different user options</li>
 <li>Fixed gcc-4.7 warnings.</li>
 </ul>
 
