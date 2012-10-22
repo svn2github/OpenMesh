@@ -351,7 +351,14 @@ public: // Standard Property Management
   const StatusInfo& status(HalfedgeHandle _vh) const; ///< Get status
   StatusInfo& status(HalfedgeHandle _vh); ///< Get status
 
+  const Color& color(HalfedgeHandle _heh) const; ///< Get color
+  void set_color(HalfedgeHandle _heh, const Color& _c); ///< Set color
+
   // edge
+  const Color& color(EdgeHandle _eh) const; ///< Get color
+  void set_color(EdgeHandle _eh, const Color& _c); ///< Set color
+
+
   const StatusInfo& status(EdgeHandle _vh) const; ///< Get status
   StatusInfo& status(EdgeHandle _vh); ///< Get status
 
@@ -379,6 +386,7 @@ public: // Standard Property Management
 
   void request_halfedge_status();
   void request_halfedge_normals();
+  void request_halfedge_colors();
   void request_halfedge_texcoords1D();
   void request_halfedge_texcoords2D();
   void request_halfedge_texcoords3D();
@@ -404,6 +412,7 @@ public: // Standard Property Management
 
   void release_halfedge_status();
   void release_halfedge_normals();
+  void release_halfedge_colors();
   void release_halfedge_texcoords1D();
   void release_halfedge_texcoords2D();
   void release_halfedge_texcoords3D();
@@ -420,15 +429,16 @@ public: // Standard Property Management
   /// \name Check availability of standard properties
   //@{
   /// Is property available?
-  bool has_vertex_normals() const;
-  bool has_vertex_colors() const;
+  bool has_vertex_normals()     const;
+  bool has_vertex_colors()      const;
   bool has_vertex_texcoords1D() const;
   bool has_vertex_texcoords2D() const;
   bool has_vertex_texcoords3D() const;
-  bool has_vertex_status() const;
+  bool has_vertex_status()      const;
 
-  bool has_halfedge_status() const;
-  bool has_halfedge_normals(); const;
+  bool has_halfedge_status()      const;
+  bool has_halfedge_normals()     const;
+  bool has_halfedge_colors()      const;
   bool has_halfedge_texcoords1D() const;
   bool has_halfedge_texcoords2D() const;
   bool has_halfedge_texcoords3D() const;
