@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,17 +30,17 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
 \*===========================================================================*/
 
 /** \file Adaptive/Composite/CompositeT.cc
-    
+
  */
 
 //=============================================================================
@@ -67,44 +67,44 @@ namespace Subdivider { // BEGIN_NS_DECIMATER
 namespace Adaptive   { // BEGIN_NS_ADAPTIVE
 
 
-//== IMPLEMENTATION ========================================================== 
+//== IMPLEMENTATION ==========================================================
 
 
 template<class M>
 bool
 CompositeT<M> ::
-initialize( void ) 
+initialize( void )
 {
   typename Mesh::VertexIter  v_it;
   typename Mesh::FaceIter    f_it;
   typename Mesh::EdgeIter    e_it;
   const typename Mesh::Point zero_point(0.0, 0.0, 0.0);
-  
+
   // ---------------------------------------- Init Vertices
-  for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) 
+  for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it)
   {
     mesh_.data(v_it).set_state(0);
     mesh_.data(v_it).set_final();
     mesh_.data(v_it).set_position(0, mesh_.point(v_it.handle()));
   }
-  
+
   // ---------------------------------------- Init Faces
-  for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it) 
+  for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it)
   {
     mesh_.data(f_it).set_state(0);
     mesh_.data(f_it).set_final();
     mesh_.data(f_it).set_position(0, zero_point);
   }
-  
+
   // ---------------------------------------- Init Edges
-  for (e_it = mesh_.edges_begin(); e_it != mesh_.edges_end(); ++e_it) 
+  for (e_it = mesh_.edges_begin(); e_it != mesh_.edges_end(); ++e_it)
   {
     mesh_.data(e_it).set_state(0);
     mesh_.data(e_it).set_final();
     mesh_.data(e_it).set_position(0, zero_point);
   }
-  
-  
+
+
   // ---------------------------------------- Init Rules
 
   int n_subdiv_rules_ = 0;
@@ -113,9 +113,9 @@ initialize( void )
   // look for subdivision rule(s)
   for (size_t i=0; i < n_rules(); ++i) {
 
-    if (rule_sequence_[i]->type()[0] == 'T' || 
-        rule_sequence_[i]->type()[0] == 't') 
-    {     
+    if (rule_sequence_[i]->type()[0] == 'T' ||
+        rule_sequence_[i]->type()[0] == 't')
+    {
       ++n_subdiv_rules_;
       subdiv_rule_ = rule_sequence_[i];
       subdiv_type_ = rule_sequence_[i]->subdiv_type();
@@ -127,7 +127,7 @@ initialize( void )
   assert(n_subdiv_rules_ == 1);
 
   if (n_subdiv_rules_ != 1)
-  {    
+  {
     std::cerr << "Error! More than one subdivision rules not allowed!\n";
     return false;
   }
@@ -146,7 +146,7 @@ initialize( void )
 //   last_rule_  = rule_sequence_.back(); //[n_rules() - 1];
 
   // set numbers and previous rule
-  for (size_t i = 0; i < n_rules(); ++i) 
+  for (size_t i = 0; i < n_rules(); ++i)
   {
     rule_sequence_[i]->set_subdiv_type(subdiv_type_);
     rule_sequence_[i]->set_n_rules(n_rules());
@@ -170,16 +170,16 @@ initialize( void )
 
 
 template<class M>
-void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh) 
+void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
 {
   std::vector<typename Mesh::HalfedgeHandle> hh_vector;
 
   // -------------------- calculate new level for faces and vertices
-  int new_face_level = 
-    t_rule()->number() + 1 + 
+  int new_face_level =
+    t_rule()->number() + 1 +
     ((int)floor((float)(mesh_.data(_fh).state() - t_rule()->number() - 1)/n_rules()) + 1) * n_rules();
 
-  int new_vertex_level = 
+  int new_vertex_level =
     new_face_level + l_rule()->number() - t_rule()->number();
 
   // -------------------- store old vertices
@@ -190,9 +190,9 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
   vh[1] = mesh_.TVH(mesh_.NHEH(mesh_.HEH(_fh)));
   vh[2] = mesh_.TVH(mesh_.PHEH(mesh_.HEH(_fh)));
 
-  // save handles to incoming halfedges for getting the new vertices 
+  // save handles to incoming halfedges for getting the new vertices
   // after subdivision (1-4 split)
-  if (subdiv_type_ == 4) 
+  if (subdiv_type_ == 4)
   {
     hh_vector.clear();
 
@@ -201,16 +201,16 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
     {
       typename Mesh::FaceHalfedgeIter fh_it(mesh_.fh_iter(_fh));
 
-      for (; fh_it; ++fh_it) 
+      for (; fh_it; ++fh_it)
       {
         hh_vector.push_back(mesh_.PHEH(mesh_.OHEH(fh_it.handle())));
       }
     }
 
     // red face
-    else 
+    else
     {
-      
+
       typename Mesh::HalfedgeHandle red_hh(mesh_.data(_fh).red_halfedge());
 
       hh_vector.push_back(mesh_.PHEH(mesh_.OHEH(mesh_.NHEH(red_hh))));
@@ -218,7 +218,7 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
     }
   }
 
-  
+
   // -------------------- Average rule before topo rule?
   if (t_rule()->number() > 0)
     t_rule()->prev_rule()->raise(_fh, new_face_level-1);
@@ -227,14 +227,14 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
   t_rule()->raise(_fh, new_face_level);
 
 #if 0 // original code
-  assert(MOBJ(_fh).state() >= 
+  assert(MOBJ(_fh).state() >=
          subdiv_rule_->number()+1+(int) (MOBJ(_fh).state()/n_rules())*n_rules());
 #else // improved code (use % operation and avoid floating point division)
   assert( mesh_.data(_fh).state() >= ( t_rule()->number()+1+generation(_fh) ) );
 #endif
 
   // raise new vertices to final levels
-  if (subdiv_type_ == 3) 
+  if (subdiv_type_ == 3)
   {
     typename Mesh::VertexHandle new_vh(mesh_.TVH(mesh_.NHEH(mesh_.HEH(_fh))));
 
@@ -242,7 +242,7 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
     l_rule()->raise(new_vh, new_vertex_level);
   }
 
-  if (subdiv_type_ == 4) 
+  if (subdiv_type_ == 4)
   {
     typename Mesh::HalfedgeHandle hh;
     typename Mesh::VertexHandle   new_vh;
@@ -260,7 +260,7 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
     }
   }
 
-  // raise old vertices to final position 
+  // raise old vertices to final position
   l_rule()->raise(vh[0], new_vertex_level);
   l_rule()->raise(vh[1], new_vertex_level);
   l_rule()->raise(vh[2], new_vertex_level);
@@ -271,12 +271,10 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
 
 
 template<class M>
-void CompositeT<M>::refine(typename Mesh::VertexHandle& _vh) 
+void CompositeT<M>::refine(typename Mesh::VertexHandle& _vh)
 {
   // calculate next final level for vertex
   int new_vertex_state = generation(_vh) + l_rule()->number() + 1;
-
-  assert( new_vertex_state == mesh_.data(_vh).state()+1 );
 
   // raise vertex to final position
   l_rule()->raise(_vh, new_vertex_state);
@@ -298,7 +296,7 @@ std::string CompositeT<M>::rules_as_string(const std::string& _sep) const
     for (++it; it != rule_sequence_.end(); ++it )
     {
       seq += _sep;
-      seq += (*it)->type();    
+      seq += (*it)->type();
     }
   }
   return seq;
