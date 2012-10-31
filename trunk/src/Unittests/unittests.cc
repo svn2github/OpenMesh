@@ -17,6 +17,7 @@
 #include "unittests_trimesh_garbage_collection.hh"
 #include "unittests_randomNumberGenerator.hh"
 #include "unittests_split_copy.hh"
+#include "unittests_vector_type.hh"
 
 int main(int _argc, char** _argv) {
 
