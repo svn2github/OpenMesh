@@ -172,11 +172,11 @@ public:
 
   
   /// Refine one face.
-  void refine(typename Mesh::FaceHandle& _fh);
+  void refine(typename M::FaceHandle& _fh);
 
 
   /// Raise one vertex to next final level.
-  void refine(typename Mesh::VertexHandle& _vh);
+  void refine(typename M::VertexHandle& _vh);
 
 
   /// Return subdivision split type (3 for 1-to-3 split, 4 for 1-to-4 split).

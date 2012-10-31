@@ -170,7 +170,7 @@ initialize( void )
 
 
 template<class M>
-void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
+void CompositeT<M>::refine(typename M::FaceHandle& _fh)
 {
   std::vector<typename Mesh::HalfedgeHandle> hh_vector;
 
@@ -271,7 +271,7 @@ void CompositeT<M>::refine(typename Mesh::FaceHandle& _fh)
 
 
 template<class M>
-void CompositeT<M>::refine(typename Mesh::VertexHandle& _vh)
+void CompositeT<M>::refine(typename M::VertexHandle& _vh)
 {
   // calculate next final level for vertex
   int new_vertex_state = generation(_vh) + l_rule()->number() + 1;
