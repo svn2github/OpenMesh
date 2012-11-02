@@ -472,11 +472,11 @@ public:
 
   // calculates the dihedral angle on the edge _eh
   Scalar calc_dihedral_angle(EdgeHandle _eh) const
-  { return calc_dihedral_angle(halfedge_handle(_eh,0)); }
+  { return calc_dihedral_angle(this->halfedge_handle(_eh,0)); }
 
   /** tags an edge as a feature if its dihedral angle is larger than _angle_tresh
       returns the number of the found feature edges, requires edge_status property*/
-  uint find_feature_edges(Scalar _angle_tresh = OpenMesh::deg_to_rad(44.0));
+  unsigned int find_feature_edges(Scalar _angle_tresh = OpenMesh::deg_to_rad(44.0));
   // --- misc ---
 
   /// Face split (= 1-to-n split)

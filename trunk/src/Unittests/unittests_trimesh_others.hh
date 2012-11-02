@@ -113,4 +113,65 @@ TEST_F(OpenMeshOthers, IsEstimatedFeatureEdge) {
 
 }
 
+/*
+ * Checking for feature edges based on angle
+ */
+TEST_F(OpenMeshOthers, CalcDihedralAngre ) {
+
+  mesh_.clear();
+
+  /* Test setup:
+   *
+   *  1 -- 2
+   *  |  / |
+   *  | /  |
+   *  0 -- 3
+   */
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[4];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 0, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(1, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+
+  // Add four faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  // ===============================================
+  // Setup complete
+  // ===============================================
+
+  Mesh::HalfedgeHandle he = mesh_.halfedge_handle(4);
+
+  EXPECT_EQ( 0 , mesh_.to_vertex_handle(he).idx() )   << "Wrong halfedge!" << std::endl;
+  EXPECT_EQ( 2 , mesh_.from_vertex_handle(he).idx() ) << "Wrong halfedge!" << std::endl;
+  EXPECT_EQ( 2 , mesh_.edge_handle(he).idx() ) << "Wrong Edge!" << std::endl;
+
+  Mesh::EdgeHandle eh = mesh_.edge_handle(he);
+  EXPECT_EQ( 0.0 , mesh_.calc_dihedral_angle(eh) ) << "Wrong Dihedral angle!" << std::endl;
+
+  // Modify point
+  Mesh::Point tmp = ( Mesh::Point(0.0, 0.0, -1.0) + Mesh::Point(1.0, 1.0, -1.0) ) * 0.5;
+  mesh_.point(vhandle[2]) = tmp;
+
+  double difference = fabs( 1.36944 - mesh_.calc_dihedral_angle(eh) );
+
+  EXPECT_TRUE( (difference < 0.00001 ) ) << "Wrong Dihedral angle, Difference is to big!" << std::endl;
+
+}
+
 #endif // INCLUDE GUARD

@@ -101,7 +101,7 @@ public:
 
   void raise(typename M::FaceHandle&   _fh, state_t _target_state);
   void raise(typename M::VertexHandle& _vh, state_t _target_state);
-  MIPS_WARN_WA(Edge); // avoid warning
+  MIPS_WARN_WA(Edge) // avoid warning
 };
 
 
@@ -153,8 +153,8 @@ public:
   VF(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::FaceHandle& _fh, state_t _target_state);
-  MIPS_WARN_WA(Edge);
-  MIPS_WARN_WA(Vertex);
+  MIPS_WARN_WA(Edge)
+  MIPS_WARN_WA(Vertex)
 };
 
 
@@ -175,8 +175,8 @@ public:
   FF(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::FaceHandle& _fh, state_t _target_state);
-  MIPS_WARN_WA(Vertex); // avoid warning
-  MIPS_WARN_WA(Edge  ); // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
+  MIPS_WARN_WA(Edge  ) // avoid warning
 };
 
 
@@ -197,8 +197,8 @@ public:
   FFc(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::FaceHandle& _fh, state_t _target_state);
-  MIPS_WARN_WA(Vertex); // avoid warning
-  MIPS_WARN_WA(Edge  ); // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
+  MIPS_WARN_WA(Edge  ) // avoid warning
 };
 
 
@@ -219,8 +219,8 @@ public:
   FV(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::VertexHandle& _vh, state_t _target_state);
-  MIPS_WARN_WA(Face); // avoid warning
-  MIPS_WARN_WA(Edge); // avoid warning
+  MIPS_WARN_WA(Face) // avoid warning
+  MIPS_WARN_WA(Edge) // avoid warning
 };
 
 
@@ -241,8 +241,8 @@ public:
   FVc(M& _mesh) : Inherited(_mesh) { init_coeffs(50); }
 
   void raise(typename M::VertexHandle& _vh, state_t _target_state);
-  MIPS_WARN_WA(Face); // avoid warning
-  MIPS_WARN_WA(Edge); // avoid warning
+  MIPS_WARN_WA(Face) // avoid warning
+  MIPS_WARN_WA(Edge) // avoid warning
 
   static void init_coeffs(size_t _max_valence);
   static const std::vector<double>& coeffs() { return coeffs_; }
@@ -278,8 +278,8 @@ public:
   VV(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::VertexHandle& _vh, state_t _target_state);
-  MIPS_WARN_WA(Face); // avoid warning
-  MIPS_WARN_WA(Edge); // avoid warning
+  MIPS_WARN_WA(Face) // avoid warning
+  MIPS_WARN_WA(Edge) // avoid warning
 };
 
 
@@ -300,8 +300,8 @@ public:
   VVc(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::VertexHandle& _vh, state_t _target_state);
-  MIPS_WARN_WA(Face); // avoid warning
-  MIPS_WARN_WA(Edge); // avoid warning
+  MIPS_WARN_WA(Face) // avoid warning
+  MIPS_WARN_WA(Edge) // avoid warning
 };
 
 
@@ -322,8 +322,8 @@ public:
   VE(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::EdgeHandle& _eh, state_t _target_state);
-  MIPS_WARN_WA(Face  ); // avoid warning
-  MIPS_WARN_WA(Vertex); // avoid warning
+  MIPS_WARN_WA(Face  ) // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
 };
 
 
@@ -344,8 +344,8 @@ public:
   VdE(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::EdgeHandle& _eh, state_t _target_state);
-  MIPS_WARN_WA(Face  ); // avoid warning
-  MIPS_WARN_WA(Vertex); // avoid warning
+  MIPS_WARN_WA(Face  ) // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
 };
 
 
@@ -366,8 +366,8 @@ public:
   VdEc(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::EdgeHandle& _eh, state_t _target_state);
-  MIPS_WARN_WA(Face  ); // avoid warning
-  MIPS_WARN_WA(Vertex); // avoid warning
+  MIPS_WARN_WA(Face  ) // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
 };
 
 
@@ -388,8 +388,8 @@ public:
   EV(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::VertexHandle& _vh, state_t _target_state);
-  MIPS_WARN_WA(Face); // avoid warning
-  MIPS_WARN_WA(Edge); // avoid warning
+  MIPS_WARN_WA(Face) // avoid warning
+  MIPS_WARN_WA(Edge) // avoid warning
 };
 
 
@@ -411,8 +411,8 @@ public:
   EVc(M& _mesh) : Inherited(_mesh) { init_coeffs(50); }
 
   void raise(typename M::VertexHandle& _vh, state_t _target_state);
-  MIPS_WARN_WA(Face); // avoid warning
-  MIPS_WARN_WA(Edge); // avoid warning
+  MIPS_WARN_WA(Face) // avoid warning
+  MIPS_WARN_WA(Edge) // avoid warning
 
   static void init_coeffs(size_t _max_valence);
   static const std::vector<double>& coeffs() { return coeffs_; }
@@ -447,8 +447,8 @@ public:
   EF(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::FaceHandle& _fh, state_t _target_state);
-  MIPS_WARN_WA(Edge  ); // avoid warning
-  MIPS_WARN_WA(Vertex); // avoid warning
+  MIPS_WARN_WA(Edge  ) // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
 };
 
 
@@ -469,8 +469,8 @@ public:
   FE(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::EdgeHandle& _eh, state_t _target_state);
-  MIPS_WARN_WA(Face  ); // avoid warning
-  MIPS_WARN_WA(Vertex); // avoid warning
+  MIPS_WARN_WA(Face  ) // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
 };
 
 
@@ -491,8 +491,8 @@ public:
   EdE(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::EdgeHandle& _eh, state_t _target_state);
-  MIPS_WARN_WA(Face  ); // avoid warning
-  MIPS_WARN_WA(Vertex); // avoid warning
+  MIPS_WARN_WA(Face  ) // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
 };
 
 
@@ -513,8 +513,8 @@ public:
   EdEc(M& _mesh) : Inherited(_mesh) {}
 
   void raise(typename M::EdgeHandle& _eh, state_t _target_state);
-  MIPS_WARN_WA(Face  ); // avoid warning
-  MIPS_WARN_WA(Vertex); // avoid warning
+  MIPS_WARN_WA(Face  ) // avoid warning
+  MIPS_WARN_WA(Vertex) // avoid warning
 };
 
 // ----------------------------------------------------------------------------
