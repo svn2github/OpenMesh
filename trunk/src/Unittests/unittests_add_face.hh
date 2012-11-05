@@ -255,6 +255,54 @@ TEST_F(OpenMeshAddFaceTriangleMesh, CreateTriangleMeshCube) {
 
 }
 
+/* Adds a quite strange configuration to the mesh
+ */
+TEST_F(OpenMeshAddFaceTriangleMesh, CreateStrangeConfig) {
+
+
+  Mesh::VertexHandle vh[7];
+  Mesh::FaceHandle   fh[4];
+
+  //
+  //                2 x-----------x 1
+  //                   \         /
+  //                    \       /
+  //                     \     /
+  //                      \   /
+  //                       \ /
+  //                      0 x ---x 6
+  //                       /|\   |
+  //                      / | \  |
+  //                     /  |  \ |
+  //                    /   |   \|
+  //                   x----x    x
+  //                   3    4    5
+  //
+  //
+  //
+
+  // Add vertices
+  vh[0] = mesh_.add_vertex (Mesh::Point (0, 0, 0));
+  vh[1] = mesh_.add_vertex (Mesh::Point (1, 1, 1));
+  vh[2] = mesh_.add_vertex (Mesh::Point (2, 2, 2));
+  vh[3] = mesh_.add_vertex (Mesh::Point (3, 3, 3));
+  vh[4] = mesh_.add_vertex (Mesh::Point (4, 4, 4));
+  vh[5] = mesh_.add_vertex (Mesh::Point (5, 5, 5));
+  vh[6] = mesh_.add_vertex (Mesh::Point (6, 6, 6));
+
+  mesh_.add_face( vh[0], vh[1], vh[2] );
+  mesh_.add_face( vh[0], vh[3], vh[4] );
+  mesh_.add_face( vh[0], vh[5], vh[6] );
+
+  // non-manifold!
+  mesh_.add_face(  vh[3], vh[0], vh[4] );
+
+  // Check setup
+  EXPECT_EQ(7u, mesh_.n_vertices() ) << "Wrong number of vertices";
+  EXPECT_EQ(4u, mesh_.n_faces() )    << "Wrong number of faces";
+
+}
+
 
 /* Adds a quad to a polymesh (should be a quad afterwards)
  */
