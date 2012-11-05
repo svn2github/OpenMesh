@@ -7,9 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.2.1</b> (?/?/?,Rev.750)</td><td>
-
-<b>Todo changelogs : 685</b>
+<tr valign=top><td><b>2.3</b> (?/?/?,Rev.758)</td><td>
 
 <b>Core</b>
 <ul>
@@ -27,6 +25,7 @@
 <li>Avoid double next_halfedge_handle call in collapse_ok</li>
 <li>Fixed the usage of vector traits such that the traits are used and not the vector types value_type. (Thanks to Mario Deuss for the patch)</li>
 <li>Fixed bug in halfedge normal computation, where a boundary halfedge was not correctly handled and caused a segfault.</li>
+<li>Fixed missing this pointer in PolyMeshT.hh at calc_dihedral_angle </li>
 </ul>
 
 <b>Decimater</b>
@@ -39,6 +38,14 @@
 <li>Added the set_error_tolerance_factor function to ModBaseT and implemented it in inherited classes as necessary</li>
 <li>Removed redundant tests in is_collapse_legal that where already performed in is_collapse_ok</li>
 <li>ModHausdorff: Removed unused parameter</li>
+<li>Added set_error_tolerance_factor to the modules, which can be used to scale the tolerance by a factor, allowing multiple decimation stages with increasing error tollerance</li>
+</ul>
+
+
+<b>IO</b>
+<ul>
+<li>Fixed typedef problems causing compiler errors</li>
+<li>Removed a wrong assertion in the refine method for vector handles</li>
 </ul>
 
 <b>IO</b>
@@ -74,6 +81,9 @@
 <li>Added unittest for MCDecimater</li>
 <li>Added unittest for obj crash when colors are requested but not available</li>
 <li>Added unittests (trimesh and polymesh) for split_copy</li>
+<li>Added unittest for vector cross product</li>
+<li>Added unittests for the adaptive composite subdivider</li>
+<li>Added unittest for dihedral angle function</li>
 <li>Added some more unittests for the PLY loader with different user options</li>
 <li>Fixed gcc-4.7 warnings.</li>
 </ul>
