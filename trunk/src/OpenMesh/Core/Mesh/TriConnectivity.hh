@@ -173,7 +173,7 @@ public:
    */
   void split_copy(EdgeHandle _eh, VertexHandle _vh);
 
-  /** \brief Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
+  /** \brief Face split (= 1-to-3) split, calls corresponding PolyMeshT function).
    *
    * @param _fh Face handle that should be splitted
    * @param _vh Vertex handle that will be inserted at the face
@@ -181,7 +181,7 @@ public:
   inline void split(FaceHandle _fh, VertexHandle _vh)
   { PolyConnectivity::split(_fh, _vh); }
 
-  /** \brief Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
+  /** \brief Face split (= 1-to-3) split, calls corresponding PolyMeshT function).
    *
    * @param _fh Face handle that should be splitted
    * @param _vh Vertex handle that will be inserted at the face
