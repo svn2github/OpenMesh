@@ -48,6 +48,7 @@ gcc 4.3.x<br>
 gcc 4.4.x<br>
 gcc 4.5.x<br>
 gcc 4.6.x<br>
+gcc 4.7.x<br>
 </td></tr>
 
 <tr><td> Windows </td><td> 
@@ -58,6 +59,12 @@ Microsoft Visual Studio 2010<br>
 <tr><td> MacOS X <br>(Panther,Tiger,Leopard,Snow Leopard)</td><td> 
 gcc 4.0 <br>
 gcc 4.2 <br>
+</td></tr>
+
+<tr><td> MacOS X <br>(Snow Leopard),... with clang</td><td> 
+XCode 4.3 <br>
+XCode 4.4 <br>
+XCode 4.5 <br>
 </td></tr>
 
 </table>
