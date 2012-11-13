@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.758)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.764)</td><td>
 
 
 
@@ -37,6 +37,7 @@
 
 <b>Decimater</b>
 <ul>
+<li>Changed template parameters of the modules from Decimater type to Mesh type</li>
 <li>Added multiple choice decimater (~4 times faster than the heap one, but no guarantee on accuracy)</li>
 <li>Added mixed decimater, switching between mc decimater and standard decimater</li>
 <li>Decimater modules don't need a decimater type as template argument anymore</li>

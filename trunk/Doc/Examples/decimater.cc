@@ -10,7 +10,7 @@ typedef TriMesh_ArrayKernelT<>                      Mesh;
 typedef Decimater::DecimaterT< Mesh >               Decimater;
 
 // Decimation Module Handle type
-typedef Decimater::ModQuadricT< decimater >::Handle HModQuadric;
+typedef Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
 
 // ---------------------------------------- decimater setup
 
