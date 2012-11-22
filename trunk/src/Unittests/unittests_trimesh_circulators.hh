@@ -637,7 +637,7 @@ TEST_F(OpenMeshCirculators, VertexOutgoingHalfedgeDereference) {
   // Iterate around vertex 1 at the middle (with holes in between)
   Mesh::VertexOHalfedgeIter voh_it = mesh_.voh_iter(vhandle[1]);
 
-  // TODO: If called
+  // TODO: If called without handle, it won't build
   Mesh::EdgeHandle       eh  = mesh_.edge_handle(voh_it.handle());
   Mesh::HalfedgeHandle   heh = mesh_.halfedge_handle(voh_it);
   Mesh::VertexHandle     vh2 = mesh_.to_vertex_handle(voh_it);
