@@ -580,4 +580,75 @@ TEST_F(OpenMeshCirculators, FaceFaceIteratorHandleConversion) {
  
 }
 
+/*
+ * Small Test to check dereferencing the iterator
+ * No real result
+ */
+TEST_F(OpenMeshCirculators, VertexOutgoingHalfedgeDereference) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[5];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(0,-1, 0));
+  vhandle[4] = mesh_.add_vertex(Mesh::Point(2,-1, 0));
+
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[1]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  /* Test setup:
+      0 ==== 2
+      |\  0 /|
+      | \  / |
+      |2  1 3|
+      | /  \ |
+      |/  1 \|
+      3 ==== 4 */
+
+  // Iterate around vertex 1 at the middle (with holes in between)
+  Mesh::VertexOHalfedgeIter voh_it = mesh_.voh_iter(vhandle[1]);
+
+  // TODO: If called
+  Mesh::EdgeHandle       eh  = mesh_.edge_handle(voh_it.handle());
+  Mesh::HalfedgeHandle   heh = mesh_.halfedge_handle(voh_it);
+  Mesh::VertexHandle     vh2 = mesh_.to_vertex_handle(voh_it);
+
+  EXPECT_EQ(eh.idx()  , 5 ) << "Wrong edge handle after dereferencing";
+  EXPECT_EQ(heh.idx() , 1 ) << "Wrong half edge handle after dereferencing";
+  EXPECT_EQ(vh2.idx() , 4 ) << "Wrong vertex handle after dereferencing";
+
+}
+
+
+
+
 #endif // INCLUDE GUARD
