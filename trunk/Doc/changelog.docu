@@ -7,8 +7,18 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.764)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.767)</td><td>
 
+<b>Documentation</b>
+
+<ul>
+<li>Fixed Decimater example</li>
+</ul>
+
+<b>Unittests</b>
+<ul>
+<li>Added unittest for vertexOHalfedge Iterator</li>
+</ul>
 
 
 </tr>
