@@ -308,9 +308,11 @@ public:
    *
    * @param _fh Face handle that should be splitted
    * @param _p  New point position that will be inserted in the face
+   *
+   * @return Vertex handle of the new vertex
    */
-  inline void split(FaceHandle _fh, const Point& _p)
-  { PolyMesh::split(_fh, _p); }
+  inline VertexHandle split(FaceHandle _fh, const Point& _p)
+  { const VertexHandle vh = this->add_vertex(_p); PolyMesh::split(_fh, vh); return vh; }
 
   /** \brief Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
    *
@@ -318,9 +320,11 @@ public:
    *
    * @param _fh Face handle that should be splitted
    * @param _p  New point position that will be inserted in the face
+   *
+   * @return Vertex handle of the new vertex
    */
-  inline void split_copy(FaceHandle _fh, const Point& _p)
-  { PolyMesh::split_copy(_fh, _p); }
+  inline VertexHandle split_copy(FaceHandle _fh, const Point& _p)
+  { const VertexHandle vh = this->add_vertex(_p);  PolyMesh::split_copy(_fh, _p); return vh; }
 
   /** \brief Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
    *
