@@ -7,17 +7,23 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.767)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.770)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Return vertex handles of newly added vertices in split and split_copy for faces when passing points instead of handles</li>
+</ul>
 
 <b>Documentation</b>
-
 <ul>
 <li>Fixed Decimater example</li>
+<li>Improved Docs for is_boundary() functions</li>
 </ul>
 
 <b>Unittests</b>
 <ul>
 <li>Added unittest for vertexOHalfedge Iterator</li>
+<li>Added unittests for boundary vertices and faces</li>
 </ul>
 
 
