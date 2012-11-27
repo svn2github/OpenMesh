@@ -579,9 +579,11 @@ public:
   { return ConstFaceFaceIter(*this, _fh, true); }
   //@}
 
-  /** \name Boundary and manifold tests
-  */
-  //@{
+
+  //===========================================================================
+  /** @name Boundary and manifold tests
+   * @{ */
+  //===========================================================================
 
   /** \brief Check if the halfedge is at the boundary
    *
@@ -596,7 +598,7 @@ public:
   /** \brief Is the edge a boundary edge?
    *
    * Checks it the edge _eh is a boundary edge, i.e. is one of its halfedges
-   * is a boundary halfedge.
+   * a boundary halfedge.
    *
    * @param _eh Edge handle to test
    * @return boundary?
@@ -647,7 +649,7 @@ public:
    */
   bool is_manifold(VertexHandle _vh) const;
 
-  //@}
+  /** @} */
 
   // --- shortcuts ---
   
