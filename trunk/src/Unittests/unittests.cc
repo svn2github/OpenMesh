@@ -19,6 +19,7 @@
 #include "unittests_randomNumberGenerator.hh"
 #include "unittests_split_copy.hh"
 #include "unittests_vector_type.hh"
+#include "unittests_boundary.hh"
 
 int main(int _argc, char** _argv) {
 

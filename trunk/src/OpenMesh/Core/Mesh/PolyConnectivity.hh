@@ -582,32 +582,71 @@ public:
   /** \name Boundary and manifold tests
   */
   //@{
+
+  /** \brief Check if the halfedge is at the boundary
+   *
+   * The halfedge is at the boundary, if no face is incident to it.
+   *
+   * @param _heh HalfedgeHandle to test
+   * @return boundary?
+   */
   bool is_boundary(HalfedgeHandle _heh) const
   { return ArrayKernel::is_boundary(_heh); }
 
-  /** Is the edge _eh a boundary edge, i.e. is one of its halfedges
-      a boundary halfege ? */
+  /** \brief Is the edge a boundary edge?
+   *
+   * Checks it the edge _eh is a boundary edge, i.e. is one of its halfedges
+   * is a boundary halfedge.
+   *
+   * @param _eh Edge handle to test
+   * @return boundary?
+   */
   bool is_boundary(EdgeHandle _eh) const
   {
     return (is_boundary(halfedge_handle(_eh, 0)) ||
             is_boundary(halfedge_handle(_eh, 1)));
   }
-  /// Is vertex _vh a boundary vertex ?
+
+  /** \brief Is vertex _vh a boundary vertex ?
+   *
+   * Checks if the associated halfedge (which would on a boundary be the outside
+   * halfedge), is connected to a face. Which is equivalent, if the vertex is
+   * at the boundary of the mesh, as OpenMesh will make sure, that if there is a
+   * boundary halfedge at the vertex, the halfedge will be the one which is associated
+   * to the vertex.
+   *
+   * @param _vh VertexHandle to test
+   * @return boundary?
+   */
   bool is_boundary(VertexHandle _vh) const
   {
     HalfedgeHandle heh(halfedge_handle(_vh));
     return (!(heh.is_valid() && face_handle(heh).is_valid()));
   }
 
-  /** Is face _fh at boundary, i.e. is one of its edges (or vertices)
-   *   a boundary edge?
-   *  \param _fh Check this face
-   *  \param _check_vertex If \c true, check the corner vertices of
-   *         the face, too.
+  /** \brief Check if face is at the boundary
+   *
+   * Is face _fh at boundary, i.e. is one of its edges (or vertices)
+   * a boundary edge?
+   *
+   * @param _fh Check this face
+   * @param _check_vertex If \c true, check the corner vertices of the face, too.
+   * @return boundary?
    */
   bool is_boundary(FaceHandle _fh, bool _check_vertex=false) const;
-  /// Is (the mesh at) vertex _vh  two-manifold ?
+
+  /** \brief Is (the mesh at) vertex _vh  two-manifold ?
+   *
+   * The vertex is non-manifold if more than one gap exists, i.e.
+   * more than one outgoing boundary halfedge. If (at least) one
+   * boundary halfedge exists, the vertex' halfedge must be a
+   * boundary halfedge.
+   *
+   * @param _vh VertexHandle to test
+   * @return manifold?
+   */
   bool is_manifold(VertexHandle _vh) const;
+
   //@}
 
   // --- shortcuts ---
@@ -622,6 +661,7 @@ public:
       boundary halfedge whenever possible. 
   */
   void adjust_outgoing_halfedge(VertexHandle _vh);
+
   /// Find halfedge from _vh0 to _vh1. Returns invalid handle if not found.
   HalfedgeHandle find_halfedge(VertexHandle _start_vh, VertexHandle _end_vh) const;
   /// Vertex valence
