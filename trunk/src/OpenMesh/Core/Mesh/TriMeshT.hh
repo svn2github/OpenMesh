@@ -324,7 +324,7 @@ public:
    * @return Vertex handle of the new vertex
    */
   inline VertexHandle split_copy(FaceHandle _fh, const Point& _p)
-  { const VertexHandle vh = this->add_vertex(_p);  PolyMesh::split_copy(_fh, _p); return vh; }
+  { const VertexHandle vh = this->add_vertex(_p);  PolyMesh::split_copy(_fh, vh); return vh; }
 
   /** \brief Face split (= 1-to-3 split, calls corresponding PolyMeshT function).
    *
