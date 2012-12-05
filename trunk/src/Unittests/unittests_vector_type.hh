@@ -56,6 +56,16 @@ TEST_F(OpenMeshVectorTest, ComputeTriangleSurfaceWithCrossProduct) {
 
 }
 
+/* Check OpenMesh Vector type abs function
+ */
+TEST_F(OpenMeshVectorTest, AbsTest) {
+
+  OpenMesh::Vec3d vec1(0.5,0.5,-0.5);
+
+  EXPECT_EQ( vec1.l8_norm() , 0.5f ) << "Wrong l8norm computation";
+
+}
+
 
 
 
