@@ -458,12 +458,12 @@ public:
   {
 #if DIM==N
     Scalar s(0);
-#define expr(i) s += abs(Base::values_[i]);
+#define expr(i) s += std::abs(Base::values_[i]);
     unroll(expr);
 #undef expr
     return s;
 #else
-#define expr(i) abs(Base::values_[i])
+#define expr(i) std::abs(Base::values_[i])
     return (unroll_comb(expr, +));
 #undef expr
 #endif
@@ -493,10 +493,10 @@ public:
   /// return the maximal absolute component
   inline Scalar max_abs() const
   {
-    Scalar m(abs(Base::values_[0]));
+    Scalar m(std::abs(Base::values_[0]));
     for(int i=1; i<DIM; ++i) 
-      if(abs(Base::values_[i])>m)
-        m=abs(Base::values_[i]);
+      if(std::abs(Base::values_[i])>m)
+        m=std::abs(Base::values_[i]);
     return m;
   }
 
@@ -512,10 +512,10 @@ public:
   /// return the minimal absolute component
   inline Scalar min_abs() const 
   {
-    Scalar m(abs(Base::values_[0]));
+    Scalar m(std::abs(Base::values_[0]));
     for(int i=1; i<DIM; ++i) 
-      if(abs(Base::values_[i])<m)
-        m=abs(Base::values_[i]);
+      if(std::abs(Base::values_[i])<m)
+        m=std::abs(Base::values_[i]);
     return m;
   }
 
@@ -528,8 +528,8 @@ public:
 
   /// return absolute arithmetic mean
   inline Scalar mean_abs() const {
-    Scalar m(abs(Base::values_[0]));
-    for(int i=1; i<DIM; ++i) m+=abs(Base::values_[i]);
+    Scalar m(std::abs(Base::values_[0]));
+    for(int i=1; i<DIM; ++i) m+=std::abs(Base::values_[i]);
     return m/Scalar(DIM);
   }
 
