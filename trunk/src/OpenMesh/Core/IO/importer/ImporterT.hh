@@ -162,7 +162,7 @@ public:
     //saves normals for half edges.
     //they will be written, when the face is added
     if (mesh_.has_halfedge_normals())
-      halfedgeNormals_[_vh] = _normal;
+      halfedgeNormals_[_vh] = vector_cast<Normal>(_normal);
   }
 
   virtual void set_color(VertexHandle _vh, const Vec4uc& _color)
