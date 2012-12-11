@@ -572,13 +572,9 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
         component = 0;
         nV++;
 
-        fh = _bi.add_face(faceVertices);
-
-        //clear vertices handles, so no face will be added twice
-        if (fh.is_valid())
-          faceVertices.clear();
-
       }
+
+      fh = _bi.add_face(faceVertices);
 
       size_t n_faces = _bi.n_faces();
 
