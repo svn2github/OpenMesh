@@ -7,11 +7,19 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.770)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.777)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Return vertex handles of newly added vertices in split and split_copy for faces when passing points instead of handles</li>
+<li>Fixed copy and paste typo in split_copy for face handle</li>
+<li>Replaced fabs by the std methods to fix errors when using norms with double vectors</li>
+</ul>
+
+<b>IO</b>
+<ul>
+<li>Fixed missing cast in importer which lead to problems when using different vector type. (Thanks to Mario Deuss for the fix)</li>
+<li>Fixed bug in OBJ reader, where some faces could be missing(Thanks to Ian Kerr for the Fix)</li>
 </ul>
 
 <b>Documentation</b>
@@ -24,6 +32,7 @@
 <ul>
 <li>Added unittest for vertexOHalfedge Iterator</li>
 <li>Added unittests for boundary vertices and faces</li>
+<li>Added test for VectorT abs function</li>
 </ul>
 
 
