@@ -1,6 +1,6 @@
 1. check files, build on windows,mac,linux with cmake and qmake
 2. check files with release numbers:
-   Docu/history.docu
+   Doc/changelog.docu
    System/config.h
    CHANGELOG
    README
