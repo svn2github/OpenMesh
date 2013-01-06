@@ -532,13 +532,14 @@ void PolyConnectivity::delete_face(FaceHandle _fh, bool _delete_isolated_vertice
       set_next_halfedge_handle(prev0, next1);
       set_next_halfedge_handle(prev1, next0);
 
-      // mark edge deleted
-      status(*del_it).set_deleted(true);
+      // mark edge deleted if the mesh has a edge status
+      if ( has_edge_status() )
+    	 status(*del_it).set_deleted(true);
 
 
       // mark corresponding halfedges as deleted
       // As the deleted edge is boundary,
-      // all corresponding halfedges will also e deleted.
+      // all corresponding halfedges will also be deleted.
       if ( has_halfedge_status() ) {
         status(h0).set_deleted(true);
         status(h1).set_deleted(true);

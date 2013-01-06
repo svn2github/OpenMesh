@@ -250,8 +250,11 @@ TEST_F(OpenMeshAddFaceTriangleMesh, CreateTriangleMeshCube) {
   //
 
   // Check setup
-  EXPECT_EQ(8u, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(12u, mesh_.n_faces() )   << "Wrong number of faces";
+  EXPECT_EQ(18u, mesh_.n_edges() )     << "Wrong number of Edges";
+  EXPECT_EQ(36u, mesh_.n_halfedges() ) << "Wrong number of HalfEdges";
+  EXPECT_EQ(8u, mesh_.n_vertices() )   << "Wrong number of vertices";
+  EXPECT_EQ(12u, mesh_.n_faces() )     << "Wrong number of faces";
+
 
 }
 
@@ -419,8 +422,10 @@ TEST_F(OpenMeshAddFacePolyMesh, CreatePolyMeshCube) {
   //
 
   // Check setup
-  EXPECT_EQ(8u, mesh_.n_vertices() ) << "Wrong number of vertices";
-  EXPECT_EQ(6u, mesh_.n_faces() )    << "Wrong number of faces";
+  EXPECT_EQ(12u, mesh_.n_edges() )     << "Wrong number of Edges";
+  EXPECT_EQ(24u, mesh_.n_halfedges() ) << "Wrong number of HalfEdges";
+  EXPECT_EQ(8u, mesh_.n_vertices() )   << "Wrong number of vertices";
+  EXPECT_EQ(6u, mesh_.n_faces() )      << "Wrong number of faces";
 
 }
 

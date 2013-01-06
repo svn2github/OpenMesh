@@ -253,7 +253,7 @@ public:
   void delete_edge(EdgeHandle _eh, bool _delete_isolated_vertices=true);
 
   /** Delete face _fh and resulting degenerated empty halfedges as
-      well.  Resultling isolated vertices will be deleted if
+      well.  Resulting isolated vertices will be deleted if
       _delete_isolated_vertices is true.
 
       \attention All item will only be marked to be deleted. They will
