@@ -8,7 +8,17 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.779)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.783)</td><td>
+
+<b>IO</b>
+<ul>
+<li>Made STL Reader work, with the clear = false flag and Redundant lookup removed. ( Thanks to Peter Newman for the patch)</li>
+</ul>
+
+<b>Unittests</b>
+<ul>
+<li>Added unittests for delete_face</li>
+</ul>
 
 </tr>
 
