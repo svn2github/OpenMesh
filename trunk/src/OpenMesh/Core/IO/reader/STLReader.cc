@@ -222,7 +222,6 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
   unsigned int               i;
   OpenMesh::Vec3f            v;
   OpenMesh::Vec3f            n;
-  unsigned int               cur_idx(0);
   BaseImporter::VHandles     vhandles;
 
   CmpVec comp(eps_);
@@ -288,9 +287,9 @@ read_stla(const std::string& _filename, BaseImporter& _bi) const
         if ((vMapIt=vMap.find(v)) == vMap.end())
         {
           // No : add vertex and remember idx/vector mapping
-          _bi.add_vertex(v);
-          vhandles.push_back(VertexHandle(cur_idx));
-          vMap[v] = VertexHandle(cur_idx++);
+          VertexHandle handle = _bi.add_vertex(v);
+          vhandles.push_back(handle);
+          vMap[v] = handle;
         }
         else
           // Yes : get index from map
@@ -330,7 +329,6 @@ read_stla(std::istream& _in, BaseImporter& _bi) const
   unsigned int               i;
   OpenMesh::Vec3f            v;
   OpenMesh::Vec3f            n;
-  unsigned int               cur_idx(0);
   BaseImporter::VHandles     vhandles;
 
   CmpVec comp(eps_);
@@ -395,9 +393,9 @@ read_stla(std::istream& _in, BaseImporter& _bi) const
         if ((vMapIt=vMap.find(v)) == vMap.end())
         {
           // No : add vertex and remember idx/vector mapping
-          _bi.add_vertex(v);
-          vhandles.push_back(VertexHandle(cur_idx));
-          vMap[v] = VertexHandle(cur_idx++);
+          VertexHandle handle = _bi.add_vertex(v);
+          vhandles.push_back(handle);
+          vMap[v] = handle;
         }
         else
           // Yes : get index from map
@@ -444,7 +442,6 @@ read_stlb(const std::string& _filename, BaseImporter& _bi) const
   bool                       swapFlag;
   unsigned int               i, nT;
   OpenMesh::Vec3f            v;
-  unsigned int               cur_idx(0);
   BaseImporter::VHandles     vhandles;
 
   std::map<Vec3f, VertexHandle, CmpVec>  vMap;
@@ -484,21 +481,21 @@ read_stlb(const std::string& _filename, BaseImporter& _bi) const
       // has vector been referenced before?
       if ((vMapIt=vMap.find(v)) == vMap.end())
       {
-	// No : add vertex and remember idx/vector mapping
-	_bi.add_vertex(v);
-	vhandles.push_back(VertexHandle(cur_idx));
-	vMap[v] = VertexHandle(cur_idx++);
+        // No : add vertex and remember idx/vector mapping
+        VertexHandle handle = _bi.add_vertex(v);
+        vhandles.push_back(handle);
+        vMap[v] = handle;
       }
       else
-	// Yes : get index from map
-	vhandles.push_back(vMapIt->second);
+        // Yes : get index from map
+        vhandles.push_back(vMapIt->second);
     }
 
 
     // Add face only if it is not degenerated
     if ((vhandles[0] != vhandles[1]) &&
-	(vhandles[0] != vhandles[2]) &&
-	(vhandles[1] != vhandles[2]))
+        (vhandles[0] != vhandles[2]) &&
+        (vhandles[1] != vhandles[2]))
       _bi.add_face(vhandles);
 
     fread(dummy, 1, 2, in);
@@ -522,7 +519,6 @@ read_stlb(std::istream& _in, BaseImporter& _bi) const
   bool                       swapFlag;
   unsigned int               i, nT;
   OpenMesh::Vec3f            v;
-  unsigned int               cur_idx(0);
   BaseImporter::VHandles     vhandles;
 
   std::map<Vec3f, VertexHandle, CmpVec>  vMap;
@@ -563,14 +559,14 @@ read_stlb(std::istream& _in, BaseImporter& _bi) const
       // has vector been referenced before?
       if ((vMapIt=vMap.find(v)) == vMap.end())
       {
-	// No : add vertex and remember idx/vector mapping
-	_bi.add_vertex(v);
-	vhandles.push_back(VertexHandle(cur_idx));
-	vMap[v] = VertexHandle(cur_idx++);
+        // No : add vertex and remember idx/vector mapping
+        VertexHandle handle = _bi.add_vertex(v);
+        vhandles.push_back(handle);
+        vMap[v] = handle;
       }
       else
-	// Yes : get index from map
-	vhandles.push_back(vMapIt->second);
+        // Yes : get index from map
+        vhandles.push_back(vMapIt->second);
     }
 
 
