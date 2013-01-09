@@ -83,6 +83,61 @@ TEST_F(OpenMeshIterators, VertexIter) {
   // Check end iterator
   EXPECT_EQ(4, v_end.handle().idx()) << "Index wrong in vertex iterator for vertices_end()";    
 
+
+  // Second iterator test to start at a specific position
+
+}
+
+/*
+ * Small VertexIterator Test to check if we can start iterating at a specific handle
+ */
+TEST_F(OpenMeshIterators, VertexIterStartPosition) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[4];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 0, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(1, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+
+  // Add two faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[0]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  // Test setup:
+  //  1 === 2
+  //  |   / |
+  //  |  /  |
+  //  | /   |
+  //  0 === 3
+
+  Mesh::VertexIter v_it  = Mesh::VertexIter(mesh_,mesh_.vertex_handle(2));
+  Mesh::VertexIter v_end = mesh_.vertices_end();
+
+  EXPECT_EQ(2, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  ++v_it;
+  EXPECT_EQ(3, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  ++v_it;
+  EXPECT_EQ(4, v_it.handle().idx()) << "Index wrong in vertex iterator";
+
+  // Check end iterator
+  EXPECT_EQ(4, v_end.handle().idx()) << "Index wrong in vertex iterator for vertices_end()";
+
+
 }
 
 /*
