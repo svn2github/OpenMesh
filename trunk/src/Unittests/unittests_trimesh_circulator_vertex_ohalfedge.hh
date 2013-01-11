@@ -32,9 +32,9 @@ class OpenMeshTrimeshCirculatorVertexOHalfEdge : public OpenMeshBase {
 
 
 /*
- * Small VertexFaceIterator Test without holes in it
+ * Small VertexFaceOutgoingHalfedgeIterator Test without holes in it
  */
-TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeWithoutHoles) {
+TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeWithoutHolesIncrement) {
 
   mesh_.clear();
 
@@ -84,6 +84,7 @@ TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeWithoutHo
       | /  \ |
       |/  1 \|
       3 ==== 4 */
+  // Starting halfedge is 1->4
 
 
   // Iterate around vertex 1 at the middle (with holes in between)
@@ -171,12 +172,105 @@ TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeWithoutHo
 
 }
 
+/*
+ * Small VertexFaceOutgoingHalfedgeIterator Test
+ */
+TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeBoundaryIncrement) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[5];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(0,-1, 0));
+  vhandle[4] = mesh_.add_vertex(Mesh::Point(2,-1, 0));
+
+  // Add two faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[1]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  /* Test setup:
+      0 ==== 2
+      |\  0 /|
+      | \  / |
+      |2  1 3|
+      | /  \ |
+      |/  1 \|
+      3 ==== 4 */
+  // Starting halfedge is 1->4
+
+
+  // Iterate around vertex 1 at the middle (with holes in between)
+  Mesh::VertexOHalfedgeIter voh_it  = mesh_.voh_begin(vhandle[2]);
+  Mesh::VertexOHalfedgeIter voh_end = mesh_.voh_end(vhandle[2]);
+
+  EXPECT_EQ(15, voh_it.handle().idx() ) << "Index wrong in VertexOHalfedgeIter begin at initialization";
+  EXPECT_EQ(15, voh_end.handle().idx() ) << "Index wrong in VertexOHalfedgeIter end at initialization";
+  EXPECT_EQ(-1, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter begin at initialization";
+  EXPECT_TRUE(voh_it) << "Iterator invalid in VertexOHalfedgeIter at initialization";
+
+  ++voh_it ;
+
+  EXPECT_EQ(3, voh_it.handle().idx() ) << "Index wrong in VertexOHalfedgeIter step 1";
+  EXPECT_EQ(3, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter step 1";
+  EXPECT_TRUE(voh_it) << "Iterator invalid in VertexOHalfedgeIter at step 1";
+
+  ++voh_it ;
+
+  EXPECT_EQ(4, voh_it.handle().idx() ) << "Index wrong in VertexOHalfedgeIter step 2";
+  EXPECT_EQ(0, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter step 2";
+  EXPECT_TRUE(voh_it) << "Iterator invalid in VertexOHalfedgeIter at step 2";
+
+  ++voh_it ;
+
+  EXPECT_EQ(15, voh_it.handle().idx() ) << "Index wrong in VertexOHalfedgeIter step 3";
+  EXPECT_EQ(-1, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter step 3";
+  EXPECT_FALSE(voh_it) << "Iterator still valid in VertexOHalfedgeIter at step 3";
+  EXPECT_TRUE( voh_it == voh_end ) << "Miss matched end iterator";
+
+  ++voh_it ;
+
+  EXPECT_EQ(3, voh_it.handle().idx() ) << "Index wrong in VertexOHalfedgeIter step 5";
+  EXPECT_EQ(3, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter step 4";
+  //EXPECT_FALSE(voh_it) << "Iterator still valid in VertexOHalfedgeIter at step 5";
+
+}
+
+
 
 /*
  * Small Test to check dereferencing the iterator
  * No real result
  */
-TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeDereference) {
+TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeDereferenceIncrement) {
 
   mesh_.clear();
 
