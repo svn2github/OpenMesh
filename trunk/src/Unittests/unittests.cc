@@ -5,7 +5,6 @@
 #include "unittests_loading.hh"
 #include "unittests_trimesh_iterators.hh"
 #include "unittests_trimesh_collapse.hh"
-#include "unittests_trimesh_circulators.hh"
 #include "unittests_decimater.hh"
 #include "unittests_mc_decimater.hh"
 #include "unittests_mixed_decimater.hh"
@@ -21,6 +20,18 @@
 #include "unittests_split_copy.hh"
 #include "unittests_vector_type.hh"
 #include "unittests_boundary.hh"
+
+// Circulators on triangular meshes
+#include "unittests_trimesh_circulator_face_edge.hh"
+#include "unittests_trimesh_circulator_face_face.hh"
+#include "unittests_trimesh_circulator_face_halfedge.hh"
+#include "unittests_trimesh_circulator_face_vertex.hh"
+#include "unittests_trimesh_circulator_vertex_edge.hh"
+#include "unittests_trimesh_circulator_vertex_face.hh"
+#include "unittests_trimesh_circulator_vertex_ihalfedge.hh"
+#include "unittests_trimesh_circulator_vertex_ihalfedge.hh"
+#include "unittests_trimesh_circulator_vertex_ohalfedge.hh"
+#include "unittests_trimesh_circulator_vertex_vertex.hh"
 
 int main(int _argc, char** _argv) {
 
