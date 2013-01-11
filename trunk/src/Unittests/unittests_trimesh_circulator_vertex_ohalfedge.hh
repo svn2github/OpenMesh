@@ -121,14 +121,6 @@ TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeWithoutHo
   EXPECT_FALSE(voh_it) << "Iterator still valid in VertexOHalfedgeIter at step 4";
   EXPECT_TRUE( voh_it == voh_end ) << "Miss matched end iterator";
 
-  ++voh_it ;
-
-  EXPECT_EQ(6, voh_it.handle().idx() ) << "Index wrong in VertexOHalfedgeIter step 5";
-  EXPECT_EQ(1, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter step 5";
-  //EXPECT_FALSE(voh_it) << "Iterator still valid in VertexOHalfedgeIter at step 5";
-
-
-
   // Iterate around vertex 1 at the middle (with holes in between)
   Mesh::ConstVertexOHalfedgeIter cvoh_it  = mesh_.cvoh_begin(vhandle[1]);
   Mesh::ConstVertexOHalfedgeIter cvoh_end = mesh_.cvoh_end(vhandle[1]);
@@ -162,13 +154,6 @@ TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeWithoutHo
   EXPECT_EQ(3, mesh_.face_handle(cvoh_it.handle()).idx() ) << "Corresponding face Index wrong in ConstVertexOHalfedgeIter step 4";
   EXPECT_FALSE(cvoh_it) << "Iterator still valid in ConstVertexOHalfedgeIter at step 4";
   EXPECT_TRUE( cvoh_it == cvoh_end ) << "Miss matched end iterator";
-
-  ++cvoh_it ;
-
-  EXPECT_EQ(6, cvoh_it.handle().idx() ) << "Index wrong in ConstVertexOHalfedgeIter step 5";
-  EXPECT_EQ(1, mesh_.face_handle(cvoh_it.handle()).idx() ) << "Corresponding face Index wrong in ConstVertexOHalfedgeIter step 5";
-  //EXPECT_FALSE(cvoh_it) << "Iterator still valid in ConstVertexOHalfedgeIter at step 5";
-
 
 }
 
@@ -255,12 +240,6 @@ TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeBoundaryI
   EXPECT_EQ(-1, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter step 3";
   EXPECT_FALSE(voh_it) << "Iterator still valid in VertexOHalfedgeIter at step 3";
   EXPECT_TRUE( voh_it == voh_end ) << "Miss matched end iterator";
-
-  ++voh_it ;
-
-  EXPECT_EQ(3, voh_it.handle().idx() ) << "Index wrong in VertexOHalfedgeIter step 5";
-  EXPECT_EQ(3, mesh_.face_handle(voh_it.handle()).idx() ) << "Corresponding face Index wrong in VertexOHalfedgeIter step 4";
-  //EXPECT_FALSE(voh_it) << "Iterator still valid in VertexOHalfedgeIter at step 5";
 
 }
 
