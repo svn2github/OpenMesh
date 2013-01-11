@@ -36,7 +36,7 @@ class OpenMeshTrimeshCirculatorVertexFace : public OpenMeshBase {
  * WARNING!!! Basically this is an illegal configuration!
  * But this way we can still detect if it breaks!
  */
-TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithHoles) {
+TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithHolesIncrement) {
 
   mesh_.clear();
 
@@ -106,7 +106,7 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithHoles) {
 /*
  * Small VertexFaceIterator Test without holes in it
  */
-TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithoutHoles) {
+TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithoutHolesIncrement) {
 
   mesh_.clear();
 
@@ -197,6 +197,74 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithoutHoles) {
   EXPECT_FALSE(cvf_it) << "Iterator not invalid in VertexFaceIter at end";
   EXPECT_TRUE( cvf_it == cvf_end )  << "End iterator for ConstVertexFaceIter not matching";
 
+}
 
+
+/*
+ * Small VertexFaceIterator Test at a boundary vertex
+ */
+TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterBoundaryIncrement) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[5];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(0,-1, 0));
+  vhandle[4] = mesh_.add_vertex(Mesh::Point(2,-1, 0));
+
+  // Add two faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[1]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  /* Test setup:
+      0 ==== 2
+      |\  0 /|
+      | \  / |
+      |2  1 3|
+      | /  \ |
+      |/  1 \|
+      3 ==== 4 */
+
+  // Iterate around vertex 1 at the middle (with holes in between)
+  Mesh::VertexFaceIter vf_it  = mesh_.vf_begin(vhandle[2]);
+  Mesh::VertexFaceIter vf_end = mesh_.vf_end(vhandle[2]);
+  EXPECT_EQ(3, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at initialization";
+  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at initialization";
+  ++vf_it ;
+  EXPECT_EQ(0, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 1";
+  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
+  ++vf_it ;
+  EXPECT_EQ(-1, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 2";
+  EXPECT_FALSE(vf_it) << "Iterator invalid in VertexFaceIter at step 2";
+  EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
 }
 
