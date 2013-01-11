@@ -113,7 +113,7 @@ TEST_F(OpenMeshTrimeshCirculatorFaceFace, FaceFaceIterWithHoles) {
 /*
  * Small FaceFaceIterator Test with holes in it
  */
-TEST_F(OpenMeshCirculators, FaceFaceIterWithoutHoles) {
+TEST_F(OpenMeshTrimeshCirculatorFaceFace, FaceFaceIterWithoutHoles) {
 
   mesh_.clear();
 
@@ -210,7 +210,7 @@ TEST_F(OpenMeshCirculators, FaceFaceIterWithoutHoles) {
 /*
  * Small FaceFaceIterator Test for getting handles and faces from the facefaceiterator
  */
-TEST_F(OpenMeshCirculators, FaceFaceIteratorHandleConversion) {
+TEST_F(OpenMeshTrimeshCirculatorFaceFace, FaceFaceIteratorHandleConversion) {
 
   mesh_.clear();
 

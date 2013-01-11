@@ -176,7 +176,7 @@ TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeWithoutHo
  * Small Test to check dereferencing the iterator
  * No real result
  */
-TEST_F(OpenMeshCirculators, VertexOutgoingHalfedgeDereference) {
+TEST_F(OpenMeshTrimeshCirculatorVertexOHalfEdge, VertexOutgoingHalfedgeDereference) {
 
   mesh_.clear();
 
