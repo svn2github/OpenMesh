@@ -123,7 +123,6 @@ public: //-------------------------------------------------- add new properties
    *                -# The prefixes matching "^[vhefm]:" are reserved for
    *                   internal usage.
    *                -# The expression "^<.*>$" is reserved for internal usage.
-   *  \return \c true on success else \c false.
    *
    */
 
