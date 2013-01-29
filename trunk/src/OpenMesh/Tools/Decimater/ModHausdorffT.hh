@@ -137,7 +137,10 @@ class ModHausdorffT: public ModBaseT<MeshT> {
 
   private:
 
-    Mesh& mesh_;
+    /// Temporary point storage
+    Points tmp_points_;
+
+    Mesh&  mesh_;
     Scalar tolerance_;
 
     OpenMesh::FPropHandleT<Points> points_;

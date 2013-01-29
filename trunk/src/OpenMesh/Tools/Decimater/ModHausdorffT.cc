@@ -203,13 +203,15 @@ float
 ModHausdorffT<MeshT>::
 collapse_priority(const CollapseInfo& _ci)
 {
-  static Points                  points;  points.clear();
   std::vector<FaceHandle>        faces;   faces.reserve(20);
   typename Mesh::VertexFaceIter  vf_it;
   typename Mesh::FaceHandle      fh;
   const typename Mesh::Scalar    sqr_tolerace = tolerance_*tolerance_;
   typename Mesh::CFVIter         fv_it;
   bool                           ok;
+
+  // Clear the temporary point storage
+  tmp_points_.clear();
 
   // collect all points to be tested
   // collect all faces to be tested against
@@ -220,16 +222,15 @@ collapse_priority(const CollapseInfo& _ci)
       faces.push_back(fh);
 
     Points& pts = mesh_.property(points_, fh);
-    std::copy(pts.begin(), pts.end(), std::back_inserter(points));
+    std::copy(pts.begin(), pts.end(), std::back_inserter(tmp_points_));
   }
 
   // add point to be removed
-  points.push_back(_ci.p0);
+  tmp_points_.push_back(_ci.p0);
 
   // setup iterators
   typename std::vector<FaceHandle>::iterator  fh_it, fh_end(faces.end());
-  typename Points::const_iterator             p_it, p_end(points.end());
-
+  typename Points::const_iterator             p_it, p_end(tmp_points_.end());
 
   // simulate collapse
   mesh_.set_point(_ci.v0, _ci.p1);
@@ -237,7 +238,7 @@ collapse_priority(const CollapseInfo& _ci)
   // for each point: try to find a face such that error is < tolerance
   ok = true;
 
-  for (p_it=points.begin(); ok && p_it!=p_end; ++p_it) {
+  for (p_it=tmp_points_.begin(); ok && p_it!=p_end; ++p_it) {
     ok = false;
 
     for (fh_it=faces.begin(); !ok && fh_it!=fh_end; ++fh_it) {
