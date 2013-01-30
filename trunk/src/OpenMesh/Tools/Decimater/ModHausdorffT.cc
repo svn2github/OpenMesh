@@ -278,7 +278,6 @@ void
 ModHausdorffT<MeshT>::
 postprocess_collapse(const CollapseInfo& _ci)
 {
-  static Points                  points;
   typename Mesh::VertexFaceIter  vf_it;
   FaceHandle                     fh;
   std::vector<FaceHandle>        faces;
@@ -286,7 +285,7 @@ postprocess_collapse(const CollapseInfo& _ci)
 
   // collect points & neighboring triangles
 
-  points.clear(); // it's static !
+  tmp_points_.clear(); // it's static !
   faces.reserve(20);
 
 
@@ -296,7 +295,7 @@ postprocess_collapse(const CollapseInfo& _ci)
     faces.push_back(fh);
 
     Points& pts = mesh_.property(points_, fh);
-    std::copy(pts.begin(), pts.end(), std::back_inserter(points));
+    std::copy(pts.begin(), pts.end(), std::back_inserter(tmp_points_));
     pts.clear();
   }
   if (faces.empty()) return; // should not happen anyway...
@@ -305,28 +304,28 @@ postprocess_collapse(const CollapseInfo& _ci)
   // collect points of the 2 deleted faces
   if ((fh=_ci.fl).is_valid()) {
     Points& pts = mesh_.property(points_, fh);
-    std::copy(pts.begin(), pts.end(), std::back_inserter(points));
+    std::copy(pts.begin(), pts.end(), std::back_inserter(tmp_points_));
     pts.clear();
   }
   if ((fh=_ci.fr).is_valid()) {
     Points& pts = mesh_.property(points_, fh);
-    std::copy(pts.begin(), pts.end(), std::back_inserter(points));
+    std::copy(pts.begin(), pts.end(), std::back_inserter(tmp_points_));
     pts.clear();
   }
 
   // add the deleted point
-  points.push_back(_ci.p0);
+  tmp_points_.push_back(_ci.p0);
 
 
   // setup iterators
   typename std::vector<FaceHandle>::iterator  fh_it, fh_end(faces.end());
-  typename Points::const_iterator             p_it, p_end(points.end());
+  typename Points::const_iterator             p_it, p_end(tmp_points_.end());
 
   // re-distribute points
   Scalar                  emin, e;
   typename Mesh::CFVIter  fv_it;
 
-  for (p_it=points.begin(); p_it!=p_end; ++p_it) {
+  for (p_it=tmp_points_.begin(); p_it!=p_end; ++p_it) {
     emin = FLT_MAX;
 
     for (fh_it=faces.begin(); fh_it!=fh_end; ++fh_it) {
