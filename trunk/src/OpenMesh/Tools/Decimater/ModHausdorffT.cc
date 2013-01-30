@@ -285,9 +285,8 @@ postprocess_collapse(const CollapseInfo& _ci)
 
   // collect points & neighboring triangles
 
-  tmp_points_.clear(); // it's static !
+  tmp_points_.clear();
   faces.reserve(20);
-
 
   // collect active faces and their points
   for (vf_it=mesh_.vf_iter(_ci.v1); vf_it; ++vf_it) {
