@@ -1438,7 +1438,6 @@ void VdE<M>::raise(typename M::EdgeHandle& _eh, state_t _target_state)
     typename M::VertexHandle             vh;
     typename M::HalfedgeHandle           hh1(Base::mesh_.HEH(_eh, 0)),
                                             hh2(Base::mesh_.HEH(_eh, 1));
-    std::vector<typename M::VertexHandle> vertex_vector;
     typename M::FaceHandle                fh1, fh2;
 
     if (_target_state > 1) {

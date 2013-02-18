@@ -372,7 +372,6 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
 
     VertexFaceIter vf_itr;
     Point          Q(0, 0, 0);
-    double         neigboring_faces(0.0);
 
     for ( vf_itr = _m.vf_iter( _vh); vf_itr; ++vf_itr) //, neigboring_faces += 1.0 )
     {

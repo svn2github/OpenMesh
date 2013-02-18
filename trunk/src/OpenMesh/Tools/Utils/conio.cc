@@ -112,7 +112,7 @@ int kbhit(void)
 
 int getch(void)
 {
-  char ch;
+  char ch = ' ';
   int error;
   static struct termios Otty, Ntty;
   
@@ -149,7 +149,7 @@ int getch(void)
 
 int getche(void)
 {
-  char ch;
+  char ch = ' ';
   int error;
   static struct termios Otty, Ntty;
   

@@ -126,7 +126,7 @@ QGLViewerWidget::init(void)
   QAction *a;
   a = add_draw_mode("Wireframe");
   a->setShortcut(QKeySequence(Key_W));
-  a = add_draw_mode("Solid Flat");
+  add_draw_mode("Solid Flat");
   a = add_draw_mode("Solid Smooth");
   a->setShortcut(QKeySequence(Key_S));
   a->setChecked(true);

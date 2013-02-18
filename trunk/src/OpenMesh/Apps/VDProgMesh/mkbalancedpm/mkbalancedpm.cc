@@ -84,7 +84,7 @@ public:
    /// Constructor
   ModBalancerT( D &_dec )
     : BaseModQ( _dec ),
-      max_level_(0), n_vertices_(0)
+      max_level_(0), n_roots_(0), n_vertices_(0)
   {
     BaseModQ::mesh().add_property( level_ );
   }

@@ -97,7 +97,7 @@ private:
   string           pstyle;
   vector<string>   to_delete;
   int              nplots;
-  bool             get_program_path(const string);
+  bool             get_program_path(const string& );
   bool             valid;
 
   // Name of executed GNUPlot file

@@ -261,23 +261,24 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   }
 
   // ---------- write vertex texture coords
-  if (_be.n_vertices() && _opt.check(Options::VertexTexCoord))
-  {
+  if (_be.n_vertices() && _opt.check(Options::VertexTexCoord)) {
+
     t = _be.texcoord(VertexHandle(0));
 
-    chunk_header.name_     = false;
-    chunk_header.entity_   = OMFormat::Chunk::Entity_Vertex;
-    chunk_header.type_     = OMFormat::Chunk::Type_Texcoord;
-    chunk_header.signed_   = OMFormat::is_signed(t[0]);
-    chunk_header.float_    = OMFormat::is_float(t[0]);
-    chunk_header.dim_      = OMFormat::dim(t);
-    chunk_header.bits_     = OMFormat::bits(t[0]);
+    chunk_header.name_ = false;
+    chunk_header.entity_ = OMFormat::Chunk::Entity_Vertex;
+    chunk_header.type_ = OMFormat::Chunk::Type_Texcoord;
+    chunk_header.signed_ = OMFormat::is_signed(t[0]);
+    chunk_header.float_ = OMFormat::is_float(t[0]);
+    chunk_header.dim_ = OMFormat::dim(t);
+    chunk_header.bits_ = OMFormat::bits(t[0]);
 
     // std::clog << chunk_header << std::endl;
-    bytes += store( _os, chunk_header, swap );
+    bytes += store(_os, chunk_header, swap);
 
-    for (i=0, nV=_be.n_vertices(); i<nV; ++i)
-      bytes += vector_store( _os, _be.texcoord(VertexHandle(i)), swap );
+    for (i = 0, nV = _be.n_vertices(); i < nV; ++i)
+      bytes += vector_store(_os, _be.texcoord(VertexHandle(i)), swap);
+
   }
 
   // -------------------- write face data
@@ -296,17 +297,16 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
     for (i=0, nF=_be.n_faces(); i<nF; ++i)
     {
-      nV = _be.get_vhandles(FaceHandle(i), vhandles);
       if ( header.mesh_ == 'P' )
-	bytes += store( _os, vhandles.size(),
+         bytes += store( _os, vhandles.size(),
 			OMFormat::Chunk::Integer_16, swap );
 
       for (size_t j=0; j < vhandles.size(); ++j)
       {
-	using namespace OMFormat;
-	using namespace GenProg;
+         using namespace OMFormat;
+         using namespace GenProg;
 
-	bytes += store( _os, vhandles[j].idx(),
+	    bytes += store( _os, vhandles[j].idx(),
 			Chunk::Integer_Size(chunk_header.bits_), swap );
       }
     }
