@@ -203,7 +203,7 @@ Gnuplot::~Gnuplot()
 
 // ----------------------------------------------------------------------------
 
-bool Gnuplot::get_program_path(const string pname)
+bool Gnuplot::get_program_path(const string& pname)
 {
   list<string> ls;
   char *path;
