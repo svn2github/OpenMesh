@@ -195,7 +195,6 @@ namespace OpenMesh {
 
         bytes += IO::restore( _is, N, _swap );
 
-        value_type::iterator   it = _v.begin();
         std::string key;
         size_t      val;
 
