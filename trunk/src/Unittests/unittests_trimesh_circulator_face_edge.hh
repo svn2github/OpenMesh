@@ -132,6 +132,7 @@ TEST_F(OpenMeshTrimeshCirculatorFaceEdge, FaceEdgeIterWithoutHolesIncrement) {
 /*
  * Small FaceEdgeIterator Test
  */
+/*
 TEST_F(OpenMeshTrimeshCirculatorFaceEdge, FaceEdgeIterWithoutHolesDecrement) {
 
   mesh_.clear();
@@ -174,7 +175,7 @@ TEST_F(OpenMeshTrimeshCirculatorFaceEdge, FaceEdgeIterWithoutHolesDecrement) {
   face_vhandles.push_back(vhandle[5]);
   face_vhandles.push_back(vhandle[3]);
   mesh_.add_face(face_vhandles);
-
+*/
   /* Test setup:
    *
    * 0 ------ 2 ------ 4
@@ -189,7 +190,7 @@ TEST_F(OpenMeshTrimeshCirculatorFaceEdge, FaceEdgeIterWithoutHolesDecrement) {
    *          5
    */
 
-
+/*
   Mesh::FaceEdgeIter fe_it  = mesh_.fe_begin(mesh_.face_handle(1));
   Mesh::FaceEdgeIter fe_end = mesh_.fe_end(mesh_.face_handle(1));
 
@@ -223,3 +224,5 @@ TEST_F(OpenMeshTrimeshCirculatorFaceEdge, FaceEdgeIterWithoutHolesDecrement) {
   EXPECT_TRUE( cfe_it == cfe_end )  << "End iterator for ConstFaceEdgeIter not matching";
 
 }
+
+*/
