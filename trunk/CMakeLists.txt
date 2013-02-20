@@ -73,9 +73,9 @@ add_subdirectory (src/OpenMesh/Tools)
 add_subdirectory (src/OpenMesh/Apps)
 
 # Do not build unit tests when build as external library
-if(${PROJECT_NAME} MATCHES "OpenMesh")
+#if(${PROJECT_NAME} MATCHES "OpenMesh")
     add_subdirectory (src/Unittests)
-endif()
+#endif()
 
 add_subdirectory (Doc)
 

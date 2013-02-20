@@ -106,8 +106,8 @@ class VertexVertexIterT
 
   typedef typename Mesh::HalfedgeHandle     HalfedgeHandle;
 
-  typedef typename Mesh::Vertex             value_type;
   typedef typename Mesh::VertexHandle       value_handle;
+  typedef value_handle                      value_type;
 
 #if 0
   typedef std::bidirectional_iterator_tag   iterator_category;
@@ -250,16 +250,14 @@ class VertexVertexIterT
     
 
   ///  Return a reference to the current target.
-  reference operator*() const { 
-    assert(mesh_);
-    return mesh_->deref(handle());
+  typename Mesh::VertexHandle operator*() const {
+    return handle();
   }
 
 
   /// Return a pointer to the current target.
-  pointer operator->() const {
-    assert(mesh_);
-    return &mesh_->deref(handle());
+  typename Mesh::VertexHandle *operator->() const {
+    return &handle();
   }
 
 
