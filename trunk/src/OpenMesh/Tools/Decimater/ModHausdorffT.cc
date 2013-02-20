@@ -55,9 +55,6 @@
 //== INCLUDES =================================================================
 
 #include "ModHausdorffT.hh"
-#ifdef USE_OPENMP
-#include <omp.h>
-#endif
 
 
 //== NAMESPACES ===============================================================
@@ -73,8 +70,7 @@ ModHausdorffT<MeshT>::
 distPointTriangleSquared( const Point& _p,
                           const Point& _v0,
                           const Point& _v1,
-                          const Point& _v2,
-                          Point& _nearestPoint )
+                          const Point& _v2 )
 {
   const Point v0v1 = _v1 - _v0;
   const Point v0v2 = _v2 - _v0;
@@ -84,13 +80,9 @@ distPointTriangleSquared( const Point& _p,
 
   // Check if the triangle is degenerated
   if (d < FLT_MIN && d > -FLT_MIN) {
-//    std::cerr << "distPointTriangleSquared: Degenerated triangle !\n";
-//    std::cerr << "Points are : " << _v0 << " " << _v1 << " " << _v2 << std::endl;
-//    std::cerr << "d is " << d << std::endl;
     return -1.0;
   }
   const double invD = 1.0 / d;
-
 
   // these are not needed for every point, should still perform
   // better with many points against one triangle
@@ -105,7 +97,6 @@ distPointTriangleSquared( const Point& _p,
   double  s01, s02, s12;
   const double a = (t | v0v2) * -invD;
   const double b = (t | v0v1) * invD;
-
 
   if (a < 0)
   {
@@ -185,13 +176,10 @@ distPointTriangleSquared( const Point& _p,
     }
   } else {
     // Calculate the distance to an interior point of the triangle
-    _nearestPoint = _p - n*((n|v0p) * invD);
-    return (_nearestPoint - _p).sqrnorm();
+    return ( (_p - n*((n|v0p) * invD)) - _p).sqrnorm();
   }
 
-  _nearestPoint = v0p;
-
-  return (_nearestPoint - _p).sqrnorm();
+  return (v0p - _p).sqrnorm();
 }
 
 
@@ -218,8 +206,7 @@ collapse_priority(const CollapseInfo& _ci)
   std::vector<FaceHandle>        faces;   faces.reserve(20);
   typename Mesh::VertexFaceIter  vf_it;
   typename Mesh::FaceHandle      fh;
-  typename Mesh::Scalar          sqr_tolerace = tolerance_*tolerance_;
-  typename Mesh::Point           dummy;
+  const typename Mesh::Scalar    sqr_tolerace = tolerance_*tolerance_;
   typename Mesh::CFVIter         fv_it;
   bool                           ok;
 
@@ -259,7 +246,7 @@ collapse_priority(const CollapseInfo& _ci)
       const Point& p1 = mesh_.point(++fv_it);
       const Point& p2 = mesh_.point(++fv_it);
 
-      if (  distPointTriangleSquared(*p_it, p0, p1, p2, dummy) <= sqr_tolerace)
+      if (  distPointTriangleSquared(*p_it, p0, p1, p2) <= sqr_tolerace)
         ok = true;
     }
   }
@@ -335,41 +322,23 @@ postprocess_collapse(const CollapseInfo& _ci)
 
   // re-distribute points
   Scalar                  emin, e;
-  Point                   dummy;
   typename Mesh::CFVIter  fv_it;
 
   for (p_it=tmp_points_.begin(); p_it!=p_end; ++p_it) {
     emin = FLT_MAX;
 
-#ifdef USE_OPENMP
-    int facesCount = faces.size();
-#pragma omp parallel for private(e) shared(emin)
-    for (int i = 0; i < facesCount; ++i) {
-      const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(faces[i]));
-      const Point& p1 = mesh_.point(++fv_it);
-      const Point& p2 = mesh_.point(++fv_it);
-
-      e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
-      if (e < emin) {
-        emin = e;
-        fh   = faces[i];
-      }
-
-    }
-#else
     for (fh_it=faces.begin(); fh_it!=fh_end; ++fh_it) {
       const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(*fh_it));
       const Point& p1 = mesh_.point(++fv_it);
       const Point& p2 = mesh_.point(++fv_it);
 
-      e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
+      e =  distPointTriangleSquared(*p_it, p0, p1, p2);
       if (e < emin) {
         emin = e;
         fh   = *fh_it;
       }
 
     }
-#endif
 
     mesh_.property(points_, fh).push_back(*p_it);
   }
@@ -395,24 +364,15 @@ compute_sqr_error(FaceHandle _fh, const Point& _p) const
 
   Point  dummy;
   Scalar e;
-  Scalar emax =  distPointTriangleSquared(_p, p0, p1, p2, dummy);
+  Scalar emax =  distPointTriangleSquared(_p, p0, p1, p2);
 
 
-#ifdef USE_OPENMP
-  int pointsCount = points.size();
-#pragma omp parallel for private(e) shared(emax)
-  for (int i = 0; i < pointsCount; ++i) {
-    e =  distPointTriangleSquared(points[i], p0, p1, p2, dummy);
-    if (e > emax)
-      emax = e;
-  }
-#else
+
   for (; p_it!=p_end; ++p_it) {
-    e =  distPointTriangleSquared(*p_it, p0, p1, p2, dummy);
+    e =  distPointTriangleSquared(*p_it, p0, p1, p2);
     if (e > emax)
       emax = e;
   }
-#endif
 
   return emax;
 }
