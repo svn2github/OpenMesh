@@ -115,6 +115,11 @@ class PropertyManager {
             std::swap(retain_, rhs.retain_);
         }
 
+        static bool propertyExists(MeshT &mesh, const char *propname) {
+            PROPTYPE dummy;
+            return mesh.get_property_handle(dummy, propname);
+        }
+
 #if __cplusplus > 199711L or __GXX_EXPERIMENTAL_CXX0X__
         /**
          * Move constructor. Transfers ownership (delete responsibility).
