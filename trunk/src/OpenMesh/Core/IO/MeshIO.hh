@@ -89,19 +89,16 @@ namespace IO   {
 
     @param _mesh     The target mesh that will be filled with the read data
     @param _filename fill to load
-    @param _clear    Clear the target data before filling it (allows to
-                     load multiple files into one Mesh)
 
     @return Successful?
  */
 template <class Mesh>
 bool
 read_mesh(Mesh&         _mesh,
-	  const std::string&  _filename,
-	  bool                _clear = true)
+	  const std::string&  _filename)
 {
   Options opt;
-  return read_mesh(_mesh, _filename, opt, _clear);
+  return read_mesh(_mesh, _filename, opt, true);
 }
 
 
@@ -116,9 +113,12 @@ read_mesh(Mesh&         _mesh,
     @param _mesh     The target mesh that will be filled with the read data
     @param _filename fill to load
     @param _opt      Reader options (e.g. skip loading of normals ... depends
-                     on the reader capabilities)
+                     on the reader capabilities). Note that simply passing an
+                     Options::Flag enum is not sufficient.
     @param _clear    Clear the target data before filling it (allows to
-                     load multiple files into one Mesh)
+                     load multiple files into one Mesh). If you only want to read a mesh
+                     without clearing set _clear to false. Providing a default Options
+                     object is sufficient in this case.
 
     @return Successful?
 */

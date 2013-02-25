@@ -49,6 +49,51 @@ TEST_F(OpenMeshLoader, LoadSimpleOFFFile) {
 }
 
 
+TEST_F(OpenMeshLoader, WriteAndReadVertexColorsToAndFromOFFFile) {
+
+    mesh_.clear();
+
+    mesh_.request_vertex_colors();
+
+    mesh_.add_vertex( Mesh::Point(0,0,1) );
+    mesh_.add_vertex( Mesh::Point(0,1,0) );
+    mesh_.add_vertex( Mesh::Point(0,1,1) );
+    mesh_.add_vertex( Mesh::Point(1,0,1) );
+
+    // using the default color type Vec3uc from DefaultTraits in Traits.hh
+    Mesh::Color testColor(255, 128, 64);
+
+    // setting colors (different from black)
+    for (Mesh::VertexIter vit = mesh_.vertices_begin(), vitend = mesh_.vertices_end(); vit != vitend; ++vit)
+      mesh_.set_color(vit, testColor);
+
+    // check if the colors are correctly setted
+    int count = 0;
+    for (Mesh::VertexIter vit = mesh_.vertices_begin(), vitend = mesh_.vertices_end(); vit != vitend; ++vit) {
+      Mesh::Color color = mesh_.color(vit);
+      if ( color[0] != testColor[0] || color[1] != testColor[1] || color[2] != testColor[2] )
+        ++ count;
+    }
+
+    EXPECT_EQ(0, count) << "Vertices have the wrong color!";
+
+    // write the mesh_
+    OpenMesh::IO::Options opt(OpenMesh::IO::Options::VertexColor);
+    OpenMesh::IO::write_mesh(mesh_, "temp.off", opt);
+    OpenMesh::IO::read_mesh(mesh_, "temp.off", opt);
+
+    // check if vertices still have the same color
+    count = 0;
+    for (Mesh::VertexIter vit = mesh_.vertices_begin(), vitend = mesh_.vertices_end(); vit != vitend; ++vit) {
+      Mesh::Color color = mesh_.color(vit);
+      if ( color[0] != testColor[0] || color[1] != testColor[1] || color[2] != testColor[2] )
+        ++ count;
+    }
+
+    EXPECT_EQ(0, count) << "Vertices should have the same color after writing and reading the OFF file!";
+
+    mesh_.release_vertex_colors();
+}
 
 /*
  * Just load a simple mesh file in stla format and count whether
