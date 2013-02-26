@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -111,6 +111,58 @@ struct color_caster<Vec3uc,Vec4f>
     return Vec3uc( (unsigned char)(_src[0]* 255.0f + 0.5f),
                    (unsigned char)(_src[1]* 255.0f + 0.5f),
                    (unsigned char)(_src[2]* 255.0f + 0.5f) );
+  }
+};
+
+template <>
+struct color_caster<Vec3i,Vec3f>
+{
+  typedef Vec3i return_type;
+
+  inline static return_type cast(const Vec3f& _src)
+  {
+    return Vec3i( (int)(_src[0]* 255.0f + 0.5f),
+                  (int)(_src[1]* 255.0f + 0.5f),
+                  (int)(_src[2]* 255.0f + 0.5f) );
+  }
+};
+
+template <>
+struct color_caster<Vec3i,Vec4f>
+{
+  typedef Vec3i return_type;
+
+  inline static return_type cast(const Vec4f& _src)
+  {
+    return Vec3i( (int)(_src[0]* 255.0f + 0.5f),
+                  (int)(_src[1]* 255.0f + 0.5f),
+                  (int)(_src[2]* 255.0f + 0.5f) );
+  }
+};
+
+template <>
+struct color_caster<Vec3ui,Vec3f>
+{
+  typedef Vec3ui return_type;
+
+  inline static return_type cast(const Vec3f& _src)
+  {
+    return Vec3ui( (unsigned int)(_src[0]* 255.0f + 0.5f),
+                   (unsigned int)(_src[1]* 255.0f + 0.5f),
+                   (unsigned int)(_src[2]* 255.0f + 0.5f) );
+  }
+};
+
+template <>
+struct color_caster<Vec3ui,Vec4f>
+{
+  typedef Vec3ui return_type;
+
+  inline static return_type cast(const Vec4f& _src)
+  {
+    return Vec3ui( (unsigned int)(_src[0]* 255.0f + 0.5f),
+                   (unsigned int)(_src[1]* 255.0f + 0.5f),
+                   (unsigned int)(_src[2]* 255.0f + 0.5f) );
   }
 };
 
