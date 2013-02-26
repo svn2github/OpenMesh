@@ -189,32 +189,32 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
   _out << "format ascii 1.0" << std::endl;
   _out << "element vertex " << _be.n_vertices() << std::endl;
 
-  _out << "property float32 x" << std::endl;
-  _out << "property float32 y" << std::endl;
-  _out << "property float32 z" << std::endl;
+  _out << "property float x" << std::endl;
+  _out << "property float y" << std::endl;
+  _out << "property float z" << std::endl;
 
   if ( _opt.vertex_has_normal() ){
-    _out << "property float32 nx" << std::endl;
-    _out << "property float32 ny" << std::endl;
-    _out << "property float32 nz" << std::endl;
+    _out << "property float nx" << std::endl;
+    _out << "property float ny" << std::endl;
+    _out << "property float nz" << std::endl;
   }
 
   if ( _opt.vertex_has_texcoord() ){
-    _out << "property float32 u" << std::endl;
-    _out << "property float32 v" << std::endl;
+    _out << "property float u" << std::endl;
+    _out << "property float v" << std::endl;
   }
 
   if ( _opt.vertex_has_color() ){
-    _out << "property uint8 red" << std::endl;
-    _out << "property uint8 green" << std::endl;
-    _out << "property uint8 blue" << std::endl;
+    _out << "property uchar red" << std::endl;
+    _out << "property uchar green" << std::endl;
+    _out << "property uchar blue" << std::endl;
 
     if ( _opt.color_has_alpha() )
-      _out << "property uint8 alpha" << std::endl;
+      _out << "property uchar alpha" << std::endl;
   }
 
   _out << "element face " << _be.n_faces() << std::endl;
-  _out << "property list uint8 int32 vertex_indices" << std::endl;
+  _out << "property list uchar int vertex_indices" << std::endl;
   _out << "end_header" << std::endl;
 
   // vertex data (point, normals, colors, texcoords)
@@ -243,11 +243,11 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
       //with alpha
       if ( _opt.color_has_alpha() ){
         cA  = _be.colorA(vh);
-        _out << " " << cA[0] << " " << cA[1] << " " << cA[2] << " " << cA[3];
+        _out << " " << (unsigned int)cA[0] << " " << (unsigned int)cA[1] << " " << (unsigned int)cA[2] << " " << (unsigned int)cA[3];
       }else{
         //without alpha
         c  = _be.color(vh);
-        _out << " " << c[0] << " " << c[1] << " " << c[2];
+        _out << " " << (unsigned int)c[0] << " " << (unsigned int)c[1] << " " << (unsigned int)c[2];
       }
     }
 
@@ -382,7 +382,7 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   unsigned int i, j, nV, nF;
   Vec3f v, n;
   Vec2f t;
-  OpenMesh::Vec4f c;
+  OpenMesh::Vec4uc c;
   VertexHandle vh;
   std::vector<VertexHandle> vhandles;
 
@@ -399,32 +399,32 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
   _out << "element vertex " << _be.n_vertices() << std::endl;
 
-  _out << "property float32 x" << std::endl;
-  _out << "property float32 y" << std::endl;
-  _out << "property float32 z" << std::endl;
+  _out << "property float x" << std::endl;
+  _out << "property float y" << std::endl;
+  _out << "property float z" << std::endl;
 
   if ( _opt.vertex_has_normal() ){
-    _out << "property float32 nx" << std::endl;
-    _out << "property float32 ny" << std::endl;
-    _out << "property float32 nz" << std::endl;
+    _out << "property float nx" << std::endl;
+    _out << "property float ny" << std::endl;
+    _out << "property float nz" << std::endl;
   }
 
   if ( _opt.vertex_has_texcoord() ){
-    _out << "property float32 u" << std::endl;
-    _out << "property float32 v" << std::endl;
+    _out << "property float u" << std::endl;
+    _out << "property float v" << std::endl;
   }
 
   if ( _opt.vertex_has_color() ){
-    _out << "property int32 red" << std::endl;
-    _out << "property int32 green" << std::endl;
-    _out << "property int32 blue" << std::endl;
+    _out << "property uchar red" << std::endl;
+    _out << "property uchar green" << std::endl;
+    _out << "property uchar blue" << std::endl;
 
     if ( _opt.color_has_alpha() )
-      _out << "property int32 alpha" << std::endl;
+      _out << "property uchar alpha" << std::endl;
   }
 
   _out << "element face " << _be.n_faces() << std::endl;
-  _out << "property list uchar int32 vertex_indices" << std::endl;
+  _out << "property list uchar int vertex_indices" << std::endl;
   _out << "end_header" << std::endl;
 
   // vertex data (point, normals, texcoords)
@@ -456,12 +456,12 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
     // vertex color
     if ( _opt.vertex_has_color() ) {
         c  = _be.colorA(vh);
-        writeValue(ValueTypeINT32, _out, (int)c[0]);
-        writeValue(ValueTypeINT32, _out, (int)c[1]);
-        writeValue(ValueTypeINT32, _out, (int)c[2]);
+        writeValue(ValueTypeUCHAR, _out, (int)c[0]);
+        writeValue(ValueTypeUCHAR, _out, (int)c[1]);
+        writeValue(ValueTypeUCHAR, _out, (int)c[2]);
 
         if ( _opt.color_has_alpha() )
-          writeValue(ValueTypeINT32, _out, (int)c[3]);
+          writeValue(ValueTypeUCHAR, _out, (int)c[3]);
     }
   }
 
