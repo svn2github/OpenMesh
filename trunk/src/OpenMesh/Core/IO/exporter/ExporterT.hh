@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -83,72 +83,99 @@ public:
 
   // Constructor
   ExporterT(const Mesh& _mesh) : mesh_(_mesh) {}
-   
+
 
   // get vertex data
 
-  Vec3f  point(VertexHandle _vh)    const 
-  { 
-    return vector_cast<Vec3f>(mesh_.point(_vh)); 
+  Vec3f  point(VertexHandle _vh)    const
+  {
+    return vector_cast<Vec3f>(mesh_.point(_vh));
   }
 
-  Vec3f  normal(VertexHandle _vh)   const 
-  { 
-    return (mesh_.has_vertex_normals() 
-	    ? vector_cast<Vec3f>(mesh_.normal(_vh)) 
+  Vec3f  normal(VertexHandle _vh)   const
+  {
+    return (mesh_.has_vertex_normals()
+	    ? vector_cast<Vec3f>(mesh_.normal(_vh))
 	    : Vec3f(0.0f, 0.0f, 0.0f));
   }
 
   Vec3uc color(VertexHandle _vh)    const
   {
-    return (mesh_.has_vertex_colors() 
-	    ? color_cast<Vec3uc>(mesh_.color(_vh)) 
+    return (mesh_.has_vertex_colors()
+	    ? color_cast<Vec3uc>(mesh_.color(_vh))
 	    : Vec3uc(0, 0, 0));
   }
 
   Vec4uc colorA(VertexHandle _vh)   const
   {
-    return (mesh_.has_vertex_colors() 
-      ? color_cast<Vec4uc>(mesh_.color(_vh)) 
+    return (mesh_.has_vertex_colors()
+      ? color_cast<Vec4uc>(mesh_.color(_vh))
       : Vec4uc(0, 0, 0, 0));
+  }
+
+  Vec3ui colori(VertexHandle _vh)    const
+  {
+    return (mesh_.has_vertex_colors()
+	    ? color_cast<Vec3ui>(mesh_.color(_vh))
+	    : Vec3ui(0, 0, 0));
+  }
+
+  Vec4ui colorAi(VertexHandle _vh)   const
+  {
+    return (mesh_.has_vertex_colors()
+      ? color_cast<Vec4ui>(mesh_.color(_vh))
+      : Vec4ui(0, 0, 0, 0));
   }
 
   Vec2f  texcoord(VertexHandle _vh) const
   {
 #if defined(OM_CC_GCC) && (OM_CC_VERSION<30000)
-    // Workaround! 
+    // Workaround!
     // gcc 2.95.3 exits with internal compiler error at the
     // code below!??? **)
     if (mesh_.has_vertex_texcoords2D())
       return vector_cast<Vec2f>(mesh_.texcoord2D(_vh));
     return Vec2f(0.0f, 0.0f);
 #else // **)
-    return (mesh_.has_vertex_texcoords2D() 
-	    ? vector_cast<Vec2f>(mesh_.texcoord2D(_vh)) 
+    return (mesh_.has_vertex_texcoords2D()
+	    ? vector_cast<Vec2f>(mesh_.texcoord2D(_vh))
 	    : Vec2f(0.0f, 0.0f));
 #endif
   }
-  
+
   // get edge data
-  
+
   Vec3uc color(EdgeHandle _eh)    const
   {
-      return (mesh_.has_edge_colors() 
-      ? color_cast<Vec3uc>(mesh_.color(_eh)) 
+      return (mesh_.has_edge_colors()
+      ? color_cast<Vec3uc>(mesh_.color(_eh))
       : Vec3uc(0, 0, 0));
   }
-  
+
   Vec4uc colorA(EdgeHandle _eh)   const
   {
-      return (mesh_.has_edge_colors() 
-      ? color_cast<Vec4uc>(mesh_.color(_eh)) 
+      return (mesh_.has_edge_colors()
+      ? color_cast<Vec4uc>(mesh_.color(_eh))
       : Vec4uc(0, 0, 0, 0));
   }
 
-  
+  Vec3ui colori(EdgeHandle _eh)    const
+  {
+      return (mesh_.has_edge_colors()
+      ? color_cast<Vec3ui>(mesh_.color(_eh))
+      : Vec3ui(0, 0, 0));
+  }
+
+  Vec4ui colorAi(EdgeHandle _eh)   const
+  {
+      return (mesh_.has_edge_colors()
+      ? color_cast<Vec4ui>(mesh_.color(_eh))
+      : Vec4ui(0, 0, 0, 0));
+  }
+
   // get face data
 
-  unsigned int get_vhandles(FaceHandle _fh, 
+  unsigned int get_vhandles(FaceHandle _fh,
 			    std::vector<VertexHandle>& _vhandles) const
   {
     unsigned int count(0);
@@ -161,32 +188,46 @@ public:
     return count;
   }
 
-  Vec3f  normal(FaceHandle _fh)   const 
-  { 
-    return (mesh_.has_face_normals() 
-            ? vector_cast<Vec3f>(mesh_.normal(_fh)) 
+  Vec3f  normal(FaceHandle _fh)   const
+  {
+    return (mesh_.has_face_normals()
+            ? vector_cast<Vec3f>(mesh_.normal(_fh))
             : Vec3f(0.0f, 0.0f, 0.0f));
   }
 
-  Vec3uc  color(FaceHandle _fh)   const 
-  { 
-    return (mesh_.has_face_colors() 
-            ? color_cast<Vec3uc>(mesh_.color(_fh)) 
+  Vec3uc  color(FaceHandle _fh)   const
+  {
+    return (mesh_.has_face_colors()
+            ? color_cast<Vec3uc>(mesh_.color(_fh))
             : Vec3uc(0, 0, 0));
   }
 
-  Vec4uc  colorA(FaceHandle _fh)   const 
-  { 
-    return (mesh_.has_face_colors() 
-            ? color_cast<Vec4uc>(mesh_.color(_fh)) 
+  Vec4uc  colorA(FaceHandle _fh)   const
+  {
+    return (mesh_.has_face_colors()
+            ? color_cast<Vec4uc>(mesh_.color(_fh))
             : Vec4uc(0, 0, 0, 0));
+  }
+
+  Vec3ui  colori(FaceHandle _fh)   const
+  {
+    return (mesh_.has_face_colors()
+            ? color_cast<Vec3ui>(mesh_.color(_fh))
+            : Vec3ui(0, 0, 0));
+  }
+
+  Vec4ui  colorAi(FaceHandle _fh)   const
+  {
+    return (mesh_.has_face_colors()
+            ? color_cast<Vec4ui>(mesh_.color(_fh))
+            : Vec4ui(0, 0, 0, 0));
   }
 
   virtual const BaseKernel* kernel() { return &mesh_; }
 
 
   // query number of faces, vertices, normals, texcoords
-  size_t n_vertices()  const { return mesh_.n_vertices(); }   
+  size_t n_vertices()  const { return mesh_.n_vertices(); }
   size_t n_faces()     const { return mesh_.n_faces(); }
   size_t n_edges()     const { return mesh_.n_edges(); }
 
@@ -194,7 +235,7 @@ public:
   // property information
   bool is_triangle_mesh() const
   { return Mesh::is_triangles(); }
-  
+
   bool has_vertex_normals()   const { return mesh_.has_vertex_normals();   }
   bool has_vertex_colors()    const { return mesh_.has_vertex_colors();    }
   bool has_vertex_texcoords() const { return mesh_.has_vertex_texcoords2D(); }
@@ -203,7 +244,7 @@ public:
   bool has_face_colors()      const { return mesh_.has_face_colors();      }
 
 private:
-  
+
    const Mesh& mesh_;
 };
 

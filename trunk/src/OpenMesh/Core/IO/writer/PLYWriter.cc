@@ -178,8 +178,8 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
   unsigned int i, j, nV, nF;
   Vec3f v, n;
-  OpenMesh::Vec3uc c;
-  OpenMesh::Vec4uc cA;
+  OpenMesh::Vec3ui c;
+  OpenMesh::Vec4ui cA;
   OpenMesh::Vec2f t;
   VertexHandle vh;
   std::vector<VertexHandle> vhandles;
@@ -242,12 +242,12 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
     if ( _opt.vertex_has_color() ) {
       //with alpha
       if ( _opt.color_has_alpha() ){
-        cA  = _be.colorA(vh);
-        _out << " " << (unsigned int)cA[0] << " " << (unsigned int)cA[1] << " " << (unsigned int)cA[2] << " " << (unsigned int)cA[3];
+        cA  = _be.colorAi(vh);
+        _out << " " << cA;
       }else{
         //without alpha
-        c  = _be.color(vh);
-        _out << " " << (unsigned int)c[0] << " " << (unsigned int)c[1] << " " << (unsigned int)c[2];
+        c  = _be.colori(vh);
+        _out << " " << c;
       }
     }
 

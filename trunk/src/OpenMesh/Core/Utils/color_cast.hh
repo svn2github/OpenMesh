@@ -141,6 +141,20 @@ struct color_caster<Vec3i,Vec4f>
 };
 
 template <>
+struct color_caster<Vec4i,Vec4f>
+{
+  typedef Vec4i return_type;
+
+  inline static return_type cast(const Vec4f& _src)
+  {
+    return Vec4i( (int)(_src[0]* 255.0f + 0.5f),
+                  (int)(_src[1]* 255.0f + 0.5f),
+                  (int)(_src[2]* 255.0f + 0.5f),
+                  (int)(_src[3]* 255.0f + 0.5f) );
+  }
+};
+
+template <>
 struct color_caster<Vec3ui,Vec3f>
 {
   typedef Vec3ui return_type;
@@ -163,6 +177,20 @@ struct color_caster<Vec3ui,Vec4f>
     return Vec3ui( (unsigned int)(_src[0]* 255.0f + 0.5f),
                    (unsigned int)(_src[1]* 255.0f + 0.5f),
                    (unsigned int)(_src[2]* 255.0f + 0.5f) );
+  }
+};
+
+template <>
+struct color_caster<Vec4ui,Vec4f>
+{
+  typedef Vec4ui return_type;
+
+  inline static return_type cast(const Vec4f& _src)
+  {
+    return Vec4ui( (unsigned int)(_src[0]* 255.0f + 0.5f),
+                   (unsigned int)(_src[1]* 255.0f + 0.5f),
+                   (unsigned int)(_src[2]* 255.0f + 0.5f),
+                   (unsigned int)(_src[3]* 255.0f + 0.5f) );
   }
 };
 
