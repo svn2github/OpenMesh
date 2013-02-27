@@ -4,10 +4,10 @@
  *      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
  *                           www.openmesh.org                                *
  *                                                                           *
- *---------------------------------------------------------------------------* 
+ *---------------------------------------------------------------------------*
  *  This file is part of OpenMesh.                                           *
  *                                                                           *
- *  OpenMesh is free software: you can redistribute it and/or modify         * 
+ *  OpenMesh is free software: you can redistribute it and/or modify         *
  *  it under the terms of the GNU Lesser General Public License as           *
  *  published by the Free Software Foundation, either version 3 of           *
  *  the License, or (at your option) any later version with the              *
@@ -30,10 +30,10 @@
  *  License along with OpenMesh.  If not,                                    *
  *  see <http://www.gnu.org/licenses/>.                                      *
  *                                                                           *
-\*===========================================================================*/ 
+\*===========================================================================*/
 
 /*===========================================================================*\
- *                                                                           *             
+ *                                                                           *
  *   $Revision$                                                         *
  *   $Date$                   *
  *                                                                           *
@@ -71,18 +71,18 @@ namespace IO   {
 
 /** \brief Set options for reader/writer modules.
  *
- *  The class is used in a twofold way. 
- *  -# In combination with reader modules the class is used 
+ *  The class is used in a twofold way.
+ *  -# In combination with reader modules the class is used
  *     - to pass hints to the reading module, whether the input is
  *     binary and what byte ordering the binary data has
  *     - to retrieve information about the file contents after
  *     succesful reading.
  *  -# In combination with write modules the class gives directions to
- *     the writer module, whether to 
+ *     the writer module, whether to
  *     - use binary mode or not and what byte order to use
  *     - store one of the standard properties.
  *
- *  The option are defined in \c Options::Flag as bit values and stored in 
+ *  The option are defined in \c Options::Flag as bit values and stored in
  *  an \c int value as a bitset.
  */
 class Options
@@ -90,7 +90,7 @@ class Options
 public:
   typedef int       enum_type;
   typedef enum_type value_type;
-   
+
   /// Definitions of %Options for reading and writing. The options can be
   /// or'ed.
   enum Flag {
@@ -106,7 +106,8 @@ public:
       FaceNormal     = 0x0100, ///< Has (r) / store (w) face normals
       FaceColor      = 0x0200, ///< Has (r) / store (w) face colors
       FaceTexCoord   = 0x0400, ///< Has (r) / store (w) face texture coordinates
-      ColorAlpha     = 0x0800  ///< Has (r) / store (w) alpha values for colors
+      ColorAlpha     = 0x0800,  ///< Has (r) / store (w) alpha values for colors
+      ColorFloat     = 0x1000  ///< Has (r) / store (w) float values for colors
   };
 
 public:
@@ -119,21 +120,21 @@ public:
   /// Copy constructor
   Options(const Options& _opt) : flags_(_opt.flags_)
   { }
-   
+
 
   /// Initializing constructor setting a single option
   Options(Flag _flg) : flags_( _flg)
   { }
 
-   
+
   /// Initializing constructor setting multiple options
   Options(const value_type _flgs) : flags_( _flgs)
   { }
 
-   
+
   ~Options()
   { }
-   
+
   /// Restore state after default constructor.
   void cleanup(void)
   { flags_ = Default; }
@@ -146,7 +147,7 @@ public:
   bool is_empty(void) const { return !flags_; }
 
 public:
-   
+
 
   //@{
   /// Copy options defined in _rhs.
@@ -159,7 +160,7 @@ public:
 
   //@}
 
-  
+
   //@{
   /// Unset options defined in _rhs.
 
@@ -167,15 +168,15 @@ public:
   { flags_ &= ~_rhs; return *this; }
 
   Options& unset( const value_type _rhs)
-  { return (*this -= _rhs); }   
+  { return (*this -= _rhs); }
 
   //@}
 
-   
+
 
   //@{
   /// Set options defined in _rhs
-   
+
   Options& operator += ( const value_type _rhs )
   { flags_ |= _rhs; return *this; }
 
@@ -192,7 +193,7 @@ public:
   {
     return (flags_ & _rhs)==_rhs;
   }
-   
+
   bool is_binary()           const { return check(Binary); }
   bool vertex_has_normal()   const { return check(VertexNormal); }
   bool vertex_has_color()    const { return check(VertexColor); }
@@ -202,25 +203,26 @@ public:
   bool face_has_color()      const { return check(FaceColor); }
   bool face_has_texcoord()   const { return check(FaceTexCoord); }
   bool color_has_alpha()     const { return check(ColorAlpha); }
+  bool color_is_float()      const { return check(ColorFloat); }
 
 
   /// Returns true if _rhs has the same options enabled.
   bool operator == (const value_type _rhs) const
   { return flags_ == _rhs; }
-   
+
 
   /// Returns true if _rhs does not have the same options enabled.
   bool operator != (const value_type _rhs) const
   { return flags_ != _rhs; }
-   
+
 
   /// Returns the option set.
   operator value_type ()     const { return flags_; }
-   
+
 private:
-   
+
   bool operator && (const value_type _rhs) const;
-   
+
   value_type flags_;
 };
 
