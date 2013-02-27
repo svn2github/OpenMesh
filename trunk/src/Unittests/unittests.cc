@@ -2,7 +2,11 @@
 
 #include "unittests_common.hh"
 #include "unittests_property.hh"
-#include "unittests_loading.hh"
+#include "unittests_read_write_OBJ.hh"
+#include "unittests_read_write_OFF.hh"
+#include "unittests_read_write_OM.hh"
+#include "unittests_read_write_PLY.hh"
+#include "unittests_read_write_STL.hh"
 #include "unittests_trimesh_iterators.hh"
 #include "unittests_trimesh_collapse.hh"
 #include "unittests_decimater.hh"
