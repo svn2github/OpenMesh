@@ -153,6 +153,9 @@ bool _PLYReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt) {
     if (options_.is_binary()) {
         _opt += Options::Binary;
     }
+    if (options_.color_is_float()) {
+        _opt += Options::ColorFloat;
+    }
 
     //    //force user-choice for the alpha value when reading binary
     //    if ( options_.is_binary() && userOptions_.color_has_alpha() )
@@ -992,31 +995,45 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
                         std::pair<VertexProperty, ValueType> entry(COLORRED, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
                         options_ += Options::VertexColor;
+                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                          options_ += Options::ColorFloat;
                     } else if (propertyName == "green") {
                         std::pair<VertexProperty, ValueType> entry(COLORGREEN, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
                         options_ += Options::VertexColor;
+                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                          options_ += Options::ColorFloat;
                     } else if (propertyName == "blue") {
                         std::pair<VertexProperty, ValueType> entry(COLORBLUE, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
                         options_ += Options::VertexColor;
+                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                          options_ += Options::ColorFloat;
                     } else if (propertyName == "diffuse_red") {
                       std::pair<VertexProperty, ValueType> entry(COLORRED, valueType);
                       vertexPropertyMap_[vertexPropertyCount_] = entry;
                       options_ += Options::VertexColor;
+                      if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                        options_ += Options::ColorFloat;
                     } else if (propertyName == "diffuse_green") {
                       std::pair<VertexProperty, ValueType> entry(COLORGREEN, valueType);
                       vertexPropertyMap_[vertexPropertyCount_] = entry;
                       options_ += Options::VertexColor;
+                      if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                        options_ += Options::ColorFloat;
                     } else if (propertyName == "diffuse_blue") {
                       std::pair<VertexProperty, ValueType> entry(COLORBLUE, valueType);
                       vertexPropertyMap_[vertexPropertyCount_] = entry;
                       options_ += Options::VertexColor;
+                      if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                        options_ += Options::ColorFloat;
                     } else if (propertyName == "alpha") {
                         std::pair<VertexProperty, ValueType> entry(COLORALPHA, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;
                         options_ += Options::VertexColor;
                         options_ += Options::ColorAlpha;
+                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                          options_ += Options::ColorFloat;
                     } else {
                         std::pair<VertexProperty, ValueType> entry(UNSUPPORTED, valueType);
                         vertexPropertyMap_[vertexPropertyCount_] = entry;

@@ -169,24 +169,20 @@ write(std::ostream& _os, BaseExporter& _be, Options _opt, std::streamsize _preci
 //-----------------------------------------------------------------------------
 
 
-bool
-_PLYWriter_::
-write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
-{
-  omlog() << "[PLYWriter] : write ascii file\n";
-
-
-  unsigned int i, j, nV, nF;
-  Vec3f v, n;
-  OpenMesh::Vec3ui c;
-  OpenMesh::Vec4ui cA;
-  OpenMesh::Vec2f t;
-  VertexHandle vh;
-  std::vector<VertexHandle> vhandles;
-
+void _PLYWriter_::write_header(std::ostream& _out, BaseExporter& _be, Options& _opt) const {
   //writing header
   _out << "ply" << std::endl;
-  _out << "format ascii 1.0" << std::endl;
+
+  if (_opt.is_binary()) {
+    _out << "format ";
+    if ( options_.check(Options::MSB) )
+      _out << "binary_big_endian ";
+    else
+      _out << "binary_little_endian ";
+    _out << "1.0" << std::endl;
+  } else
+    _out << "format ascii 1.0" << std::endl;
+
   _out << "element vertex " << _be.n_vertices() << std::endl;
 
   _out << "property float x" << std::endl;
@@ -205,17 +201,49 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
   }
 
   if ( _opt.vertex_has_color() ){
-    _out << "property uchar red" << std::endl;
-    _out << "property uchar green" << std::endl;
-    _out << "property uchar blue" << std::endl;
+    if ( _opt.color_is_float() ) {
+      _out << "property float red" << std::endl;
+      _out << "property float green" << std::endl;
+      _out << "property float blue" << std::endl;
 
-    if ( _opt.color_has_alpha() )
-      _out << "property uchar alpha" << std::endl;
+      if ( _opt.color_has_alpha() )
+        _out << "property float alpha" << std::endl;
+    } else {
+      _out << "property uchar red" << std::endl;
+      _out << "property uchar green" << std::endl;
+      _out << "property uchar blue" << std::endl;
+
+      if ( _opt.color_has_alpha() )
+        _out << "property uchar alpha" << std::endl;
+    }
   }
 
   _out << "element face " << _be.n_faces() << std::endl;
   _out << "property list uchar int vertex_indices" << std::endl;
   _out << "end_header" << std::endl;
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+bool
+_PLYWriter_::
+write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
+{
+  omlog() << "[PLYWriter] : write ascii file\n";
+
+  unsigned int i, j, nV, nF;
+  Vec3f v, n;
+  OpenMesh::Vec3ui c;
+  OpenMesh::Vec4ui cA;
+  OpenMesh::Vec3f cf;
+  OpenMesh::Vec4f cAf;
+  OpenMesh::Vec2f t;
+  VertexHandle vh;
+  std::vector<VertexHandle> vhandles;
+
+  write_header(_out, _be, _opt);
 
   // vertex data (point, normals, colors, texcoords)
   for (i=0, nV=_be.n_vertices(); i<nV; ++i)
@@ -242,12 +270,22 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
     if ( _opt.vertex_has_color() ) {
       //with alpha
       if ( _opt.color_has_alpha() ){
-        cA  = _be.colorAi(vh);
-        _out << " " << cA;
+        if (_opt.color_is_float()) {
+          cAf = _be.colorAf(vh);
+          _out << " " << cAf;
+        } else {
+          cA  = _be.colorAi(vh);
+          _out << " " << cA;
+        }
       }else{
         //without alpha
-        c  = _be.colori(vh);
-        _out << " " << c;
+        if (_opt.color_is_float()) {
+          cf = _be.colorf(vh);
+          _out << " " << cf;
+        } else {
+          c  = _be.colori(vh);
+          _out << " " << c;
+        }
       }
     }
 
@@ -383,49 +421,11 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   Vec3f v, n;
   Vec2f t;
   OpenMesh::Vec4uc c;
+  OpenMesh::Vec4f cf;
   VertexHandle vh;
   std::vector<VertexHandle> vhandles;
 
-  //writing header
-  _out << "ply" << std::endl;
-  _out << "format ";
-
-  if ( options_.check(Options::MSB) )
-    _out << "binary_big_endian ";
-  else
-    _out << "binary_little_endian ";
-
-  _out << "1.0" << std::endl;
-
-  _out << "element vertex " << _be.n_vertices() << std::endl;
-
-  _out << "property float x" << std::endl;
-  _out << "property float y" << std::endl;
-  _out << "property float z" << std::endl;
-
-  if ( _opt.vertex_has_normal() ){
-    _out << "property float nx" << std::endl;
-    _out << "property float ny" << std::endl;
-    _out << "property float nz" << std::endl;
-  }
-
-  if ( _opt.vertex_has_texcoord() ){
-    _out << "property float u" << std::endl;
-    _out << "property float v" << std::endl;
-  }
-
-  if ( _opt.vertex_has_color() ){
-    _out << "property uchar red" << std::endl;
-    _out << "property uchar green" << std::endl;
-    _out << "property uchar blue" << std::endl;
-
-    if ( _opt.color_has_alpha() )
-      _out << "property uchar alpha" << std::endl;
-  }
-
-  _out << "element face " << _be.n_faces() << std::endl;
-  _out << "property list uchar int vertex_indices" << std::endl;
-  _out << "end_header" << std::endl;
+  write_header(_out, _be, _opt);
 
   // vertex data (point, normals, texcoords)
   for (i=0, nV=_be.n_vertices(); i<nV; ++i)
@@ -455,13 +455,23 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
     // vertex color
     if ( _opt.vertex_has_color() ) {
-        c  = _be.colorA(vh);
-        writeValue(ValueTypeUCHAR, _out, (int)c[0]);
-        writeValue(ValueTypeUCHAR, _out, (int)c[1]);
-        writeValue(ValueTypeUCHAR, _out, (int)c[2]);
+        if ( _opt.color_is_float() ) {
+          cf  = _be.colorAf(vh);
+          writeValue(ValueTypeFLOAT, _out, cf[0]);
+          writeValue(ValueTypeFLOAT, _out, cf[1]);
+          writeValue(ValueTypeFLOAT, _out, cf[2]);
 
-        if ( _opt.color_has_alpha() )
-          writeValue(ValueTypeUCHAR, _out, (int)c[3]);
+          if ( _opt.color_has_alpha() )
+            writeValue(ValueTypeFLOAT, _out, cf[3]);
+        } else {
+          c  = _be.colorA(vh);
+          writeValue(ValueTypeUCHAR, _out, (int)c[0]);
+          writeValue(ValueTypeUCHAR, _out, (int)c[1]);
+          writeValue(ValueTypeUCHAR, _out, (int)c[2]);
+
+          if ( _opt.color_has_alpha() )
+            writeValue(ValueTypeUCHAR, _out, (int)c[3]);
+        }
     }
   }
 

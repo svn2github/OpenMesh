@@ -127,6 +127,20 @@ public:
       : Vec4ui(0, 0, 0, 0));
   }
 
+  Vec3f colorf(VertexHandle _vh)    const
+  {
+    return (mesh_.has_vertex_colors()
+	    ? color_cast<Vec3f>(mesh_.color(_vh))
+	    : Vec3f(0, 0, 0));
+  }
+
+  Vec4f colorAf(VertexHandle _vh)   const
+  {
+    return (mesh_.has_vertex_colors()
+      ? color_cast<Vec4f>(mesh_.color(_vh))
+      : Vec4f(0, 0, 0, 0));
+  }
+
   Vec2f  texcoord(VertexHandle _vh) const
   {
 #if defined(OM_CC_GCC) && (OM_CC_VERSION<30000)
@@ -171,6 +185,20 @@ public:
       return (mesh_.has_edge_colors()
       ? color_cast<Vec4ui>(mesh_.color(_eh))
       : Vec4ui(0, 0, 0, 0));
+  }
+
+  Vec3f colorf(EdgeHandle _eh)    const
+  {
+    return (mesh_.has_vertex_colors()
+	    ? color_cast<Vec3f>(mesh_.color(_eh))
+	    : Vec3f(0, 0, 0));
+  }
+
+  Vec4f colorAf(EdgeHandle _eh)   const
+  {
+    return (mesh_.has_vertex_colors()
+      ? color_cast<Vec4f>(mesh_.color(_eh))
+      : Vec4f(0, 0, 0, 0));
   }
 
   // get face data
@@ -221,6 +249,20 @@ public:
     return (mesh_.has_face_colors()
             ? color_cast<Vec4ui>(mesh_.color(_fh))
             : Vec4ui(0, 0, 0, 0));
+  }
+
+  Vec3f colorf(FaceHandle _fh)    const
+  {
+    return (mesh_.has_vertex_colors()
+	    ? color_cast<Vec3f>(mesh_.color(_fh))
+	    : Vec3f(0, 0, 0));
+  }
+
+  Vec4f colorAf(FaceHandle _fh)   const
+  {
+    return (mesh_.has_vertex_colors()
+      ? color_cast<Vec4f>(mesh_.color(_fh))
+      : Vec4f(0, 0, 0, 0));
   }
 
   virtual const BaseKernel* kernel() { return &mesh_; }

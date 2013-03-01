@@ -116,8 +116,9 @@ protected:
   void writeValue(ValueType _type, std::ostream& _out, unsigned int value) const;
   void writeValue(ValueType _type, std::ostream& _out, float value) const;
 
-  bool write_ascii(std::ostream& _in, BaseExporter&, Options) const;
-  bool write_binary(std::ostream& _in, BaseExporter&, Options) const;
+  bool write_ascii(std::ostream& _out, BaseExporter&, Options) const;
+  bool write_binary(std::ostream& _out, BaseExporter&, Options) const;
+  void write_header(std::ostream& _out, BaseExporter& _be, Options& _opt) const;
 };
 
 

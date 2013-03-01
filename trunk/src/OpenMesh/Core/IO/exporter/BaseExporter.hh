@@ -93,6 +93,8 @@ public:
   virtual Vec4uc colorA(VertexHandle _vh)   const = 0;
   virtual Vec3ui colori(VertexHandle _vh)    const = 0;
   virtual Vec4ui colorAi(VertexHandle _vh)   const = 0;
+  virtual Vec3f colorf(VertexHandle _vh)    const = 0;
+  virtual Vec4f colorAf(VertexHandle _vh)   const = 0;
   virtual Vec2f  texcoord(VertexHandle _vh) const = 0;
 
 
@@ -103,12 +105,18 @@ public:
   virtual Vec3f  normal(FaceHandle _fh)      const = 0;
   virtual Vec3uc color (FaceHandle _fh)      const = 0;
   virtual Vec4uc colorA(FaceHandle _fh)      const = 0;
+  virtual Vec3ui colori(FaceHandle _fh)    const = 0;
+  virtual Vec4ui colorAi(FaceHandle _fh)   const = 0;
+  virtual Vec3f colorf(FaceHandle _fh)    const = 0;
+  virtual Vec4f colorAf(FaceHandle _fh)   const = 0;
 
   // get edge data
   virtual Vec3uc color(EdgeHandle _eh)    const = 0;
   virtual Vec4uc colorA(EdgeHandle _eh)   const = 0;
-  virtual Vec3ui colori(EdgeHandle _vh)    const = 0;
-  virtual Vec4ui colorAi(EdgeHandle _vh)   const = 0;
+  virtual Vec3ui colori(EdgeHandle _eh)    const = 0;
+  virtual Vec4ui colorAi(EdgeHandle _eh)   const = 0;
+  virtual Vec3f colorf(EdgeHandle _eh)    const = 0;
+  virtual Vec4f colorAf(EdgeHandle _eh)   const = 0;
 
   // get reference to base kernel
   virtual const BaseKernel* kernel() { return 0; }
