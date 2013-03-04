@@ -107,7 +107,7 @@ public:
       FaceColor      = 0x0200, ///< Has (r) / store (w) face colors
       FaceTexCoord   = 0x0400, ///< Has (r) / store (w) face texture coordinates
       ColorAlpha     = 0x0800,  ///< Has (r) / store (w) alpha values for colors
-      ColorFloat     = 0x1000  ///< Has (r) / store (w) float values for colors
+      ColorFloat     = 0x1000  ///< Has (r) / store (w) float values for colors (currently only implemented for PLY and OFF files)
   };
 
 public:

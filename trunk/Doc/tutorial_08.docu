@@ -12,7 +12,7 @@ for enabling, disabling and verifying the bits in the set. We
 distinguish between
 
 -# mode bits - control binary reading/writing
- - Options::Binary   
+ - Options::Binary
  - Options::MSB
  - Options::LSB
  - Options::Swap (MSB|LSB)
@@ -22,6 +22,8 @@ distinguish between
  - Options::VertexColor
  - Options::FaceNormal
  - Options::FaceColor
+ - Options::ColorAlpha
+ - Options::ColorFloat
 
 These bits have different effects when reading or writing. The file
 format itself is selected by the extension of the filename. The IO
@@ -40,7 +42,7 @@ the format supports ASCII/binary storage with the apropiate extension.
     <td>STL</td><td>.stla, .stl</td><td>.stlb, .stl</td>
   </tr><tr>
     <td>OM</td><td></td><td>.om</td>
-  </tr>  
+  </tr>
 </table>
 
 The program does not more than providing a command line based
@@ -48,6 +50,8 @@ interface to select the option bits for reading/writing and to request
 mesh properties. Hence illegal combinations are possible and will
 result in a failure of the program. (The input file won't be damaged
 in this case, but be careful where you put the ouput file!)
+Please note that the Options::ColorFloat is currently only implemented for PLY
+and OFF files.
 
 <h5>Reading meshes</h5>
 
@@ -108,7 +112,7 @@ The method returns false on error, which might have three different reasons:
 
 -# the option is not supported by the choosen format
 -# a selected standard property is not available
--# a 'system' error like 
+-# a 'system' error like
    - could not open the file due to access rights
    - disk space exhausted during write
    - ...
