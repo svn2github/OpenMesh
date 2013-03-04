@@ -95,5 +95,113 @@ TEST_F(OpenMeshReadWriteOFF, WriteAndReadVertexColorsToAndFromOFFFile) {
     mesh_.release_vertex_colors();
 }
 
+TEST_F(OpenMeshReadWriteOFF, WriteAndReadFloatVertexColorsToAndFromOFFFile) {
+
+    mesh_.clear();
+
+    mesh_.request_vertex_colors();
+
+    OpenMesh::IO::Options opt(OpenMesh::IO::Options::VertexColor);
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "meshlab.ply", opt);
+
+    EXPECT_TRUE(ok) << "meshlab.ply could not be read!";
+
+    opt.clear();
+    opt += OpenMesh::IO::Options::VertexColor;
+    opt += OpenMesh::IO::Options::ColorFloat;
+
+    // write the mesh_
+    ok = OpenMesh::IO::write_mesh(mesh_, "cube_floating.off", opt);
+    EXPECT_TRUE(ok) << "cube_floating.off could not be written!";
+    mesh_.clear();
+    ok = OpenMesh::IO::read_mesh(mesh_, "cube_floating.off", opt);
+    EXPECT_TRUE(ok) << "cube_floating.off could not be read!";
+
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges())    << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces())    << "The number of loaded faces is not correct!";
+
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
+    EXPECT_EQ(255,   mesh_.color(mesh_.vertex_handle(0))[2] ) << "Wrong vertex color at vertex 0 component 2";
+
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(3))[0] ) << "Wrong vertex color at vertex 3 component 0";
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(3))[1] ) << "Wrong vertex color at vertex 3 component 1";
+    EXPECT_EQ(255, mesh_.color(mesh_.vertex_handle(3))[2] ) << "Wrong vertex color at vertex 3 component 2";
+
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(4))[0] ) << "Wrong vertex color at vertex 4 component 0";
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(4))[1] ) << "Wrong vertex color at vertex 4 component 1";
+    EXPECT_EQ(255,   mesh_.color(mesh_.vertex_handle(4))[2] ) << "Wrong vertex color at vertex 4 component 2";
+
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(7))[0] ) << "Wrong vertex color at vertex 7 component 0";
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(7))[1] ) << "Wrong vertex color at vertex 7 component 1";
+    EXPECT_EQ(255, mesh_.color(mesh_.vertex_handle(7))[2] ) << "Wrong vertex color at vertex 7 component 2";
+
+    EXPECT_FALSE(opt.vertex_has_normal()) << "Wrong user opt are returned!";
+    EXPECT_FALSE(opt.vertex_has_texcoord()) << "Wrong user opt are returned!";
+    EXPECT_TRUE(opt.vertex_has_color()) << "Wrong user opt are returned!";
+    EXPECT_TRUE(opt.color_is_float()) << "Wrong user opt are returned!";
+
+    mesh_.release_vertex_colors();
+}
+
+TEST_F(OpenMeshReadWriteOFF, WriteAndReadBinaryFloatVertexColorsToAndFromOFFFile) {
+
+    mesh_.clear();
+
+    mesh_.request_vertex_colors();
+
+    OpenMesh::IO::Options opt(OpenMesh::IO::Options::VertexColor);
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "meshlab.ply", opt);
+
+    EXPECT_TRUE(ok) << "meshlab.ply could not be read!";
+
+    opt.clear();
+    opt += OpenMesh::IO::Options::VertexColor;
+    opt += OpenMesh::IO::Options::Binary;
+    opt += OpenMesh::IO::Options::ColorFloat;
+
+    // write the mesh_
+    ok = OpenMesh::IO::write_mesh(mesh_, "cube_floating_binary.off", opt);
+    EXPECT_TRUE(ok) << "cube_floating_binary.off could not be written!";
+    mesh_.clear();
+    opt.clear();
+    opt += OpenMesh::IO::Options::VertexColor;
+    opt += OpenMesh::IO::Options::Binary;
+    opt += OpenMesh::IO::Options::ColorFloat;
+    ok = OpenMesh::IO::read_mesh(mesh_, "cube_floating_binary.off", opt);
+    EXPECT_TRUE(ok) << "cube_floating_binary.off could not be read!";
+
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges())    << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces())    << "The number of loaded faces is not correct!";
+
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[0] ) << "Wrong vertex color at vertex 0 component 0";
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(0))[1] ) << "Wrong vertex color at vertex 0 component 1";
+    EXPECT_EQ(255,   mesh_.color(mesh_.vertex_handle(0))[2] ) << "Wrong vertex color at vertex 0 component 2";
+
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(3))[0] ) << "Wrong vertex color at vertex 3 component 0";
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(3))[1] ) << "Wrong vertex color at vertex 3 component 1";
+    EXPECT_EQ(255, mesh_.color(mesh_.vertex_handle(3))[2] ) << "Wrong vertex color at vertex 3 component 2";
+
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(4))[0] ) << "Wrong vertex color at vertex 4 component 0";
+    EXPECT_EQ(0,   mesh_.color(mesh_.vertex_handle(4))[1] ) << "Wrong vertex color at vertex 4 component 1";
+    EXPECT_EQ(255,   mesh_.color(mesh_.vertex_handle(4))[2] ) << "Wrong vertex color at vertex 4 component 2";
+
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(7))[0] ) << "Wrong vertex color at vertex 7 component 0";
+    EXPECT_EQ(0, mesh_.color(mesh_.vertex_handle(7))[1] ) << "Wrong vertex color at vertex 7 component 1";
+    EXPECT_EQ(255, mesh_.color(mesh_.vertex_handle(7))[2] ) << "Wrong vertex color at vertex 7 component 2";
+
+    EXPECT_FALSE(opt.vertex_has_normal()) << "Wrong user opt are returned!";
+    EXPECT_FALSE(opt.vertex_has_texcoord()) << "Wrong user opt are returned!";
+    EXPECT_FALSE(opt.face_has_color()) << "Wrong user opt are returned!";
+    EXPECT_TRUE(opt.vertex_has_color()) << "Wrong user opt are returned!";
+    EXPECT_TRUE(opt.color_is_float()) << "Wrong user opt are returned!";
+    EXPECT_TRUE(opt.is_binary()) << "Wrong user opt are returned!";
+
+    mesh_.release_vertex_colors();
+}
 
 #endif // INCLUDE GUARD

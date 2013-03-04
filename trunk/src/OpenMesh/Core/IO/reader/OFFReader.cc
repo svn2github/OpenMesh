@@ -162,8 +162,8 @@ _OFFReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt )
      options_ += Options::ColorAlpha;
 
     return (options_.is_binary() ?
- 	   read_binary(_in, _bi, swap) :
-	   read_ascii(_in, _bi));
+ 	   read_binary(_in, _bi, _opt, swap) :
+	   read_ascii(_in, _bi, _opt));
 
 }
 
@@ -172,7 +172,7 @@ _OFFReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt )
 //-----------------------------------------------------------------------------
 
 bool
-_OFFReader_::read_ascii(std::istream& _in, BaseImporter& _bi) const
+_OFFReader_::read_ascii(std::istream& _in, BaseImporter& _bi, Options& _opt) const
 {
 
 
@@ -246,13 +246,17 @@ omlog() << "[OFFReader] : read ascii file\n";
             break;
         // rgb floats
         case 5 : stream >> c3f[0];  stream >> c3f[1];  stream >> c3f[2];
-            if ( userOptions_.vertex_has_color() )
-              _bi.set_color( vh, color_cast<Vec3uc, Vec3f>(c3f) );
+            if ( userOptions_.vertex_has_color() ) {
+              _bi.set_color( vh, c3f );
+              _opt += Options::ColorFloat;
+            }
             break;
         // rgba floats
         case 6 : stream >> c4f[0];  stream >> c4f[1];  stream >> c4f[2]; stream >> c4f[3];
-            if ( userOptions_.vertex_has_color() )
-              _bi.set_color( vh, color_cast<Vec4uc, Vec4f>(c4f) );
+            if ( userOptions_.vertex_has_color() ) {
+              _bi.set_color( vh, c4f );
+              _opt += Options::ColorFloat;
+            }
             break;
 
         default:
@@ -327,13 +331,17 @@ omlog() << "[OFFReader] : read ascii file\n";
             break;
         // rgb floats
         case 5 : stream >> c3f[0];  stream >> c3f[1];  stream >> c3f[2];
-            if ( userOptions_.face_has_color() )
-              _bi.set_color( fh, color_cast<Vec3uc, Vec3f>(c3f) );
+            if ( userOptions_.face_has_color() ) {
+              _bi.set_color( fh, c3f );
+              _opt += Options::ColorFloat;
+            }
             break;
         // rgba floats
         case 6 : stream >> c4f[0];  stream >> c4f[1];  stream >> c4f[2]; stream >> c4f[3];
-            if ( userOptions_.face_has_color() )
-              _bi.set_color( fh, color_cast<Vec4uc, Vec4f>(c4f) );
+            if ( userOptions_.face_has_color() ) {
+              _bi.set_color( fh, c4f );
+              _opt += Options::ColorFloat;
+            }
             break;
 
         default:
@@ -423,7 +431,7 @@ void _OFFReader_::readValue(std::istream& _in, unsigned int& _value) const{
 }
 
 bool
-_OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) const
+_OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, Options& _opt, bool /*_swap*/) const
 {
   omlog() << "[OFFReader] : read binary file\n";
 
@@ -432,6 +440,8 @@ _OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) c
   OpenMesh::Vec3f         v, n;
   OpenMesh::Vec3i         c;
   OpenMesh::Vec4i         cA;
+  OpenMesh::Vec3f         cf;
+  OpenMesh::Vec4f         cAf;
   OpenMesh::Vec2f         t;
   BaseImporter::VHandles  vhandles;
   VertexHandle            vh;
@@ -467,23 +477,46 @@ _OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) c
     }
 
     if ( options_.vertex_has_color() ) {
-      //with alpha
-      if ( options_.color_has_alpha() ){
-        readValue(_in, cA[0]);
-        readValue(_in, cA[1]);
-        readValue(_in, cA[2]);
-        readValue(_in, cA[3]);
+      if ( userOptions_.color_is_float() ) {
+        _opt += Options::ColorFloat;
+        //with alpha
+        if ( options_.color_has_alpha() ){
+          readValue(_in, cAf[0]);
+          readValue(_in, cAf[1]);
+          readValue(_in, cAf[2]);
+          readValue(_in, cAf[3]);
 
-        if ( userOptions_.vertex_has_color() )
-          _bi.set_color( vh, Vec4uc( cA ) );
-      }else{
-        //without alpha
-        readValue(_in, c[0]);
-        readValue(_in, c[1]);
-        readValue(_in, c[2]);
+          if ( userOptions_.vertex_has_color() )
+            _bi.set_color( vh, cAf );
+        }else{
 
-        if ( userOptions_.vertex_has_color() )
-          _bi.set_color( vh, Vec3uc( c ) );
+          //without alpha
+          readValue(_in, cf[0]);
+          readValue(_in, cf[1]);
+          readValue(_in, cf[2]);
+
+          if ( userOptions_.vertex_has_color() )
+            _bi.set_color( vh, cf );
+        }
+      } else {
+        //with alpha
+        if ( options_.color_has_alpha() ){
+          readValue(_in, cA[0]);
+          readValue(_in, cA[1]);
+          readValue(_in, cA[2]);
+          readValue(_in, cA[3]);
+
+          if ( userOptions_.vertex_has_color() )
+            _bi.set_color( vh, Vec4uc( cA ) );
+        }else{
+          //without alpha
+          readValue(_in, c[0]);
+          readValue(_in, c[1]);
+          readValue(_in, c[2]);
+
+          if ( userOptions_.vertex_has_color() )
+            _bi.set_color( vh, Vec3uc( c ) );
+        }
       }
     }
 
@@ -503,7 +536,6 @@ _OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) c
   {
     readValue(_in, nV);
 
-
     if (nV == 3)
     {
       vhandles.resize(3);
@@ -514,9 +546,7 @@ _OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) c
       vhandles[0] = VertexHandle(j);
       vhandles[1] = VertexHandle(k);
       vhandles[2] = VertexHandle(l);
-    }
-    else
-    {
+    } else {
       vhandles.clear();
       for (j=0; j<nV; ++j)
       {
@@ -528,24 +558,46 @@ _OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/) c
     FaceHandle fh = _bi.add_face(vhandles);
 
     //face color
-    if ( options_.face_has_color() ) {
-      //with alpha
-      if ( options_.color_has_alpha() ){
-        readValue(_in, cA[0]);
-        readValue(_in, cA[1]);
-        readValue(_in, cA[2]);
-        readValue(_in, cA[3]);
+    if ( _opt.face_has_color() ) {
+      if ( userOptions_.color_is_float() ) {
+        _opt += Options::ColorFloat;
+        //with alpha
+        if ( options_.color_has_alpha() ){
+          readValue(_in, cAf[0]);
+          readValue(_in, cAf[1]);
+          readValue(_in, cAf[2]);
+          readValue(_in, cAf[3]);
 
-        if ( userOptions_.face_has_color() )
-          _bi.set_color( fh , Vec4uc( cA ) );
-      }else{
-        //without alpha
-        readValue(_in, c[0]);
-        readValue(_in, c[1]);
-        readValue(_in, c[2]);
+          if ( userOptions_.face_has_color() )
+            _bi.set_color( fh , cAf );
+        }else{
+          //without alpha
+          readValue(_in, cf[0]);
+          readValue(_in, cf[1]);
+          readValue(_in, cf[2]);
 
-        if ( userOptions_.face_has_color() )
-          _bi.set_color( fh, Vec3uc( c ) );
+          if ( userOptions_.face_has_color() )
+            _bi.set_color( fh, cf );
+        }
+      } else {
+        //with alpha
+        if ( options_.color_has_alpha() ){
+          readValue(_in, cA[0]);
+          readValue(_in, cA[1]);
+          readValue(_in, cA[2]);
+          readValue(_in, cA[3]);
+
+          if ( userOptions_.face_has_color() )
+            _bi.set_color( fh , Vec4uc( cA ) );
+        }else{
+          //without alpha
+          readValue(_in, c[0]);
+          readValue(_in, c[1]);
+          readValue(_in, c[2]);
+
+          if ( userOptions_.face_has_color() )
+            _bi.set_color( fh, Vec3uc( c ) );
+        }
       }
     }
 
@@ -619,7 +671,7 @@ bool _OFFReader_::can_u_read(std::istream& _is) const
   // Detect possible garbage and make sure, we don't have an underflow
   if ( remainingChars >= 4 )
     remainingChars -= 4;
-  else 
+  else
     remainingChars = 0;
 
   if ( ( remainingChars >= 6 ) && ( strncmp(p, "BINARY", 6) == 0 ) )

@@ -245,6 +245,9 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 
   write_header(_out, _be, _opt);
 
+  if (_opt.color_is_float())
+    _out << std::fixed;
+
   // vertex data (point, normals, colors, texcoords)
   for (i=0, nV=_be.n_vertices(); i<nV; ++i)
   {

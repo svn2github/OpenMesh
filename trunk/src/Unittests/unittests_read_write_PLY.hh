@@ -296,6 +296,7 @@ TEST_F(OpenMeshReadWritePLY, WriteAndReadPLYWithFloatVertexColors) {
     EXPECT_FALSE(options.vertex_has_normal()) << "Wrong user options are returned!";
     EXPECT_FALSE(options.vertex_has_texcoord()) << "Wrong user options are returned!";
     EXPECT_TRUE(options.vertex_has_color()) << "Wrong user options are returned!";
+    EXPECT_TRUE(options.color_is_float()) << "Wrong user options are returned!";
 
     mesh_.release_vertex_colors();
 }
@@ -349,6 +350,8 @@ TEST_F(OpenMeshReadWritePLY, WriteAndReadBinaryPLYWithFloatVertexColors) {
     EXPECT_FALSE(options.vertex_has_normal()) << "Wrong user options are returned!";
     EXPECT_FALSE(options.vertex_has_texcoord()) << "Wrong user options are returned!";
     EXPECT_TRUE(options.vertex_has_color()) << "Wrong user options are returned!";
+    EXPECT_TRUE(options.color_is_float()) << "Wrong user options are returned!";
+    EXPECT_TRUE(options.is_binary()) << "Wrong user options are returned!";
 
     mesh_.release_vertex_colors();
 }
