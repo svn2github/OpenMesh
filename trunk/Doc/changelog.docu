@@ -8,14 +8,30 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.799)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.820)</td><td>
 
 <b>IO</b>
 <ul>
 <li>Made STL Reader work, with the clear = false flag and Redundant lookup removed. ( Thanks to Peter Newman for the patch)</li>
 <li>Missing include, preventing build on VS2012 (Thanks to Mageri Filali Maltouf for the patch)</li>
+<li>Fixed various warnings reported by cppcheck</li>
+<li>read_mesh now throws a compile error if an Options::Flag enum is passed as an argument instead of an Options object</li>
+<li>Make OpenMesh PLY writer work as expected (Thanks to Chin-chia Wu for the patch)</li>
+<li>Added colori and colorAi functions to BaseExporter which return Vec3i and Vec4i respectively</li>
+<li>Adjusted the PLYWriter to use colori and colorAi for writing ascii files</li>
+<li>Added a ColorFloat flag to Options, which can be set to write and read RGBA values as float instead of unsigned char</li>
+<li>PLY writer and reader can now also handle color floats</li>
+<li>OFF support for floats. Note that for reading binary OFF files with color floats, the user has to set the flag, that floats are expected</li>
 </ul>
 
+
+<b>Utils</b>
+<ul>
+<li>PropertyManager: Added PropertyManager::propertyExists() method.</li>
+<li>Added color_cast from Vec3f and Vec4f to Vec3i and Vec3ui</li>
+<li>Added color_cast from Vec4f to Vec4i and Vec4ui</li>
+
+</ul>
 
 <b>Decimater</b>
 <ul>
@@ -26,6 +42,9 @@
 <ul>
 <li>Added unittests for delete_face</li>
 <li>Added unittests for circulators</li>
+<li>Added test for writing and reading vertex colors to and from an OFF file. The default color type Vec3uc from DefaultTraits in Traits.hh is used.</li>
+<li>Added a ply file written with MeshLab and a corresponding unittest</li>
+<li>Added a unittest that writes and reads a binary PLY file with vertex colors</li>
 </ul>
 
 </tr>
