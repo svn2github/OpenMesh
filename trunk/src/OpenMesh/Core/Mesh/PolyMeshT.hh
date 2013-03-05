@@ -336,7 +336,7 @@ public:
   { return (Scalar)sqrt(calc_edge_sqr_length(_heh)); }
 
   Scalar calc_edge_sqr_length(EdgeHandle _eh) const
-  { return calc_edge_sqr_length(halfedge_handle(_eh,0)); }
+  { return calc_edge_sqr_length(this->halfedge_handle(_eh,0)); }
 
   Scalar calc_edge_sqr_length(HalfedgeHandle _heh) const
   {
