@@ -535,7 +535,7 @@ public:
 
 
   /// minimize values: same as *this = min(*this, _rhs), but faster
-  inline vector_type minimize(const vector_type& _rhs) {
+  inline vector_type& minimize(const vector_type& _rhs) {
 #define expr(i) if (_rhs[i] < Base::values_[i]) Base::values_[i] = _rhs[i];
     unroll(expr);
 #undef expr
@@ -552,7 +552,7 @@ public:
   }
 
   /// maximize values: same as *this = max(*this, _rhs), but faster
-  inline vector_type maximize(const vector_type& _rhs) {
+  inline vector_type& maximize(const vector_type& _rhs) {
 #define expr(i) if (_rhs[i] > Base::values_[i]) Base::values_[i] = _rhs[i];
     unroll(expr);
 #undef expr
@@ -569,12 +569,12 @@ public:
   }
 
   /// component-wise min
-  inline vector_type min(const vector_type& _rhs) {
+  inline vector_type min(const vector_type& _rhs) const {
     return vector_type(*this).minimize(_rhs);
   }
 
   /// component-wise max
-  inline vector_type max(const vector_type& _rhs) {
+  inline vector_type max(const vector_type& _rhs) const {
     return vector_type(*this).maximize(_rhs);
   }
 

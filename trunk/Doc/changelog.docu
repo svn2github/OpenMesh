@@ -8,7 +8,13 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.820)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.821)</td><td>
+
+<b>Vector Type</b>
+<ul>
+<li>vector_type min(const vector_type& _rhs) and vector_type max(const vector_type& _rhs) are declared const now. (Thanks to Vladimir Chalupecky for the hint)</li>
+<li>minimize and maximize return vector_type& (reference) instead of vector_type (value) to allow chaining p.minimize(p1).minimize(p2). (Thanks to Vladimir Chalupecky for the hint)</li>
+</ul>
 
 <b>IO</b>
 <ul>
