@@ -185,6 +185,34 @@ TEST_F(OpenMeshReadWriteOBJ, LoadSimpleOBJCheckTexCoords) {
   mesh_.release_halfedge_texcoords2D();
 }
 
+/*
+ * Just load a obj file of a square with a material
+ */
+TEST_F(OpenMeshReadWriteOBJ, LoadObjWithMaterial) {
+
+  mesh_.clear();
+
+  mesh_.request_face_colors();
+
+  OpenMesh::IO::Options options;
+  options += OpenMesh::IO::Options::FaceColor;
+
+  std::string file_name = "square_material.obj";
+
+  bool ok = OpenMesh::IO::read_mesh(mesh_, file_name,options);
+
+  EXPECT_TRUE(ok) << file_name;
+
+  OpenMesh::FaceHandle fh = mesh_.face_handle(mesh_.halfedge_handle(0));
+
+  EXPECT_TRUE(fh.is_valid()) << "fh should be valid";
+
+  EXPECT_EQ(128,   mesh_.color(fh)[0] ) << "Wrong vertex color at vertex 0 component 0";
+  EXPECT_EQ(128,   mesh_.color(fh)[1] ) << "Wrong vertex color at vertex 0 component 1";
+  EXPECT_EQ(128,   mesh_.color(fh)[2] ) << "Wrong vertex color at vertex 0 component 2";
+
+  mesh_.release_face_colors();
+}
 
 /*
  * Just load a obj file of a cube with vertex colors defined directly after the vertex definitions

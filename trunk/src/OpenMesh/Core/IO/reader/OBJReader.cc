@@ -574,9 +574,10 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
       }
 
-      fh = _bi.add_face(faceVertices);
-
+      // note that add_face can possibly triangulate the faces, which is why we have to
+      // store the current number of faces first
       size_t n_faces = _bi.n_faces();
+      fh = _bi.add_face(faceVertices);
 
       if (!vhandles.empty() && fh.is_valid() )
         _bi.add_face_texcoords(fh, vhandles[0], face_texcoords);
