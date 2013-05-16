@@ -270,6 +270,10 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
 
   int lastMat = -1;
 
+  // we do not want to write seperators if we only write vertex indices
+  bool onlyVertices =    !_opt.check(Options::VertexTexCoord)
+                      && !_opt.check(Options::VertexNormal);
+
   // faces (indices starting at 1 not 0)
   for (i=0, nF=_be.n_faces(); i<nF; ++i)
   {
@@ -305,19 +309,21 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
       idx = vhandles[j].idx() + 1;
       _out << " " << idx;
 
-      // write separator
-      _out << "/" ;
+      if (!onlyVertices) {
+        // write separator
+        _out << "/" ;
 
-      // write vertex texture coordinate index
-      if (_opt.check(Options::VertexTexCoord))
-        _out  << idx;
+        // write vertex texture coordinate index
+        if (_opt.check(Options::VertexTexCoord))
+          _out  << idx;
 
-      // write separator
-      _out << "/" ;
-
-      // write vertex normal index
-      if ( _opt.check(Options::VertexNormal) )
-        _out << idx;
+        // write vertex normal index
+        if ( _opt.check(Options::VertexNormal) ) {
+          // write separator
+          _out << "/" ;
+          _out << idx;
+        }
+      }
     }
 
     _out << std::endl;
