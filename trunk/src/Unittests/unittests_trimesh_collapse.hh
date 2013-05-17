@@ -30,6 +30,80 @@ class OpenMeshCollapse : public OpenMeshBase {
  * ====================================================================
  */
 
+
+/*
+ * Collapsing a quad splitted with center vertex
+ */
+TEST_F(OpenMeshCollapse, CollapseQuadWithCenter) {
+
+  mesh_.clear();
+
+
+  // 0--------1
+  // |\      /|
+  // | \    / | 
+  // |  \  /  |
+  // |    2   |
+  // |  /  \  |
+  // | /    \ |
+  // 3--------4
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[5];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 0, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(2, 0, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(1, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(0, 2, 0));
+  vhandle[4] = mesh_.add_vertex(Mesh::Point(2, 2, 0));
+
+  // Add four faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[1]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[4]);
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[4]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  mesh_.request_vertex_status();
+  mesh_.request_edge_status();
+  mesh_.request_face_status();
+
+
+  // Get the halfedge
+  Mesh::HalfedgeHandle v2v1 = mesh_.find_halfedge(vhandle[2], vhandle[1]);
+
+  EXPECT_TRUE( v2v1.is_valid() ) << "Invalid halfedge returned although it shoud exist";
+  EXPECT_TRUE( mesh_.is_collapse_ok(v2v1) ) << "Collapse retuned illegal althoug legal";
+
+  // Execute it as a crash test
+  mesh_.collapse(v2v1);
+}
+
+
+
+
 /*
  * Collapsing a tetrahedron
  */
