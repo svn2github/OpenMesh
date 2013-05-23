@@ -43,6 +43,7 @@
 #define PROPERTYMANAGER_HH_
 
 #include <sstream>
+#include <stdexcept>
 
 namespace OpenMesh {
 
@@ -69,12 +70,12 @@ template<typename PROPTYPE, typename MeshT>
 class PropertyManager {
     private:
         /**
-         * Noncopyable because there aren't not straightforward copy semantics.
+         * Noncopyable because there aren't no straightforward copy semantics.
          */
         PropertyManager(const PropertyManager&);
 
         /**
-         * Noncopyable because there aren't not straightforward copy semantics.
+         * Noncopyable because there aren't no straightforward copy semantics.
          */
         const PropertyManager& operator=(const PropertyManager&);
 
@@ -105,6 +106,9 @@ class PropertyManager {
             }
         }
 
+        PropertyManager() : mesh_(0), retain_(false) {
+        }
+
         ~PropertyManager() {
             deleteProperty();
         }
@@ -119,6 +123,11 @@ class PropertyManager {
             PROPTYPE dummy;
             return mesh.get_property_handle(dummy, propname);
         }
+
+        bool isValid() const { return mesh_ != 0; }
+        operator bool() const { return isValid(); }
+
+        const PROPTYPE &getRawProperty() const { return prop_; }
 
 #if __cplusplus > 199711L or __GXX_EXPERIMENTAL_CXX0X__
         /**
