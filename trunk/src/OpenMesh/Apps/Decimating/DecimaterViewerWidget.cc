@@ -67,6 +67,13 @@ void DecimaterViewerWidget::keyPressEvent(QKeyEvent* _event)
 {
   switch (_event->key())
   {
+    case Key_H:
+      std::cout << "Press '+' to increase the number of decimating steps\n"
+                << "Press '-' to decrease the number of decimating steps\n"
+                << "Press 'd' to perform the set number of decimating steps\n"
+                << "Press 'S' to save the mesh to 'result.off'\n"
+                << "Press 'q' or 'Esc' quit the application" << std::endl;
+      break;
     case Key_D:
     {
       int rc;

@@ -533,7 +533,12 @@ void usage_and_exit(int xcode)
             << "  Decimating a mesh using quadrics and normal flipping.\n" << std::endl;
   std::cerr << "Options\n"  << std::endl;
   std::cerr << " -M \"{Module-Name}[:Value]}\"\n"
-            << "    Use named module with eventually given parameterization\n" << std::endl;
+            << "    Use named module with eventually given parameterization\n"
+            << "    Several modules can also be used in order to introduce further constraints\n"
+            << "    Note that -M has to be given before each new module \n"
+            << "    An example with ModQuadric as a priority module\n"
+            << "    and ModRoundness as a binary module could look like this:\n"
+            << "    commandlineDecimater -M Q -M R:40.0 -n 0.1 -i inputfile.obj -o outputfile.obj\n" << std::endl;
   std::cerr << " -n <N>\n"
             << "    N >= 1: do N halfedge collapses.\n"
             << "    N <=-1: decimate down to |N| vertices.\n"

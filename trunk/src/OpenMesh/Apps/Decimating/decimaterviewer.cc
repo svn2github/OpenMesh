@@ -134,10 +134,11 @@ int main(int argc, char **argv)
 
 void usage_and_exit(int xcode)
 {
-   std::cout << "Usage: decimaterviewer [-s] [mesh] [texture]\n" << std::endl;
+   std::cout << "Usage: DecimaterGui [-s] [mesh] [texture]\n" << std::endl;
    std::cout << "Options:\n"
              << "  -s\n"
              << "    Reverse byte order, when reading binary files.\n"
+             << "    Press 'h' when the application is running for more options.\n"
              << std::endl;
    exit(xcode);
 }
