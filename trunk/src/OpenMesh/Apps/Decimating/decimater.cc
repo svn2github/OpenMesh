@@ -296,6 +296,7 @@ decimate(const std::string &_ifname,
        decimater.add(modND);
        if (_opt.ND.has_value())
          decimater.module( modND ).set_normal_deviation( _opt.ND );
+       decimater.module( modND ).set_binary(false);
      }
 
      typename OpenMesh::Decimater::ModNormalFlippingT<Mesh>::Handle modNF;
@@ -549,7 +550,7 @@ void usage_and_exit(int xcode)
   std::cerr << "  EL[:legth]      - ModEdgeLength*\n";
   std::cerr << "  HD[:distance]   - ModHausdorff\n";
   std::cerr << "  IS              - ModIndependentSets\n";
-  std::cerr << "  ND[:angle]      - ModNormalDeviation\n";
+  std::cerr << "  ND[:angle]      - ModNormalDeviation*\n";
   std::cerr << "  NF[:angle]      - ModNormalFlipping\n";
   std::cerr << "  PM[:file name]  - ModProgMesh\n";
   std::cerr << "  Q[:error]       - ModQuadric*\n";
