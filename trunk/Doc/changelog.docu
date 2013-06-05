@@ -8,7 +8,7 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.821)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.830)</td><td>
 
 <b>Vector Type</b>
 <ul>
@@ -18,6 +18,9 @@
 
 <b>IO</b>
 <ul>
+<li>Try to get rid of memory leak in IOManager(Changes the pointer used for IOManager to a static IOManager in the getter function)</li>
+<li>Fixed writing face indices in different configurations regarding vertex texture coordinates and vertex normals (Thanks to Robert Luo for the patch)</li>
+<li>Fixed a bug with OBJReader that prevented the material color to be loaded correctlyi(Thanks to Karthik Nathan for the patch)</li>
 <li>Made STL Reader work, with the clear = false flag and Redundant lookup removed. ( Thanks to Peter Newman for the patch)</li>
 <li>Missing include, preventing build on VS2012 (Thanks to Mageri Filali Maltouf for the patch)</li>
 <li>Fixed various warnings reported by cppcheck</li>
@@ -34,6 +37,7 @@
 <b>Utils</b>
 <ul>
 <li>PropertyManager: Added PropertyManager::propertyExists() method.</li>
+<li>PropertyManager: Enabled initialization of invalid PropertyManager.</li>
 <li>Added color_cast from Vec3f and Vec4f to Vec3i and Vec3ui</li>
 <li>Added color_cast from Vec4f to Vec4i and Vec4ui</li>
 
@@ -44,13 +48,26 @@
 <li>Make Hausdorff module thread safe. Removed static point vector. (Thanks to Falko Löffler for the fix)</li>
 </ul>
 
+<b>Tools</b>
+<ul>
+<li>Command Line Decimater: Added an explanation on how to use multiple modules to the commandlineDecimater help output</li>
+<li>Command Line Decimater: The normal deviation module now also is a priority module in the commandlineDecimater tool</li>
+<li>Gui Decimater: Added decimater related help output to DecimaterGui when 'h' is pressed as the application is running</li>
+</ul>
+
 <b>Unittests</b>
 <ul>
+<li>Added unittest for collapse and is_collapse_ok</li>
 <li>Added unittests for delete_face</li>
 <li>Added unittests for circulators</li>
 <li>Added test for writing and reading vertex colors to and from an OFF file. The default color type Vec3uc from DefaultTraits in Traits.hh is used.</li>
 <li>Added a ply file written with MeshLab and a corresponding unittest</li>
 <li>Added a unittest that writes and reads a binary PLY file with vertex colors</li>
+</ul>
+
+<b>Documentation</b>
+<ul>
+<li>Adjusted the documation for the decimation tutorial so that the priority module is correctly initialized</li>
 </ul>
 
 </tr>
