@@ -317,8 +317,9 @@ namespace OMFormat {
       case Chunk::Entity_Edge:     C += _hdr.n_edges_;    break;
       case Chunk::Entity_Mesh:     C  = 1;                break;
       default:
-	std::cerr << "Invalid value in _chunk_hdr.entity_\n";
-	assert( false );
+        std::cerr << "Invalid value in _chunk_hdr.entity_\n";
+        assert( false );
+        break;
     }
 
     return C * vector_size( _chunk_hdr );
@@ -399,6 +400,10 @@ namespace OMFormat {
       case  2: return OMFormat::Chunk::Integer_16;
       case  4: return OMFormat::Chunk::Integer_32;
       case  8: return OMFormat::Chunk::Integer_64;
+      default:
+        std::cerr << "Invalid value in integer_size\n";
+        assert( false );
+        break;
     }
     return Chunk::Integer_Size(0);
   }
@@ -418,6 +423,10 @@ namespace OMFormat {
       case  4: return OMFormat::Chunk::Float_32;
       case  8: return OMFormat::Chunk::Float_64;
       case 16: return OMFormat::Chunk::Float_128;
+      default:
+        std::cerr << "Invalid value in float_size\n";
+        assert( false );
+        break;
     }
     return Chunk::Float_Size(0);
   }
