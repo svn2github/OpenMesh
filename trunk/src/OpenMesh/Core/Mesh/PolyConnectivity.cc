@@ -465,16 +465,20 @@ void PolyConnectivity::delete_edge(EdgeHandle _eh, bool _delete_isolated_vertice
   if (fh0.is_valid())  delete_face(fh0, _delete_isolated_vertices);
   if (fh1.is_valid())  delete_face(fh1, _delete_isolated_vertices);
 
-  // mark edge deleted if the mesh has a edge status
-  if ( has_edge_status() )
-   status(_eh).set_deleted(true);
+  // If there is no face, we delete the edge
+  // here
+  if ( ! fh0.is_valid() && !fh1.is_valid()) {
+    // mark edge deleted if the mesh has a edge status
+    if ( has_edge_status() )
+      status(_eh).set_deleted(true);
 
-  // mark corresponding halfedges as deleted
-  // As the deleted edge is boundary,
-  // all corresponding halfedges will also be deleted.
-  if ( has_halfedge_status() ) {
-    status(halfedge_handle(_eh, 0)).set_deleted(true);
-    status(halfedge_handle(_eh, 1)).set_deleted(true);
+    // mark corresponding halfedges as deleted
+    // As the deleted edge is boundary,
+    // all corresponding halfedges will also be deleted.
+    if ( has_halfedge_status() ) {
+      status(halfedge_handle(_eh, 0)).set_deleted(true);
+      status(halfedge_handle(_eh, 1)).set_deleted(true);
+    }
   }
 }
 
