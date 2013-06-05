@@ -101,12 +101,18 @@ class OPENMESHDLLEXPORT _IOManager_
 {
 private:
 
+  /// Constructor has nothing todo for the Manager
   _IOManager_() {}
+
+  /// Destructor has nothing todo for the Manager
+  ~_IOManager_() {};
+
+  /** Declare the singleton getter function as friend to access the private constructor
+      and destructor
+    */
   friend OPENMESHDLLEXPORT _IOManager_& IOManager();
 
-
 public:
-
 
   /**
      Read a mesh from file _filename. The target data structure is specified
@@ -247,11 +253,9 @@ private:
 //=============================================================================
 
 
-extern _IOManager_*  __IOManager_instance;
+//_IOManager_*  __IOManager_instance; Causes memory leak, as destructor is never called
 
 OPENMESHDLLEXPORT _IOManager_& IOManager();
-
-
 
 //=============================================================================
 } // namespace IO

@@ -63,22 +63,21 @@ namespace IO {
 
 //=============================================================================
 
-
-_IOManager_  *__IOManager_instance = 0;
-
+// Destructor never called. Moved into singleton  getter function
+// _IOManager_  *__IOManager_instance = 0;
 
 _IOManager_& IOManager()
 {
 
-  if (!__IOManager_instance)
-    __IOManager_instance = new _IOManager_();
+  static _IOManager_  __IOManager_instance;
 
-  return *__IOManager_instance;
+  //if (!__IOManager_instance)
+  //  __IOManager_instance = new _IOManager_();
+
+  return __IOManager_instance;
 }
 
-
 //-----------------------------------------------------------------------------
-
 
 bool
 _IOManager_::
