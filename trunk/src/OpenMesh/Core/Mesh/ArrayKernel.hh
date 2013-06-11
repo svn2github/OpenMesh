@@ -719,7 +719,7 @@ public:
       assert(_it != end() && is_in(*_it));
       clear(*_it);
       *_it = handles_.back();
-      *_it.pop_back();
+      _it.pop_back();
     }
 
     inline void                             clear()

@@ -327,7 +327,7 @@ QGLViewerWidget::mouseMoveEvent( QMouseEvent* _event )
   {
     if (last_point_ok_) 
     {
-      if (newPoint_hitSphere = map_to_sphere(newPoint2D, newPoint3D)) 
+      if ((newPoint_hitSphere = map_to_sphere(newPoint2D, newPoint3D)))
       {
 	Vec3f axis = last_point_3D_ % newPoint3D;
 	float cos_angle = (last_point_3D_ | newPoint3D);

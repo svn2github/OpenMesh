@@ -238,14 +238,14 @@ class VertexVertexIterT
   /// Return the handle of the current target.
   typename Mesh::VertexHandle handle() const {
     assert(mesh_);
-    return mesh_->to_vertex_handle(heh_);; 
+    return mesh_->to_vertex_handle(heh_);
   }
 
 
   /// Cast to the handle of the current target.
   operator typename Mesh::VertexHandle() const {
     assert(mesh_);
-    return mesh_->to_vertex_handle(heh_);; 
+    return mesh_->to_vertex_handle(heh_);
   }
     
 
@@ -432,14 +432,14 @@ class ConstVertexVertexIterT
   /// Return the handle of the current target.
   typename Mesh::VertexHandle handle() const {
     assert(mesh_);
-    return mesh_->to_vertex_handle(heh_);; 
+    return mesh_->to_vertex_handle(heh_);
   }
 
 
   /// Cast to the handle of the current target.
   operator typename Mesh::VertexHandle() const {
     assert(mesh_);
-    return mesh_->to_vertex_handle(heh_);; 
+    return mesh_->to_vertex_handle(heh_);
   }
     
 
