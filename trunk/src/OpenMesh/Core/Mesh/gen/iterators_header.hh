@@ -54,7 +54,7 @@
 
 #include <OpenMesh/Core/System/config.h>
 #include <OpenMesh/Core/Attributes/Status.hh>
-#include <assert.h>
+#include <cassert>
 
 
 //== NAMESPACES ===============================================================

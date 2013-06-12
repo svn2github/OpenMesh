@@ -63,9 +63,8 @@
 #include <OpenMesh/Core/System/config.h>
 #include <iostream>
 #include <cmath>
-#include <assert.h>
-#include <math.h>
-#include <string.h>
+#include <cassert>
+#include <cstring>
 
 #if defined(__GNUC__) && defined(__SSE__)
 #include <xmmintrin.h>

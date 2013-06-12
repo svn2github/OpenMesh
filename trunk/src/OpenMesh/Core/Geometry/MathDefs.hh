@@ -42,8 +42,8 @@
 #ifndef MATHDEFS_HH
 #define MATHDEFS_HH
 
-#include <math.h>
-#include <float.h>
+#include <cmath>
+#include <cfloat>
 
 #ifndef M_PI
   #define M_PI      3.14159265359

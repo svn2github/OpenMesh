@@ -53,7 +53,7 @@
 //== INCLUDES =================================================================
 
 #include <OpenMesh/Tools/Decimater/ModBaseT.hh>
-#include <float.h>
+#include <cfloat>
 
 //== NAMESPACES ===============================================================
 

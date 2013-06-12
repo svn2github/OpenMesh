@@ -42,7 +42,7 @@
 #ifndef LOOPSCHEMEMASKT_HH
 #define LOOPSCHEMEMASKT_HH
 
-#include <math.h>
+#include <cmath>
 #include <vector>
 
 #include <OpenMesh/Core/System/config.h>

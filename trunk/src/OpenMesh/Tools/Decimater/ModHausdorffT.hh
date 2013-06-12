@@ -56,7 +56,7 @@
 #include <OpenMesh/Tools/Decimater/ModBaseT.hh>
 #include <OpenMesh/Core/Utils/Property.hh>
 #include <vector>
-#include <float.h>
+#include <cfloat>
 
 //== NAMESPACES ===============================================================
 

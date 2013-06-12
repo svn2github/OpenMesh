@@ -54,7 +54,7 @@
 
 #include <OpenMesh/Core/System/config.h>
 #include <OpenMesh/Core/Mesh/Status.hh>
-#include <assert.h>
+#include <cassert>
 #include <cstddef>
 
 
