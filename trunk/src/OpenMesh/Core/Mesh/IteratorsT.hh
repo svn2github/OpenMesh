@@ -77,7 +77,7 @@ template <class Mesh> class ConstFaceIterT;
 template <class Mesh> class FaceIterT;
 
 
-template <class Mesh, class ValueHandle, class MemberOwner, bool (MemberOwner::*PrimitiveStatusMember)() const, uint (MemberOwner::*PrimitiveCountMember)() const>
+template <class Mesh, class ValueHandle, class MemberOwner, bool (MemberOwner::*PrimitiveStatusMember)() const, size_t (MemberOwner::*PrimitiveCountMember)() const>
 class GenericIteratorT {
     public:
         //--- Typedefs ---

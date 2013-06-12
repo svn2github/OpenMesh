@@ -316,10 +316,10 @@ public:
   void clean();
 
   // --- number of items ---
-  unsigned int n_vertices()  const { return vertices_.size(); }
-  unsigned int n_halfedges() const { return 2*edges_.size(); }
-  unsigned int n_edges()     const { return edges_.size(); }
-  unsigned int n_faces()     const { return faces_.size(); }
+  size_t n_vertices()  const { return vertices_.size(); }
+  size_t n_halfedges() const { return 2*edges_.size(); }
+  size_t n_edges()     const { return edges_.size(); }
+  size_t n_faces()     const { return faces_.size(); }
 
   bool vertices_empty()  const { return vertices_.empty(); }
   bool halfedges_empty() const { return edges_.empty(); }
