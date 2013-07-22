@@ -144,7 +144,7 @@ void ArrayKernel::clear()
 
 
 
-void ArrayKernel::resize( unsigned int _n_vertices, unsigned int _n_edges, unsigned int _n_faces )
+void ArrayKernel::resize( size_t _n_vertices, size_t _n_edges, size_t _n_faces )
 {
   vertices_.resize(_n_vertices);
   edges_.resize(_n_edges);
@@ -156,7 +156,7 @@ void ArrayKernel::resize( unsigned int _n_vertices, unsigned int _n_edges, unsig
   fprops_resize(n_faces());
 }
 
-void ArrayKernel::reserve(unsigned int _n_vertices, unsigned int _n_edges, unsigned int _n_faces )
+void ArrayKernel::reserve(size_t _n_vertices, size_t _n_edges, size_t _n_faces )
 {
   vertices_.reserve(_n_vertices);
   edges_.reserve(_n_edges);

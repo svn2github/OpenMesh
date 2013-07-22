@@ -257,8 +257,8 @@ public:
 
 public:
   // --- resize/reserve ---
-  void resize( unsigned int _n_vertices, unsigned int _n_edges, unsigned int _n_faces );
-  void reserve(unsigned int _n_vertices, unsigned int _n_edges, unsigned int _n_faces );
+  void resize( size_t _n_vertices, size_t _n_edges, size_t _n_faces );
+  void reserve(size_t _n_vertices, size_t _n_edges, size_t _n_faces );
 
   // --- deletion ---
   /** \brief garbage collection
@@ -685,7 +685,7 @@ public:
     typedef typename HandleContainer::const_iterator
                                             const_iterator;
   public:
-    ExtStatusSetT(ArrayKernel& _kernel, unsigned int _capacity_hint = 0)
+    ExtStatusSetT(ArrayKernel& _kernel, size_t _capacity_hint = 0)
     : Base(_kernel)
     { handles_.reserve(_capacity_hint); }
 

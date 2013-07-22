@@ -8,13 +8,25 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.830)</td><td>
+<tr valign=top><td><b>2.4</b> (?/?/?,Rev.838)</td><td>
+
+<b>Significant interface changes</b>
+<ul>
+<li><b>The functions n_vertices(),n_edges().n_faces() return size_t now.</b></li>
+</ul>
 
 <b>Vector Type</b>
 <ul>
 <li>vector_type min(const vector_type& _rhs) and vector_type max(const vector_type& _rhs) are declared const now. (Thanks to Vladimir Chalupecky for the hint)</li>
 <li>minimize and maximize return vector_type& (reference) instead of vector_type (value) to allow chaining p.minimize(p1).minimize(p2). (Thanks to Vladimir Chalupecky for the hint)</li>
 </ul>
+
+<b>Core</b>
+<ul>
+<li>Allow PolyConnectivity::delete_edge to mark an edge as deleted, if there are no faces incident.</li>
+<li>Don't use c headers in c++ files anymore</li>
+</ul>
+
 
 <b>IO</b>
 <ul>
@@ -57,6 +69,7 @@
 
 <b>Unittests</b>
 <ul>
+<li>Added unittest for skipping iterators</li>
 <li>Added unittest for collapse and is_collapse_ok</li>
 <li>Added unittests for delete_face</li>
 <li>Added unittests for circulators</li>
