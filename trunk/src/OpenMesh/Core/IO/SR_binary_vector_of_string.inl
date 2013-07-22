@@ -21,19 +21,19 @@ template <> struct binary< std::vector< std::string > >
   static size_t size_of(void) { return UnknownSize; }
 
   static size_t size_of(const value_type& _v)
-  { return std::accumulate( _v.begin(), _v.end(), 0u, Sum() ); }
+  { return std::accumulate( _v.begin(), _v.end(), size_t(0), Sum() ); }
 
   static 
   size_t store(std::ostream& _os, const value_type& _v, bool _swap=false)
   {
-    return std::accumulate( _v.begin(), _v.end(), 0, 
+    return std::accumulate( _v.begin(), _v.end(), size_t(0), 
 			    FunctorStore<elem_type>(_os, _swap) );
   }                                                        
                                                              
   static
   size_t restore(std::istream& _is, value_type& _v, bool _swap=false) 
   {
-    return std::accumulate( _v.begin(), _v.end(), 0, 
+    return std::accumulate( _v.begin(), _v.end(), size_t(0), 
 			    FunctorRestore<elem_type>(_is, _swap) );
   }                                                        
 };

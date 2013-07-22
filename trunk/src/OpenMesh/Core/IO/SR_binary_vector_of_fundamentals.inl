@@ -30,7 +30,7 @@ template <> struct binary< std::vector< T > > {                 \
     size_t bytes=0;                                             \
                                                                 \
     if ( _swap)                                                 \
-      bytes = std::accumulate( _v.begin(), _v.end(), 0,         \
+      bytes = std::accumulate( _v.begin(), _v.end(), size_t(0),         \
 			       FunctorRestore<elem_type>(_is, _swap) );           \
     else                                                        \
     {                                                           \
