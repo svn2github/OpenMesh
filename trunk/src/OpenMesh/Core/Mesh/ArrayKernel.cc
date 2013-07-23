@@ -94,6 +94,35 @@ void ArrayKernel::assign_connectivity(const ArrayKernel& _other)
 #undef COPY_STATUS_PROPERTY
 }
 
+// --- handle -> item ---
+VertexHandle ArrayKernel::handle(const Vertex& _v) const
+{
+   return VertexHandle(&_v - &vertices_.front());
+}
+
+HalfedgeHandle ArrayKernel::handle(const Halfedge& _he) const
+{
+  // Calculate edge belonging to given halfedge
+  // There are two halfedges stored per edge
+  // Get memory position inside edge vector and devide by size of an edge
+  // to get the corresponding edge for the requested halfedge
+  unsigned int eh = ( (char*)&_he - (char*)&edges_.front() ) /  sizeof(Edge)  ;
+  assert((&_he == &edges_[eh].halfedges_[0]) ||
+         (&_he == &edges_[eh].halfedges_[1]));
+  return ((&_he == &edges_[eh].halfedges_[0]) ?
+                    HalfedgeHandle(eh<<1) : HalfedgeHandle((eh<<1)+1));
+}
+
+EdgeHandle ArrayKernel::handle(const Edge& _e) const
+{
+  return EdgeHandle(&_e - &edges_.front());
+}
+
+FaceHandle ArrayKernel::handle(const Face& _f) const
+{
+  return FaceHandle(&_f - &faces_.front());
+}
+
 unsigned int ArrayKernel::delete_isolated_vertices()
 {
   assert(has_vertex_status());//this function requires vertex status property

@@ -109,30 +109,16 @@ public:
       copies only the connectivity, i.e. vertices, edges, faces and their status fields.
       NOTE: The geometry (the points property) is NOT copied. Poly/TriConnectivity
       override(and hide) that function to provide connectivity consistence.*/
-  void                                      assign_connectivity(const ArrayKernel& _other);
+  void assign_connectivity(const ArrayKernel& _other);
 
   // --- handle -> item ---
-  VertexHandle handle(const Vertex& _v) const
-  {return VertexHandle(&_v - &vertices_.front()); }
+  VertexHandle handle(const Vertex& _v) const;
 
-  HalfedgeHandle handle(const Halfedge& _he) const
-  {
-    // Calculate edge belonging to given halfedge
-    // There are two halfedges stored per edge
-    // Get memory position inside edge vector and devide by size of an edge
-    // to get the corresponding edge for the requested halfedge
-    unsigned int eh = ( (char*)&_he - (char*)&edges_.front() ) /  sizeof(Edge)  ;
-    assert((&_he == &edges_[eh].halfedges_[0]) ||
-           (&_he == &edges_[eh].halfedges_[1]));
-    return ((&_he == &edges_[eh].halfedges_[0]) ?
-                      HalfedgeHandle(eh<<1) : HalfedgeHandle((eh<<1)+1));
-  }
+  HalfedgeHandle handle(const Halfedge& _he) const;
 
-  EdgeHandle handle(const Edge& _e) const
-  { return EdgeHandle(&_e - &edges_.front()); }
+  EdgeHandle handle(const Edge& _e) const;
 
-  FaceHandle handle(const Face& _f) const
-  { return FaceHandle(&_f - &faces_.front()); }
+  FaceHandle handle(const Face& _f) const;
 
 #define SIGNED(x) signed( (x) )
   //checks handle validity - useful for debugging
