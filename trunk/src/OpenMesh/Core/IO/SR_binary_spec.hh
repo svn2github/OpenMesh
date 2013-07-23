@@ -228,7 +228,7 @@ template <> struct binary< std::string > {
     if (_v.size() < std::numeric_limits<length_t>::max() )
 #endif
     {
-      length_t len = _v.size();
+      length_t len = length_t(_v.size());
 
       if (_swap) reverse_byte_order(len);
 
