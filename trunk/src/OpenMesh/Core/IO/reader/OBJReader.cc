@@ -504,7 +504,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
                 // Calculation of index :
                 // -1 is the last vertex in the list
                 // As obj counts from 1 and not zero add +1
-                value = _bi.n_vertices() + value + 1;
+                value = int(_bi.n_vertices() + value + 1);
               }
               // Obj counts from 1 and not zero .. array counts from zero therefore -1
               vhandles.push_back(VertexHandle(value-1));
@@ -518,7 +518,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
                 // Calculation of index :
                 // -1 is the last vertex in the list
                 // As obj counts from 1 and not zero add +1
-                value = texcoords.size() + value + 1;
+                value = int(texcoords.size()) + value + 1;
               }
               assert(!vhandles.empty());
 
@@ -551,7 +551,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
                 // Calculation of index :
                 // -1 is the last vertex in the list
                 // As obj counts from 1 and not zero add +1
-                value = normals.size() + value + 1;
+                value = int(normals.size()) + value + 1;
               }
 
               // Obj counts from 1 and not zero .. array counts from zero therefore -1
@@ -587,7 +587,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
         std::vector<FaceHandle> newfaces;
 
         for( size_t i=0; i < _bi.n_faces()-n_faces; ++i )
-          newfaces.push_back(FaceHandle(n_faces+i));
+          newfaces.push_back(FaceHandle(int(n_faces+i)));
 
         Material& mat = materials_[matname];
 
@@ -630,7 +630,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
         std::vector<FaceHandle> newfaces;
 
         for( size_t i=0; i < _bi.n_faces()-n_faces; ++i )
-          newfaces.push_back(FaceHandle(n_faces+i));
+          newfaces.push_back(FaceHandle(int(n_faces+i)));
 
         // Set the texture index to zero as we don't have any information
         if ( userOptions.face_has_texcoord() )
