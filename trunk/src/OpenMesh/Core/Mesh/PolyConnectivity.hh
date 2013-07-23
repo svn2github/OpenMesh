@@ -271,56 +271,40 @@ public:
   //@{
 
   /// Begin iterator for vertices
-  VertexIter vertices_begin()
-  { return VertexIter(*this, VertexHandle(0)); }
+  VertexIter vertices_begin();
   /// Const begin iterator for vertices
-  ConstVertexIter vertices_begin() const
-  { return ConstVertexIter(*this, VertexHandle(0)); }
+  ConstVertexIter vertices_begin() const;
   /// End iterator for vertices
-  VertexIter vertices_end()
-  { return VertexIter(*this, VertexHandle(n_vertices())); }
+  VertexIter vertices_end();
   /// Const end iterator for vertices
-  ConstVertexIter vertices_end() const
-  { return ConstVertexIter(*this, VertexHandle(n_vertices())); }
+  ConstVertexIter vertices_end() const;
 
   /// Begin iterator for halfedges
-  HalfedgeIter halfedges_begin()
-  { return HalfedgeIter(*this, HalfedgeHandle(0)); }
+  HalfedgeIter halfedges_begin();
   /// Const begin iterator for halfedges
-  ConstHalfedgeIter halfedges_begin() const
-  { return ConstHalfedgeIter(*this, HalfedgeHandle(0)); }
+  ConstHalfedgeIter halfedges_begin() const;
   /// End iterator for halfedges
-  HalfedgeIter halfedges_end()
-  { return HalfedgeIter(*this, HalfedgeHandle(n_halfedges())); }
+  HalfedgeIter halfedges_end();
   /// Const end iterator for halfedges
-  ConstHalfedgeIter halfedges_end() const
-  { return ConstHalfedgeIter(*this, HalfedgeHandle(n_halfedges())); }
+  ConstHalfedgeIter halfedges_end() const;
 
   /// Begin iterator for edges
-  EdgeIter edges_begin()
-  { return EdgeIter(*this, EdgeHandle(0)); }
+  EdgeIter edges_begin();
   /// Const begin iterator for edges
-  ConstEdgeIter edges_begin() const
-  { return ConstEdgeIter(*this, EdgeHandle(0)); }
+  ConstEdgeIter edges_begin() const;
   /// End iterator for edges
-  EdgeIter edges_end()
-  { return EdgeIter(*this, EdgeHandle(n_edges())); }
+  EdgeIter edges_end();
   /// Const end iterator for edges
-  ConstEdgeIter edges_end() const
-  { return ConstEdgeIter(*this, EdgeHandle(n_edges())); }
+  ConstEdgeIter edges_end() const;
 
   /// Begin iterator for faces
-  FaceIter faces_begin()
-  { return FaceIter(*this, FaceHandle(0)); }
+  FaceIter faces_begin();
   /// Const begin iterator for faces
-  ConstFaceIter faces_begin() const
-  { return ConstFaceIter(*this, FaceHandle(0)); }
+  ConstFaceIter faces_begin() const;
   /// End iterator for faces
-  FaceIter faces_end()
-  { return FaceIter(*this, FaceHandle(n_faces())); }
+  FaceIter faces_end();
   /// Const end iterator for faces
-  ConstFaceIter faces_end() const
-  { return ConstFaceIter(*this, FaceHandle(n_faces())); }
+  ConstFaceIter faces_end() const;
 
   template<typename CONTAINER_TYPE, typename ITER_TYPE, ITER_TYPE (CONTAINER_TYPE::*begin_fn)(), ITER_TYPE (CONTAINER_TYPE::*end_fn)()>
   class EntityRange {

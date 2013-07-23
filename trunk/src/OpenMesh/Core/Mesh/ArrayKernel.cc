@@ -123,6 +123,30 @@ FaceHandle ArrayKernel::handle(const Face& _f) const
   return FaceHandle(&_f - &faces_.front());
 }
 
+#define SIGNED(x) signed( (x) )
+
+bool ArrayKernel::is_valid_handle(VertexHandle _vh) const
+{
+  return 0 <= _vh.idx() && _vh.idx() < SIGNED(n_vertices());
+}
+
+bool ArrayKernel::is_valid_handle(HalfedgeHandle _heh) const
+{
+  return 0 <= _heh.idx() && _heh.idx() < SIGNED(n_edges()*2);
+}
+
+bool ArrayKernel::is_valid_handle(EdgeHandle _eh) const
+{
+  return 0 <= _eh.idx() && _eh.idx() < SIGNED(n_edges());
+}
+
+bool ArrayKernel::is_valid_handle(FaceHandle _fh) const
+{
+  return 0 <= _fh.idx() && _fh.idx() < SIGNED(n_faces());
+}
+
+#undef SIGNED
+
 unsigned int ArrayKernel::delete_isolated_vertices()
 {
   assert(has_vertex_status());//this function requires vertex status property

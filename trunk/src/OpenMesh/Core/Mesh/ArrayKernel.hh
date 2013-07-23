@@ -120,19 +120,19 @@ public:
 
   FaceHandle handle(const Face& _f) const;
 
-#define SIGNED(x) signed( (x) )
-  //checks handle validity - useful for debugging
-  bool is_valid_handle(VertexHandle _vh) const
-  { return 0 <= _vh.idx() && _vh.idx() < SIGNED(n_vertices()); }
 
-  bool is_valid_handle(HalfedgeHandle _heh) const
-  { return 0 <= _heh.idx() && _heh.idx() < SIGNED(n_edges()*2); }
+  ///checks handle validity - useful for debugging
+  bool is_valid_handle(VertexHandle _vh) const;
 
-  bool is_valid_handle(EdgeHandle _eh) const
-  { return 0 <= _eh.idx() && _eh.idx() < SIGNED(n_edges()); }
+  ///checks handle validity - useful for debugging
+  bool is_valid_handle(HalfedgeHandle _heh) const;
 
-  bool is_valid_handle(FaceHandle _fh) const
-  { return 0 <= _fh.idx() && _fh.idx() < SIGNED(n_faces()); }
+  ///checks handle validity - useful for debugging
+  bool is_valid_handle(EdgeHandle _eh) const;
+
+  ///checks handle validity - useful for debugging
+  bool is_valid_handle(FaceHandle _fh) const;
+
 
   // --- item -> handle ---
   const Vertex& vertex(VertexHandle _vh) const
@@ -182,8 +182,6 @@ public:
     assert(is_valid_handle(_fh));
     return faces_[_fh.idx()];
   }
-
-#undef SIGNED
 
   // --- get i'th items ---
 

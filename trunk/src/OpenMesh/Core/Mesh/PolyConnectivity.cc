@@ -597,6 +597,102 @@ void PolyConnectivity::delete_face(FaceHandle _fh, bool _delete_isolated_vertice
 }
 
 //-----------------------------------------------------------------------------
+PolyConnectivity::VertexIter PolyConnectivity::vertices_begin()
+{
+  return VertexIter(*this, VertexHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstVertexIter PolyConnectivity::vertices_begin() const
+{
+  return ConstVertexIter(*this, VertexHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::VertexIter PolyConnectivity::vertices_end()
+{
+  return VertexIter(*this, VertexHandle(n_vertices()));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstVertexIter PolyConnectivity::vertices_end() const
+{
+  return ConstVertexIter(*this, VertexHandle(n_vertices()));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::HalfedgeIter PolyConnectivity::halfedges_begin()
+{
+  return HalfedgeIter(*this, HalfedgeHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstHalfedgeIter PolyConnectivity::halfedges_begin() const
+{
+  return ConstHalfedgeIter(*this, HalfedgeHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::HalfedgeIter PolyConnectivity::halfedges_end()
+{
+  return HalfedgeIter(*this, HalfedgeHandle(n_halfedges()));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstHalfedgeIter PolyConnectivity::halfedges_end() const
+{
+  return ConstHalfedgeIter(*this, HalfedgeHandle(n_halfedges()));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::EdgeIter PolyConnectivity::edges_begin()
+{
+  return EdgeIter(*this, EdgeHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstEdgeIter PolyConnectivity::edges_begin() const
+{
+  return ConstEdgeIter(*this, EdgeHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::EdgeIter PolyConnectivity::edges_end()
+{
+  return EdgeIter(*this, EdgeHandle(n_edges()));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstEdgeIter PolyConnectivity::edges_end() const
+{
+  return ConstEdgeIter(*this, EdgeHandle(n_edges()));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::FaceIter PolyConnectivity::faces_begin()
+{
+  return FaceIter(*this, FaceHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstFaceIter PolyConnectivity::faces_begin() const
+{
+  return ConstFaceIter(*this, FaceHandle(0));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::FaceIter PolyConnectivity::faces_end()
+{
+  return FaceIter(*this, FaceHandle(n_faces()));
+}
+
+//-----------------------------------------------------------------------------
+PolyConnectivity::ConstFaceIter PolyConnectivity::faces_end() const
+{
+  return ConstFaceIter(*this, FaceHandle(n_faces()));
+}
+
+//-----------------------------------------------------------------------------
 void PolyConnectivity::collapse(HalfedgeHandle _hh)
 {
   HalfedgeHandle h0 = _hh;
