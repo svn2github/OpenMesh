@@ -103,9 +103,9 @@ private:
   mutable std::vector< OpenMesh::Vec3f > material_;
   mutable std::vector< OpenMesh::Vec4f > materialA_;
 
-  int getMaterial(OpenMesh::Vec3f _color) const;
+  size_t getMaterial(OpenMesh::Vec3f _color) const;
 
-  int getMaterial(OpenMesh::Vec4f _color) const;
+  size_t getMaterial(OpenMesh::Vec4f _color) const;
 
   bool writeMaterial(std::ostream& _out, BaseExporter&, Options) const;
 

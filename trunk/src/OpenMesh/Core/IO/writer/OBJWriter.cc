@@ -45,6 +45,7 @@
 
 //STL
 #include <fstream>
+#include <limits>
 
 // OpenMesh
 #include <OpenMesh/Core/System/config.h>
@@ -123,9 +124,9 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt, std::stream
 
 //-----------------------------------------------------------------------------
 
-int _OBJWriter_::getMaterial(OpenMesh::Vec3f _color) const
+size_t _OBJWriter_::getMaterial(OpenMesh::Vec3f _color) const
 {
-  for (uint i=0; i < material_.size(); i++)
+  for (size_t i=0; i < material_.size(); i++)
     if(material_[i] == _color)
       return i;
 
@@ -136,9 +137,9 @@ int _OBJWriter_::getMaterial(OpenMesh::Vec3f _color) const
 
 //-----------------------------------------------------------------------------
 
-int _OBJWriter_::getMaterial(OpenMesh::Vec4f _color) const
+size_t _OBJWriter_::getMaterial(OpenMesh::Vec4f _color) const
 {
-  for (uint i=0; i < materialA_.size(); i++)
+  for (size_t i=0; i < materialA_.size(); i++)
     if(materialA_[i] == _color)
       return i;
 
@@ -160,22 +161,22 @@ writeMaterial(std::ostream& _out, BaseExporter& _be, Options _opt) const
   materialA_.clear();
 
   //iterate over faces
-  for (int i=0, nF=_be.n_faces(); i<nF; ++i)
+  for (size_t i=0, nF=_be.n_faces(); i<nF; ++i)
   {
     //color with alpha
     if ( _opt.color_has_alpha() ){
-      cA  = color_cast<OpenMesh::Vec4f> (_be.colorA( FaceHandle(i) ));
+      cA  = color_cast<OpenMesh::Vec4f> (_be.colorA( FaceHandle(int(i)) ));
       getMaterial(cA);
     }else{
     //and without alpha
-      c  = color_cast<OpenMesh::Vec3f> (_be.color( FaceHandle(i) ));
+      c  = color_cast<OpenMesh::Vec3f> (_be.color( FaceHandle(int(i)) ));
       getMaterial(c);
     }
   }
 
   //write the materials
   if ( _opt.color_has_alpha() )
-    for (uint i=0; i < materialA_.size(); i++){
+    for (size_t i=0; i < materialA_.size(); i++){
       _out << "newmtl " << "mat" << i << std::endl;
       _out << "Ka 0.5000 0.5000 0.5000" << std::endl;
       _out << "Kd " << materialA_[i][0] << materialA_[i][1] << materialA_[i][2] << std::endl;;
@@ -183,7 +184,7 @@ writeMaterial(std::ostream& _out, BaseExporter& _be, Options _opt) const
       _out << "illum 1" << std::endl;
     }
   else
-    for (uint i=0; i < material_.size(); i++){
+    for (size_t i=0; i < material_.size(); i++){
       _out << "newmtl " << "mat" << i << std::endl;
       _out << "Ka 0.5000 0.5000 0.5000" << std::endl;
       _out << "Kd " << material_[i][0] << material_[i][1] << material_[i][2] << std::endl;;
@@ -200,7 +201,8 @@ bool
 _OBJWriter_::
 write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
-  unsigned int i, j, nV, nF, idx;
+  unsigned int nV, nF, idx;
+  size_t i, j; 
   Vec3f v, n;
   Vec2f t;
   VertexHandle vh;
@@ -268,7 +270,7 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
       _out << "vt " << t[0] <<" "<< t[1] << std::endl;
   }
 
-  int lastMat = -1;
+  size_t lastMat = std::numeric_limits<std::size_t>::max();
 
   // we do not want to write seperators if we only write vertex indices
   bool onlyVertices =    !_opt.check(Options::VertexTexCoord)
@@ -279,15 +281,15 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
   {
 
     if (useMatrial &&  _opt.check(Options::FaceColor) ){
-      int material = -1;
+      size_t material = std::numeric_limits<std::size_t>::max();
 
       //color with alpha
       if ( _opt.color_has_alpha() ){
-        cA  = color_cast<OpenMesh::Vec4f> (_be.colorA( FaceHandle(i) ));
+        cA  = color_cast<OpenMesh::Vec4f> (_be.colorA( FaceHandle(int(i)) ));
         material = getMaterial(cA);
       } else{
       //and without alpha
-        c  = color_cast<OpenMesh::Vec3f> (_be.color( FaceHandle(i) ));
+        c  = color_cast<OpenMesh::Vec3f> (_be.color( FaceHandle(int(i)) ));
         material = getMaterial(c);
       }
 
