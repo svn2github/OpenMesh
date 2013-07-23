@@ -299,7 +299,7 @@ bool _OMReader_::read_binary_vertex_chunk(std::istream &_is, BaseImporter &_bi, 
       for (; vidx < header_.n_vertices_ && !_is.eof(); ++vidx) {
         bytes_ += vector_restore(_is, v3f, _swap);
         if (fileOptions_.vertex_has_normal() && _opt.vertex_has_normal())
-          _bi.set_normal(VertexHandle(vidx), v3f);
+          _bi.set_normal(VertexHandle(int(vidx)), v3f);
       }
       break;
 
@@ -310,7 +310,7 @@ bool _OMReader_::read_binary_vertex_chunk(std::istream &_is, BaseImporter &_bi, 
       for (; vidx < header_.n_vertices_ && !_is.eof(); ++vidx) {
         bytes_ += vector_restore(_is, v2f, _swap);
         if (fileOptions_.vertex_has_texcoord() && _opt.vertex_has_texcoord())
-          _bi.set_texcoord(VertexHandle(vidx), v2f);
+          _bi.set_texcoord(VertexHandle(int(vidx)), v2f);
       }
       break;
 
@@ -323,7 +323,7 @@ bool _OMReader_::read_binary_vertex_chunk(std::istream &_is, BaseImporter &_bi, 
       for (; vidx < header_.n_vertices_ && !_is.eof(); ++vidx) {
         bytes_ += vector_restore(_is, v3uc, _swap);
         if (fileOptions_.vertex_has_color() && _opt.vertex_has_color())
-          _bi.set_color(VertexHandle(vidx), v3uc);
+          _bi.set_color(VertexHandle(int(vidx)), v3uc);
       }
       break;
 
@@ -384,7 +384,7 @@ bool _OMReader_::read_binary_face_chunk(std::istream &_is, BaseImporter &_bi, Op
         for (size_t j = 0; j < nV; ++j) {
           bytes_ += restore(_is, vidx, Chunk::Integer_Size(chunk_header_.bits_), _swap);
 
-          vhandles.push_back(VertexHandle(vidx));
+          vhandles.push_back(VertexHandle(int(vidx)));
         }
 
         _bi.add_face(vhandles);
@@ -399,7 +399,7 @@ bool _OMReader_::read_binary_face_chunk(std::istream &_is, BaseImporter &_bi, Op
       for (; fidx < header_.n_faces_ && !_is.eof(); ++fidx) {
         bytes_ += vector_restore(_is, v3f, _swap);
         if( fileOptions_.face_has_normal() && _opt.face_has_normal())
-          _bi.set_normal(FaceHandle(fidx), v3f);
+          _bi.set_normal(FaceHandle(int(fidx)), v3f);
       }
       break;
 
@@ -411,7 +411,7 @@ bool _OMReader_::read_binary_face_chunk(std::istream &_is, BaseImporter &_bi, Op
       for (; fidx < header_.n_faces_ && !_is.eof(); ++fidx) {
         bytes_ += vector_restore(_is, v3uc, _swap);
         if( fileOptions_.face_has_color() && _opt.face_has_color())
-          _bi.set_color(FaceHandle(fidx), v3uc);
+          _bi.set_color(FaceHandle(int(fidx)), v3uc);
       }
       break;
 
