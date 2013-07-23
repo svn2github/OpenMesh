@@ -49,7 +49,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMesh) {
   HModQuadric hModQuadricDBG;
   decimaterDBG.add( hModQuadricDBG );
   decimaterDBG.initialize();
-  int removedVertices = 0;
+  size_t removedVertices = 0;
   removedVertices = decimaterDBG.decimate_to(5000);
                     decimaterDBG.mesh().garbage_collection();
 
@@ -73,7 +73,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceVerticesLimit) {
   HModQuadric hModQuadricDBG;
   decimaterDBG.add( hModQuadricDBG );
   decimaterDBG.initialize();
-  int removedVertices = 0;
+  size_t removedVertices = 0;
   removedVertices = decimaterDBG.decimate_to_faces(5000, 8000);
                     decimaterDBG.mesh().garbage_collection();
 
@@ -97,7 +97,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceFaceLimit) {
   HModQuadric hModQuadricDBG;
   decimaterDBG.add( hModQuadricDBG );
   decimaterDBG.initialize();
-  int removedVertices = 0;
+  size_t removedVertices = 0;
   removedVertices = decimaterDBG.decimate_to_faces(4500, 9996);
                     decimaterDBG.mesh().garbage_collection();
 

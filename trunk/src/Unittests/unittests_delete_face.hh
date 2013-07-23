@@ -182,13 +182,13 @@ TEST_F(OpenMeshDeleteFaceTriangleMesh, DeleteHalfTriangleMeshCubeNoEdgeStatus) {
   mesh_.request_face_status();
   mesh_.request_vertex_status();
   mesh_.request_halfedge_status();
-  const unsigned int n_face_to_delete = mesh_.n_faces()/2;
+  const size_t n_face_to_delete = mesh_.n_faces()/2;
 
   // Check the variable
   EXPECT_EQ(6u, n_face_to_delete )    << "Wrong number of faces to delete";
 
   for(size_t i = 0; i < n_face_to_delete; i++)
-	  mesh_.delete_face(mesh_.face_handle(i));
+	  mesh_.delete_face(mesh_.face_handle(int(i)));
 
   // =====================================================
   // Check config afterwards
@@ -343,13 +343,13 @@ TEST_F(OpenMeshDeleteFaceTriangleMesh, DeleteHalfTriangleMeshCubeWithEdgeStatus)
   mesh_.request_vertex_status();
   mesh_.request_edge_status();
   mesh_.request_halfedge_status();
-  const unsigned int n_face_to_delete = mesh_.n_faces()/2;
+  const size_t n_face_to_delete = mesh_.n_faces()/2;
 
   // Check the variable
   EXPECT_EQ(6u, n_face_to_delete )    << "Wrong number of faces to delete";
 
   for(size_t i = 0; i < n_face_to_delete; i++)
-	  mesh_.delete_face(mesh_.face_handle(i));
+	  mesh_.delete_face(mesh_.face_handle(int(i)));
 
   // =====================================================
   // Check config afterwards
@@ -464,13 +464,13 @@ TEST_F(OpenMeshDeleteFacePolyMesh, DeleteteHalfPolyMeshCubeWithoutEdgeStatus) {
   mesh_.request_face_status();
   mesh_.request_vertex_status();
   mesh_.request_halfedge_status();
-  const unsigned int n_face_to_delete = mesh_.n_faces()/2;
+  const size_t n_face_to_delete = mesh_.n_faces()/2;
 
   // Check the variable
   EXPECT_EQ(3u, n_face_to_delete )    << "Wrong number of faces to delete";
 
   for(size_t i = 0; i < n_face_to_delete; i++)
-	  mesh_.delete_face(mesh_.face_handle(i));
+	  mesh_.delete_face(mesh_.face_handle(int(i)));
 
   // =====================================================
   // Check config afterwards
@@ -584,13 +584,13 @@ TEST_F(OpenMeshDeleteFacePolyMesh, DeleteteHalfPolyMeshCubeWithEdgeStatus) {
   mesh_.request_vertex_status();
   mesh_.request_edge_status();
   mesh_.request_halfedge_status();
-  const unsigned int n_face_to_delete = mesh_.n_faces()/2;
+  const size_t n_face_to_delete = mesh_.n_faces()/2;
 
   // Check the variable
   EXPECT_EQ(3u, n_face_to_delete )    << "Wrong number of faces to delete";
 
   for(size_t i = 0; i < n_face_to_delete; i++)
-	  mesh_.delete_face(mesh_.face_handle(i));
+	  mesh_.delete_face(mesh_.face_handle(int(i)));
 
   // =====================================================
   // Check config afterwards
