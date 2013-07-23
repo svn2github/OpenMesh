@@ -249,7 +249,7 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
     _out << std::fixed;
 
   // vertex data (point, normals, colors, texcoords)
-  for (i=0, nV=_be.n_vertices(); i<nV; ++i)
+  for (i=0, nV=int(_be.n_vertices()); i<nV; ++i)
   {
     vh = VertexHandle(i);
     v  = _be.point(vh);
@@ -298,7 +298,7 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
   // faces (indices starting at 0)
   if (_be.is_triangle_mesh())
   {
-    for (i=0, nF=_be.n_faces(); i<nF; ++i)
+    for (i=0, nF=int(_be.n_faces()); i<nF; ++i)
     {
       _be.get_vhandles(FaceHandle(i), vhandles);
       _out << 3 << " ";
@@ -323,7 +323,7 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
   }
   else
   {
-    for (i=0, nF=_be.n_faces(); i<nF; ++i)
+    for (i=0, nF=int(_be.n_faces()); i<nF; ++i)
     {
       nV = _be.get_vhandles(FaceHandle(i), vhandles);
       _out << nV << " ";
@@ -431,7 +431,7 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   write_header(_out, _be, _opt);
 
   // vertex data (point, normals, texcoords)
-  for (i=0, nV=_be.n_vertices(); i<nV; ++i)
+  for (i=0, nV=int(_be.n_vertices()); i<nV; ++i)
   {
     vh = VertexHandle(i);
     v  = _be.point(vh);
@@ -481,7 +481,7 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   // faces (indices starting at 0)
   if (_be.is_triangle_mesh())
   {
-    for (i=0, nF=_be.n_faces(); i<nF; ++i)
+    for (i=0, nF=int(_be.n_faces()); i<nF; ++i)
     {
       //face
       _be.get_vhandles(FaceHandle(i), vhandles);
@@ -504,7 +504,7 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   }
   else
   {
-    for (i=0, nF=_be.n_faces(); i<nF; ++i)
+    for (i=0, nF=int(_be.n_faces()); i<nF; ++i)
     {
       //face
       nV = _be.get_vhandles(FaceHandle(i), vhandles);
@@ -580,7 +580,7 @@ binary_size(BaseExporter& _be, Options _opt) const
     unsigned int i, nV, nF;
     std::vector<VertexHandle> vhandles;
 
-    for (i=0, nF=_be.n_faces(); i<nF; ++i)
+    for (i=0, nF=int(_be.n_faces()); i<nF; ++i)
     {
       nV = _be.get_vhandles(FaceHandle(i), vhandles);
       data += nV * sizeof(unsigned int);

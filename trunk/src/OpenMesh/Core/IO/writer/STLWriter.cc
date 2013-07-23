@@ -152,7 +152,7 @@ write_stla(const std::string& _filename, BaseExporter& _be, Options /* _opt */) 
 
 
 
-  unsigned int i, nF(_be.n_faces()), nV;
+  int i, nF(int(_be.n_faces())), nV;
   Vec3f  a, b, c, n;
   std::vector<VertexHandle> vhandles;
   FaceHandle fh;
@@ -205,7 +205,7 @@ write_stla(std::ostream& _out, BaseExporter& _be, Options /* _opt */, std::strea
 {
   omlog() << "[STLWriter] : write ascii file\n";
 
-  unsigned int i, nF(_be.n_faces()), nV;
+  int i, nF(int(_be.n_faces())), nV;
   Vec3f  a, b, c, n;
   std::vector<VertexHandle> vhandles;
   FaceHandle fh;
@@ -265,7 +265,7 @@ write_stlb(const std::string& _filename, BaseExporter& _be, Options /* _opt */) 
   }
 
 
-  unsigned int i, nF(_be.n_faces()), nV;
+  int i, nF(int(_be.n_faces())), nV;
   Vec3f  a, b, c, n;
   std::vector<VertexHandle> vhandles;
   FaceHandle fh;
@@ -336,7 +336,7 @@ write_stlb(std::ostream& _out, BaseExporter& _be, Options /* _opt */, std::strea
   omlog() << "[STLWriter] : write binary file\n";
 
 
-  unsigned int i, nF(_be.n_faces()), nV;
+  int i, nF(int(_be.n_faces())), nV;
   Vec3f  a, b, c, n;
   std::vector<VertexHandle> vhandles;
   FaceHandle fh;
@@ -351,7 +351,7 @@ write_stlb(std::ostream& _out, BaseExporter& _be, Options /* _opt */, std::strea
 
 
   // number of faces
-  write_int(_be.n_faces(), _out);
+  write_int(int(_be.n_faces()), _out);
 
 
   // write face set
@@ -413,7 +413,7 @@ binary_size(BaseExporter& _be, Options /* _opt */) const
   bytes += 4;  // #faces
 
 
-  unsigned int i, nF(_be.n_faces());
+  int i, nF(int(_be.n_faces()));
   std::vector<VertexHandle> vhandles;
 
   for (i=0; i<nF; ++i)
