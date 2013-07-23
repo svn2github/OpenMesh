@@ -224,8 +224,8 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   if ( (_nv == 0) && (_nf == 1) )
     return decimate_constraints_only(1.0);
 
-  unsigned int nv = mesh_.n_vertices();
-  unsigned int nf = mesh_.n_faces();
+  size_t nv = mesh_.n_vertices();
+  size_t nf = mesh_.n_faces();
   unsigned int n_collapses(0);
 
 

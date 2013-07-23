@@ -237,8 +237,8 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   typename Mesh::HalfedgeHandle v0v1;
   typename Mesh::VertexVertexIter vv_it;
   typename Mesh::VertexFaceIter vf_it;
-  unsigned int nv = mesh_.n_vertices();
-  unsigned int nf = mesh_.n_faces();
+  size_t nv = mesh_.n_vertices();
+  size_t nf = mesh_.n_faces();
   unsigned int n_collapses = 0;
 
   typedef std::vector<typename Mesh::VertexHandle> Support;

@@ -87,7 +87,7 @@ public:
   void clear()                        { nodes_.clear();   n_roots_ = 0; }
   unsigned char tree_id_bits() const  { return tree_id_bits_; }
   unsigned int num_roots() const      { return n_roots_; }
-  unsigned int num_nodes() const      { return nodes_.size(); }
+  size_t num_nodes() const            { return nodes_.size(); }
 
   VHierarchyNodeIndex generate_node_index(id_t _tree_id, id_t _node_id)
   {

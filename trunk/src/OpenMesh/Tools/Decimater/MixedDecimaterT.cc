@@ -119,21 +119,21 @@ size_t MixedDecimaterT<Mesh>::decimate_to_faces(const size_t  _n_vertices,const 
       r_collapses = McDecimaterT<Mesh>::decimate_to_faces(n_vertices_mc, n_faces_mc);
     } else {
 
-      const int samples = this->samples();
+      const size_t samples = this->samples();
 
       // MinimalSample count for the McDecimater
-      const int min = 2;
+      const size_t min = 2;
 
       // Maximal number of samples for the McDecimater
-      const int max = samples;
+      const size_t max = samples;
 
       // Number of incremental steps
-      const int steps = 7;
+      const size_t steps = 7;
 
-      for ( int i = 0; i < steps; ++i ) {
+      for ( size_t i = 0; i < steps; ++i ) {
 
         // Compute number of samples to be used
-        int samples = double( min) + double(i)/(double(steps)-1.0) * (max-2) ;
+        size_t samples = int (double( min) + double(i)/(double(steps)-1.0) * (max-2) ) ;
 
         // We won't allow 1 here, as this is the last step in the incremental part
         double decimaterLevel = (double(i + 1)) * _mc_factor / (double(steps) );

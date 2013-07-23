@@ -147,7 +147,7 @@ public:
       // the smaller the factor, the smaller max_deviation_ gets
       // thus creating a stricter constraint
       // division by error_tolerance_factor_ is for normalization
-      float max_normal_deviation = (max_deviation_ * 180.0/M_PI) * _factor / this->error_tolerance_factor_;
+      double max_normal_deviation = (max_deviation_ * 180.0/M_PI) * _factor / this->error_tolerance_factor_;
       set_max_normal_deviation(max_normal_deviation);
       this->error_tolerance_factor_ = _factor;
     }
@@ -157,15 +157,15 @@ public:
 public:
 
   /// get normal deviation
-  float max_normal_deviation() const { return max_deviation_ / M_PI * 180.0; }
+  double max_normal_deviation() const { return max_deviation_ / M_PI * 180.0; }
 
   /** Set normal deviation
    *
    *  Set the maximum angular deviation of the orignal normal and the new
    *  normal in degrees.
    */
-  void set_max_normal_deviation(float _f) {
-    max_deviation_ = _f / 180.0 * M_PI;
+  void set_max_normal_deviation(double _d) {
+    max_deviation_ = _d / 180.0 * M_PI;
     min_cos_       = cos(max_deviation_);
   }
 

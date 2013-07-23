@@ -90,7 +90,7 @@ add_node(const VHierarchyNode &_node)
 {
   nodes_.push_back(_node);
 
-  return  VHierarchyNodeHandle(nodes_.size() - 1);
+  return  VHierarchyNodeHandle(int(nodes_.size() - 1));
 }
 
 
@@ -150,8 +150,8 @@ is_ancestor(VHierarchyNodeIndex _ancestor_index, VHierarchyNodeIndex _descendent
   if (_ancestor_index.tree_id(tree_id_bits_) != _descendent_index.tree_id(tree_id_bits_))
     return  false;
 
-  unsigned int ancestor_node_id = _ancestor_index.node_id(tree_id_bits_);
-  unsigned int descendent_node_id = _descendent_index.node_id(tree_id_bits_);
+  unsigned int ancestor_node_id   =  _ancestor_index.node_id(tree_id_bits_);
+  unsigned int descendent_node_id =  _descendent_index.node_id(tree_id_bits_);
 
   if (ancestor_node_id > descendent_node_id)
     return  false;

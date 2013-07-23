@@ -156,10 +156,10 @@ public:
   bool empty() const { return HeapVector::empty(); }
 
   /// returns the size of heap
-  unsigned int size() const { return HeapVector::size(); }
+  size_t size() const { return HeapVector::size(); }
 
   /// reserve space for _n entries
-  void reserve(unsigned int _n) { HeapVector::reserve(_n); }
+  void reserve(size_t _n) { HeapVector::reserve(_n); }
 
   /// reset heap position to -1 (not in heap)
   void reset_heap_position(HeapEntry _h)

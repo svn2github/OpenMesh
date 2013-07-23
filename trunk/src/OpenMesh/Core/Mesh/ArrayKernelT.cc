@@ -76,7 +76,12 @@ void ArrayKernel::garbage_collection(std_API_Container_VHandlePointer& vh_to_upd
   const bool track_hhandles = ( !hh_to_update.empty() );
   const bool track_fhandles = ( !fh_to_update.empty() );
 
-  int i, i0, i1, nV(int(n_vertices())), nE(int(n_edges())), nH(int(2*n_edges())), nF(int(n_faces()));
+  int i, i0, i1;
+
+  int nV = int(n_vertices());
+  int nE = int(n_edges());
+  int nH = int(2*n_edges());
+  int nF = (int(n_faces()));
 
   std::vector<VertexHandle>    vh_map;
   std::vector<HalfedgeHandle>  hh_map;
