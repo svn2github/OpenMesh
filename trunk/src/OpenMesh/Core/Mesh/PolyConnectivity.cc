@@ -611,13 +611,13 @@ PolyConnectivity::ConstVertexIter PolyConnectivity::vertices_begin() const
 //-----------------------------------------------------------------------------
 PolyConnectivity::VertexIter PolyConnectivity::vertices_end()
 {
-  return VertexIter(*this, VertexHandle(n_vertices()));
+  return VertexIter(*this, VertexHandle( int(n_vertices() ) ));
 }
 
 //-----------------------------------------------------------------------------
 PolyConnectivity::ConstVertexIter PolyConnectivity::vertices_end() const
 {
-  return ConstVertexIter(*this, VertexHandle(n_vertices()));
+  return ConstVertexIter(*this, VertexHandle( int(n_vertices()) ));
 }
 
 //-----------------------------------------------------------------------------
@@ -635,13 +635,13 @@ PolyConnectivity::ConstHalfedgeIter PolyConnectivity::halfedges_begin() const
 //-----------------------------------------------------------------------------
 PolyConnectivity::HalfedgeIter PolyConnectivity::halfedges_end()
 {
-  return HalfedgeIter(*this, HalfedgeHandle(n_halfedges()));
+  return HalfedgeIter(*this, HalfedgeHandle(int(n_halfedges())));
 }
 
 //-----------------------------------------------------------------------------
 PolyConnectivity::ConstHalfedgeIter PolyConnectivity::halfedges_end() const
 {
-  return ConstHalfedgeIter(*this, HalfedgeHandle(n_halfedges()));
+  return ConstHalfedgeIter(*this, HalfedgeHandle(int(n_halfedges())));
 }
 
 //-----------------------------------------------------------------------------
@@ -659,13 +659,13 @@ PolyConnectivity::ConstEdgeIter PolyConnectivity::edges_begin() const
 //-----------------------------------------------------------------------------
 PolyConnectivity::EdgeIter PolyConnectivity::edges_end()
 {
-  return EdgeIter(*this, EdgeHandle(n_edges()));
+  return EdgeIter(*this, EdgeHandle(int(n_edges())));
 }
 
 //-----------------------------------------------------------------------------
 PolyConnectivity::ConstEdgeIter PolyConnectivity::edges_end() const
 {
-  return ConstEdgeIter(*this, EdgeHandle(n_edges()));
+  return ConstEdgeIter(*this, EdgeHandle(int(n_edges())));
 }
 
 //-----------------------------------------------------------------------------
@@ -683,13 +683,13 @@ PolyConnectivity::ConstFaceIter PolyConnectivity::faces_begin() const
 //-----------------------------------------------------------------------------
 PolyConnectivity::FaceIter PolyConnectivity::faces_end()
 {
-  return FaceIter(*this, FaceHandle(n_faces()));
+  return FaceIter(*this, FaceHandle(int(n_faces())));
 }
 
 //-----------------------------------------------------------------------------
 PolyConnectivity::ConstFaceIter PolyConnectivity::faces_end() const
 {
-  return ConstFaceIter(*this, FaceHandle(n_faces()));
+  return ConstFaceIter(*this, FaceHandle(int(n_faces())));
 }
 
 //-----------------------------------------------------------------------------
