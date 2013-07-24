@@ -380,7 +380,7 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
 
     Q /= valence*valence;//neigboring_faces;
 
-    pos += _m.point(_vh) * (valence-2.0)/valence + Q;
+    pos += _m.point(_vh) * (valence - RealType(2.0) )/valence + Q;
     //      pos = vector_cast<Vec>(_m.point(_vh));
   }
 

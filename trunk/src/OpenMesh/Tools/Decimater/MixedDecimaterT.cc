@@ -136,7 +136,7 @@ size_t MixedDecimaterT<Mesh>::decimate_to_faces(const size_t  _n_vertices,const 
         size_t samples = int (double( min) + double(i)/(double(steps)-1.0) * (max-2) ) ;
 
         // We won't allow 1 here, as this is the last step in the incremental part
-        float decimaterLevel = (double(i + 1)) * _mc_factor / (double(steps) );
+        float decimaterLevel = (float(i + 1)) * _mc_factor / (float(steps) );
 
         this->set_samples(samples);
         r_collapses += McDecimaterT<Mesh>::decimate_constraints_only(decimaterLevel);

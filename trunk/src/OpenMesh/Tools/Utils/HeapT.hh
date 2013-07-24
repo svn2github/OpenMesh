@@ -286,7 +286,7 @@ private:
   {
     assert(_idx < size());
     Base::operator[](_idx) = _h;
-    interface_.set_heap_position(_h, _idx);
+    interface_.set_heap_position(_h, int(_idx));
   }
 
   
