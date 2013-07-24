@@ -279,7 +279,7 @@ write_stlb(const std::string& _filename, BaseExporter& _be, Options /* _opt */) 
 
 
   // number of faces
-  write_int(_be.n_faces(), out);
+  write_int( int(_be.n_faces()), out);
 
 
   // write face set
