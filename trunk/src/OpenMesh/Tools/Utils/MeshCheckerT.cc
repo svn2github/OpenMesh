@@ -146,7 +146,7 @@ check(unsigned int _targets, std::ostream& _os)
     typename Mesh::ConstHalfedgeIter  h_it(mesh_.halfedges_begin()), 
                                       h_end(mesh_.halfedges_end());
     typename Mesh::HalfedgeHandle     hh, hstart, hhh;
-    unsigned int                      count, n_halfedges = 2*mesh_.n_edges();
+    size_t                            count, n_halfedges = 2*mesh_.n_edges();
 
     for (; h_it != h_end; ++h_it)
     {

@@ -274,7 +274,7 @@ private:
 
   
   /// Get the entry at index _idx
-  inline HeapEntry entry(unsigned int _idx) const
+  inline HeapEntry entry(size_t _idx) const
   {
     assert(_idx < size());
     return (Base::operator[](_idx));
@@ -282,7 +282,7 @@ private:
 
   
   /// Set entry _h to index _idx and update _h's heap position.
-  inline void entry(unsigned int _idx, HeapEntry _h) 
+  inline void entry(size_t _idx, HeapEntry _h)
   {
     assert(_idx < size());
     Base::operator[](_idx) = _h;
