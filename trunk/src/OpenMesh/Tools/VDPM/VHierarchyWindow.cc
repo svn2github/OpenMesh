@@ -128,8 +128,8 @@ update_buffer(VHierarchyNodeHandle _node_handle)
   while (overflow(_node_handle) == true)
   {
     buffer_max_ *= 2;
-    if (buffer_max_ > (int) vhierarchy_->num_nodes() / 8)
-      buffer_max_ = (int) (1 + vhierarchy_->num_nodes() / 8);
+    if (buffer_max_ > vhierarchy_->num_nodes() / 8)
+      buffer_max_ = 1 + vhierarchy_->num_nodes() / 8;
   }
   
   unsigned char *new_buffer = (unsigned char *) malloc(buffer_size());

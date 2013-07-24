@@ -77,7 +77,7 @@ private:
   // bits buffer (byte units)
   unsigned char *buffer_;
   int           buffer_min_;
-  int           buffer_max_;
+  size_t        buffer_max_;
   int           current_pos_;
 
   // window (byte units)
