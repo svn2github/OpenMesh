@@ -126,7 +126,7 @@ private: //------------------------------------------------------- private data
   // reference to mesh
   Mesh&      mesh_;
 
-  unsigned int randomSamples_;
+  size_t randomSamples_;
 
 };
 
