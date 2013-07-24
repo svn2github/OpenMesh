@@ -97,7 +97,7 @@ void ArrayKernel::assign_connectivity(const ArrayKernel& _other)
 // --- handle -> item ---
 VertexHandle ArrayKernel::handle(const Vertex& _v) const
 {
-   return VertexHandle(&_v - &vertices_.front());
+   return VertexHandle( int( &_v - &vertices_.front()));
 }
 
 HalfedgeHandle ArrayKernel::handle(const Halfedge& _he) const
@@ -115,12 +115,12 @@ HalfedgeHandle ArrayKernel::handle(const Halfedge& _he) const
 
 EdgeHandle ArrayKernel::handle(const Edge& _e) const
 {
-  return EdgeHandle(&_e - &edges_.front());
+  return EdgeHandle( int(&_e - &edges_.front() ) );
 }
 
 FaceHandle ArrayKernel::handle(const Face& _f) const
 {
-  return FaceHandle(&_f - &faces_.front());
+  return FaceHandle( int(&_f - &faces_.front()) );
 }
 
 #define SIGNED(x) signed( (x) )
