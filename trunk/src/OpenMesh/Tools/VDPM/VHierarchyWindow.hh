@@ -114,7 +114,7 @@ private:
   { return (_node_handle.idx()/8 < buffer_min_) ? true : false; }
 
   bool overflow(VHierarchyNodeHandle _node_handle) const
-  { return (_node_handle.idx()/8 < buffer_max_) ? false : true; }  
+  { return (_node_handle.idx()/8 < int(buffer_max_) ) ? false : true; }
 
   bool update_buffer(VHierarchyNodeHandle _node_handle);
 
