@@ -63,12 +63,12 @@ namespace OpenMesh {
 
 //== IMPLEMENTATION ===========================================================
 
-RandomNumberGenerator::RandomNumberGenerator(const double _resolution) :
+RandomNumberGenerator::RandomNumberGenerator(const size_t _resolution) :
   resolution_(_resolution),
   iterations_(1),
   maxNum_(RAND_MAX + 1.0)
 {
-  double tmp = resolution_;
+  double tmp = double(resolution_);
   while (tmp > (double(RAND_MAX) + 1.0) ) {
     iterations_++;
     tmp /= (double(RAND_MAX) + 1.0);
@@ -91,7 +91,7 @@ double RandomNumberGenerator::getRand() const {
   return randNum / maxNum_;
 }
 
-double RandomNumberGenerator::resolution() const {
+size_t RandomNumberGenerator::resolution() const {
   return maxNum_;
 }
 
