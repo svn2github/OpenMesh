@@ -282,7 +282,7 @@ private:
         real_t alpha = (4.0-2.0*cos(2.0*M_PI / (double)valence))/9.0;
         return weight_t( real_t(1)-alpha, alpha/real_t(valence) );
       }
-      return weight_t(0.0, 0.0);
+      return weight_t(real_t(0.0), real_t(0.0) );
     }    
     int valence;
   };
