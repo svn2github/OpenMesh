@@ -311,10 +311,9 @@ HeapT<HeapEntry, HeapInterface>::
 upheap(unsigned int _idx)
 {
   HeapEntry     h = entry(_idx);
-  unsigned int  parentIdx;
+  size_t        parentIdx;
 
-  while ((_idx>0) &&
-	 interface_.less(h, entry(parentIdx=parent(_idx))))
+  while ((_idx>0) && interface_.less(h, entry(parentIdx=parent(_idx))))
   {
     entry(_idx, entry(parentIdx));
     _idx = parentIdx;    
