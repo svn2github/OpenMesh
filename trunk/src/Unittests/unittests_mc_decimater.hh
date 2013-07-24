@@ -53,7 +53,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMesh) {
   removedVertices = decimaterDBG.decimate_to(5000);
                     decimaterDBG.mesh().garbage_collection();
 
-  EXPECT_EQ(2526, removedVertices) << "The number of remove vertices is not correct!";
+  EXPECT_EQ(2526u, removedVertices) << "The number of remove vertices is not correct!";
   EXPECT_EQ(5000u, mesh_.n_vertices()) << "The number of vertices after decimation is not correct!";
   EXPECT_EQ(14994u, mesh_.n_edges()) << "The number of edges after decimation is not correct!";
   EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
@@ -77,7 +77,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceVerticesLimit) {
   removedVertices = decimaterDBG.decimate_to_faces(5000, 8000);
                     decimaterDBG.mesh().garbage_collection();
 
-  EXPECT_EQ(2526, removedVertices) << "The number of remove vertices is not correct!";
+  EXPECT_EQ(2526u, removedVertices) << "The number of remove vertices is not correct!";
   EXPECT_EQ(5000u, mesh_.n_vertices()) << "The number of vertices after decimation is not correct!";
   EXPECT_EQ(14994u, mesh_.n_edges()) << "The number of edges after decimation is not correct!";
   EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
@@ -101,7 +101,7 @@ TEST_F(OpenMeshMultipleChoiceDecimater, DecimateMeshToFaceFaceLimit) {
   removedVertices = decimaterDBG.decimate_to_faces(4500, 9996);
                     decimaterDBG.mesh().garbage_collection();
 
-  EXPECT_EQ(2526, removedVertices) << "The number of remove vertices is not correct!";
+  EXPECT_EQ(2526u, removedVertices) << "The number of remove vertices is not correct!";
   EXPECT_EQ(5000u, mesh_.n_vertices()) << "The number of vertices after decimation is not correct!";
   EXPECT_EQ(14994u, mesh_.n_edges()) << "The number of edges after decimation is not correct!";
   EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
