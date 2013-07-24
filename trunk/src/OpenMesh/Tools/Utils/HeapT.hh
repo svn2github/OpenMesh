@@ -266,11 +266,11 @@ private:
 
   
   /// Upheap. Establish heap property.
-  void upheap(unsigned int _idx);
+  void upheap(size_t _idx);
 
   
   /// Downheap. Establish heap property.
-  void downheap(unsigned int _idx);
+  void downheap(size_t _idx);
 
   
   /// Get the entry at index _idx
@@ -308,7 +308,7 @@ private:
 template <class HeapEntry, class HeapInterface>
 void
 HeapT<HeapEntry, HeapInterface>::
-upheap(unsigned int _idx)
+upheap(size_t _idx)
 {
   HeapEntry     h = entry(_idx);
   size_t        parentIdx;
@@ -329,11 +329,11 @@ upheap(unsigned int _idx)
 template <class HeapEntry, class HeapInterface>
 void
 HeapT<HeapEntry, HeapInterface>::
-downheap(unsigned int _idx)
+downheap(size_t _idx)
 {
   HeapEntry     h = entry(_idx);
-  unsigned int  childIdx;
-  unsigned int  s = size();
+  size_t        childIdx;
+  size_t        s = size();
   
   while(_idx < s)
   {
