@@ -291,11 +291,11 @@ private:
 
   
   /// Get parent's index
-  inline unsigned int parent(unsigned int _i) { return (_i-1)>>1; }
+  inline size_t parent(size_t _i) { return (_i-1)>>1; }
   /// Get left child's index
-  inline unsigned int left(unsigned int _i)   { return (_i<<1)+1; }
+  inline size_t left(size_t _i)   { return (_i<<1)+1; }
   /// Get right child's index
-  inline unsigned int right(unsigned int _i)  { return (_i<<1)+2; }
+  inline size_t right(size_t _i)  { return (_i<<1)+2; }
 
 };
 

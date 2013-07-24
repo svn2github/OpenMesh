@@ -172,7 +172,7 @@ public:
   bool end() { return !(current_pos_ < window_max_-buffer_min_); }
 
   int window_size() const      { return  window_max_ - window_min_; }
-  int buffer_size() const      { return  buffer_max_ - buffer_min_; }
+  size_t buffer_size() const      { return  buffer_max_ - buffer_min_; }
 
   VHierarchyNodeHandle node_handle()
   {
