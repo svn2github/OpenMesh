@@ -88,7 +88,7 @@ public:
   /// returns a random double between 0.0 and 1.0 with a guaranteed resolution
   double getRand() const;
 
-  size_t resolution() const;
+  double resolution() const;
 
 private:
 
@@ -99,7 +99,7 @@ private:
   size_t iterations_;
 
   /// maximum random number generated, which is used for normalization
-  size_t maxNum_;
+  double maxNum_;
 };
 
 //=============================================================================
