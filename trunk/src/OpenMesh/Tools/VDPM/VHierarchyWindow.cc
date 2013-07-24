@@ -111,7 +111,7 @@ update_buffer(VHierarchyNodeHandle _node_handle)
 
   // tightly update window_min_ & window_max_
   int none_zero_pos;
-  for (none_zero_pos=buffer_size()-1; none_zero_pos >= 0; --none_zero_pos)
+  for (none_zero_pos=int(buffer_size()-1); none_zero_pos >= 0; --none_zero_pos)
   {
     if (buffer_[none_zero_pos] != 0)  break;
   }
