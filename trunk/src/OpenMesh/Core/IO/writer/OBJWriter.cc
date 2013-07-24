@@ -201,8 +201,8 @@ bool
 _OBJWriter_::
 write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
-  unsigned int nV, nF, idx;
-  size_t i, j; 
+  unsigned int idx;
+  size_t i, j,nV, nF;
   Vec3f v, n;
   Vec2f t;
   VertexHandle vh;
@@ -256,7 +256,7 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
   // vertex data (point, normals, texcoords)
   for (i=0, nV=_be.n_vertices(); i<nV; ++i)
   {
-    vh = VertexHandle(i);
+    vh = VertexHandle(int(i));
     v  = _be.point(vh);
     n  = _be.normal(vh);
     t  = _be.texcoord(vh);
@@ -302,7 +302,7 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
 
     _out << "f";
 
-    _be.get_vhandles(FaceHandle(i), vhandles);
+    _be.get_vhandles(FaceHandle(int(i)), vhandles);
 
     for (j=0; j< vhandles.size(); ++j)
     {
