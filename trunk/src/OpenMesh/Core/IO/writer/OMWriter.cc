@@ -192,9 +192,9 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
   header.magic_[1]   = 'M';
   header.mesh_       = _be.is_triangle_mesh() ? 'T' : 'P';
   header.version_    = version_;
-  header.n_vertices_ = _be.n_vertices();
-  header.n_faces_    = _be.n_faces();
-  header.n_edges_    = _be.n_edges();
+  header.n_vertices_ = int(_be.n_vertices());
+  header.n_faces_    = int(_be.n_faces());
+  header.n_edges_    = int(_be.n_edges());
 
   bytes += store( _os, header, swap );
 
@@ -219,7 +219,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.bits_     = OMFormat::bits(v[0]);
 
     bytes += store( _os, chunk_header, swap );
-    for (i=0, nV=_be.n_vertices(); i<nV; ++i)
+    for (i=0, nV=header.n_vertices_; i<nV; ++i)
       bytes += vector_store( _os, _be.point(VertexHandle(i)), swap );
   }
 
@@ -238,7 +238,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.bits_     = OMFormat::bits(n[0]);
 
     bytes += store( _os, chunk_header, swap );
-    for (i=0, nV=_be.n_vertices(); i<nV; ++i)
+    for (i=0, nV=header.n_vertices_; i<nV; ++i)
       bytes += vector_store( _os, _be.normal(VertexHandle(i)), swap );
   }
 
@@ -256,7 +256,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.bits_     = OMFormat::bits( c );
 
     bytes += store( _os, chunk_header, swap );
-    for (i=0, nV=_be.n_vertices(); i<nV; ++i)
+    for (i=0, nV=header.n_vertices_; i<nV; ++i)
       bytes += vector_store( _os, _be.color(VertexHandle(i)), swap );
   }
 
@@ -276,7 +276,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     // std::clog << chunk_header << std::endl;
     bytes += store(_os, chunk_header, swap);
 
-    for (i = 0, nV = _be.n_vertices(); i < nV; ++i)
+    for (i = 0, nV = header.n_vertices_; i < nV; ++i)
       bytes += vector_store(_os, _be.texcoord(VertexHandle(i)), swap);
 
   }
@@ -295,7 +295,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
     bytes += store( _os, chunk_header, swap );
 
-    for (i=0, nF=_be.n_faces(); i<nF; ++i)
+    for (i=0, nF=header.n_faces_; i<nF; ++i)
     {
       if ( header.mesh_ == 'P' )
          bytes += store( _os, vhandles.size(),
@@ -335,7 +335,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
       bytes += store( _os, chunk_header, swap );
 #if !NEW_STYLE
-      for (i=0, nF=_be.n_faces(); i<nF; ++i)
+      for (i=0, nF=header.n_faces_; i<nF; ++i)
         bytes += vector_store( _os, _be.normal(FaceHandle(i)), swap );
 #else
       bytes += bp->store(_os, swap );
@@ -370,7 +370,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 
       bytes += store( _os, chunk_header, swap );
 #if !NEW_STYLE
-      for (i=0, nF=_be.n_faces(); i<nF; ++i)
+      for (i=0, nF=header.n_faces_; i<nF; ++i)
         bytes += vector_store( _os, _be.color(FaceHandle(i)), swap );
 #else
       bytes += bp->store(_os, swap);
@@ -452,7 +452,7 @@ size_t _OMWriter_::store_binary_custom_chunk(std::ostream& _os,
 
   size_t bytes = 0;
 
-  OMFormat::Chunk::esize_t element_size   = _bp.element_size();
+  OMFormat::Chunk::esize_t element_size   = OMFormat::Chunk::esize_t(_bp.element_size());
   OMFormat::Chunk::Header  chdr;
 
   // set header
