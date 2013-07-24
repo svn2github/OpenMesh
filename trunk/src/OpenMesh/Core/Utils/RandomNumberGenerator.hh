@@ -99,7 +99,7 @@ private:
   size_t iterations_;
 
   /// maximum random number generated, which is used for normalization
-  double maxNum_;
+  size_t maxNum_;
 };
 
 //=============================================================================
