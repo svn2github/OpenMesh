@@ -279,7 +279,7 @@ private:
 #endif
       if (++valence)
       {
-        real_t alpha = (4.0-2.0*cos(2.0*M_PI / real_t(valence)) )/9.0;
+        real_t alpha = real_t( (4.0-2.0*cos(2.0*M_PI / real_t(valence)) )/9.0 );
         return weight_t( real_t(1)-alpha, alpha/real_t(valence) );
       }
       return weight_t(real_t(0.0), real_t(0.0) );
