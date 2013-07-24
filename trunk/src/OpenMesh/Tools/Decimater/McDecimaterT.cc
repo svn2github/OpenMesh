@@ -358,8 +358,8 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
     this->set_error_tolerance_factor(_factor);
 
   unsigned int n_collapses(0);
-  unsigned int nv = mesh_.n_vertices();
-  unsigned int nf = mesh_.n_faces();
+  size_t       nv = mesh_.n_vertices();
+  size_t       nf = mesh_.n_faces();
 
   bool lastCollapseIllegal = false;
   // number of illegal collapses that occurred in a row
