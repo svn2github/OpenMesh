@@ -320,7 +320,7 @@ calc_vertex_normal(VertexHandle _vh) const
   calc_vertex_normal_fast(_vh,n);
 
   Scalar norm = n.length();
-  if (norm != 0.0) n *= (1.0/norm);
+  if (norm != 0.0) n *= (Scalar(1.0)/norm);
 
   return n;
 }
