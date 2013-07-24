@@ -106,11 +106,11 @@ HalfedgeHandle ArrayKernel::handle(const Halfedge& _he) const
   // There are two halfedges stored per edge
   // Get memory position inside edge vector and devide by size of an edge
   // to get the corresponding edge for the requested halfedge
-  unsigned int eh = ( (char*)&_he - (char*)&edges_.front() ) /  sizeof(Edge)  ;
+  size_t eh = ( (char*)&_he - (char*)&edges_.front() ) /  sizeof(Edge)  ;
   assert((&_he == &edges_[eh].halfedges_[0]) ||
          (&_he == &edges_[eh].halfedges_[1]));
   return ((&_he == &edges_[eh].halfedges_[0]) ?
-                    HalfedgeHandle(eh<<1) : HalfedgeHandle((eh<<1)+1));
+                    HalfedgeHandle( int(eh)<<1) : HalfedgeHandle((int(eh)<<1)+1));
 }
 
 EdgeHandle ArrayKernel::handle(const Edge& _e) const

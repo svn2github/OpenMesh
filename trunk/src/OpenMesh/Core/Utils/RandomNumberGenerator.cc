@@ -75,7 +75,7 @@ RandomNumberGenerator::RandomNumberGenerator(const size_t _resolution) :
   }
 
   for ( unsigned int i = 0 ; i < iterations_ - 1; ++i ) {
-    maxNum_ *= (RAND_MAX + 1.0);
+    maxNum_ *= (RAND_MAX + 1);
   }
 }
 
