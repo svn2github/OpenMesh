@@ -901,7 +901,7 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
         return false;
     }
 
-    size_t streamPos = _is.tellg();
+    std::streamoff streamPos = _is.tellg();
     _is >> keyword;
     while (keyword != "end_header") {
 
