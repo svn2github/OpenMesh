@@ -116,7 +116,7 @@ write(const std::string& _filename, BaseExporter& _be, Options _opt, std::stream
       objName_ = objName_.substr(0,dot-1);
   }
 
-  bool result = write(out, _be, _opt);
+  bool result = write(out, _be, _opt, _precision);
 
   out.close();
   return result;
