@@ -75,6 +75,20 @@ add_subdirectory (src/OpenMesh/Apps)
 # Do not build unit tests when build as external library
 if(${PROJECT_NAME} MATCHES "OpenMesh")
     add_subdirectory (src/Unittests)
+else()
+	# If built as a dependent project simulate effects of
+	# successful finder run:
+	set (OPENMESH_FOUND true PARENT_SCOPE)
+	set (OPENMESH_LIBRARIES OpenMeshCore OpenMeshTools PARENT_SCOPE)
+	set (OPENMESH_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src" PARENT_SCOPE)
+
+	# Also define variables provided by the old legacy finder.
+	set (OPENMESH_CORE_LIBRARY OpenMeshCore PARENT_SCOPE)
+	set (OPENMESH_TOOLS_LIBRARY OpenMeshTools PARENT_SCOPE)
+	set (OPENMESH_TOOLS_LIBRARY OpenMeshTools PARENT_SCOPE)
+	set (OPENMESH_LIBRARY OpenMeshCore OpenMeshTools PARENT_SCOPE)
+	get_target_property(_OPENMESH_LIBRARY_DIR OpenMeshCore LIBRARY_OUTPUT_DIRECTORY)
+	set (OPENMESH_LIBRARY_DIR "${_OPENMESH_LIBRARY_DIR}" CACHE PATH "The directory where the OpenMesh libraries can be found.")
 endif()
 
 add_subdirectory (Doc)
