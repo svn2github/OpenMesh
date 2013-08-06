@@ -49,11 +49,13 @@ gcc 4.4.x<br>
 gcc 4.5.x<br>
 gcc 4.6.x<br>
 gcc 4.7.x<br>
+gcc 4.8.x<br>
 </td></tr>
 
 <tr><td> Windows </td><td> 
 Microsoft Visual Studio 2008<br>
 Microsoft Visual Studio 2010<br>
+Microsoft Visual Studio 2012<br>
 </td></tr>
 
 <tr><td> MacOS X <br>(Panther,Tiger,Leopard,Snow Leopard)</td><td> 
