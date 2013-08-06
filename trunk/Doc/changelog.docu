@@ -8,11 +8,13 @@
 <!-- --------------------------------------------------------------------- -->
 
 
-<tr valign=top><td><b>2.4</b> (?/?/?,Rev.838)</td><td>
+<tr valign=top><td><b>2.4</b> (08/06/2013,Rev.882)</td><td>
 
 <b>Significant interface changes</b>
 <ul>
-<li><b>The functions n_vertices(),n_edges().n_faces() return size_t now.</b></li>
+<li>The functions n_vertices(),n_edges().n_faces() return size_t now.</li>
+<li>reserve and resize of the property vectors now take size_t</li>
+<li>Fixed various other size_t conversions</li>
 </ul>
 
 <b>Vector Type</b>
