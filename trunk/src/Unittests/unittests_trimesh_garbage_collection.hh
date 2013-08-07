@@ -316,15 +316,15 @@ TEST_F(OpenMeshTriMeshGarbageCollection, TrackedGarbageCollection) {
   //==================================================
   std::vector<Mesh::VertexHandle>   vertexHandles;
   for ( Mesh::VertexIter v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it)
-    vertexHandles.push_back(v_it.handle());
+    vertexHandles.push_back(*v_it);
 
   std::vector<Mesh::HalfedgeHandle> halfedgeHandles;
   for ( Mesh::HalfedgeIter he_it = mesh_.halfedges_begin(); he_it != mesh_.halfedges_end(); ++he_it)
-    halfedgeHandles.push_back(he_it.handle());
+    halfedgeHandles.push_back(*he_it);
 
   std::vector<Mesh::FaceHandle>     faceHandles;
   for ( Mesh::FaceIter f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it)
-    faceHandles.push_back(f_it.handle());
+    faceHandles.push_back(*f_it);
 
   //==================================================
   // Create vectors containing pointers current handles

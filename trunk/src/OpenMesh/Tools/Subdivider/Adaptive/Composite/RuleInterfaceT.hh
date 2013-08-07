@@ -239,14 +239,14 @@ public:
 
       for (fe_it = mesh_.fe_iter(_fh); fe_it; ++fe_it) {
 
-	eh = fe_it.handle();
-	prev_rule()->raise(eh, _target_state - 1);
+        eh = *fe_it;
+        prev_rule()->raise(eh, _target_state - 1);
       }
 
       for (fv_it = mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
-	vh = fv_it.handle();
-	prev_rule()->raise(vh, _target_state - 1);
+        vh = *fv_it;
+        prev_rule()->raise(vh, _target_state - 1);
       }
     }
   }

@@ -93,10 +93,10 @@ initialize()
 
   for (; f_it != f_end; ++f_it)
   {
-    fv_it = Base::mesh().fv_iter(f_it.handle());
-    vh0 = fv_it.handle();  ++fv_it;
-    vh1 = fv_it.handle();  ++fv_it;
-    vh2 = fv_it.handle();
+    fv_it = Base::mesh().fv_iter(*f_it);
+    vh0 = *fv_it;  ++fv_it;
+    vh1 = *fv_it;  ++fv_it;
+    vh2 = *fv_it;
 
     Vec3 v0, v1, v2;
     {

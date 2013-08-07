@@ -151,14 +151,14 @@ compute_weights(LaplaceWeighting _weighting)
     {
       for (e_it=Base::mesh_.edges_begin(); e_it!=e_end; ++e_it)
       {
-	heh0   = Base::mesh_.halfedge_handle(e_it.handle(), 0);
-	heh1   = Base::mesh_.halfedge_handle(e_it.handle(), 1);
-	v0     = Base::mesh_.to_vertex_handle(heh0);
-	v1     = Base::mesh_.to_vertex_handle(heh1);
-	
-	Base::mesh_.property(edge_weights_, e_it) = 1.0;
-	Base::mesh_.property(vertex_weights_, v0) += 1.0;
-	Base::mesh_.property(vertex_weights_, v1) += 1.0;
+        heh0   = Base::mesh_.halfedge_handle(*e_it, 0);
+        heh1   = Base::mesh_.halfedge_handle(*e_it, 1);
+        v0     = Base::mesh_.to_vertex_handle(heh0);
+        v1     = Base::mesh_.to_vertex_handle(heh1);
+
+        Base::mesh_.property(edge_weights_, e_it) = 1.0;
+        Base::mesh_.property(vertex_weights_, v0) += 1.0;
+        Base::mesh_.property(vertex_weights_, v1) += 1.0;
       }
 
       break;
@@ -170,31 +170,31 @@ compute_weights(LaplaceWeighting _weighting)
     {
       for (e_it=Base::mesh_.edges_begin(); e_it!=e_end; ++e_it)
       {
-	weight = 0.0;
-	
-	heh0   = Base::mesh_.halfedge_handle(e_it.handle(), 0);
-	v0     = Base::mesh_.to_vertex_handle(heh0);
-	p0     = &Base::mesh_.point(v0);
-	
-	heh1   = Base::mesh_.halfedge_handle(e_it.handle(), 1);
-	v1     = Base::mesh_.to_vertex_handle(heh1);
-	p1     = &Base::mesh_.point(v1);
-	
-	heh2   = Base::mesh_.next_halfedge_handle(heh0);
-	p2     = &Base::mesh_.point(Base::mesh_.to_vertex_handle(heh2));
-	d0     = (*p0 - *p2); d0.normalize();
-	d1     = (*p1 - *p2); d1.normalize();
-	weight += 1.0 / tan(acos(std::max(lb, std::min(ub, dot(d0,d1) ))));
-	
-	heh2   = Base::mesh_.next_halfedge_handle(heh1);
-	p2     = &Base::mesh_.point(Base::mesh_.to_vertex_handle(heh2));
-	d0     = (*p0 - *p2); d0.normalize();
-	d1     = (*p1 - *p2); d1.normalize();
-	weight += 1.0 / tan(acos(std::max(lb, std::min(ub, dot(d0,d1) ))));
-	
-	Base::mesh_.property(edge_weights_, e_it) = weight;
-	Base::mesh_.property(vertex_weights_, v0)  += weight;
-	Base::mesh_.property(vertex_weights_, v1)  += weight;
+        weight = 0.0;
+
+        heh0   = Base::mesh_.halfedge_handle(*e_it, 0);
+        v0     = Base::mesh_.to_vertex_handle(heh0);
+        p0     = &Base::mesh_.point(v0);
+
+        heh1   = Base::mesh_.halfedge_handle(*e_it, 1);
+        v1     = Base::mesh_.to_vertex_handle(heh1);
+        p1     = &Base::mesh_.point(v1);
+
+        heh2   = Base::mesh_.next_halfedge_handle(heh0);
+        p2     = &Base::mesh_.point(Base::mesh_.to_vertex_handle(heh2));
+        d0     = (*p0 - *p2); d0.normalize();
+        d1     = (*p1 - *p2); d1.normalize();
+        weight += 1.0 / tan(acos(std::max(lb, std::min(ub, dot(d0,d1) ))));
+
+        heh2   = Base::mesh_.next_halfedge_handle(heh1);
+        p2     = &Base::mesh_.point(Base::mesh_.to_vertex_handle(heh2));
+        d0     = (*p0 - *p2); d0.normalize();
+        d1     = (*p1 - *p2); d1.normalize();
+        weight += 1.0 / tan(acos(std::max(lb, std::min(ub, dot(d0,d1) ))));
+
+        Base::mesh_.property(edge_weights_, *e_it) = weight;
+        Base::mesh_.property(vertex_weights_, v0)  += weight;
+        Base::mesh_.property(vertex_weights_, v1)  += weight;
       }
       break;
     }
@@ -206,9 +206,9 @@ compute_weights(LaplaceWeighting _weighting)
   // after: one over sum of edge weights
   for (v_it=Base::mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
-    weight = Base::mesh_.property(vertex_weights_, v_it);
+    weight = Base::mesh_.property(vertex_weights_, *v_it);
     if (weight)
-      Base::mesh_.property(vertex_weights_, v_it) = 1.0 / weight;
+      Base::mesh_.property(vertex_weights_, *v_it) = 1.0 / weight;
   }
 }
 

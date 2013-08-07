@@ -216,7 +216,7 @@ collapse_priority(const CollapseInfo& _ci)
   // collect all points to be tested
   // collect all faces to be tested against
   for (vf_it=mesh_.vf_iter(_ci.v0); vf_it; ++vf_it) {
-    fh = vf_it.handle();
+    fh = *vf_it;
 
     if (fh != _ci.fl && fh != _ci.fr)
       faces.push_back(fh);
@@ -290,7 +290,7 @@ postprocess_collapse(const CollapseInfo& _ci)
 
   // collect active faces and their points
   for (vf_it=mesh_.vf_iter(_ci.v1); vf_it; ++vf_it) {
-    fh = vf_it.handle();
+    fh = *vf_it;
     faces.push_back(fh);
 
     Points& pts = mesh_.property(points_, fh);

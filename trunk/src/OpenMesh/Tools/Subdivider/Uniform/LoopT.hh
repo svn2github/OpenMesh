@@ -159,13 +159,13 @@ protected:
       if(_update_points) {
         // compute new positions for old vertices
         for (vit = _m.vertices_begin(); vit != _m.vertices_end(); ++vit) {
-          smooth(_m, vit.handle());
+          smooth(_m, *vit);
         }
       }
 
       // Compute position for new vertices and store them in the edge property
       for (eit=_m.edges_begin(); eit != _m.edges_end(); ++eit)
-        compute_midpoint( _m, eit.handle() );
+        compute_midpoint( _m, *eit );
 
       // Split each edge at midpoint and store precomputed positions (stored in
       // edge property ep_pos_) in the vertex property vp_pos_;
@@ -173,7 +173,7 @@ protected:
       // Attention! Creating new edges, hence make sure the loop ends correctly.
       e_end = _m.edges_end();
       for (eit=_m.edges_begin(); eit != e_end; ++eit)
-        split_edge(_m, eit.handle() );
+        split_edge(_m, *eit );
 
 
       // Commit changes in topology and reconsitute consistency
@@ -181,7 +181,7 @@ protected:
       // Attention! Creating new faces, hence make sure the loop ends correctly.
       f_end   = _m.faces_end();
       for (fit = _m.faces_begin(); fit != f_end; ++fit)
-        split_face(_m, fit.handle() );
+        split_face(_m, *fit );
 
       if(_update_points) {
         // Commit changes in geometry

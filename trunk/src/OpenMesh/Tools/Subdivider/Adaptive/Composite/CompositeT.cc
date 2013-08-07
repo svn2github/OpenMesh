@@ -85,7 +85,7 @@ initialize( void )
   {
     mesh_.data(v_it).set_state(0);
     mesh_.data(v_it).set_final();
-    mesh_.data(v_it).set_position(0, mesh_.point(v_it.handle()));
+    mesh_.data(v_it).set_position(0, mesh_.point(*v_it));
   }
 
   // ---------------------------------------- Init Faces
@@ -203,7 +203,7 @@ void CompositeT<M>::refine(typename M::FaceHandle& _fh)
 
       for (; fh_it; ++fh_it)
       {
-        hh_vector.push_back(mesh_.PHEH(mesh_.OHEH(fh_it.handle())));
+        hh_vector.push_back(mesh_.PHEH(mesh_.OHEH(*fh_it)));
       }
     }
 

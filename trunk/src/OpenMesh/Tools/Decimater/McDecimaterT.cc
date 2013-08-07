@@ -190,7 +190,7 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
       typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
       for (; vf_it; ++vf_it)
         if (!mesh_.status(vf_it).deleted())
-          mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
+          mesh_.set_normal(vf_it, mesh_.calc_face_normal(*vf_it));
 
       // post-process collapse
       this->postprocess_collapse(ci);
@@ -324,7 +324,7 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
       typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
       for (; vf_it; ++vf_it)
         if (!mesh_.status(vf_it).deleted())
-          mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
+          mesh_.set_normal(vf_it, mesh_.calc_face_normal(*vf_it));
 
       // post-process collapse
       this->postprocess_collapse(ci);
@@ -478,7 +478,7 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
       typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
       for (; vf_it; ++vf_it)
         if (!mesh_.status(vf_it).deleted())
-          mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
+          mesh_.set_normal(vf_it, mesh_.calc_face_normal(*vf_it));
 
       // post-process collapse
       this->postprocess_collapse(ci);

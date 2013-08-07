@@ -122,7 +122,7 @@ public:
 
     for (; vf_it; ++vf_it)
     {
-      fh = vf_it.handle();
+      fh = *vf_it;
       if (fh != _ci.fl && fh != _ci.fr)
       {
         typename Mesh::Normal n1 = Base::mesh().normal(fh);

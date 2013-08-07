@@ -92,7 +92,7 @@ write( const std::string& _ofname )
   for (; v_it != v_end; ++v_it)  
     if (!Base::mesh().status(v_it).deleted()) 
     {
-      vhandles[i] = v_it.handle();  
+      vhandles[i] = *v_it;
       Base::mesh().property( idx_, v_it ) = i;  
       ++i;
     }
@@ -151,7 +151,7 @@ write( const std::string& _ofname )
   {
     if (!Base::mesh().status(f_it).deleted()) 
     {
-      typename Mesh::ConstFaceVertexIter fv_it(Base::mesh(), f_it.handle());
+      typename Mesh::ConstFaceVertexIter fv_it(Base::mesh(), *f_it);
       
       IO::store( out, Base::mesh().property( idx_,   fv_it ) );
       IO::store( out, Base::mesh().property( idx_, ++fv_it ) );

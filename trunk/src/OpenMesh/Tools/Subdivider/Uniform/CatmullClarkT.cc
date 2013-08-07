@@ -71,7 +71,7 @@ CatmullClarkT< MeshType, RealType >::prepare( MeshType& _m  )
 
   // initialize all weights to 0 (= smooth edge)
   for( EdgeIter e_it = _m.edges_begin(); e_it != _m.edges_end(); ++e_it)
-     _m.property(creaseWeights_, e_it.handle() ) = 0.0;
+     _m.property(creaseWeights_, *e_it ) = 0.0;
 
   return true;
 }
@@ -105,21 +105,21 @@ CatmullClarkT<MeshType,RealType>::subdivide( MeshType& _m , size_t _n , const bo
     for ( ; f_itr != f_end; ++f_itr)
     {
       Point centroid;
-      _m.calc_face_centroid( f_itr.handle(), centroid);
-      _m.property( fp_pos_, f_itr.handle() ) = centroid;
+      _m.calc_face_centroid( *f_itr, centroid);
+      _m.property( fp_pos_, *f_itr ) = centroid;
     }
 
     // Compute position for new (edge-) vertices and store them in the edge property
     EdgeIter e_itr   = _m.edges_begin();
     EdgeIter e_end   = _m.edges_end();
     for ( ; e_itr != e_end; ++e_itr)
-      compute_midpoint( _m, e_itr.handle() );
+      compute_midpoint( _m, *e_itr );
 
     // compute new positions for old vertices
     VertexIter v_itr = _m.vertices_begin();
     VertexIter v_end = _m.vertices_end();
     for ( ; v_itr != v_end; ++v_itr)
-      update_vertex( _m, v_itr.handle() );
+      update_vertex( _m, *v_itr );
 
     // Commit changes in geometry
     v_itr  = _m.vertices_begin();
@@ -130,13 +130,13 @@ CatmullClarkT<MeshType,RealType>::subdivide( MeshType& _m , size_t _n , const bo
     // Attention! Creating new edges, hence make sure the loop ends correctly.
     e_itr = _m.edges_begin();
     for ( ; e_itr != e_end; ++e_itr)
-      split_edge( _m, e_itr.handle() );
+      split_edge( _m, *e_itr );
 
     // Commit changes in topology and reconsitute consistency
     // Attention! Creating new faces, hence make sure the loop ends correctly.
     f_itr   = _m.faces_begin();
     for ( ; f_itr != f_end; ++f_itr)
-      split_face( _m, f_itr.handle());
+      split_face( _m, *f_itr);
 
 
 #if defined(_DEBUG) || defined(DEBUG)
@@ -333,8 +333,8 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
     pos = _m.point(_vh);
     VertexEdgeIter   ve_itr;
     for ( ve_itr = _m.ve_iter( _vh); ve_itr; ++ve_itr)
-      if ( _m.is_boundary( ve_itr.handle()))
-        pos += _m.property( ep_pos_, ve_itr.handle());
+      if ( _m.is_boundary( *ve_itr))
+        pos += _m.property( ep_pos_, *ve_itr);
     pos /= 3.0;
   }
   else // inner vertex
@@ -356,7 +356,7 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
     for ( ve_itr = _m.ve_iter( _vh); ve_itr; ++ve_itr)
     {
       valence+=1.0;
-      pos += _m.property(ep_pos_, ve_itr.handle());
+      pos += _m.property(ep_pos_, *ve_itr);
     }
     pos /= valence*valence;
     */
@@ -375,7 +375,7 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
 
     for ( vf_itr = _m.vf_iter( _vh); vf_itr; ++vf_itr) //, neigboring_faces += 1.0 )
     {
-      Q += _m.property(fp_pos_, vf_itr.handle());
+      Q += _m.property(fp_pos_, *vf_itr);
     }
 
     Q /= valence*valence;//neigboring_faces;

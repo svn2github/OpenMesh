@@ -163,7 +163,7 @@ protected:
 
       // Only push the edges that need to be split
       if ( length > max_edge_length_squared_ )
-        queue.push( queueElement(eit.handle(),length) );
+        queue.push( queueElement(*eit,length) );
     }
 
     bool stop = false;

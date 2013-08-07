@@ -112,7 +112,7 @@ Tvv3<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     // raise all adjacent vertices to level x-1
     for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
-      vertex_vector.push_back(fv_it.handle());
+      vertex_vector.push_back(*fv_it);
     }
 
     while(!vertex_vector.empty()) {
@@ -348,7 +348,7 @@ Tvv4<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     // raise all adjacent vertices to level x-1
     for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
-      vertex_vector.push_back(fv_it.handle());
+      vertex_vector.push_back(*fv_it);
     }
 
     while(!vertex_vector.empty()) {
@@ -826,7 +826,7 @@ void VF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
 
       for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
-	vertex_vector.push_back(fv_it.handle());
+	vertex_vector.push_back(*fv_it);
       }
 
       while (!vertex_vector.empty()) {
@@ -883,20 +883,20 @@ void FF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state) {
 
       for (ff_it = Base::mesh_.ff_iter(_fh); ff_it; ++ff_it) {
 
-	face_vector.push_back(ff_it.handle());
+        face_vector.push_back(*ff_it);
       }
 
       while (!face_vector.empty()) {
 
-	fh = face_vector.back();
-	face_vector.pop_back();
+        fh = face_vector.back();
+        face_vector.pop_back();
 
-	Base::prev_rule()->raise(fh, _target_state - 1);
+        Base::prev_rule()->raise(fh, _target_state - 1);
       }
 
       for (ff_it = Base::mesh_.ff_iter(_fh); ff_it; ++ff_it) {
 
-	face_vector.push_back(ff_it.handle());
+        face_vector.push_back(*ff_it);
       }
 
       while (!face_vector.empty()) {
@@ -946,25 +946,25 @@ void FFc<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     if (_target_state > 1) 
     {
       for (; ff_it; ++ff_it) 
-	face_vector.push_back(ff_it.handle());
+        face_vector.push_back(*ff_it);
 
       while (!face_vector.empty()) 
       {
-	fh = face_vector.back();
-	face_vector.pop_back();
-	Base::prev_rule()->raise(fh, _target_state - 1);
+        fh = face_vector.back();
+        face_vector.pop_back();
+        Base::prev_rule()->raise(fh, _target_state - 1);
       }
 
       for (ff_it = Base::mesh_.ff_iter(_fh); ff_it; ++ff_it) 
-	face_vector.push_back(ff_it.handle());
+        face_vector.push_back(*ff_it);
 
       while (!face_vector.empty()) {
 
-	fh = face_vector.back();
-	face_vector.pop_back();
+        fh = face_vector.back();
+        face_vector.pop_back();
 
-	while (MOBJ(fh).state() < _target_state - 1)
-	  Base::prev_rule()->raise(fh, _target_state - 1);
+        while (MOBJ(fh).state() < _target_state - 1)
+          Base::prev_rule()->raise(fh, _target_state - 1);
       }
     }
 
@@ -1012,29 +1012,29 @@ void FV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (; vf_it; ++vf_it) {
 
-	face_vector.push_back(vf_it.handle());
+        face_vector.push_back(*vf_it);
       }
 
       while (!face_vector.empty()) {
 
-	fh = face_vector.back();
-	face_vector.pop_back();
+        fh = face_vector.back();
+        face_vector.pop_back();
 
-	Base::prev_rule()->raise(fh, _target_state - 1);
+        Base::prev_rule()->raise(fh, _target_state - 1);
       }
 
       for (vf_it = Base::mesh_.vf_iter(_vh); vf_it; ++vf_it) {
 
-	face_vector.push_back(vf_it.handle());
+        face_vector.push_back(*vf_it);
       }
 
       while (!face_vector.empty()) {
 
-	fh = face_vector.back();
-	face_vector.pop_back();
+        fh = face_vector.back();
+        face_vector.pop_back();
 
-	while (MOBJ(fh).state() < _target_state - 1)
-	  Base::prev_rule()->raise(fh, _target_state - 1);
+        while (MOBJ(fh).state() < _target_state - 1)
+          Base::prev_rule()->raise(fh, _target_state - 1);
       }
     }
 
@@ -1595,29 +1595,29 @@ void EV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (; ve_it; ++ve_it) {
 
-	edge_vector.push_back(ve_it.handle());
+        edge_vector.push_back(*ve_it);
       }
 
       while (!edge_vector.empty()) {
 
-	eh = edge_vector.back();
-	edge_vector.pop_back();
+        eh = edge_vector.back();
+        edge_vector.pop_back();
 
-	Base::prev_rule()->raise(eh, _target_state - 1);
+        Base::prev_rule()->raise(eh, _target_state - 1);
       }
 
       for (ve_it = Base::mesh_.ve_iter(_vh); ve_it; ++ve_it) {
 
-	edge_vector.push_back(ve_it.handle());
+        edge_vector.push_back(*ve_it);
       }
 
       while (!edge_vector.empty()) {
 
-	eh = edge_vector.back();
-	edge_vector.pop_back();
+        eh = edge_vector.back();
+        edge_vector.pop_back();
 
-	while (MOBJ(eh).state() < _target_state - 1)
-	  Base::prev_rule()->raise(eh, _target_state - 1);
+        while (MOBJ(eh).state() < _target_state - 1)
+          Base::prev_rule()->raise(eh, _target_state - 1);
       }
     }
 
@@ -1629,9 +1629,9 @@ void EV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       if (Base::mesh_.data(ve_it).final()) {
 
-	++valence;
+        ++valence;
 
-	position += Base::mesh_.data(ve_it).position(_target_state - 1);
+        position += Base::mesh_.data(ve_it).position(_target_state - 1);
       }
     }
 
@@ -1793,29 +1793,29 @@ EF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state) {
 
       for (; fe_it; ++fe_it) {
 
-	edge_vector.push_back(fe_it.handle());
+        edge_vector.push_back(*fe_it);
       }
 
       while (!edge_vector.empty()) {
 
-	eh = edge_vector.back();
-	edge_vector.pop_back();
+        eh = edge_vector.back();
+        edge_vector.pop_back();
 
-	Base::prev_rule()->raise(eh, _target_state - 1);
+        Base::prev_rule()->raise(eh, _target_state - 1);
       }
 
       for (fe_it = Base::mesh_.fe_iter(_fh); fe_it; ++fe_it) {
 
-	edge_vector.push_back(fe_it.handle());
+        edge_vector.push_back(*fe_it);
       }
 
       while (!edge_vector.empty()) {
 
-	eh = edge_vector.back();
-	edge_vector.pop_back();
+        eh = edge_vector.back();
+        edge_vector.pop_back();
 
-	while (MOBJ(eh).state() < _target_state - 1)
-	  Base::prev_rule()->raise(eh, _target_state - 1);
+        while (MOBJ(eh).state() < _target_state - 1)
+          Base::prev_rule()->raise(eh, _target_state - 1);
       }
     }
 
@@ -1827,9 +1827,9 @@ EF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state) {
 
       if (Base::mesh_.data(fe_it).final()) {
 
-	++valence;
+        ++valence;
 
-	position += Base::mesh_.data(fe_it).position(_target_state - 1);
+        position += Base::mesh_.data(fe_it).position(_target_state - 1);
       }
     }
 

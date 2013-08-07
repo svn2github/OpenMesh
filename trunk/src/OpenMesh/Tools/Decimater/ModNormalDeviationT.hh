@@ -167,7 +167,7 @@ public:
     if (_ci.vrv0.is_valid())  fhr = mesh_.face_handle(_ci.vrv0);
 
     for (; vf_it; ++vf_it) {
-      fh = vf_it.handle();
+      fh = *vf_it;
       if (fh != _ci.fl && fh != _ci.fr) {
         NormalCone nc = mesh_.property(normal_cones_, fh);
 

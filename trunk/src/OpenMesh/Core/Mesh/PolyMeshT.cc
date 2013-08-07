@@ -205,7 +205,7 @@ update_face_normals()
   FaceIter f_it(Kernel::faces_begin()), f_end(Kernel::faces_end());
 
   for (; f_it != f_end; ++f_it)
-    this->set_normal(*f_it, calc_face_normal(f_it.handle()));
+    this->set_normal(*f_it, calc_face_normal(*f_it));
 }
 
 
