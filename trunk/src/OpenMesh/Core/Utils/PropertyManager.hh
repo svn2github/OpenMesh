@@ -69,6 +69,11 @@ namespace OpenMesh {
  */
 template<typename PROPTYPE, typename MeshT>
 class PropertyManager {
+#if __cplusplus > 199711L or __GXX_EXPERIMENTAL_CXX0X__
+    public:
+        PropertyManager(const PropertyManager&) = delete;
+        PropertyManager& operator=(const PropertyManager&) = delete;
+#else
     private:
         /**
          * Noncopyable because there aren't no straightforward copy semantics.
@@ -78,7 +83,8 @@ class PropertyManager {
         /**
          * Noncopyable because there aren't no straightforward copy semantics.
          */
-        const PropertyManager& operator=(const PropertyManager&);
+        PropertyManager& operator=(const PropertyManager&);
+#endif
 
     public:
         /**
