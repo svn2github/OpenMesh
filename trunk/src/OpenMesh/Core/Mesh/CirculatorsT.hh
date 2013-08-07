@@ -283,9 +283,17 @@ class GenericCirculatorT : protected GenericCirculatorBaseT<Mesh> {
 #endif
         }
 
-        /// Standard pointer operator.
-        value_type operator->() const {
-            return **this;
+        /**
+         * @brief Pointer dereferentiation.
+         *
+         * This returns a pointer which points to a handle
+         * that loses its validity once this dereferentiation is
+         * invoked again. Thus, do not store the result of
+         * this operation.
+         */
+        pointer operator->() const {
+            pointer_deref_value = **this;
+            return &pointer_deref_value;
         }
 
         GenericCirculatorT &operator=(const GenericCirculatorT &rhs) {
@@ -332,6 +340,8 @@ class GenericCirculatorT : protected GenericCirculatorBaseT<Mesh> {
             return s << self.mesh_ << ", " << self.start_.idx() << ", " << self.heh_.idx() << ", " << self.lap_counter_;
         }
 
+    private:
+        mutable value_type pointer_deref_value;
 };
 
 } // namespace Iterators
