@@ -367,9 +367,9 @@ int main(int argc, char *argv[] )
     MyMesh::FaceIter it = mesh.faces_begin();
     for (; it != mesh.faces_end(); ++it)
     {
-      mesh.set_color( it , MyMesh::Color( std::min((int)(r+0.5),255), 
-                                          std::min((int)(g+0.5),255), 
-                                          std::max((int)(b+0.5),0) ) );
+      mesh.set_color( *it , MyMesh::Color( std::min((int)(r+0.5),255),
+                                           std::min((int)(g+0.5),255),
+                                           std::max((int)(b+0.5),0) ) );
       r += d2;
 //       g += d2;
       b -= d;

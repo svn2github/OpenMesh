@@ -439,7 +439,7 @@ void CompositeT<MeshType,RealType>::FF()
     valence = 0;
     cog = zero_point;
 
-    for (ff_it = mesh_.ff_iter(*f_it); ff_it; ++ff_it)
+    for (ff_it = mesh_.ff_iter(*f_it); ff_it.is_valid(); ++ff_it)
     {
       cog += mesh_.data(ff_it).position();
       ++valence;
@@ -578,13 +578,13 @@ void CompositeT<MeshType,RealType>::FVc(Coeff& _coeff)
     valence = 0;
     cog = zero_point;
 
-    for (voh_it = mesh_.voh_iter(*v_it); voh_it; ++voh_it) {
+    for (voh_it = mesh_.voh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
       ++valence;
     }
 
     c = _coeff(valence);
 
-    for (voh_it = mesh_.voh_iter(*v_it); voh_it; ++voh_it) {
+    for (voh_it = mesh_.voh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
 
       if (mesh_.face_handle(*voh_it).is_valid()) {
 
@@ -889,14 +889,14 @@ void CompositeT<MeshType,RealType>::EVc(Coeff& _coeff)
     valence = 0;
     cog = zero_point;
 
-    for (voh_it = mesh_.voh_iter(*v_it); voh_it; ++voh_it)
+    for (voh_it = mesh_.voh_iter(*v_it); voh_it.is_valid(); ++voh_it)
     {
       ++valence;
     }
 
     c = _coeff(valence);
 
-    for (voh_it = mesh_.voh_iter(*v_it); voh_it; ++voh_it) {
+    for (voh_it = mesh_.voh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
       cog += mesh_.data(mesh_.edge_handle(*voh_it)).position() * c;
       cog += mesh_.data(mesh_.edge_handle(mesh_.next_halfedge_handle(*voh_it))).position() * (1.0 - c);
     }

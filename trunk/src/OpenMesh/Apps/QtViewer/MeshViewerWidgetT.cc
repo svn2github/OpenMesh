@@ -165,7 +165,7 @@ MeshViewerWidgetT<M>::open_mesh(const char* _filename, IO::Options _opt)
       {
         typename Mesh::Point v(0,0,0);
         for( fv_it=mesh_.fv_iter(f_it); fv_it.is_valid(); ++fv_it)
-          v += OpenMesh::vector_cast<typename Mesh::Normal>(mesh_.point(fv_it));
+          v += OpenMesh::vector_cast<typename Mesh::Normal>(mesh_.point(*fv_it));
         v *= 1.0f/3.0f;
         mesh_.property( fp_normal_base_, f_it ) = v;
       }
@@ -323,11 +323,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
      for (; fIt!=fEnd; ++fIt)
      {
         fvIt = mesh_.cfv_iter(*fIt);
-        glVertex3fv( &mesh_.point(fvIt)[0] );
+        glVertex3fv( &mesh_.point(*fvIt)[0] );
         ++fvIt;
-        glVertex3fv( &mesh_.point(fvIt)[0] );
+        glVertex3fv( &mesh_.point(*fvIt)[0] );
         ++fvIt;
-        glVertex3fv( &mesh_.point(fvIt)[0] );
+        glVertex3fv( &mesh_.point(*fvIt)[0] );
      }
      glEnd();
   }
@@ -340,11 +340,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
       glNormal3fv( &mesh_.normal(fIt)[0] );
       
       fvIt = mesh_.cfv_iter(*fIt);
-      glVertex3fv( &mesh_.point(fvIt)[0] );
+      glVertex3fv( &mesh_.point(*fvIt)[0] );
       ++fvIt;
-      glVertex3fv( &mesh_.point(fvIt)[0] );
+      glVertex3fv( &mesh_.point(*fvIt)[0] );
       ++fvIt;
-      glVertex3fv( &mesh_.point(fvIt)[0] );      
+      glVertex3fv( &mesh_.point(*fvIt)[0] );
     }
     glEnd();
     

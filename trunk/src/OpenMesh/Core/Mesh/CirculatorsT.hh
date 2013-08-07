@@ -313,7 +313,7 @@ class GenericCirculatorT : protected GenericCirculatorBaseT<Mesh> {
             return GenericCirculator_ValueHandleFns::is_valid(this->mesh_, this->heh_, this->start_, this->lap_counter_);
         }
 
-        DEPRECATED("current_halfedge_handle() is an implementation detail and should not be accessed from outside the iterator class.")
+        //DEPRECATED("current_halfedge_handle() is an implementation detail and should not be accessed from outside the iterator class.")
         const HalfedgeHandle &current_halfedge_handle() const {
             return this->heh_;
         }

@@ -348,11 +348,11 @@ private:
     typename MeshType::HalfedgeHandle   heh;
 
     // find boundary edge
-    for( fe_it=_m.fe_iter( _fh ); fe_it && !_m.is_boundary( fe_it ); ++fe_it ) {};
+    for( fe_it=_m.fe_iter( _fh ); fe_it.is_valid() && !_m.is_boundary( fe_it ); ++fe_it ) {};
 
     // use precomputed, already inserted but not linked vertices
-    vhl = _m.property(ep_nv_, fe_it).first;
-    vhr = _m.property(ep_nv_, fe_it).second;
+    vhl = _m.property(ep_nv_, *fe_it).first;
+    vhr = _m.property(ep_nv_, *fe_it).second;
 
     /*
     //       *---------*---------*
@@ -367,8 +367,8 @@ private:
     */
     // get halfedge pointing from P2 to P3 (inner boundary halfedge)
 
-    heh = _m.halfedge_handle(fe_it, 
-                             _m.is_boundary(_m.halfedge_handle(fe_it,0)));
+    heh = _m.halfedge_handle(*fe_it,
+                             _m.is_boundary(_m.halfedge_handle(*fe_it,0)));
 
     typename MeshType::HalfedgeHandle pl_P3;
 

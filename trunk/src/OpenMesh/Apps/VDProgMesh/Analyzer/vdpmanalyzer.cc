@@ -857,7 +857,7 @@ compute_screen_space_error(VHierarchyNodeHandle node_handle, VHierarchyNodeHandl
     residual = lp - mesh_.point(vh);
     min_distance = residual.length();
 
-    for (vf_it=mesh_.vf_iter(vh); vf_it; ++vf_it)
+    for (vf_it=mesh_.vf_iter(vh); vf_it.is_valid(); ++vf_it)
     {
       heh    = mesh_.halfedge_handle(*vf_it);
       tri[0] = mesh_.point(mesh_.to_vertex_handle(heh));

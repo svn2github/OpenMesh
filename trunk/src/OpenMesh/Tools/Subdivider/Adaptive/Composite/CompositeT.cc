@@ -201,7 +201,7 @@ void CompositeT<M>::refine(typename M::FaceHandle& _fh)
     {
       typename Mesh::FaceHalfedgeIter fh_it(mesh_.fh_iter(_fh));
 
-      for (; fh_it; ++fh_it)
+      for (; fh_it.is_valid(); ++fh_it)
       {
         hh_vector.push_back(mesh_.PHEH(mesh_.OHEH(*fh_it)));
       }

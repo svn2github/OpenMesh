@@ -100,7 +100,7 @@ PolyMesh_ArrayKernelT<MeshTraits>* MeshDual (PolyMesh_ArrayKernelT<MeshTraits> &
   {
       typename PolyMesh_ArrayKernelT<MeshTraits>::Point centerPoint(0,0,0);
       unsigned int degree= 0;
-      for(typename PolyMesh_ArrayKernelT<MeshTraits>::ConstFaceVertexIter vit=primal.cfv_iter(fit); vit.is_valid(); ++vit, ++degree)
+      for(typename PolyMesh_ArrayKernelT<MeshTraits>::ConstFaceVertexIter vit=primal.cfv_iter(*fit); vit.is_valid(); ++vit, ++degree)
         centerPoint += primal.point(*vit);
         assert(degree!=0);
         centerPoint /= degree;
@@ -114,7 +114,7 @@ PolyMesh_ArrayKernelT<MeshTraits>* MeshDual (PolyMesh_ArrayKernelT<MeshTraits> &
     if(!primal.is_boundary(*vit))
     {
       face_vhandles.clear();
-      for(typename PolyMesh_ArrayKernelT<MeshTraits>::ConstVertexFaceIter fit=primal.cvf_iter(vit); fit.is_valid(); ++fit)
+      for(typename PolyMesh_ArrayKernelT<MeshTraits>::ConstVertexFaceIter fit=primal.cvf_iter(*vit); fit.is_valid(); ++fit)
         face_vhandles.push_back(primal.property(primalToDual, *fit));
       dual->add_face(face_vhandles);
     }

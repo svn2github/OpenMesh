@@ -332,7 +332,7 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
     Normal   Vec;
     pos = _m.point(_vh);
     VertexEdgeIter   ve_itr;
-    for ( ve_itr = _m.ve_iter( _vh); ve_itr; ++ve_itr)
+    for ( ve_itr = _m.ve_iter( _vh); ve_itr.is_valid(); ++ve_itr)
       if ( _m.is_boundary( *ve_itr))
         pos += _m.property( ep_pos_, *ve_itr);
     pos /= 3.0;
@@ -363,9 +363,9 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
 
     RealType       valence(0.0);
     VOHIter voh_it = _m.voh_iter( _vh );
-    for( ; voh_it; ++voh_it )
+    for( ; voh_it.is_valid(); ++voh_it )
     {
-      pos += _m.point( _m.to_vertex_handle( voh_it ) );
+      pos += _m.point( _m.to_vertex_handle( *voh_it ) );
       valence+=1.0;
     }
     pos /= valence*valence;
@@ -373,7 +373,7 @@ CatmullClarkT<MeshType,RealType>::update_vertex( MeshType& _m, const VertexHandl
     VertexFaceIter vf_itr;
     Point          Q(0, 0, 0);
 
-    for ( vf_itr = _m.vf_iter( _vh); vf_itr; ++vf_itr) //, neigboring_faces += 1.0 )
+    for ( vf_itr = _m.vf_iter( _vh); vf_itr.is_valid(); ++vf_itr) //, neigboring_faces += 1.0 )
     {
       Q += _m.property(fp_pos_, *vf_itr);
     }

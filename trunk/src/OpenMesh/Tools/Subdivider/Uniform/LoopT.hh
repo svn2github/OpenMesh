@@ -436,13 +436,13 @@ private: // geometry helper
       size_t                            valence(0);
 
       // Calculate Valence and sum up neighbour points
-      for (vvit=_m.vv_iter(_vh); vvit; ++vvit) {
+      for (vvit=_m.vv_iter(_vh); vvit.is_valid(); ++vvit) {
         ++valence;
-        pos += vector_cast< Vec >( _m.point(vvit) );
+        pos += vector_cast< Vec >( _m.point(*vvit) );
       }
       pos *= weights_[valence].second; // alpha(n)/n * Sum q, q in one-ring of p
       pos += weights_[valence].first
-           * vector_cast<Vec>(_m.point(_vh)); // + (1-a)*p
+          * vector_cast<Vec>(_m.point(_vh)); // + (1-a)*p
     }
 
     _m.property( vp_pos_, _vh ) = pos;

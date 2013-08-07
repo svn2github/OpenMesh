@@ -358,10 +358,9 @@ int main(int argc, char **argv)
         face_quality = 0.0;
         valence      = 0;
 
-        for (ff_it = mesh.ff_iter(*f_it); ff_it; ++ff_it) {
+        for (ff_it = mesh.ff_iter(*f_it); ff_it.is_valid(); ++ff_it) {
 
-          temp_quality = OpenMesh::dot( mesh.normal(f_it), 
-                                        mesh.normal(ff_it) );
+          temp_quality = OpenMesh::dot( mesh.normal(*f_it), mesh.normal(*ff_it) );
 
           if (temp_quality >= 1.0)
             temp_quality = .99;
