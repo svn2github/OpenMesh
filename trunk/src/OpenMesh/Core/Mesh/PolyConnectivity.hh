@@ -95,21 +95,37 @@ public:
   */
   //@{
   /// Circulator
-  typedef Iterators::VertexVertexIterT<This>          VertexVertexIter;
-  typedef Iterators::VertexOHalfedgeIterT<This>       VertexOHalfedgeIter;
-  typedef Iterators::VertexIHalfedgeIterT<This>       VertexIHalfedgeIter;
-  typedef Iterators::VertexEdgeIterT<This>            VertexEdgeIter;
-  typedef Iterators::VertexFaceIterT<This>            VertexFaceIter;
+  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::VertexHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toVertexHandle>
+  VertexVertexIter;
+
+  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::HalfedgeHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toHalfedgeHandle>
+  VertexOHalfedgeIter;
+
+  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::HalfedgeHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toOppositeHalfedgeHandle>
+  VertexIHalfedgeIter;
+
+  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::FaceHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toFaceHandle>
+  VertexFaceIter;
+
+  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::EdgeHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toEdgeHandle>
+  VertexEdgeIter;
+
+  typedef VertexVertexIter    ConstVertexVertexIter;
+  typedef VertexOHalfedgeIter ConstVertexOHalfedgeIter;
+  typedef VertexIHalfedgeIter ConstVertexIHalfedgeIter;
+  typedef VertexFaceIter      ConstVertexFaceIter;
+  typedef VertexEdgeIter      ConstVertexEdgeIter;
+
   typedef Iterators::FaceVertexIterT<This>            FaceVertexIter;
   typedef Iterators::FaceHalfedgeIterT<This>          FaceHalfedgeIter;
   typedef Iterators::FaceEdgeIterT<This>              FaceEdgeIter;
   typedef Iterators::FaceFaceIterT<This>              FaceFaceIter;
 
-  typedef Iterators::ConstVertexVertexIterT<This>     ConstVertexVertexIter;
-  typedef Iterators::ConstVertexOHalfedgeIterT<This>  ConstVertexOHalfedgeIter;
-  typedef Iterators::ConstVertexIHalfedgeIterT<This>  ConstVertexIHalfedgeIter;
-  typedef Iterators::ConstVertexEdgeIterT<This>       ConstVertexEdgeIter;
-  typedef Iterators::ConstVertexFaceIterT<This>       ConstVertexFaceIter;
   typedef Iterators::ConstFaceVertexIterT<This>       ConstFaceVertexIter;
   typedef Iterators::ConstFaceHalfedgeIterT<This>     ConstFaceHalfedgeIter;
   typedef Iterators::ConstFaceEdgeIterT<This>         ConstFaceEdgeIter;

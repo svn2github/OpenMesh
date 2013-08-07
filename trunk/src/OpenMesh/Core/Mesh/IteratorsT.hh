@@ -117,11 +117,13 @@ class GenericIteratorT {
         }
 
         /// Get the handle of the item the iterator refers to.
+        DEPRECATED("This function clutters your code. Use dereferencing operators -> and * instead.")
         value_handle handle() const {
             return hnd_;
         }
 
         /// Cast to the handle of the item the iterator refers to.
+        DEPRECATED("Implicit casts of iterators are unsafe. Use dereferencing operators -> and * instead.")
         operator value_handle() const {
             return hnd_;
         }
@@ -144,12 +146,26 @@ class GenericIteratorT {
             return *this;
         }
 
+        /// Standard post-increment operator
+        GenericIteratorT operator++(int) {
+            GenericIteratorT cpy(*this);
+            ++(*this);
+            return cpy;
+        }
+
         /// Standard pre-decrement operator
         GenericIteratorT& operator--() {
             hnd_.__decrement();
             if (skip_bits_)
                 skip_bwd();
             return *this;
+        }
+
+        /// Standard post-decrement operator
+        GenericIteratorT operator--(int) {
+            GenericIteratorT cpy(*this);
+            --(*this);
+            return cpy;
         }
 
         /// Turn on skipping: automatically skip deleted/hidden elements

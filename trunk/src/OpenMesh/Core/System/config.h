@@ -77,6 +77,14 @@
 #  endif
 #endif
 
+#if defined(_MSCVER)
+#define DEPRECATED(msg) __declspec(deprecated(msg))
+#elif defined(__GNUC__) or defined(__clang__)
+#define DEPRECATED(msg) __attribute__ ((deprecated(msg)))
+#else
+#define DEPRECATED(msg)
+#endif
+
 typedef unsigned int uint;
 //=============================================================================
 #endif // OPENMESH_CONFIG_H defined
