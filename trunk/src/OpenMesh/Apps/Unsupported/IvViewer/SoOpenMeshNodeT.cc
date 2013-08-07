@@ -198,7 +198,7 @@ drawFaces(bool _send_normals, OpenMesh::GenProg::Bool2Type<false>)
     {
       glBegin(GL_POLYGON);
       glNormal(mesh_->normal(f_it));
-      for (fv_it=mesh_->cfv_iter(f_it.handle()); fv_it; ++fv_it)
+      for (fv_it=mesh_->cfv_iter(f_it.handle()); fv_it.is_valid() ++fv_it)
 	glVertex(mesh_->point(fv_it));
       glEnd();
     }
@@ -208,7 +208,7 @@ drawFaces(bool _send_normals, OpenMesh::GenProg::Bool2Type<false>)
     for (; f_it!=f_end; ++f_it)
     {
       glBegin(GL_POLYGON);
-      for (fv_it=mesh_->cfv_iter(f_it.handle()); fv_it; ++fv_it)
+      for (fv_it=mesh_->cfv_iter(f_it.handle()); fv_it.is_valid() ++fv_it)
 	glVertex(mesh_->point(fv_it));
       glEnd();
     }
@@ -290,7 +290,7 @@ genPrimitives(SoAction* _action, OpenMesh::GenProg::Bool2Type<false>)
 
     pv.setNormal(sbvec3f(mesh_->normal(f_it)));
 
-    for (fv_it=mesh_->cfv_iter(f_it.handle()); fv_it; ++fv_it)
+    for (fv_it=mesh_->cfv_iter(f_it.handle()); fv_it.is_valid() ++fv_it)
     {
       pv.setPoint(sbvec3f(mesh_->point(fv_it)));
       shapeVertex(&pv);

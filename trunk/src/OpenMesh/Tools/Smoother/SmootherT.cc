@@ -175,11 +175,11 @@ set_active_vertices()
       for ( ; voh_it ; ++voh_it ) {
 
         // If the edge is a feature edge, skip the current vertex while smoothing
-        if ( mesh_.status(mesh_.edge_handle(voh_it.handle())).feature() )
+        if ( mesh_.status(mesh_.edge_handle(*voh_it)).feature() )
           active = false;
 
-        typename Mesh::FaceHandle fh1 = mesh_.face_handle(voh_it.handle() );
-        typename Mesh::FaceHandle fh2 = mesh_.face_handle(mesh_.opposite_halfedge_handle(voh_it.handle() ) );
+        typename Mesh::FaceHandle fh1 = mesh_.face_handle(*voh_it );
+        typename Mesh::FaceHandle fh2 = mesh_.face_handle(mesh_.opposite_halfedge_handle(*voh_it ) );
 
         // If one of the faces is a feature, lock current vertex
         if ( fh1.is_valid() && mesh_.status( fh1 ).feature() )

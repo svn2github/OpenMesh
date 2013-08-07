@@ -102,7 +102,7 @@ void DecimaterT<Mesh>::heap_vertex(VertexHandle _vh) {
   // find best target in one ring
   typename Mesh::VertexOHalfedgeIter voh_it(mesh_, _vh);
   for (; voh_it; ++voh_it) {
-    heh = voh_it.handle();
+    heh = *voh_it;
     CollapseInfo ci(mesh_, heh);
 
     if (this->is_collapse_legal(ci)) {
@@ -190,7 +190,7 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
     vv_it = mesh_.vv_iter(ci.v0);
     support.clear();
     for (; vv_it; ++vv_it)
-      support.push_back(vv_it.handle());
+      support.push_back(*vv_it);
 
     // perform collapse
     mesh_.collapse(v0v1);
@@ -276,7 +276,7 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
     vv_it = mesh_.vv_iter(ci.v0);
     support.clear();
     for (; vv_it; ++vv_it)
-      support.push_back(vv_it.handle());
+      support.push_back(*vv_it);
 
     // adjust complexity in advance (need boundary status)
     ++n_collapses;

@@ -102,7 +102,7 @@ int main(int argc, char **argv)
       
       for (vv_it=mesh.vv_iter(v_it.handle()); vv_it; ++vv_it)
       {
-        cog += mesh.point( vv_it.handle() );
+        cog += mesh.point( *vv_it );
         ++valence;
       }
 

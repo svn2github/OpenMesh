@@ -106,7 +106,7 @@ calc_face_normal(FaceHandle _fh) const
   
   //calculate area-weighted average normal of polygon's ears
   Normal n(0,0,0);
-  for(; fv_it; ++fv_it)
+  for(; fv_it.is_valid(); ++fv_it)
   {
     p2 = this->point(fv_it);
     n += vector_cast<Normal>(calc_face_normal(p0, p1, p2)); 

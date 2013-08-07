@@ -183,7 +183,7 @@ protected:
         _m.split(a.first,newVertex);
 
         for ( typename MeshType::VertexOHalfedgeIter voh_it(_m,newVertex); voh_it; ++voh_it) {
-          typename MeshType::EdgeHandle eh = _m.edge_handle(voh_it.handle());
+          typename MeshType::EdgeHandle eh = _m.edge_handle(*voh_it);
           const typename MeshType::Point to   = _m.point(_m.to_vertex_handle(voh_it));
           const typename MeshType::Point from = _m.point(_m.from_vertex_handle(voh_it));
           real_t length = (to - from).sqrnorm();

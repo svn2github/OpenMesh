@@ -15,7 +15,7 @@ fill_props( Mesh& _m, OpenMesh::VPropHandleT<float> _ph, bool _check=false)
   for(typename Mesh::VertexIter it=_m.vertices_begin(); 
       it != _m.vertices_end(); ++it)
   {
-    v = a[it.handle().idx()%9];
+    v = a[it->idx()%9];
     if ( _check && !(_m.property( _ph, it ) == v) )
       return false;
     else  
@@ -34,7 +34,7 @@ fill_props( Mesh& _m, OpenMesh::EPropHandleT<bool> _ph, bool _check=false )
   for( typename Mesh::EdgeIter it=_m.edges_begin();
        it != _m.edges_end(); ++it)
   {
-    n = it.handle().idx();
+    n = it->idx();
     v = ((n&(n-1))==0); // true for 0,1,2,4,8,..
 
     if (_check && _m.property( _ph, it ) != v)
@@ -62,7 +62,7 @@ fill_props(Mesh& _m, OpenMesh::FPropHandleT<std::string> _ph, bool _check=false)
   for( typename Mesh::FaceIter it=_m.faces_begin();
        it != _m.faces_end(); ++it)
   {
-    n = it.handle().idx();
+    n = it->idx();
     _m.property( _ph, it ) = int2roman(++n);
   }
   return true;
@@ -85,9 +85,9 @@ fill_props( Mesh& _m, OpenMesh::HPropHandleT<T> _ph, bool _check=false)
   for( typename Mesh::HalfedgeIter it=_m.halfedges_begin();
        it != _m.halfedges_end(); ++it)
   {
-    n = it.handle().idx();
+    n = it->idx();
 
-//    v = it.handle().idx()+1; // ival
+//    v = it->idx()+1; // ival
 //    v = values[n%9];         // dval
     v = ((n&(n-1))==0);      // bval
     v.vec4fval[0] = a[n%9];
@@ -110,7 +110,7 @@ fill_props( Mesh& _m, OpenMesh::MPropHandleT<T> _ph, bool _check=false)
   size_t idx;
   for( typename Mesh::FaceIter it=_m.faces_begin(); it != _m.faces_end(); ++it)
   {
-    idx = it.handle().idx();
+    idx = it->idx();
     if ( _check && _m.property( _ph )[int2roman(idx+1)] != idx )
       return false;
     else

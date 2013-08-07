@@ -208,7 +208,7 @@ public:
   {
     unsigned int count(0);
     _vhandles.clear();
-    for (typename Mesh::CFVIter fv_it=mesh_.cfv_iter(_fh); fv_it; ++fv_it)
+    for (typename Mesh::CFVIter fv_it=mesh_.cfv_iter(_fh); fv_it.is_valid(); ++fv_it)
     {
       _vhandles.push_back(fv_it.handle());
       ++count;

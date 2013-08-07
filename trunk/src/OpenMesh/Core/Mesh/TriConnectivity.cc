@@ -160,7 +160,7 @@ bool TriConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
     status(vv_it).set_tagged(true);
 
   for (vv_it = vv_iter(v0); vv_it; ++vv_it)
-    if (status(vv_it).tagged() && vv_it.handle() != vl && vv_it.handle() != vr)
+    if (status(vv_it).tagged() && *vv_it != vl && *vv_it != vr)
       return false;
 
 

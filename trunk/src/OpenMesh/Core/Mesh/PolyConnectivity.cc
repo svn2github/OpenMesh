@@ -401,8 +401,8 @@ bool PolyConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
   for (vv_it = vv_iter(v0); vv_it; ++vv_it)
   {
     if (status(vv_it).tagged() &&
-      !(vv_it.handle() == v_01_n && v0v1_triangle) &&
-      !(vv_it.handle() == v_10_n && v1v0_triangle)
+      !(*vv_it == v_01_n && v0v1_triangle) &&
+      !(*vv_it == v_10_n && v1v0_triangle)
       )
     {
       return false;

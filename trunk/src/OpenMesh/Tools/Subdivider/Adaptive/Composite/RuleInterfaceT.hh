@@ -243,7 +243,7 @@ public:
 	prev_rule()->raise(eh, _target_state - 1);
       }
 
-      for (fv_it = mesh_.fv_iter(_fh); fv_it; ++fv_it) {
+      for (fv_it = mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
 	vh = fv_it.handle();
 	prev_rule()->raise(vh, _target_state - 1);
@@ -305,7 +305,7 @@ public:
     {
 
       for (voh_it = mesh_.voh_iter(_vh); voh_it; ++voh_it) {
-	halfedge_vector.push_back(voh_it.handle());
+	halfedge_vector.push_back(*voh_it);
       }
 
       while ( !halfedge_vector.empty() ) {
@@ -316,7 +316,7 @@ public:
       }
 
       for (voh_it = mesh_.voh_iter(_vh); voh_it; ++voh_it) {
-	halfedge_vector.push_back(voh_it.handle());
+	halfedge_vector.push_back(*voh_it);
       }
 
       while ( !halfedge_vector.empty() ) {

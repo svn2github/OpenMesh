@@ -293,21 +293,21 @@ get_active_cuts(const VHierarchyNodeHandle _node_handle,
   for (vv_it=mesh_.vv_iter(vhierarchy_.vertex_handle(_node_handle)); 
        vv_it; ++vv_it)
   {
-    nnode_handle = mesh_.data(vv_it.handle()).vhierarchy_node_handle();
+    nnode_handle = mesh_.data(*vv_it).vhierarchy_node_handle();
     nnode_index = vhierarchy_.node_index(nnode_handle);
 
     if (vl == VDPMMesh::InvalidVertexHandle && 
 	vhierarchy_.is_ancestor(nnode_index, fund_lcut_index) == true)
-      vl = vv_it.handle();
+      vl = *vv_it;
 
     if (vr == VDPMMesh::InvalidVertexHandle && 
 	vhierarchy_.is_ancestor(nnode_index, fund_rcut_index) == true)
-      vr = vv_it.handle();
+      vr = *vv_it;
 
     /*if (vl == VDPMMesh::InvalidVertexHandle && nnode_index.is_ancestor_index(fund_lcut_index) == true)
-      vl = vv_it.handle();
+      vl = *vv_it;
     if (vr == VDPMMesh::InvalidVertexHandle && nnode_index.is_ancestor_index(fund_rcut_index) == true)
-      vr = vv_it.handle();*/
+      vr = *vv_it;*/
 
     if (vl != VDPMMesh::InvalidVertexHandle && 
 	vr != VDPMMesh::InvalidVertexHandle)

@@ -327,11 +327,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
     for (; fIt!=fEnd; ++fIt)
     {
       fvIt = mesh_.cfv_iter(fIt.handle()); 
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
     }
     glEnd();
     
@@ -363,11 +363,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
     for (; fIt!=fEnd; ++fIt)
     {
       fvIt = mesh_.cfv_iter(fIt.handle()); 
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
     }
     glEnd();
     
@@ -391,11 +391,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
       glColor( fIt.handle() );
 
       fvIt = mesh_.cfv_iter(fIt.handle()); 
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
     }
     glEnd();
     

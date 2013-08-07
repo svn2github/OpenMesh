@@ -110,7 +110,7 @@ Tvv3<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     int                                      valence(0);
 
     // raise all adjacent vertices to level x-1
-    for (fv_it = Base::mesh_.fv_iter(_fh); fv_it; ++fv_it) {
+    for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
       vertex_vector.push_back(fv_it.handle());
     }
@@ -140,7 +140,7 @@ Tvv3<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
       // calculate display position for new vertex
       for (vv_it = Base::mesh_.vv_iter(vh); vv_it; ++vv_it) 
       {
-        position += Base::mesh_.point(vv_it.handle());
+        position += Base::mesh_.point(*vv_it);
         ++valence;
       }
 
@@ -156,24 +156,24 @@ Tvv3<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
       // check for edge flipping
       for (voh_it = Base::mesh_.voh_iter(vh); voh_it; ++voh_it) {
       
-	if (Base::mesh_.FH(voh_it.handle()).is_valid()) {
+	if (Base::mesh_.FH(*voh_it).is_valid()) {
 
-	  MOBJ(Base::mesh_.FH(voh_it.handle())).set_state(_target_state);
-	  MOBJ(Base::mesh_.FH(voh_it.handle())).set_not_final();
-	  MOBJ(Base::mesh_.FH(voh_it.handle())).set_position(_target_state - 1, face_position);
+	  MOBJ(Base::mesh_.FH(*voh_it)).set_state(_target_state);
+	  MOBJ(Base::mesh_.FH(*voh_it)).set_not_final();
+	  MOBJ(Base::mesh_.FH(*voh_it)).set_position(_target_state - 1, face_position);
       
 
 	  for (state_t j = 0; j < _target_state; ++j) {
-	    MOBJ(Base::mesh_.FH(voh_it.handle())).set_position(j, MOBJ(_fh).position(j));
+	    MOBJ(Base::mesh_.FH(*voh_it)).set_position(j, MOBJ(_fh).position(j));
 	  }
       
-	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))).is_valid()) {
+	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))).is_valid()) {
 
-	    if (MOBJ(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle())))).state() == _target_state) {
+	    if (MOBJ(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it)))).state() == _target_state) {
 
-	      if (Base::mesh_.is_flip_ok(Base::mesh_.EH(Base::mesh_.NHEH(voh_it.handle())))) {
+	      if (Base::mesh_.is_flip_ok(Base::mesh_.EH(Base::mesh_.NHEH(*voh_it)))) {
 
-		edge_vector.push_back(Base::mesh_.EH(Base::mesh_.NHEH(voh_it.handle())));
+		edge_vector.push_back(Base::mesh_.EH(Base::mesh_.NHEH(*voh_it)));
 	      }
 	    }
 	  }
@@ -346,7 +346,7 @@ Tvv4<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     std::vector<typename M::HalfedgeHandle> halfedge_vector;
 
     // raise all adjacent vertices to level x-1
-    for (fv_it = Base::mesh_.fv_iter(_fh); fv_it; ++fv_it) {
+    for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
       vertex_vector.push_back(fv_it.handle());
     }
@@ -824,7 +824,7 @@ void VF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
 
     if (_target_state > 1) {
 
-      for (fv_it = Base::mesh_.fv_iter(_fh); fv_it; ++fv_it) {
+      for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
 	vertex_vector.push_back(fv_it.handle());
       }
@@ -842,7 +842,7 @@ void VF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     typename M::Point position(0.0, 0.0, 0.0);
     int                  valence(0);
 
-    for (fv_it = Base::mesh_.fv_iter(_fh); fv_it; ++fv_it) {
+    for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
       ++valence;
       position += Base::mesh_.data(fv_it).position(_target_state - 1);
@@ -1084,13 +1084,13 @@ void FVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (voh_it = Base::mesh_.voh_iter(_vh); voh_it; ++voh_it) {
 
-	if (Base::mesh_.FH(voh_it.handle()).is_valid()) {
+	if (Base::mesh_.FH(*voh_it).is_valid()) {
 
-	  face_vector.push_back(Base::mesh_.FH(voh_it.handle()));
+	  face_vector.push_back(Base::mesh_.FH(*voh_it));
 
-	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))).is_valid()) {
+	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))).is_valid()) {
 
-	    face_vector.push_back(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))));
+	    face_vector.push_back(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))));
 	  }
 	}
       }
@@ -1105,13 +1105,13 @@ void FVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (voh_it = Base::mesh_.voh_iter(_vh); voh_it; ++voh_it) {
 
-	if (Base::mesh_.FH(voh_it.handle()).is_valid()) {
+	if (Base::mesh_.FH(*voh_it).is_valid()) {
 
-	  face_vector.push_back(Base::mesh_.FH(voh_it.handle()));
+	  face_vector.push_back(Base::mesh_.FH(*voh_it));
 
-	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))).is_valid()) {
+	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))).is_valid()) {
 
-	    face_vector.push_back(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))));
+	    face_vector.push_back(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))));
 	  }
 	}
       }
@@ -1127,13 +1127,13 @@ void FVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (voh_it = Base::mesh_.voh_iter(_vh); voh_it; ++voh_it) {
 
-	if (Base::mesh_.FH(voh_it.handle()).is_valid()) {
+	if (Base::mesh_.FH(*voh_it).is_valid()) {
 
-	  face_vector.push_back(Base::mesh_.FH(voh_it.handle()));
+	  face_vector.push_back(Base::mesh_.FH(*voh_it));
 
-	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))).is_valid()) {
+	  if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))).is_valid()) {
 
-	    face_vector.push_back(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))));
+	    face_vector.push_back(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))));
 	  }
 	}
       }
@@ -1170,25 +1170,25 @@ void FVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
     for (voh_it = Base::mesh_.voh_iter(_vh); voh_it; ++voh_it) {
 
-      fh = Base::mesh_.FH(voh_it.handle());
+      fh = Base::mesh_.FH(*voh_it);
       if (fh.is_valid())
 	Base::prev_rule()->raise(fh, _target_state - 1);
 
-      fh = Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle())));
+      fh = Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it)));
       if (fh.is_valid())
 	Base::prev_rule()->raise(fh, _target_state - 1);
 
-      if (Base::mesh_.FH(voh_it.handle()).is_valid()) {
+      if (Base::mesh_.FH(*voh_it).is_valid()) {
 
-	if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle()))).is_valid()) {
+	if (Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it))).is_valid()) {
 
-	  position += MOBJ(Base::mesh_.FH(voh_it.handle())).position(_target_state - 1) * c;
+	  position += MOBJ(Base::mesh_.FH(*voh_it)).position(_target_state - 1) * c;
 
-	  position += MOBJ(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(voh_it.handle())))).position(_target_state - 1) * (1.0 - c);
+	  position += MOBJ(Base::mesh_.FH(Base::mesh_.OHEH(Base::mesh_.NHEH(*voh_it)))).position(_target_state - 1) * (1.0 - c);
 	}
 	else {
 
-	  position += MOBJ(Base::mesh_.FH(voh_it.handle())).position(_target_state - 1);
+	  position += MOBJ(Base::mesh_.FH(*voh_it)).position(_target_state - 1);
 	}
       }
 
@@ -1256,7 +1256,7 @@ void VV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (; vv_it; ++vv_it) {
 
-	vertex_vector.push_back(vv_it.handle());
+	vertex_vector.push_back(*vv_it);
       }
 
       while (!vertex_vector.empty()) {
@@ -1269,7 +1269,7 @@ void VV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (; vv_it; ++vv_it) {
 
-	vertex_vector.push_back(vv_it.handle());
+	vertex_vector.push_back(*vv_it);
       }
 
       while (!vertex_vector.empty()) {
@@ -1326,7 +1326,7 @@ void VVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (; vv_it; ++vv_it) {
 
-	vertex_vector.push_back(vv_it.handle());
+	vertex_vector.push_back(*vv_it);
       }
 
       while (!vertex_vector.empty()) {
@@ -1339,7 +1339,7 @@ void VVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (; vv_it; ++vv_it) {
 
-	vertex_vector.push_back(vv_it.handle());
+	vertex_vector.push_back(*vv_it);
       }
 
       while (!vertex_vector.empty()) {
@@ -1673,7 +1673,7 @@ void EVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (voh_it = Base::mesh_.voh_iter(_vh); voh_it; ++voh_it) {
 
-	face_vector.push_back(Base::mesh_.FH(voh_it.handle()));
+	face_vector.push_back(Base::mesh_.FH(*voh_it));
       }
 
       while (!face_vector.empty()) {
@@ -1687,9 +1687,9 @@ void EVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       for (voh_it = Base::mesh_.voh_iter(_vh); voh_it; ++voh_it) {
 
-	edge_vector.push_back(Base::mesh_.EH(voh_it.handle()));
+	edge_vector.push_back(Base::mesh_.EH(*voh_it));
 
-	edge_vector.push_back(Base::mesh_.EH(Base::mesh_.NHEH(voh_it.handle())));
+	edge_vector.push_back(Base::mesh_.EH(Base::mesh_.NHEH(*voh_it)));
       }
 
       while (!edge_vector.empty()) {
@@ -1714,18 +1714,18 @@ void EVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
     for (voh_it = Base::mesh_.voh_iter(_vh); voh_it; ++voh_it) 
     {
-      if (MOBJ(Base::mesh_.EH(voh_it.handle())).final()) 
+      if (MOBJ(Base::mesh_.EH(*voh_it)).final()) 
       {
-	position += MOBJ(Base::mesh_.EH(voh_it.handle())).position(_target_state-1)*c;
+	position += MOBJ(Base::mesh_.EH(*voh_it)).position(_target_state-1)*c;
 
-        if ( Base::mesh_.FH(voh_it.handle()).is_valid() && 
-             MOBJ(Base::mesh_.EH(Base::mesh_.NHEH(voh_it.handle()))).final() && 
-             MOBJ(Base::mesh_.EH(Base::mesh_.NHEH(voh_it.handle()))).position(_target_state - 1) != zero_point) 
+        if ( Base::mesh_.FH(*voh_it).is_valid() && 
+             MOBJ(Base::mesh_.EH(Base::mesh_.NHEH(*voh_it))).final() && 
+             MOBJ(Base::mesh_.EH(Base::mesh_.NHEH(*voh_it))).position(_target_state - 1) != zero_point) 
         {
-	  position += MOBJ(Base::mesh_.EH(Base::mesh_.NHEH(voh_it.handle()))).position(_target_state-1) * (1.0-c);
+	  position += MOBJ(Base::mesh_.EH(Base::mesh_.NHEH(*voh_it))).position(_target_state-1) * (1.0-c);
 	}
 	else {
-	  position += MOBJ(Base::mesh_.EH(voh_it.handle())).position(_target_state - 1) * (1.0 - c);
+	  position += MOBJ(Base::mesh_.EH(*voh_it)).position(_target_state - 1) * (1.0 - c);
 	}
       }
       else {

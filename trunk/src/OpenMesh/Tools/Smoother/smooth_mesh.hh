@@ -64,7 +64,7 @@ void smooth_mesh_property(unsigned int _n_iters, _Mesh& _m, _PropertyHandle _pph
     {
       unsigned int valence = 0;
 
-      Value& temp_value = temp_values[cv_it.handle().idx()];
+      Value& temp_value = temp_values[cv_it->idx()];
 
       temp_value.vectorize(0);
 
@@ -87,7 +87,7 @@ void smooth_mesh_property(unsigned int _n_iters, _Mesh& _m, _PropertyHandle _pph
     for ( typename _Mesh::ConstVertexIter cv_it = _m.vertices_begin();
           cv_it != _m.vertices_end(); ++cv_it)
     {
-      _m.property(_pph,cv_it) = temp_values[cv_it.handle().idx()];
+      _m.property(_pph,cv_it) = temp_values[cv_it->idx()];
     }
   }
 }

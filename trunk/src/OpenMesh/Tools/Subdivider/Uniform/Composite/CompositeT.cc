@@ -297,7 +297,7 @@ void CompositeT<MeshType,RealType>::VF()
     valence = 0;
     cog = zero_point;
 
-    for (fv_it = mesh_.fv_iter(f_it.handle()); fv_it; ++fv_it) {
+    for (fv_it = mesh_.fv_iter(f_it.handle()); fv_it.is_valid(); ++fv_it) {
       cog += mesh_.data(fv_it).position();
       ++valence;
     }
@@ -352,7 +352,7 @@ void CompositeT<MeshType,RealType>::VFa(Coeff& _coeff)
 
     cog = zero_point;
 
-    for (fv_it = mesh_.fv_iter(f_it.handle()); fv_it; ++fv_it) {
+    for (fv_it = mesh_.fv_iter(f_it.handle()); fv_it.is_valid(); ++fv_it) {
       if (fv_it.handle() == vh[i]) {
   cog += fv_it->position() * alpha;
       } else {
@@ -407,7 +407,7 @@ void CompositeT<MeshType,RealType>::VFa(scalar_t _alpha)
 
     cog = zero_point;
 
-    for (fv_it = mesh_.fv_iter(f_it.handle()); fv_it; ++fv_it) {
+    for (fv_it = mesh_.fv_iter(f_it.handle()); fv_it.is_valid(); ++fv_it) {
       if (fv_it.handle() == vh[i]) {
   cog += fv_it->position() * _alpha;
       } else {
@@ -586,13 +586,13 @@ void CompositeT<MeshType,RealType>::FVc(Coeff& _coeff)
 
     for (voh_it = mesh_.voh_iter(v_it.handle()); voh_it; ++voh_it) {
 
-      if (mesh_.face_handle(voh_it.handle()).is_valid()) {
+      if (mesh_.face_handle(*voh_it).is_valid()) {
 
-  if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(voh_it.handle()))).is_valid()) {
-    cog += mesh_.data(mesh_.face_handle(voh_it.handle())).position() * c;
-    cog += mesh_.data(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(voh_it.handle())))).position() * (1.0 - c);
+  if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it))).is_valid()) {
+    cog += mesh_.data(mesh_.face_handle(*voh_it)).position() * c;
+    cog += mesh_.data(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it)))).position() * (1.0 - c);
   } else {
-    cog += mesh_.data(mesh_.face_handle(voh_it.handle())).position();
+    cog += mesh_.data(mesh_.face_handle(*voh_it)).position();
   }
       } else {
   --valence;
@@ -629,13 +629,13 @@ void CompositeT<MeshType,RealType>::FVc(scalar_t _c)
 
     for (voh_it = mesh_.voh_iter(v_it.handle()); voh_it; ++voh_it) {
 
-      if (mesh_.face_handle(voh_it.handle()).is_valid()) {
+      if (mesh_.face_handle(*voh_it).is_valid()) {
 
-  if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(voh_it.handle()))).is_valid()) {
-    cog += mesh_.deref(mesh_.face_handle(voh_it.handle())).position() * _c;
-    cog += mesh_.deref(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(voh_it.handle())))).position() * (1.0 - _c);
+  if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it))).is_valid()) {
+    cog += mesh_.deref(mesh_.face_handle(*voh_it)).position() * _c;
+    cog += mesh_.deref(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it)))).position() * (1.0 - _c);
   } else {
-    cog += mesh_.deref(mesh_.face_handle(voh_it.handle())).position();
+    cog += mesh_.deref(mesh_.face_handle(*voh_it)).position();
   }
       } else {
   --valence;
@@ -897,8 +897,8 @@ void CompositeT<MeshType,RealType>::EVc(Coeff& _coeff)
     c = _coeff(valence);
 
     for (voh_it = mesh_.voh_iter(v_it.handle()); voh_it; ++voh_it) {
-      cog += mesh_.data(mesh_.edge_handle(voh_it.handle())).position() * c;
-      cog += mesh_.data(mesh_.edge_handle(mesh_.next_halfedge_handle(voh_it.handle()))).position() * (1.0 - c);
+      cog += mesh_.data(mesh_.edge_handle(*voh_it)).position() * c;
+      cog += mesh_.data(mesh_.edge_handle(mesh_.next_halfedge_handle(*voh_it))).position() * (1.0 - c);
     }
 
     cog /= valence;
@@ -927,8 +927,8 @@ void CompositeT<MeshType,RealType>::EVc(scalar_t _c)
     }
 
     for (voh_it = mesh_.voh_iter(v_it.handle()); voh_it; ++voh_it) {
-      cog += mesh_.data(mesh_.edge_handle(voh_it.handle())).position() * _c;
-      cog += mesh_.data(mesh_.edge_handle(mesh_.next_halfedge_handle(voh_it.handle()))).position() * (1.0 - _c);
+      cog += mesh_.data(mesh_.edge_handle(*voh_it)).position() * _c;
+      cog += mesh_.data(mesh_.edge_handle(mesh_.next_halfedge_handle(*voh_it))).position() * (1.0 - _c);
     }
 
     cog /= valence;

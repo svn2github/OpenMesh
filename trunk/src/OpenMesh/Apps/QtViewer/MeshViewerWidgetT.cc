@@ -164,7 +164,7 @@ MeshViewerWidgetT<M>::open_mesh(const char* _filename, IO::Options _opt)
       for (;f_it != mesh_.faces_end(); ++f_it)
       {
         typename Mesh::Point v(0,0,0);
-        for( fv_it=mesh_.fv_iter(f_it); fv_it; ++fv_it)
+        for( fv_it=mesh_.fv_iter(f_it); fv_it.is_valid(); ++fv_it)
           v += OpenMesh::vector_cast<typename Mesh::Normal>(mesh_.point(fv_it));
         v *= 1.0f/3.0f;
         mesh_.property( fp_normal_base_, f_it ) = v;
@@ -372,11 +372,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
     for (; fIt!=fEnd; ++fIt)
     {
       fvIt = mesh_.cfv_iter(fIt.handle()); 
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
     }
     glEnd();
     
@@ -408,11 +408,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
     for (; fIt!=fEnd; ++fIt)
     {
       fvIt = mesh_.cfv_iter(fIt.handle()); 
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
     }
     glEnd();
     
@@ -436,11 +436,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
       glColor( fIt.handle() );
 
       fvIt = mesh_.cfv_iter(fIt.handle()); 
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
     }
     glEnd();
     
@@ -463,11 +463,11 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
       glMaterial( fIt.handle() );
 
       fvIt = mesh_.cfv_iter(fIt.handle()); 
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
       ++fvIt;
-      glArrayElement(fvIt.handle().idx());
+      glArrayElement(fvIt->idx());
     }
     glEnd();
     
