@@ -90,10 +90,10 @@ write( const std::string& _ofname )
     v_end=Base::mesh().vertices_end();
 
   for (; v_it != v_end; ++v_it)  
-    if (!Base::mesh().status(v_it).deleted()) 
+    if (!Base::mesh().status(*v_it).deleted())
     {
       vhandles[i] = *v_it;
-      Base::mesh().property( idx_, v_it ) = i;  
+      Base::mesh().property( idx_, *v_it ) = i;
       ++i;
     }
   n_base_vertices = i;
@@ -115,7 +115,7 @@ write( const std::string& _ofname )
   typename Mesh::ConstFaceIter f_it  = Base::mesh().faces_begin(), 
                                f_end = Base::mesh().faces_end();
   for (; f_it != f_end; ++f_it) 
-    if (!Base::mesh().status(f_it).deleted()) 
+    if (!Base::mesh().status(*f_it).deleted())
       ++n_base_faces;
 
   // ---------------------------------------- write progressive mesh
@@ -149,13 +149,13 @@ write( const std::string& _ofname )
   // write base faces
   for (f_it=Base::mesh().faces_begin(); f_it != f_end; ++f_it)  
   {
-    if (!Base::mesh().status(f_it).deleted()) 
+    if (!Base::mesh().status(*f_it).deleted())
     {
       typename Mesh::ConstFaceVertexIter fv_it(Base::mesh(), *f_it);
       
-      IO::store( out, Base::mesh().property( idx_,   fv_it ) );
-      IO::store( out, Base::mesh().property( idx_, ++fv_it ) );
-      IO::store( out, Base::mesh().property( idx_, ++fv_it ) );
+      IO::store( out, Base::mesh().property( idx_,   *fv_it ) );
+      IO::store( out, Base::mesh().property( idx_, *(++fv_it )) );
+      IO::store( out, Base::mesh().property( idx_, *(++fv_it )) );
     }
   }
   

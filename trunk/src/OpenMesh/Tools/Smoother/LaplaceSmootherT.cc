@@ -140,7 +140,7 @@ compute_weights(LaplaceWeighting _weighting)
 
   // init vertex weights
   for (v_it=Base::mesh_.vertices_begin(); v_it!=v_end; ++v_it)
-    Base::mesh_.property(vertex_weights_, v_it) = 0.0;
+    Base::mesh_.property(vertex_weights_, *v_it) = 0.0;
 
 
 
@@ -156,9 +156,9 @@ compute_weights(LaplaceWeighting _weighting)
         v0     = Base::mesh_.to_vertex_handle(heh0);
         v1     = Base::mesh_.to_vertex_handle(heh1);
 
-        Base::mesh_.property(edge_weights_, e_it) = 1.0;
-        Base::mesh_.property(vertex_weights_, v0) += 1.0;
-        Base::mesh_.property(vertex_weights_, v1) += 1.0;
+        Base::mesh_.property(edge_weights_, *e_it)  = 1.0;
+        Base::mesh_.property(vertex_weights_, v0)  += 1.0;
+        Base::mesh_.property(vertex_weights_, v1)  += 1.0;
       }
 
       break;

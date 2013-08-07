@@ -430,11 +430,11 @@ open_prog_mesh(const std::string& _filename)
 
   Mesh::Point bbMin, bbMax;
 
-  bbMin = bbMax = mesh_.point(vIt);
+  bbMin = bbMax = mesh_.point(*vIt);
   for (; vIt!=vEnd; ++vIt)
   {
-    bbMin.minimize(mesh_.point(vIt));
-    bbMax.maximize(mesh_.point(vIt));
+    bbMin.minimize(mesh_.point(*vIt));
+    bbMax.maximize(mesh_.point(*vIt));
   }
 
   // info
@@ -661,7 +661,7 @@ vdpm_analysis()
   for (h_it=mesh_.halfedges_begin(); h_it!=mesh_.halfedges_end(); ++h_it)
   {
     vh = mesh_.to_vertex_handle(*h_it);
-    mesh_.data(h_it).set_vhierarchy_leaf_node_handle(mesh_.data(vh).vhierarchy_node_handle());
+    mesh_.data(*h_it).set_vhierarchy_leaf_node_handle(mesh_.data(vh).vhierarchy_node_handle());
   }
 
   for (v_it=mesh_.vertices_begin(); v_it!=mesh_.vertices_end(); ++v_it)

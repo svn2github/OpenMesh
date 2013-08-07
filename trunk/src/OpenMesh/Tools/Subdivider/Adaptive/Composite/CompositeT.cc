@@ -83,25 +83,25 @@ initialize( void )
   // ---------------------------------------- Init Vertices
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it)
   {
-    mesh_.data(v_it).set_state(0);
-    mesh_.data(v_it).set_final();
-    mesh_.data(v_it).set_position(0, mesh_.point(*v_it));
+    mesh_.data(*v_it).set_state(0);
+    mesh_.data(*v_it).set_final();
+    mesh_.data(*v_it).set_position(0, mesh_.point(*v_it));
   }
 
   // ---------------------------------------- Init Faces
   for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it)
   {
-    mesh_.data(f_it).set_state(0);
-    mesh_.data(f_it).set_final();
-    mesh_.data(f_it).set_position(0, zero_point);
+    mesh_.data(*f_it).set_state(0);
+    mesh_.data(*f_it).set_final();
+    mesh_.data(*f_it).set_position(0, zero_point);
   }
 
   // ---------------------------------------- Init Edges
   for (e_it = mesh_.edges_begin(); e_it != mesh_.edges_end(); ++e_it)
   {
-    mesh_.data(e_it).set_state(0);
-    mesh_.data(e_it).set_final();
-    mesh_.data(e_it).set_position(0, zero_point);
+    mesh_.data(*e_it).set_state(0);
+    mesh_.data(*e_it).set_final();
+    mesh_.data(*e_it).set_position(0, zero_point);
   }
 
 

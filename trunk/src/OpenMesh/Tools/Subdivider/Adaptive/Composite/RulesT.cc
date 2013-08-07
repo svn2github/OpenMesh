@@ -845,7 +845,7 @@ void VF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
 
       ++valence;
-      position += Base::mesh_.data(fv_it).position(_target_state - 1);
+      position += Base::mesh_.data(*fv_it).position(_target_state - 1);
     }
 
     position /= valence;
@@ -917,7 +917,7 @@ void FF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state) {
 
       ++valence;
 
-      position += Base::mesh_.data(ff_it).position(_target_state - 1);
+      position += Base::mesh_.data(*ff_it).position(_target_state - 1);
     }
 
     position /= valence;
@@ -975,7 +975,7 @@ void FFc<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     for (ff_it = Base::mesh_.ff_iter(_fh); ff_it.is_valid(); ++ff_it)
     {
       ++valence;
-      position += Base::mesh_.data(ff_it).position(_target_state - 1);
+      position += Base::mesh_.data(*ff_it).position(_target_state - 1);
     }
 
     position /= valence;
@@ -1045,7 +1045,7 @@ void FV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
     for (vf_it = Base::mesh_.vf_iter(_vh); vf_it.is_valid(); ++vf_it) {
 
       ++valence;
-      position += Base::mesh_.data(vf_it).position(_target_state - 1);
+      position += Base::mesh_.data(*vf_it).position(_target_state - 1);
     }
 
     position /= valence;
@@ -1289,7 +1289,7 @@ void VV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
       ++valence;
 
-      position += Base::mesh_.data(vv_it).position(_target_state - 1);
+      position += Base::mesh_.data(*vv_it).position(_target_state - 1);
     }
 
     position /= valence;
@@ -1359,7 +1359,7 @@ void VVc<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
     for (vv_it = Base::mesh_.vv_iter(_vh); vv_it.is_valid(); ++vv_it)
     {
       ++valence;
-      position += Base::mesh_.data(vv_it).position(_target_state - 1);
+      position += Base::mesh_.data(*vv_it).position(_target_state - 1);
     }
 
     position /= valence;
@@ -1627,11 +1627,11 @@ void EV<M>::raise(typename M::VertexHandle& _vh, state_t _target_state)
 
     for (ve_it = Base::mesh_.ve_iter(_vh); ve_it.is_valid(); ++ve_it) {
 
-      if (Base::mesh_.data(ve_it).final()) {
+      if (Base::mesh_.data(*ve_it).final()) {
 
         ++valence;
 
-        position += Base::mesh_.data(ve_it).position(_target_state - 1);
+        position += Base::mesh_.data(*ve_it).position(_target_state - 1);
       }
     }
 
@@ -1825,11 +1825,11 @@ EF<M>::raise(typename M::FaceHandle& _fh, state_t _target_state) {
 
     for (fe_it = Base::mesh_.fe_iter(_fh); fe_it.is_valid(); ++fe_it) {
 
-      if (Base::mesh_.data(fe_it).final()) {
+      if (Base::mesh_.data(*fe_it).final()) {
 
         ++valence;
 
-        position += Base::mesh_.data(fe_it).position(_target_state - 1);
+        position += Base::mesh_.data(*fe_it).position(_target_state - 1);
       }
     }
 

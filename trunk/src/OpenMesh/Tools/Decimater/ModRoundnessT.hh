@@ -127,14 +127,14 @@ class ModRoundnessT : public ModBaseT<MeshT>
 
     if ( min_r_ < 0.0 ) // continues mode
     {
-      C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(voh_it)));
+      C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(*voh_it)));
       fhC = Base::mesh().face_handle( *voh_it );
 
       for (++voh_it; voh_it.is_valid(); ++voh_it)
       {
         B   = C;
         fhB = fhC;
-        C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(voh_it)));
+        C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(*voh_it)));
         fhC = Base::mesh().face_handle( *voh_it );
 
         if ( fhB == _ci.fl || fhB == _ci.fr )
@@ -150,14 +150,14 @@ class ModRoundnessT : public ModBaseT<MeshT>
     }
     else // binary mode
     {
-      C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(voh_it)));
+      C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(*voh_it)));
       fhC = Base::mesh().face_handle( *voh_it );
 
       for (++voh_it; voh_it.is_valid() && (priority==Base::LEGAL_COLLAPSE); ++voh_it)
       {
         B   = C;
         fhB = fhC;
-        C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(voh_it)));
+        C   = vector_cast<Vec3f>(Base::mesh().point(Base::mesh().to_vertex_handle(*voh_it)));
         fhC = Base::mesh().face_handle( *voh_it );
 
         if ( fhB == _ci.fl || fhB == _ci.fr )

@@ -306,7 +306,7 @@ int main(int argc, char **argv)
 
     for (f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it) {
       
-      if (mesh.data(f_it).state() < target1) {
+      if (mesh.data(*f_it).state() < target1) {
         ++i;        
         fh = *f_it;
         timer2.start();
@@ -317,7 +317,7 @@ int main(int argc, char **argv)
 
     for (v_it = mesh.vertices_begin(); v_it != mesh.vertices_end(); ++v_it) {
       
-      if (mesh.data(v_it).state() < target2) {
+      if (mesh.data(*v_it).state() < target2) {
         vh = *v_it;
         timer2.cont();
         subdivider.refine(vh);
@@ -420,8 +420,8 @@ int main(int argc, char **argv)
   for (MyMesh::VertexIter v_it = mesh.vertices_begin(); 
        v_it != mesh.vertices_end(); ++v_it) 
   {    
-    if (mesh.data(v_it).state() > max_level)
-      max_level = mesh.data(v_it).state();
+    if (mesh.data(*v_it).state() > max_level)
+      max_level = mesh.data(*v_it).state();
   }
 
 

@@ -539,11 +539,11 @@ open_vd_prog_mesh(const char* _filename)
 
    VDPMMesh::Point bbMin, bbMax;
 
-   bbMin = bbMax = mesh_.point(vIt);
+   bbMin = bbMax = mesh_.point(*vIt);
    for (; vIt!=vEnd; ++vIt)
    {
-      bbMin.minimize(mesh_.point(vIt));
-      bbMax.maximize(mesh_.point(vIt));
+      bbMin.minimize(mesh_.point(*vIt));
+      bbMax.maximize(mesh_.point(*vIt));
    }
   
   // set center and radius

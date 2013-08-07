@@ -293,7 +293,7 @@ int main(int argc, char *argv[] )
     timer.start();    
     MyMesh::VertexIter vit = mesh.vertices_begin();
     for (; vit != mesh.vertices_end(); ++vit)
-      cog += mesh.point( vit );
+      cog += mesh.point( *vit );
     timer.stop();
     nv   = mesh.n_vertices();
     cog *= 1.0f/mesh.n_vertices();
@@ -303,7 +303,7 @@ int main(int argc, char *argv[] )
       vit = mesh.vertices_begin();
       timer.cont();
       for (; vit != mesh.vertices_end(); ++vit)
-        mesh.set_point( vit , mesh.point( vit )-cog );
+        mesh.set_point( *vit , mesh.point( *vit )-cog );
       timer.stop();
       nv += mesh.n_vertices();
     }
@@ -323,7 +323,7 @@ int main(int argc, char *argv[] )
     timer.start();
     MyMesh::VertexIter vit = mesh.vertices_begin();
     for (; vit != mesh.vertices_end(); ++vit)
-      mesh.set_point( vit , mesh.point( vit ) + tvec.first );
+      mesh.set_point( *vit , mesh.point( *vit ) + tvec.first );
     timer.stop();
     std::cout << "  moved " << mesh.n_vertices()
               << " vertices in " << timer.as_string() << std::endl;
@@ -342,9 +342,9 @@ int main(int argc, char *argv[] )
     MyMesh::VertexIter vit = mesh.vertices_begin();
     for (; vit != mesh.vertices_end(); ++vit)
     {
-      mesh.set_color( vit , MyMesh::Color( std::min((int)(r+0.5),255), 
-                                           std::min((int)(g+0.5),255), 
-                                           std::max((int)(b+0.5),0) ) );
+      mesh.set_color( *vit , MyMesh::Color( std::min((int)(r+0.5),255),
+                                            std::min((int)(g+0.5),255),
+                                            std::max((int)(b+0.5),0) ) );
       r += d;
       g += d2;
       b -= d;

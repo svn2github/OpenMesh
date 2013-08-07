@@ -135,8 +135,8 @@ initialize(Component _comp, Continuity _cont)
   // store original points & normals
   for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
-    mesh_.property(original_positions_, v_it) = mesh_.point(v_it);
-    mesh_.property(original_normals_,   v_it) = mesh_.normal(v_it);
+    mesh_.property(original_positions_, *v_it) = mesh_.point(*v_it);
+    mesh_.property(original_normals_,   *v_it) = mesh_.normal(*v_it);
   }
 }
 
@@ -155,7 +155,7 @@ set_active_vertices()
   // is something selected?
   bool nothing_selected(true);
   for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
-    if (mesh_.status(v_it).selected())
+    if (mesh_.status(*v_it).selected())
     { nothing_selected = false; break; }
 
 
@@ -163,15 +163,15 @@ set_active_vertices()
   bool active;
   for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
-    active = ((nothing_selected || mesh_.status(v_it).selected())
-	          && !mesh_.is_boundary(v_it)
-	          && !mesh_.status(v_it).locked());
+    active = ((nothing_selected || mesh_.status(*v_it).selected())
+	          && !mesh_.is_boundary(*v_it)
+	          && !mesh_.status(*v_it).locked());
 
     if ( skip_features_ ) {
 
-      active = active && !mesh_.status(v_it).feature();
+      active = active && !mesh_.status(*v_it).feature();
 
-      typename Mesh::VertexOHalfedgeIter  voh_it(mesh_,v_it);
+      typename Mesh::VertexOHalfedgeIter  voh_it(mesh_,*v_it);
       for ( ; voh_it.is_valid() ; ++voh_it ) {
 
         // If the edge is a feature edge, skip the current vertex while smoothing
@@ -190,7 +190,7 @@ set_active_vertices()
       }
     }
 
-    mesh_.property(is_active_, v_it) = active;
+    mesh_.property(is_active_, *v_it) = active;
   }
 
 
@@ -200,7 +200,7 @@ set_active_vertices()
     typename Mesh::VVIter     vv_it;
 
     for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
-      if (mesh_.is_boundary(v_it))
+      if (mesh_.is_boundary(*v_it))
         for (vv_it=mesh_.vv_iter(*v_it); vv_it.is_valid(); ++vv_it)
           mesh_.property(is_active_, *vv_it) = false;
   }
@@ -360,14 +360,14 @@ project_to_tangent_plane()
 
   for (; v_it != v_end; ++v_it)
   {
-    if (is_active(v_it))
+    if (is_active(*v_it))
     {
-      translation  = new_position(v_it)-orig_position(v_it);
-      normal       = orig_normal(v_it);
+      translation  = new_position(*v_it)-orig_position(*v_it);
+      normal       = orig_normal(*v_it);
       normal      *= dot(translation, normal);
       translation -= normal;
-      translation += vector_cast<typename Mesh::Normal>(orig_position(v_it));
-      set_new_position(v_it, translation);
+      translation += vector_cast<typename Mesh::Normal>(orig_position(*v_it));
+      set_new_position(*v_it, translation);
     }
   }
 }
@@ -390,17 +390,17 @@ local_error_check()
 
   for (; v_it != v_end; ++v_it)
   {
-    if (is_active(v_it))
+    if (is_active(*v_it))
     {
-      translation  = new_position(v_it) - orig_position(v_it);
+      translation  = new_position(*v_it) - orig_position(*v_it);
 
-      s = fabs(dot(translation, orig_normal(v_it)));
+      s = fabs(dot(translation, orig_normal(*v_it)));
 
       if (s > tolerance_)
       {
-	translation *= (tolerance_ / s);
-	translation += vector_cast<NormalType>(orig_position(v_it));
-	set_new_position(v_it, translation);
+        translation *= (tolerance_ / s);
+        translation += vector_cast<NormalType>(orig_position(*v_it));
+        set_new_position(*v_it, translation);
       }
     }
   }
@@ -419,8 +419,8 @@ move_points()
                              v_end(mesh_.vertices_end());
 
   for (; v_it != v_end; ++v_it)
-    if (is_active(v_it))
-      mesh_.set_point(v_it, mesh_.property(new_positions_, v_it));
+    if (is_active(*v_it))
+      mesh_.set_point(*v_it, mesh_.property(new_positions_, *v_it));
 }
 
 

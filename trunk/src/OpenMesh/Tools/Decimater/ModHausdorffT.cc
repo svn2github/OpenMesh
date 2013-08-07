@@ -191,7 +191,7 @@ initialize()
   typename Mesh::FIter  f_it(mesh_.faces_begin()), f_end(mesh_.faces_end());
 
   for (; f_it!=f_end; ++f_it)
-    mesh_.property(points_, f_it).clear();
+    mesh_.property(points_, *f_it).clear();
 }
 
 
@@ -242,9 +242,10 @@ collapse_priority(const CollapseInfo& _ci)
     ok = false;
 
     for (fh_it=faces.begin(); !ok && fh_it!=fh_end; ++fh_it) {
-      const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(*fh_it));
-      const Point& p1 = mesh_.point(++fv_it);
-      const Point& p2 = mesh_.point(++fv_it);
+      fv_it=mesh_.cfv_iter(*fh_it);
+      const Point& p0 = mesh_.point(*fv_it);
+      const Point& p1 = mesh_.point(*(++fv_it));
+      const Point& p2 = mesh_.point(*(++fv_it));
 
       if (  distPointTriangleSquared(*p_it, p0, p1, p2) <= sqr_tolerace)
         ok = true;
@@ -328,9 +329,10 @@ postprocess_collapse(const CollapseInfo& _ci)
     emin = FLT_MAX;
 
     for (fh_it=faces.begin(); fh_it!=fh_end; ++fh_it) {
-      const Point& p0 = mesh_.point(fv_it=mesh_.cfv_iter(*fh_it));
-      const Point& p1 = mesh_.point(++fv_it);
-      const Point& p2 = mesh_.point(++fv_it);
+      fv_it=mesh_.cfv_iter(*fh_it);
+      const Point& p0 = mesh_.point(*fv_it);
+      const Point& p1 = mesh_.point(*(++fv_it));
+      const Point& p2 = mesh_.point(*(++fv_it));
 
       e =  distPointTriangleSquared(*p_it, p0, p1, p2);
       if (e < emin) {

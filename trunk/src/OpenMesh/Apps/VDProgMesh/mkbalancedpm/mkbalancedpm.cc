@@ -321,14 +321,14 @@ int main(int argc, char **argv)
         Mesh::FaceIter    f_it;
 
         for (f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it)
-          if ( !mesh.status(f_it).deleted() )
-            mesh.update_normal(f_it);      
+          if ( !mesh.status(*f_it).deleted() )
+            mesh.update_normal(*f_it);
 
         for (v_it = mesh.vertices_begin(); v_it != mesh.vertices_end(); ++v_it)
-          if ( !mesh.status(v_it).deleted() )
+          if ( !mesh.status(*v_it).deleted() )
           {
-            mesh.status(v_it).set_locked(false);
-            mesh.update_normal(v_it);
+            mesh.status(*v_it).set_locked(false);
+            mesh.update_normal(*v_it);
           }
        
       }

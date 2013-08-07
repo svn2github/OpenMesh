@@ -97,11 +97,12 @@ void ModAspectRatioT<MeshT>::initialize() {
   typename Mesh::FVIter fv_it;
 
   for (f_it = mesh_.faces_begin(); f_it != f_end; ++f_it) {
-    typename Mesh::Point& p0 = mesh_.point(fv_it = mesh_.fv_iter(f_it));
-    typename Mesh::Point& p1 = mesh_.point(++fv_it);
-    typename Mesh::Point& p2 = mesh_.point(++fv_it);
+    fv_it = mesh_.fv_iter(*f_it);
+    typename Mesh::Point& p0 = mesh_.point(*fv_it);
+    typename Mesh::Point& p1 = mesh_.point(*(++fv_it));
+    typename Mesh::Point& p2 = mesh_.point(*(++fv_it));
 
-    mesh_.property(aspect_, f_it) = 1.0 / aspectRatio(p0, p1, p2);
+    mesh_.property(aspect_, *f_it) = 1.0 / aspectRatio(p0, p1, p2);
   }
 }
 
@@ -115,9 +116,10 @@ void ModAspectRatioT<MeshT>::preprocess_collapse(const CollapseInfo& _ci) {
   for (typename Mesh::VFIter vf_it = mesh_.vf_iter(_ci.v0); vf_it.is_valid(); ++vf_it) {
     fh = *vf_it;
     if (fh != _ci.fl && fh != _ci.fr) {
-      typename Mesh::Point& p0 = mesh_.point(fv_it = mesh_.fv_iter(fh));
-      typename Mesh::Point& p1 = mesh_.point(++fv_it);
-      typename Mesh::Point& p2 = mesh_.point(++fv_it);
+      fv_it = mesh_.fv_iter(fh);
+      typename Mesh::Point& p0 = mesh_.point(*fv_it);
+      typename Mesh::Point& p1 = mesh_.point(*(++fv_it));
+      typename Mesh::Point& p2 = mesh_.point(*(++fv_it));
 
       mesh_.property(aspect_, fh) = 1.0 / aspectRatio(p0, p1, p2);
     }

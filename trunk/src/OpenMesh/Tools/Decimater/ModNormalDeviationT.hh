@@ -137,7 +137,7 @@ public:
         f_end = mesh_.faces_end();
 
     for (; f_it != f_end; ++f_it)
-      mesh_.property(normal_cones_, f_it) = NormalCone(mesh_.normal(f_it));
+      mesh_.property(normal_cones_, *f_it) = NormalCone(mesh_.normal(*f_it));
   }
 
   /** \brief Control normals when Decimating
@@ -208,8 +208,8 @@ public:
     // account for changed normals
     typename Mesh::VertexFaceIter vf_it(mesh_, _ci.v1);
     for (; vf_it.is_valid(); ++vf_it)
-      mesh_.property(normal_cones_, vf_it).
-      merge(NormalCone(mesh_.normal(vf_it)));
+      mesh_.property(normal_cones_, *vf_it).
+      merge(NormalCone(mesh_.normal(*vf_it)));
 
 
     // normal cones of deleted triangles
