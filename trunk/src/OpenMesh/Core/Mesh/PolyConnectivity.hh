@@ -94,7 +94,10 @@ public:
       for documentation.
   */
   //@{
-  /// Circulator
+
+  /*
+   * Vertex-centered circulators
+   */
   typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::VertexHandle,
           &Iterators::GenericCirculatorBaseT<This>::toVertexHandle>
   VertexVertexIter;
@@ -121,15 +124,29 @@ public:
   typedef VertexFaceIter      ConstVertexFaceIter;
   typedef VertexEdgeIter      ConstVertexEdgeIter;
 
-  typedef Iterators::FaceVertexIterT<This>            FaceVertexIter;
-  typedef Iterators::FaceHalfedgeIterT<This>          FaceHalfedgeIter;
-  typedef Iterators::FaceEdgeIterT<This>              FaceEdgeIter;
-  typedef Iterators::FaceFaceIterT<This>              FaceFaceIter;
+  /*
+   * Face-centered circulators
+   */
+  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::VertexHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toVertexHandle>
+  FaceVertexIter;
 
-  typedef Iterators::ConstFaceVertexIterT<This>       ConstFaceVertexIter;
-  typedef Iterators::ConstFaceHalfedgeIterT<This>     ConstFaceHalfedgeIter;
-  typedef Iterators::ConstFaceEdgeIterT<This>         ConstFaceEdgeIter;
-  typedef Iterators::ConstFaceFaceIterT<This>         ConstFaceFaceIter;
+  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::HalfedgeHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toHalfedgeHandle>
+  FaceHalfedgeIter;
+
+  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::EdgeHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toEdgeHandle>
+  FaceEdgeIter;
+
+  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::FaceHandle,
+          &Iterators::GenericCirculatorBaseT<This>::toOppositeFaceHandle>
+  FaceFaceIter;
+
+  typedef FaceVertexIter      ConstFaceVertexIter;
+  typedef FaceHalfedgeIter    ConstFaceHalfedgeIter;
+  typedef FaceEdgeIter        ConstFaceEdgeIter;
+  typedef FaceFaceIter        ConstFaceFaceIter;
   //@}
 
   // --- shortcuts

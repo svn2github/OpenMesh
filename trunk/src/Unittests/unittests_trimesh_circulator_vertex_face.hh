@@ -82,7 +82,7 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithHolesIncrement) {
   EXPECT_EQ(1, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 1";
   EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
   ++vf_it ;
-  EXPECT_EQ(-1, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at end";
+  EXPECT_FALSE(vf_it.is_valid() ) << "Index wrong in VertexFaceIter at end";
   EXPECT_FALSE(vf_it) << "Iterator not invalid in VertexFaceIter at end";
   EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
 
@@ -95,7 +95,7 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithHolesIncrement) {
   EXPECT_EQ(1, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at step one";
   EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step one";
   ++cvf_it ;
-  EXPECT_EQ(-1, cvf_it.handle().idx() ) << "Index wrong in ConstVertexFaceIter at end";
+  EXPECT_FALSE(cvf_it.is_valid() ) << "Index wrong in ConstVertexFaceIter at end";
   EXPECT_FALSE(cvf_it) << "Iterator not invalid in ConstVertexFaceIter at end";
   EXPECT_TRUE( cvf_it == cvf_end )  << "End iterator for ConstVertexFaceIter not matching";
 
@@ -263,8 +263,7 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterBoundaryIncrement) {
   EXPECT_EQ(0, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 1";
   EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
   ++vf_it ;
-  EXPECT_EQ(-1, vf_it.handle().idx() ) << "Index wrong in VertexFaceIter at step 2";
-  EXPECT_FALSE(vf_it) << "Iterator invalid in VertexFaceIter at step 2";
+  EXPECT_FALSE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 2";
   EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
 }
 
