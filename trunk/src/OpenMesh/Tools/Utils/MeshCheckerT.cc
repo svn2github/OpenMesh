@@ -84,7 +84,7 @@ check(unsigned int _targets, std::ostream& _os)
     {
       if (!is_deleted(v_it))
       {
-	vh = v_it.handle();
+	vh = *v_it;
 
 
       /* The outgoing halfedge of a boundary vertex has to be a 
@@ -95,7 +95,7 @@ check(unsigned int _targets, std::ostream& _os)
 	  for (typename Mesh::ConstVertexOHalfedgeIter vh_it(mesh_, vh);
 	       vh_it; ++vh_it)
 	  {
-	    if (mesh_.is_boundary(vh_it.handle()))
+	    if (mesh_.is_boundary(*vh_it))
 	    {
 	      _os << "MeshChecker: vertex " << vh
 		  << ": outgoing halfedge not on boundary error\n";
@@ -150,9 +150,9 @@ check(unsigned int _targets, std::ostream& _os)
 
     for (; h_it != h_end; ++h_it)
     {
-      if (!is_deleted(mesh_.edge_handle(h_it.handle())))
+      if (!is_deleted(mesh_.edge_handle(*h_it)))
       {
-	hh = h_it.handle();
+	hh = *h_it;
 
 
 	// degenerated halfedge ?
@@ -206,11 +206,11 @@ check(unsigned int _targets, std::ostream& _os)
     {
       if (!is_deleted(f_it))
       {
-	fh = f_it.handle();
+	fh = *f_it;
 
 	for (fh_it=mesh_.cfh_iter(fh); fh_it; ++fh_it)
 	{
-	  if (mesh_.face_handle(fh_it.handle()) != fh)
+	  if (mesh_.face_handle(*fh_it) != fh)
 	  {
 	    _os << "MeshChecker: face " << fh
 		<< ": its halfedge does not reference face\n";

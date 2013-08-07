@@ -275,7 +275,7 @@ int main(int argc, char *argv[] )
     timer.start();
     MyMesh::VertexIter vit = mesh.vertices_begin();
     for (; vit != mesh.vertices_end(); ++vit)
-      mesh.set_normal( vit.handle(), -mesh.normal( vit.handle() ) );
+      mesh.set_normal( *vit, -mesh.normal( *vit ) );
     timer.stop();
     std::cout << "  " << mesh.n_vertices()
               << " vertex normals in " << timer.as_string() << std::endl;

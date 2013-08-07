@@ -508,7 +508,7 @@ save_vd_prog_mesh(const std::string &_filename)
 
  
   for (f_it=mesh_.faces_begin(); f_it!=mesh_.faces_end(); ++f_it) {
-    hh = mesh_.halfedge_handle(f_it.handle());
+    hh = mesh_.halfedge_handle(*f_it);
     vh = mesh_.to_vertex_handle(hh);
     fvi[0] = handle2index_map[vh];
 
@@ -660,16 +660,16 @@ vdpm_analysis()
   // initialize
   for (h_it=mesh_.halfedges_begin(); h_it!=mesh_.halfedges_end(); ++h_it)
   {
-    vh = mesh_.to_vertex_handle(h_it.handle());    
+    vh = mesh_.to_vertex_handle(*h_it);
     mesh_.data(h_it).set_vhierarchy_leaf_node_handle(mesh_.data(vh).vhierarchy_node_handle());
   }
 
   for (v_it=mesh_.vertices_begin(); v_it!=mesh_.vertices_end(); ++v_it)
   {
     VHierarchyNodeHandle  
-      node_handle = mesh_.data(v_it.handle()).vhierarchy_node_handle();
+      node_handle = mesh_.data(*v_it).vhierarchy_node_handle();
     
-    vhierarchy_.node(node_handle).set_normal(mesh_.normal(v_it.handle()));
+    vhierarchy_.node(node_handle).set_normal(mesh_.normal(*v_it));
   }
   
   std::cout << "Start view-dependent PM analysis" << std::endl;
@@ -859,7 +859,7 @@ compute_screen_space_error(VHierarchyNodeHandle node_handle, VHierarchyNodeHandl
 
     for (vf_it=mesh_.vf_iter(vh); vf_it; ++vf_it)
     {
-      heh    = mesh_.halfedge_handle(vf_it.handle());
+      heh    = mesh_.halfedge_handle(*vf_it);
       tri[0] = mesh_.point(mesh_.to_vertex_handle(heh));
       heh    = mesh_.next_halfedge_handle(heh);
       tri[1] = mesh_.point(mesh_.to_vertex_handle(heh));

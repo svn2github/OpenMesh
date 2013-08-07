@@ -205,7 +205,7 @@ update_face_normals()
   FaceIter f_it(Kernel::faces_begin()), f_end(Kernel::faces_end());
 
   for (; f_it != f_end; ++f_it)
-    this->set_normal(f_it.handle(), calc_face_normal(f_it.handle()));
+    this->set_normal(*f_it, calc_face_normal(f_it.handle()));
 }
 
 
@@ -220,7 +220,7 @@ update_halfedge_normals(const double _feature_angle)
   HalfedgeIter h_it(Kernel::halfedges_begin()), h_end(Kernel::halfedges_end());
 
   for (; h_it != h_end; ++h_it)
-    this->set_normal(h_it.handle(), calc_halfedge_normal(h_it.handle(), _feature_angle));
+    this->set_normal(*h_it, calc_halfedge_normal(*h_it, _feature_angle));
 }
 
 
@@ -332,7 +332,7 @@ calc_vertex_normal_fast(VertexHandle _vh, Normal& _n) const
 {
   _n.vectorize(0.0);
   for (ConstVertexFaceIter vf_it=this->cvf_iter(_vh); vf_it; ++vf_it)
-    _n += this->normal(vf_it.handle());
+    _n += this->normal(*vf_it);
 }
 
 //-----------------------------------------------------------------------------
@@ -394,7 +394,7 @@ update_vertex_normals()
   VertexIter  v_it(Kernel::vertices_begin()), v_end(Kernel::vertices_end());
 
   for (; v_it!=v_end; ++v_it)
-    this->set_normal(v_it.handle(), calc_vertex_normal(v_it.handle()));
+    this->set_normal(*v_it, calc_vertex_normal(*v_it));
 }
 
 //=============================================================================

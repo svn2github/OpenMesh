@@ -224,11 +224,11 @@ protected:
         if (_m.is_boundary(fit))
         {
             if(gen%2)
-                _m.property(fp_pos_, fit.handle()).invalidate();
+                _m.property(fp_pos_, *fit).invalidate();
             else
             {
                 //find the interior boundary halfedge
-                for( heh = _m.halfedge_handle(fit.handle()); !_m.is_boundary( _m.opposite_halfedge_handle(heh) ); heh = _m.next_halfedge_handle(heh) )
+                for( heh = _m.halfedge_handle(*fit); !_m.is_boundary( _m.opposite_halfedge_handle(heh) ); heh = _m.next_halfedge_handle(heh) )
                   ;
                 assert(_m.is_boundary( _m.opposite_halfedge_handle(heh) ));
                 pos = zero;
@@ -303,7 +303,7 @@ protected:
                     }
                 }
                 vh   = _m.add_vertex( pos );
-                _m.property(fp_pos_, fit.handle()) = vh;
+                _m.property(fp_pos_, *fit) = vh;
             }
         }
         else
@@ -312,16 +312,16 @@ protected:
             int nOrdinary = 0;
             
             //check number of extraordinary vertices
-            for(fvit = _m.fv_iter( fit ); fvit; ++fvit)
-                if( (_m.valence(fvit.handle())) == 6 || _m.is_boundary(fvit.handle()) )
+            for(fvit = _m.fv_iter( fit ); fvit.is_valid(); ++fvit)
+                if( (_m.valence(*fvit)) == 6 || _m.is_boundary(*fvit) )
                     ++nOrdinary;
 
             if(nOrdinary==3)
             {
-                for(fheit = _m.fh_iter( fit ); fheit; ++fheit)
+                for(fheit = _m.fh_iter( fit ); fheit.is_valid(); ++fheit)
                 {
                     //one ring vertex has weight 32/81
-                    heh = fheit.handle();
+                    heh = *fheit;
                     assert(_m.to_vertex_handle(heh).is_valid());
                     pos += real_t(32.0/81) * _m.point(_m.to_vertex_handle(heh));
                     //tip vertex has weight -1/81
@@ -346,14 +346,14 @@ protected:
             else
             {
                 //only use irregular vertices:
-                for(fheit = _m.fh_iter( fit ); fheit; ++fheit)
+                for(fheit = _m.fh_iter( fit ); fheit.is_valid(); ++fheit)
                 {
                     vh = _m.to_vertex_handle(fheit);
                     if( (_m.valence(vh) != 6) && (!_m.is_boundary(vh)) )
                     {
                         unsigned int K = _m.valence(vh);
                         pos += weights_[K][K]*_m.point(vh);
-                        heh = _m.opposite_halfedge_handle( fheit.handle() );
+                        heh = _m.opposite_halfedge_handle( *fheit );
                         for(unsigned int i = 0; i<K; ++i, heh = _m.opposite_halfedge_handle(_m.prev_halfedge_handle(heh)) )
                         {
                             pos += weights_[K][i]*_m.point(_m.to_vertex_handle(heh));
@@ -364,7 +364,7 @@ protected:
             }
 
             vh   = _m.add_vertex( pos );
-            _m.property(fp_pos_, fit.handle()) = vh;
+            _m.property(fp_pos_, *fit) = vh;
         }
       }
 
@@ -377,8 +377,8 @@ protected:
         }
         else
         {
-            assert(_m.property(fp_pos_, fit.handle()).is_valid());
-            _m.split( fit, _m.property(fp_pos_, fit.handle()) );
+            assert(_m.property(fp_pos_, *fit).is_valid());
+            _m.split( fit, _m.property(fp_pos_, *fit) );
         }
       }
 

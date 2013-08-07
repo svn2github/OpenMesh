@@ -308,7 +308,7 @@ int main(int argc, char **argv)
       
       if (mesh.data(f_it).state() < target1) {
         ++i;        
-        fh = f_it.handle();
+        fh = *f_it;
         timer2.start();
         subdivider.refine(fh);
         timer2.stop();
@@ -318,7 +318,7 @@ int main(int argc, char **argv)
     for (v_it = mesh.vertices_begin(); v_it != mesh.vertices_end(); ++v_it) {
       
       if (mesh.data(v_it).state() < target2) {
-        vh = v_it.handle();
+        vh = *v_it;
         timer2.cont();
         subdivider.refine(vh);
         timer2.stop();
@@ -350,7 +350,7 @@ int main(int argc, char **argv)
       // calculate quality
       quality = 0.0;
 
-      fh = mesh.faces_begin().handle();
+      fh = *(mesh.faces_begin());
 
       // check every face
       for (f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it) {
@@ -358,7 +358,7 @@ int main(int argc, char **argv)
         face_quality = 0.0;
         valence      = 0;
 
-        for (ff_it = mesh.ff_iter(f_it.handle()); ff_it; ++ff_it) {
+        for (ff_it = mesh.ff_iter(*f_it); ff_it; ++ff_it) {
 
           temp_quality = OpenMesh::dot( mesh.normal(f_it), 
                                         mesh.normal(ff_it) );
@@ -383,9 +383,9 @@ int main(int argc, char **argv)
 #define nheh next_halfedge_handle
 #define tvh to_vertex_handle
 #define fvh from_vertex_handle
-        p1 = mesh.point(mesh.tvh(mesh.heh(f_it.handle())));
-        p2 = mesh.point(mesh.fvh(mesh.heh(f_it.handle())));
-        p3 = mesh.point(mesh.tvh(mesh.nheh(mesh.heh(f_it.handle()))));
+        p1 = mesh.point(mesh.tvh(mesh.heh(*f_it)));
+        p2 = mesh.point(mesh.fvh(mesh.heh(*f_it)));
+        p3 = mesh.point(mesh.tvh(mesh.nheh(mesh.heh(*f_it))));
 #undef heh
 #undef nheh
 #undef tvh
@@ -397,10 +397,10 @@ int main(int argc, char **argv)
         face_quality *= pow(double(area), double(.1));
         //face_quality *= area;
 
-        if (face_quality >= quality && !mesh.is_boundary(f_it.handle())) 
+        if (face_quality >= quality && !mesh.is_boundary(*f_it))
         {
           quality = face_quality;
-          fh      = f_it.handle();
+          fh      = *f_it;
         }
       }
 

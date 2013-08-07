@@ -142,7 +142,7 @@ build_strips()
 
 
     // collect starting halfedges
-    h[0] = mesh_.halfedge_handle(f_it.handle());
+    h[0] = mesh_.halfedge_handle(*f_it);
     h[1] = mesh_.next_halfedge_handle(h[0]);
     h[2] = mesh_.next_halfedge_handle(h[1]);
 

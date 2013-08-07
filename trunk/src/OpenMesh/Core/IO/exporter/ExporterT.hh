@@ -210,7 +210,7 @@ public:
     _vhandles.clear();
     for (typename Mesh::CFVIter fv_it=mesh_.cfv_iter(_fh); fv_it.is_valid(); ++fv_it)
     {
-      _vhandles.push_back(fv_it.handle());
+      _vhandles.push_back(*fv_it);
       ++count;
     }
     return count;
