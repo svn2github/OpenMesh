@@ -77,7 +77,7 @@
 #  endif
 #endif
 
-#if defined(_MSCVER)
+#if defined(_MSC_VER)
 #  define DEPRECATED(msg) __declspec(deprecated(msg))
 #elif defined(__GNUC__)
 #  include <features.h>
