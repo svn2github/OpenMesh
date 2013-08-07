@@ -188,7 +188,7 @@ write_stla(const std::string& _filename, BaseExporter& _be, Options /* _opt */) 
     fprintf(out, "\nendloop\nendfacet\n");
   }
 
-
+  fprintf(out, "endsolid\n");
 
   fclose(out);
 
@@ -242,6 +242,8 @@ write_stla(std::ostream& _out, BaseExporter& _be, Options /* _opt */, std::strea
 
     _out << "\nendloop\nendfacet\n";
   }
+
+  _out << "endsolid\n";
 
   return true;
 }
