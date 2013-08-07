@@ -78,15 +78,18 @@
 #endif
 
 #if defined(_MSCVER)
-#define DEPRECATED(msg) __declspec(deprecated(msg))
-#elif defined(__GNUC__) || defined(__clang__)
-  #if GCC_VERSION >= 40500
-  #define DEPRECATED(msg) __attribute__ ((deprecated(msg)))
-  #else
-  #define DEPRECATED(msg) __attribute__ ((deprecated))
-  #endif
+#  define DEPRECATED(msg) __declspec(deprecated(msg))
+#elif defined(__GNUC__)
+#  include <features.h>
+#  if __GNUC_PREREQ(4,5)
+#    define DEPRECATED(msg) __attribute__ ((deprecated(msg)))
+#  else
+#    define DEPRECATED(msg) __attribute__ ((deprecated))
+#  endif
+#elif defined(__clang__)
+#  define DEPRECATED(msg) __attribute__ ((deprecated(msg)))
 #else
-#define DEPRECATED(msg)
+#  define DEPRECATED(msg)
 #endif
 
 typedef unsigned int uint;
