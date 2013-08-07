@@ -79,7 +79,7 @@ bool CompositeT<MeshType,RealType>::prepare( MeshType& _m )
   typename MeshType::VertexIter v_it(_m.vertices_begin());
 
   for (; v_it != _m.vertices_end(); ++v_it)
-    _m.data(v_it).set_position(_m.point(*v_it()));
+    _m.data(v_it).set_position(_m.point(*v_it));
 
   return true;
 }
