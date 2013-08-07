@@ -44,6 +44,7 @@
 
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 namespace OpenMesh {
 
@@ -94,7 +95,7 @@ class PropertyManager {
          * the instance merely acts as a convenience wrapper around an existing property with no
          * lifecycle management whatsoever.
          */
-        PropertyManager(MeshT &mesh, const char *propname, bool existing = false) : mesh_(&mesh), retain_(existing) {
+        PropertyManager(MeshT &mesh, const char *propname, bool existing = false) : mesh_(&mesh), retain_(existing), name_(propname) {
             if (existing) {
                 if (!mesh_->get_property_handle(prop_, propname)) {
                     std::ostringstream oss;
@@ -117,6 +118,7 @@ class PropertyManager {
             std::swap(mesh_, rhs.mesh_);
             std::swap(prop_, rhs.prop_);
             std::swap(retain_, rhs.retain_);
+            std::swap(name_, rhs.name_);
         }
 
         static bool propertyExists(MeshT &mesh, const char *propname) {
@@ -129,11 +131,13 @@ class PropertyManager {
 
         const PROPTYPE &getRawProperty() const { return prop_; }
 
+        const std::string &getName() const { return name_; }
+
 #if __cplusplus > 199711L or __GXX_EXPERIMENTAL_CXX0X__
         /**
          * Move constructor. Transfers ownership (delete responsibility).
          */
-        PropertyManager(PropertyManager &&rhs) : mesh_(rhs.mesh_), prop_(rhs.prop_), retain_(rhs.retain_) {
+        PropertyManager(PropertyManager &&rhs) : mesh_(rhs.mesh_), prop_(rhs.prop_), retain_(rhs.retain_), name_(rhs.name_) {
             rhs.retain_ = true;
         }
 
@@ -147,6 +151,7 @@ class PropertyManager {
             mesh_ = rhs.mesh_;
             prop_ = rhs.prop_;
             retain_ = rhs.retain_;
+            name_ = rhs.name_;
             rhs.retain_ = true;
 
             return *this;
@@ -167,23 +172,24 @@ class PropertyManager {
 #else
         class Proxy {
             private:
-                Proxy(MeshT *mesh_, PROPTYPE prop_, bool retain_) :
-                    mesh_(mesh_), prop_(prop_), retain_(retain_) {}
+                Proxy(MeshT *mesh_, PROPTYPE prop_, bool retain_, const std::string &name_) :
+                    mesh_(mesh_), prop_(prop_), retain_(retain_), name_(name_) {}
                 MeshT *mesh_;
                 PROPTYPE prop_;
                 bool retain_;
+                std::string name_;
 
                 friend class PropertyManager;
         };
 
         operator Proxy() {
-            Proxy p(mesh_, prop_, retain_);
+            Proxy p(mesh_, prop_, retain_, name_);
             mesh_ = 0;
             retain_ = true;
             return p;
         }
 
-        PropertyManager(Proxy p) : mesh_(p.mesh_), prop_(p.prop_), retain_(p.retain_) {}
+        PropertyManager(Proxy p) : mesh_(p.mesh_), prop_(p.prop_), retain_(p.retain_), name_(p.name_) {}
 
         PropertyManager &operator=(Proxy p) {
             PropertyManager(p).swap(*this);
@@ -261,6 +267,7 @@ class PropertyManager {
         MeshT *mesh_;
         PROPTYPE prop_;
         bool retain_;
+        std::string name_;
 };
 
 } /* namespace OpenMesh */
