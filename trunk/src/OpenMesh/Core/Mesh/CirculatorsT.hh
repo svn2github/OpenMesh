@@ -54,7 +54,7 @@
 #include <OpenMesh/Core/System/config.h>
 #include <cassert>
 #include <cstddef>
-
+#include <iterator>
 
 //== NAMESPACES ===============================================================
 

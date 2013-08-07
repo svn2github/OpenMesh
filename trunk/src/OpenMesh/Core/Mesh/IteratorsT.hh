@@ -56,6 +56,7 @@
 #include <OpenMesh/Core/Mesh/Status.hh>
 #include <cassert>
 #include <cstddef>
+#include <iterator>
 
 
 //== NAMESPACES ===============================================================
