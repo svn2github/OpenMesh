@@ -80,7 +80,11 @@
 #if defined(_MSCVER)
 #define DEPRECATED(msg) __declspec(deprecated(msg))
 #elif defined(__GNUC__) || defined(__clang__)
-#define DEPRECATED(msg) __attribute__ ((deprecated(msg)))
+  #if GCC_VERSION >= 40500
+  #define DEPRECATED(msg) __attribute__ ((deprecated(msg)))
+  #else
+  #define DEPRECATED(msg) __attribute__ ((deprecated))
+  #endif
 #else
 #define DEPRECATED(msg)
 #endif
