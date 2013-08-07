@@ -134,12 +134,12 @@ MeshViewerWidgetT<M>::open_mesh(const char* _filename, IO::Options _opt)
     
     Vec3f bbMin, bbMax;
     
-    bbMin = bbMax = OpenMesh::vector_cast<Vec3f>(mesh_.point(vIt));
+    bbMin = bbMax = OpenMesh::vector_cast<Vec3f>(mesh_.point(*vIt));
     
     for (size_t count=0; vIt!=vEnd; ++vIt, ++count)
     {
-      bbMin.minimize( OpenMesh::vector_cast<Vec3f>(mesh_.point(vIt)));
-      bbMax.maximize( OpenMesh::vector_cast<Vec3f>(mesh_.point(vIt)));
+      bbMin.minimize( OpenMesh::vector_cast<Vec3f>(mesh_.point(*vIt)));
+      bbMax.maximize( OpenMesh::vector_cast<Vec3f>(mesh_.point(*vIt)));
     }
     
     
@@ -164,10 +164,10 @@ MeshViewerWidgetT<M>::open_mesh(const char* _filename, IO::Options _opt)
       for (;f_it != mesh_.faces_end(); ++f_it)
       {
         typename Mesh::Point v(0,0,0);
-        for( fv_it=mesh_.fv_iter(f_it); fv_it.is_valid(); ++fv_it)
+        for( fv_it=mesh_.fv_iter(*f_it); fv_it.is_valid(); ++fv_it)
           v += OpenMesh::vector_cast<typename Mesh::Normal>(mesh_.point(*fv_it));
         v *= 1.0f/3.0f;
-        mesh_.property( fp_normal_base_, f_it ) = v;
+        mesh_.property( fp_normal_base_, *f_it ) = v;
       }
       t.stop();
       std::clog << "Computed base point for displaying face normals [" 
@@ -337,7 +337,7 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
     glBegin(GL_TRIANGLES);
     for (; fIt!=fEnd; ++fIt)
     {
-      glNormal3fv( &mesh_.normal(fIt)[0] );
+      glNormal3fv( &mesh_.normal(*fIt)[0] );
       
       fvIt = mesh_.cfv_iter(*fIt);
       glVertex3fv( &mesh_.point(*fvIt)[0] );
@@ -665,8 +665,8 @@ MeshViewerWidgetT<M>::draw_scene(const std::string& _draw_mode)
     glColor3f(1.000f, 0.803f, 0.027f); // orange
     for(vit=mesh_.vertices_begin(); vit!=mesh_.vertices_end(); ++vit)
     {
-      glVertex( vit );
-      glVertex( mesh_.point( vit ) + normal_scale_*mesh_.normal( vit ) );
+      glVertex( *vit );
+      glVertex( mesh_.point( *vit ) + normal_scale_*mesh_.normal( *vit ) );
     }
     glEnd();
   }
@@ -679,9 +679,9 @@ MeshViewerWidgetT<M>::draw_scene(const std::string& _draw_mode)
     glColor3f(0.705f, 0.976f, 0.270f); // greenish
     for(fit=mesh_.faces_begin(); fit!=mesh_.faces_end(); ++fit)
     {
-      glVertex( mesh_.property(fp_normal_base_, fit) );
-      glVertex( mesh_.property(fp_normal_base_, fit) + 
-                normal_scale_*mesh_.normal( fit ) );
+      glVertex( mesh_.property(fp_normal_base_, *fit) );
+      glVertex( mesh_.property(fp_normal_base_, *fit) +
+                normal_scale_*mesh_.normal( *fit ) );
     }
     glEnd();
   }

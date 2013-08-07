@@ -212,16 +212,16 @@ protected:
       // tag existing edges
       for (eit=_m.edges_begin(); eit != _m.edges_end();++eit)
       {
-        _m.status( eit ).set_tagged( true );
-        if ( (gen%2) && _m.is_boundary(eit) )
-          compute_new_boundary_points( _m, eit ); // *) creates new vertices
+        _m.status( *eit ).set_tagged( true );
+        if ( (gen%2) && _m.is_boundary(*eit) )
+          compute_new_boundary_points( _m, *eit ); // *) creates new vertices
       }
 
       // insert new vertices, and store pos in vp_pos_
       typename MeshType::FaceIter fend = _m.faces_end();
       for (fit = _m.faces_begin();fit != fend; ++fit)
       {
-        if (_m.is_boundary(fit))
+        if (_m.is_boundary(*fit))
         {
             if(gen%2)
                 _m.property(fp_pos_, *fit).invalidate();
@@ -312,13 +312,13 @@ protected:
             int nOrdinary = 0;
             
             //check number of extraordinary vertices
-            for(fvit = _m.fv_iter( fit ); fvit.is_valid(); ++fvit)
+            for(fvit = _m.fv_iter( *fit ); fvit.is_valid(); ++fvit)
                 if( (_m.valence(*fvit)) == 6 || _m.is_boundary(*fvit) )
                     ++nOrdinary;
 
             if(nOrdinary==3)
             {
-                for(fheit = _m.fh_iter( fit ); fheit.is_valid(); ++fheit)
+                for(fheit = _m.fh_iter( *fit ); fheit.is_valid(); ++fheit)
                 {
                     //one ring vertex has weight 32/81
                     heh = *fheit;
@@ -346,9 +346,9 @@ protected:
             else
             {
                 //only use irregular vertices:
-                for(fheit = _m.fh_iter( fit ); fheit.is_valid(); ++fheit)
+                for(fheit = _m.fh_iter( *fit ); fheit.is_valid(); ++fheit)
                 {
-                    vh = _m.to_vertex_handle(fheit);
+                    vh = _m.to_vertex_handle(*fheit);
                     if( (_m.valence(vh) != 6) && (!_m.is_boundary(vh)) )
                     {
                         unsigned int K = _m.valence(vh);
@@ -371,21 +371,21 @@ protected:
       //split faces
       for (fit = _m.faces_begin();fit != fend; ++fit)
       {
-        if ( _m.is_boundary(fit) && (gen%2))
+        if ( _m.is_boundary(*fit) && (gen%2))
         {
-                boundary_split( _m, fit );
+                boundary_split( _m, *fit );
         }
         else
         {
             assert(_m.property(fp_pos_, *fit).is_valid());
-            _m.split( fit, _m.property(fp_pos_, *fit) );
+            _m.split( *fit, _m.property(fp_pos_, *fit) );
         }
       }
 
       // flip old edges
       for (eit=_m.edges_begin(); eit != _m.edges_end(); ++eit)
-        if ( _m.status( eit ).tagged() && !_m.is_boundary( eit ) )
-          _m.flip(eit);
+        if ( _m.status( *eit ).tagged() && !_m.is_boundary( *eit ) )
+          _m.flip(*eit);
 
       // Now we have an consistent mesh!
       ASSERT_CONSISTENCY( MeshType, _m );
@@ -455,7 +455,7 @@ private:
     typename MeshType::HalfedgeHandle   heh;
 
     // find boundary edge
-    for( fe_it=_m.fe_iter( _fh ); fe_it.is_valid() && !_m.is_boundary( fe_it ); ++fe_it ) {};
+    for( fe_it=_m.fe_iter( _fh ); fe_it.is_valid() && !_m.is_boundary( *fe_it ); ++fe_it ) {};
 
     // use precomputed, already inserted but not linked vertices
     vhl = _m.property(ep_nv_, *fe_it).first;

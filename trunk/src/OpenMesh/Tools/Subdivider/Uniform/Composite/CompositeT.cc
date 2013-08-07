@@ -79,7 +79,7 @@ bool CompositeT<MeshType,RealType>::prepare( MeshType& _m )
   typename MeshType::VertexIter v_it(_m.vertices_begin());
 
   for (; v_it != _m.vertices_end(); ++v_it)
-    _m.data(v_it).set_position(_m.point(*v_it));
+    _m.data(*v_it).set_position(_m.point(*v_it));
 
   return true;
 }
@@ -109,7 +109,7 @@ void CompositeT<MeshType,RealType>::Tvv3()
   // set new positions for vertices
   v_it = mesh_.vertices_begin();
   for (j = 0; j < n_vertices; ++j) {
-    mesh_.data(v_it).set_position(mesh_.data(v_it).position() * 3.0);
+    mesh_.data(*v_it).set_position(mesh_.data(*v_it).position() * 3.0);
     ++v_it;
   }
 
@@ -173,7 +173,7 @@ void CompositeT<MeshType,RealType>::Tvv4()
   // set new positions for vertices
   v_it = mesh_.vertices_begin();
   for (j = 0; j < n_vertices; ++j) {
-    mesh_.data(v_it).set_position(mesh_.data(v_it).position() * 4.0);
+    mesh_.data(*v_it).set_position(mesh_.data(*v_it).position() * 4.0);
     ++v_it;
   }
 
@@ -298,11 +298,11 @@ void CompositeT<MeshType,RealType>::VF()
     cog = zero_point;
 
     for (fv_it = mesh_.fv_iter(*f_it); fv_it.is_valid(); ++fv_it) {
-      cog += mesh_.data(fv_it).position();
+      cog += mesh_.data(*fv_it).position();
       ++valence;
     }
     cog /= valence;
-    mesh_.data(f_it).set_position(cog);
+    mesh_.data(*f_it).set_position(cog);
   }
 }
 
@@ -441,7 +441,7 @@ void CompositeT<MeshType,RealType>::FF()
 
     for (ff_it = mesh_.ff_iter(*f_it); ff_it.is_valid(); ++ff_it)
     {
-      cog += mesh_.data(ff_it).position();
+      cog += mesh_.data(*ff_it).position();
       ++valence;
     }
     cog /= valence;
@@ -451,7 +451,7 @@ void CompositeT<MeshType,RealType>::FF()
   for (f_it = mesh_.faces_end(); f_it != mesh_.faces_begin(); )
   {
     --f_it;
-    mesh_.data(f_it).set_position(point_vector.back());
+    mesh_.data(*f_it).set_position(point_vector.back());
     point_vector.pop_back();
   }
 }
@@ -602,7 +602,7 @@ void CompositeT<MeshType,RealType>::FVc(Coeff& _coeff)
     if (valence > 0)
       cog /= valence;
 
-    mesh_.data(v_it).set_position(cog);
+    mesh_.data(*v_it).set_position(cog);
   }
 }
 
@@ -614,7 +614,7 @@ void CompositeT<MeshType,RealType>::FVc(scalar_t _c)
 
   unsigned int                       valence;
   typename MeshType::Point               cog,
-                                     zero_point(0.0, 0.0, 0.0);
+  zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexOHalfedgeIter voh_it;
   typename MeshType::VertexIter          v_it;
 
@@ -631,14 +631,14 @@ void CompositeT<MeshType,RealType>::FVc(scalar_t _c)
 
       if (mesh_.face_handle(*voh_it).is_valid()) {
 
-  if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it))).is_valid()) {
-    cog += mesh_.deref(mesh_.face_handle(*voh_it)).position() * _c;
-    cog += mesh_.deref(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it)))).position() * (1.0 - _c);
-  } else {
-    cog += mesh_.deref(mesh_.face_handle(*voh_it)).position();
-  }
+        if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it))).is_valid()) {
+          cog += mesh_.deref(mesh_.face_handle(*voh_it)).position() * _c;
+          cog += mesh_.deref(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it)))).position() * (1.0 - _c);
+        } else {
+          cog += mesh_.deref(mesh_.face_handle(*voh_it)).position();
+        }
       } else {
-  --valence;
+        --valence;
       }
     }
 
@@ -683,7 +683,7 @@ void CompositeT<MeshType,RealType>::VdE()
 
     cog /= valence;
 
-    mesh_.data(e_it).set_position(cog);
+    mesh_.data(*e_it).set_position(cog);
   }
 }
 
@@ -716,7 +716,7 @@ void CompositeT<MeshType,RealType>::VdEc(scalar_t _c)
       }
     }
 
-    mesh_.data(e_it).set_position(cog);
+    mesh_.data(*e_it).set_position(cog);
   }
 }
 
@@ -776,7 +776,7 @@ void CompositeT<MeshType,RealType>::VdEg(scalar_t _gamma)
       cog += mesh_.data(mesh_.to_vertex_handle(heh)).position() * 2.0 * _gamma;
     }
 
-    mesh_.data(e_it).set_position(cog);
+    mesh_.data(*e_it).set_position(cog);
   }
 }
 
@@ -839,7 +839,7 @@ void CompositeT<MeshType,RealType>::VdEg(Coeff& _coeff)
       cog += mesh_.data(mesh_.to_vertex_handle(heh)).position() * 2.0 * gamma;
     }
 
-    mesh_.data(e_it).set_position(cog);
+    mesh_.data(*e_it).set_position(cog);
   }
 }
 
@@ -867,7 +867,7 @@ void CompositeT<MeshType,RealType>::EV()
 
     cog /= valence;
 
-    mesh_.data(v_it).set_position(cog);
+    mesh_.data(*v_it).set_position(cog);
   }
 }
 
@@ -903,7 +903,7 @@ void CompositeT<MeshType,RealType>::EVc(Coeff& _coeff)
 
     cog /= valence;
 
-    mesh_.data(v_it).set_position(cog);
+    mesh_.data(*v_it).set_position(cog);
   }
 }
 
@@ -933,7 +933,7 @@ void CompositeT<MeshType,RealType>::EVc(scalar_t _c)
 
     cog /= valence;
 
-    mesh_.data(v_it).set_position(cog);
+    mesh_.data(*v_it).set_position(cog);
   }
 }
 
@@ -959,7 +959,7 @@ void CompositeT<MeshType,RealType>::EF()
     }
 
     cog /= valence;
-    mesh_.data(f_it).set_position(cog);
+    mesh_.data(*f_it).set_position(cog);
   }
 }
 
@@ -989,7 +989,7 @@ void CompositeT<MeshType,RealType>::FE()
     }
 
     cog /= valence;
-    mesh_.data(e_it).set_position(cog);
+    mesh_.data(*e_it).set_position(cog);
   }
 }
 
@@ -1007,7 +1007,7 @@ void CompositeT<MeshType,RealType>::VE()
     cog = mesh_.data(mesh_.to_vertex_handle(mesh_.halfedge_handle(*e_it, 0))).position();
     cog += mesh_.data(mesh_.to_vertex_handle(mesh_.halfedge_handle(*e_it, 1))).position();
     cog /= 2.0;
-    mesh_.data(e_it).set_position(cog);
+    mesh_.data(*e_it).set_position(cog);
   }
 }
 
@@ -1042,7 +1042,7 @@ void CompositeT<MeshType,RealType>::VV()
   for (v_it = mesh_.vertices_end(); v_it != mesh_.vertices_begin(); )
   {
     --v_it;
-    mesh_.data(v_it).set_position(point_vector.back());
+    mesh_.data(*v_it).set_position(point_vector.back());
     point_vector.pop_back();
   }
 }
@@ -1073,13 +1073,13 @@ void CompositeT<MeshType,RealType>::VVc(Coeff& _coeff)
     }
     cog /= valence;
     c = _coeff(valence);
-    cog = cog * (1 - c) + mesh_.data(v_it).position() * c;
+    cog = cog * (1 - c) + mesh_.data(*v_it).position() * c;
     point_vector.push_back(cog);
   }
   for (v_it = mesh_.vertices_end(); v_it != mesh_.vertices_begin(); )
   {
     --v_it;
-    mesh_.data(v_it).set_position(point_vector.back());
+    mesh_.data(*v_it).set_position(point_vector.back());
     point_vector.pop_back();
   }
 }
@@ -1116,7 +1116,7 @@ void CompositeT<MeshType,RealType>::VVc(scalar_t _c)
   for (v_it = mesh_.vertices_end(); v_it != mesh_.vertices_begin(); ) {
 
     --v_it;
-    mesh_.data(v_it).set_position(point_vector.back());
+    mesh_.data(*v_it).set_position(point_vector.back());
     point_vector.pop_back();
 
   }
@@ -1160,7 +1160,7 @@ void CompositeT<MeshType,RealType>::EdE()
   for (e_it = mesh_.edges_end(); e_it != mesh_.edges_begin(); )
   {
     --e_it;
-    mesh_.data(e_it).set_position(point_vector.back());
+    mesh_.data(*e_it).set_position(point_vector.back());
     point_vector.pop_back();
   }
 }
@@ -1204,7 +1204,7 @@ void CompositeT<MeshType,RealType>::EdEc(scalar_t _c)
   for (e_it = mesh_.edges_end(); e_it != mesh_.edges_begin(); ) {
 
     --e_it;
-    mesh_.data(e_it).set_position(point_vector.back());
+    mesh_.data(*e_it).set_position(point_vector.back());
     point_vector.pop_back();
   }
 }

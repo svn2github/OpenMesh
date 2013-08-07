@@ -175,20 +175,20 @@ protected:
       // tag existing edges
       for (eit=_m.edges_begin(); eit != _m.edges_end();++eit)
       {
-        _m.status( eit ).set_tagged( true );
-        if ( (gen%2) && _m.is_boundary(eit) )
-          compute_new_boundary_points( _m, eit ); // *) creates new vertices
+        _m.status( *eit ).set_tagged( true );
+        if ( (gen%2) && _m.is_boundary(*eit) )
+          compute_new_boundary_points( _m, *eit ); // *) creates new vertices
       }
 
       // do relaxation of old vertices, but store new pos in property vp_pos_
 
       for (vit=_m.vertices_begin(); vit!=_m.vertices_end(); ++vit)
       {
-        if ( _m.is_boundary(vit) )
+        if ( _m.is_boundary(*vit) )
         {
           if ( gen%2 )
           {
-            heh  = _m.halfedge_handle(vit);
+            heh  = _m.halfedge_handle(*vit);
             if (heh.is_valid()) // skip isolated newly inserted vertices *)
             {
               typename OpenMesh::HalfedgeHandle 
@@ -201,28 +201,28 @@ protected:
               pos += _m.point(_m.from_vertex_handle(prev_heh));
               pos *= real_t(4.0);
 
-              pos += real_t(19.0) * _m.point( vit );
+              pos += real_t(19.0) * _m.point( *vit );
               pos *= _1over27;
 
-              _m.property( vp_pos_, vit ) = pos;
+              _m.property( vp_pos_, *vit ) = pos;
             }
           }
           else
-            _m.property( vp_pos_, vit ) = _m.point( vit );
+            _m.property( vp_pos_, *vit ) = _m.point( *vit );
         }
         else
         {
           size_t valence=0;
 
           pos = zero;
-          for ( vvit = _m.vv_iter(vit); vvit.is_valid(); ++vvit)
+          for ( vvit = _m.vv_iter(*vit); vvit.is_valid(); ++vvit)
           {
-            pos += _m.point( vvit );
+            pos += _m.point( *vvit );
             ++valence;
           }
           pos *= weights_[ valence ].second;
-          pos += weights_[ valence ].first * _m.point(vit);
-          _m.property( vp_pos_, vit ) =  pos;
+          pos += weights_[ valence ].first * _m.point(*vit);
+          _m.property( vp_pos_, *vit ) =  pos;
         }
       }   
 
@@ -230,7 +230,7 @@ protected:
       typename MeshType::FaceIter fend = _m.faces_end();
       for (fit = _m.faces_begin();fit != fend; ++fit)
       {
-        if ( (gen%2) && _m.is_boundary(fit))
+        if ( (gen%2) && _m.is_boundary(*fit))
         {
           boundary_split( _m, *fit );
         }
@@ -238,23 +238,23 @@ protected:
         {
           fvit = _m.fv_iter( *fit );
           pos  = _m.point(  *fvit);
-          pos += _m.point(++fvit);
-          pos += _m.point(++fvit);
+          pos += _m.point(*(++fvit));
+          pos += _m.point(*(++fvit));
           pos *= _1over3;
           vh   = _m.add_vertex( zero );
           _m.property( vp_pos_, vh ) = pos;
-          _m.split( fit, vh );
+          _m.split( *fit, vh );
         }
       }
 
       // commit new positions (now iterating over all vertices)
       for (vit=_m.vertices_begin();vit != _m.vertices_end(); ++vit)
-        _m.set_point(vit, _m.property( vp_pos_, vit ) );
+        _m.set_point(*vit, _m.property( vp_pos_, *vit ) );
       
       // flip old edges
       for (eit=_m.edges_begin(); eit != _m.edges_end(); ++eit)
-        if ( _m.status( eit ).tagged() && !_m.is_boundary( eit ) )
-          _m.flip(eit);
+        if ( _m.status( *eit ).tagged() && !_m.is_boundary( *eit ) )
+          _m.flip(*eit);
 
       // Now we have an consistent mesh!
       ASSERT_CONSISTENCY( MeshType, _m );
@@ -348,7 +348,7 @@ private:
     typename MeshType::HalfedgeHandle   heh;
 
     // find boundary edge
-    for( fe_it=_m.fe_iter( _fh ); fe_it.is_valid() && !_m.is_boundary( fe_it ); ++fe_it ) {};
+    for( fe_it=_m.fe_iter( _fh ); fe_it.is_valid() && !_m.is_boundary( *fe_it ); ++fe_it ) {};
 
     // use precomputed, already inserted but not linked vertices
     vhl = _m.property(ep_nv_, *fe_it).first;

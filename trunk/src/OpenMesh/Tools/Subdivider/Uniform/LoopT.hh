@@ -187,7 +187,7 @@ protected:
         // Commit changes in geometry
         for ( vit  = _m.vertices_begin();
             vit != _m.vertices_end(); ++vit) {
-            _m.set_point(vit, _m.property( vp_pos_, vit ) );
+            _m.set_point(*vit, _m.property( vp_pos_, *vit ) );
         }
       }
 

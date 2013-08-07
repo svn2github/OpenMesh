@@ -145,7 +145,7 @@ protected:
     typename MeshType::VertexIter v_it;
 
     for (v_it=_m.vertices_begin(); v_it != _m.vertices_end(); ++v_it)
-      _m.set_point(*v_it, _m.data(v_it).position());
+      _m.set_point(*v_it, _m.data(*v_it).position());
   }
 
   

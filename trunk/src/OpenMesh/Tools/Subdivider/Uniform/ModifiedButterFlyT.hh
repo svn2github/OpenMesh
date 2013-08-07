@@ -217,7 +217,7 @@ protected:
       // Commit changes in geometry
       for ( vit  = /*initialVerticesEnd;*/_m.vertices_begin();
             vit != _m.vertices_end(); ++vit)
-        _m.set_point(vit, _m.property( vp_pos_, vit ) );
+        _m.set_point(*vit, _m.property( vp_pos_, *vit ) );
 
 #if defined(_DEBUG) || defined(DEBUG)
       // Now we have an consistent mesh!

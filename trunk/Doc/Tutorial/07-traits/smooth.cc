@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     {
       cog[0] = cog[1] = cog[2] = valence = 0.0;
       
-      for (vv_it=mesh.vv_iter(v_it.handle()); vv_it; ++vv_it)
+      for (vv_it=mesh.vv_iter(*v_it); vv_it; ++vv_it)
       {
         cog += mesh.point( *vv_it );
         ++valence;
@@ -110,8 +110,8 @@ int main(int argc, char **argv)
     }
     
     for (v_it=mesh.vertices_begin(); v_it!=v_end; ++v_it)
-      if (!mesh.is_boundary(v_it.handle()))
-        mesh.set_point( v_it.handle(), mesh.data(v_it).cog());
+      if (!mesh.is_boundary(*v_it))
+        mesh.set_point( *v_it, mesh.data(*v_it).cog());
   }
 
 

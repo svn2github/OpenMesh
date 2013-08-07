@@ -80,7 +80,7 @@ initialize()
                              v_end = Base::mesh().vertices_end();
 
   for (; v_it != v_end; ++v_it)
-    Base::mesh().property(quadrics_, v_it).clear();
+    Base::mesh().property(quadrics_, *v_it).clear();
 
   // calc (normal weighted) quadric
   typename Mesh::FaceIter          f_it  = Base::mesh().faces_begin(),

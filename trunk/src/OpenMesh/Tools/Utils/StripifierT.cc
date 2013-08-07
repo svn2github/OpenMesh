@@ -119,15 +119,15 @@ build_strips()
   if (mesh_.has_face_status())
   {
     for (f_it=mesh_.faces_begin(); f_it!=f_end; ++f_it)
-      if (mesh_.status(f_it).hidden() || mesh_.status(f_it).deleted())
-        processed(f_it) = used(f_it) = true;
+      if (mesh_.status(*f_it).hidden() || mesh_.status(*f_it).deleted())
+        processed(*f_it) = used(*f_it) = true;
       else
-        processed(f_it) = used(f_it) = false;
+        processed(*f_it) = used(*f_it) = false;
   }
   else
   {
     for (f_it=mesh_.faces_begin(); f_it!=f_end; ++f_it)
-      processed(f_it) = used(f_it) = false;
+      processed(*f_it) = used(*f_it) = false;
   }
 
 
@@ -136,7 +136,7 @@ build_strips()
   {
     // find start face
     for (; f_it!=f_end; ++f_it)
-      if (!processed(f_it))
+      if (!processed(*f_it))
         break;
     if (f_it==f_end) break; // stop if all have been processed
 

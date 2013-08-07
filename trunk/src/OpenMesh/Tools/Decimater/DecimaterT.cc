@@ -167,7 +167,7 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
   heap_->reserve(mesh_.n_vertices());
 
   for (v_it = mesh_.vertices_begin(); v_it != v_end; ++v_it) {
-    heap_->reset_heap_position(v_it.handle());
+    heap_->reset_heap_position(*v_it);
     if (!mesh_.status(*v_it).deleted())
       heap_vertex(*v_it);
   }
@@ -253,9 +253,9 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
   heap_->reserve(mesh_.n_vertices());
 
   for (v_it = mesh_.vertices_begin(); v_it != v_end; ++v_it) {
-    heap_->reset_heap_position(v_it.handle());
+    heap_->reset_heap_position(*v_it);
     if (!mesh_.status(v_it).deleted())
-      heap_vertex(v_it.handle());
+      heap_vertex(*v_it);
   }
 
   // process heap
@@ -295,8 +295,8 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
     // update triangle normals
     vf_it = mesh_.vf_iter(ci.v1);
     for (; vf_it; ++vf_it)
-      if (!mesh_.status(vf_it).deleted())
-        mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
+      if (!mesh_.status(*vf_it).deleted())
+        mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
 
     // post-process collapse
     this->postprocess_collapse(ci);

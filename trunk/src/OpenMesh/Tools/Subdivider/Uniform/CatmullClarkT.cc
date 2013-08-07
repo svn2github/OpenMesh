@@ -124,7 +124,7 @@ CatmullClarkT<MeshType,RealType>::subdivide( MeshType& _m , size_t _n , const bo
     // Commit changes in geometry
     v_itr  = _m.vertices_begin();
     for ( ; v_itr != v_end; ++v_itr)
-      _m.set_point(v_itr, _m.property( vp_pos_, v_itr ) );
+      _m.set_point(*v_itr, _m.property( vp_pos_, *v_itr ) );
 
     // Split each edge at midpoint stored in edge property ep_pos_;
     // Attention! Creating new edges, hence make sure the loop ends correctly.

@@ -50,9 +50,9 @@ mesh.add_face(face_vhandles);
 // Find this edge and then flip it
 for(TriMesh::EdgeIter it = mesh.edges_begin(); it != mesh.edges_end(); ++it) {
 
-	if(!mesh.is_boundary(it.handle())) {
+	if(!mesh.is_boundary(*it)) {
 		// Flip edge
-		mesh.flip(it.handle());
+		mesh.flip(*it);
 	}
 }
 
@@ -116,11 +116,11 @@ mesh.add_face(face_vhandles);
 // and vhandle[3]
 for(PolyMesh::HalfedgeIter it = mesh.halfedges_begin(); it != mesh.halfedges_end(); ++it) {
 
-	if(to_vertex_handle(it.handle()) == vhandle[3] &&
-	   from_vertex_handle(it.handle()) == vhandle[2]) {
+	if(to_vertex_handle(*it) == vhandle[3] &&
+	   from_vertex_handle(*it) == vhandle[2]) {
 
 		// Collapse edge
-		mesh.collapse(it.handle());
+		mesh.collapse(*it);
 		break;
 	}
 }

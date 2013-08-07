@@ -786,7 +786,7 @@ This example shows how to iterate over all faces of a mesh:
 MyMesh mesh;
 
 for(MyMesh::FaceIter f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it) {
-    std::cout << "The face's valence is " << mesh.valence( f_it.handle() ) << std::endl;
+    std::cout << "The face's valence is " << mesh.valence( *f_it ) << std::endl;
 }
 
 \endcode
@@ -890,7 +890,7 @@ MyMesh mesh;
 MyMesh::FaceHalfedgeIter fh_it = mesh.fh_iter(faceHandle);
 
 for(; fh_it; ++fh_it) {
-    std::cout << "Halfedge has handle " << fh_it.handle() << std::endl;
+    std::cout << "Halfedge has handle " << *fh_it << std::endl;
 }
 
 \endcode
