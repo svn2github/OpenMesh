@@ -326,6 +326,12 @@ class GenericCirculatorT : protected GenericCirculatorBaseT<Mesh> {
         operator value_type() const {
           return **this;
         }
+
+        template<typename STREAM>
+        friend STREAM &operator<< (STREAM &s, const GenericCirculatorT &self) {
+            return s << self.mesh_ << ", " << self.start_.idx() << ", " << self.heh_.idx() << ", " << self.lap_counter_;
+        }
+
 };
 
 } // namespace Iterators
