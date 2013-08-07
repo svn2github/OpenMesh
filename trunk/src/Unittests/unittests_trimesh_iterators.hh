@@ -70,18 +70,18 @@ TEST_F(OpenMeshIterators, VertexIter) {
   Mesh::VertexIter v_it  = mesh_.vertices_begin(); 
   Mesh::VertexIter v_end = mesh_.vertices_end(); 
 
-  EXPECT_EQ(0, v_it.handle().idx()) << "Index wrong for vertex iterator vertices_begin()";
+  EXPECT_EQ(0, v_it->idx()) << "Index wrong for vertex iterator vertices_begin()";
   ++v_it;
-  EXPECT_EQ(1, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  EXPECT_EQ(1, v_it->idx()) << "Index wrong in vertex iterator";
   ++v_it;
-  EXPECT_EQ(2, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  EXPECT_EQ(2, v_it->idx()) << "Index wrong in vertex iterator";
   ++v_it;
-  EXPECT_EQ(3, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  EXPECT_EQ(3, v_it->idx()) << "Index wrong in vertex iterator";
   ++v_it;
-  EXPECT_EQ(4, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  EXPECT_EQ(4, v_it->idx()) << "Index wrong in vertex iterator";
 
   // Check end iterator
-  EXPECT_EQ(4, v_end.handle().idx()) << "Index wrong in vertex iterator for vertices_end()";    
+  EXPECT_EQ(4, v_end->idx()) << "Index wrong in vertex iterator for vertices_end()";    
 
 
   // Second iterator test to start at a specific position
@@ -128,14 +128,14 @@ TEST_F(OpenMeshIterators, VertexIterStartPosition) {
   Mesh::VertexIter v_it  = Mesh::VertexIter(mesh_,mesh_.vertex_handle(2));
   Mesh::VertexIter v_end = mesh_.vertices_end();
 
-  EXPECT_EQ(2, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  EXPECT_EQ(2, v_it->idx()) << "Index wrong in vertex iterator";
   ++v_it;
-  EXPECT_EQ(3, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  EXPECT_EQ(3, v_it->idx()) << "Index wrong in vertex iterator";
   ++v_it;
-  EXPECT_EQ(4, v_it.handle().idx()) << "Index wrong in vertex iterator";
+  EXPECT_EQ(4, v_it->idx()) << "Index wrong in vertex iterator";
 
   // Check end iterator
-  EXPECT_EQ(4, v_end.handle().idx()) << "Index wrong in vertex iterator for vertices_end()";
+  EXPECT_EQ(4, v_end->idx()) << "Index wrong in vertex iterator for vertices_end()";
 
 
 }
@@ -181,8 +181,8 @@ TEST_F(OpenMeshIterators, EdgeIter) {
   Mesh::EdgeIter e_it  = mesh_.edges_begin(); 
   Mesh::EdgeIter e_end = mesh_.edges_end(); 
   
-  EXPECT_EQ(0, e_it.handle().idx()) << "Wrong start index in edge iterator";
-  EXPECT_EQ(5, e_end.handle().idx()) << "Wrong end index in edge iterator";
+  EXPECT_EQ(0, e_it->idx()) << "Wrong start index in edge iterator";
+  EXPECT_EQ(5, e_end->idx()) << "Wrong end index in edge iterator";
 
   EXPECT_EQ(1, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "1: Wrong to vertex handle of halfedge 0";
   EXPECT_EQ(2, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "1: Wrong from vertex handle of halfedge 0";
@@ -190,7 +190,7 @@ TEST_F(OpenMeshIterators, EdgeIter) {
   EXPECT_EQ(1, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,1)).idx() ) << "1: Wrong from vertex handle of halfedge 1";
 
   ++e_it;
-  EXPECT_EQ(1, e_it.handle().idx()) << "Wrong index in edge iterator";
+  EXPECT_EQ(1, e_it->idx()) << "Wrong index in edge iterator";
 
   EXPECT_EQ(0, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "2: Wrong to vertex handle of halfedge 0";
   EXPECT_EQ(1, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "2: Wrong from vertex handle of halfedge 0";
@@ -199,7 +199,7 @@ TEST_F(OpenMeshIterators, EdgeIter) {
 
 
   ++e_it;
-  EXPECT_EQ(2, e_it.handle().idx()) << "Wrong index in edge iterator";
+  EXPECT_EQ(2, e_it->idx()) << "Wrong index in edge iterator";
 
   EXPECT_EQ(2, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "3: Wrong to vertex handle of halfedge 0";
   EXPECT_EQ(0, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "3: Wrong from vertex handle of halfedge 0";
@@ -208,7 +208,7 @@ TEST_F(OpenMeshIterators, EdgeIter) {
 
 
   ++e_it;
-  EXPECT_EQ(3, e_it.handle().idx()) << "Wrong index in edge iterator";
+  EXPECT_EQ(3, e_it->idx()) << "Wrong index in edge iterator";
 
   EXPECT_EQ(3, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "4: Wrong to vertex handle of halfedge 0";
   EXPECT_EQ(0, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "4: Wrong from vertex handle of halfedge 0";
@@ -217,7 +217,7 @@ TEST_F(OpenMeshIterators, EdgeIter) {
 
 
   ++e_it;
-  EXPECT_EQ(4, e_it.handle().idx()) << "Wrong index in edge iterator";
+  EXPECT_EQ(4, e_it->idx()) << "Wrong index in edge iterator";
 
   EXPECT_EQ(2, mesh_.to_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() )   << "5: Wrong to vertex handle of halfedge 0";
   EXPECT_EQ(3, mesh_.from_vertex_handle(mesh_.halfedge_handle(e_it,0)).idx() ) << "5: Wrong from vertex handle of halfedge 0";
@@ -374,8 +374,8 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkipping) {
   Mesh::HalfedgeIter he_it  = mesh_.halfedges_sbegin();
   Mesh::HalfedgeIter he_end = mesh_.halfedges_end();
 
-  EXPECT_EQ(0,  he_it.handle().idx()) << "Wrong start index in halfedge iterator";
-  EXPECT_EQ(36, he_end.handle().idx()) << "Wrong end index in halfedge iterator";
+  EXPECT_EQ(0,  he_it->idx()) << "Wrong start index in halfedge iterator";
+  EXPECT_EQ(36, he_end->idx()) << "Wrong end index in halfedge iterator";
 
 
   // =====================================================
@@ -387,10 +387,10 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkipping) {
   unsigned int count = 0;
 
   while (he_it != he_end) {
-    if ( he_it.handle().idx() ==  4 )
+    if ( he_it->idx() ==  4 )
       ok_4 = false;
 
-    if ( he_it.handle().idx() ==  5 )
+    if ( he_it->idx() ==  5 )
       ok_5 = false;
 
     ++he_it;
@@ -411,10 +411,10 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkipping) {
   ok_5 = false;
 
   while (he_it != he_end) {
-    if ( he_it.handle().idx() ==  4 )
+    if ( he_it->idx() ==  4 )
       ok_4 = true;
 
-    if ( he_it.handle().idx() ==  5 )
+    if ( he_it->idx() ==  5 )
       ok_5 = true;
 
 
@@ -571,8 +571,8 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkippingLowLevel) {
   Mesh::HalfedgeIter he_it  = mesh_.halfedges_sbegin();
   Mesh::HalfedgeIter he_end = mesh_.halfedges_end();
 
-  EXPECT_EQ(0,  he_it.handle().idx()) << "Wrong start index in halfedge iterator";
-  EXPECT_EQ(36, he_end.handle().idx()) << "Wrong end index in halfedge iterator";
+  EXPECT_EQ(0,  he_it->idx()) << "Wrong start index in halfedge iterator";
+  EXPECT_EQ(36, he_end->idx()) << "Wrong end index in halfedge iterator";
 
   // =====================================================
   // Try to add low level edge with invalid incidents and
@@ -590,10 +590,10 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkippingLowLevel) {
   bool found_37 = false;
 
   while (he_it != he_end) {
-    if ( he_it.handle().idx() ==  36 )
+    if ( he_it->idx() ==  36 )
       found_36 = true;
 
-    if ( he_it.handle().idx() ==  37 )
+    if ( he_it->idx() ==  37 )
       found_37 = true;
 
     ++he_it;
@@ -623,16 +623,16 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkippingLowLevel) {
 
   while (he_it != he_end) {
 
-    if ( he_it.handle().idx() ==  4 )
+    if ( he_it->idx() ==  4 )
       found_4 = true;
 
-    if ( he_it.handle().idx() ==  5 )
+    if ( he_it->idx() ==  5 )
       found_5 = true;
 
-    if ( he_it.handle().idx() ==  36 )
+    if ( he_it->idx() ==  36 )
       found_36 = true;
 
-    if ( he_it.handle().idx() ==  37 )
+    if ( he_it->idx() ==  37 )
       found_37 = true;
 
     ++he_it;
@@ -664,16 +664,16 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkippingLowLevel) {
 
   while (he_it != he_end) {
 
-    if ( he_it.handle().idx() ==  4 )
+    if ( he_it->idx() ==  4 )
       found_4 = true;
 
-    if ( he_it.handle().idx() ==  5 )
+    if ( he_it->idx() ==  5 )
       found_5 = true;
 
-    if ( he_it.handle().idx() ==  36 )
+    if ( he_it->idx() ==  36 )
       found_36 = true;
 
-    if ( he_it.handle().idx() ==  37 )
+    if ( he_it->idx() ==  37 )
       found_37 = true;
 
     ++he_it;
@@ -729,23 +729,23 @@ TEST_F(OpenMeshIterators, FaceIterEmptyMeshOneDeletedFace) {
   Mesh::FaceIter f_it  = mesh_.faces_begin();
   Mesh::FaceIter f_end = mesh_.faces_end();
 
-  EXPECT_EQ(0, f_it.handle().idx()) << "Wrong start index in FaceIterator";
+  EXPECT_EQ(0, f_it->idx()) << "Wrong start index in FaceIterator";
 
-  EXPECT_EQ(1, f_end.handle().idx()) << "Wrong end index in FaceIterator";
+  EXPECT_EQ(1, f_end->idx()) << "Wrong end index in FaceIterator";
 
   ++f_it;
-  EXPECT_EQ(1, f_it.handle().idx()) << "Wrong end index in FaceIterator after one step";
+  EXPECT_EQ(1, f_it->idx()) << "Wrong end index in FaceIterator after one step";
   EXPECT_TRUE(f_it == f_end ) << "Iterator not at end for FaceIterator after one step";
 
   Mesh::ConstFaceIter cf_it  = mesh_.faces_begin();
   Mesh::ConstFaceIter cf_end = mesh_.faces_end();
 
-  EXPECT_EQ(0, cf_it.handle().idx()) << "Wrong start index in ConstFaceIterator";
+  EXPECT_EQ(0, cf_it->idx()) << "Wrong start index in ConstFaceIterator";
 
-  EXPECT_EQ(1, cf_end.handle().idx()) << "Wrong end index in ConstFaceIterator";
+  EXPECT_EQ(1, cf_end->idx()) << "Wrong end index in ConstFaceIterator";
 
   ++cf_it;
-  EXPECT_EQ(1, cf_it.handle().idx()) << "Wrong end index in ConstFaceIterator after one step";
+  EXPECT_EQ(1, cf_it->idx()) << "Wrong end index in ConstFaceIterator after one step";
   EXPECT_TRUE(cf_it == cf_end ) << "Iterator not at end for ConstFaceIterator after one step";
 
 
@@ -753,9 +753,9 @@ TEST_F(OpenMeshIterators, FaceIterEmptyMeshOneDeletedFace) {
   f_it  = mesh_.faces_sbegin();
   f_end = mesh_.faces_end();
 
-  EXPECT_EQ(1, f_it.handle().idx()) << "Wrong start index in FaceIterator with skipping";
+  EXPECT_EQ(1, f_it->idx()) << "Wrong start index in FaceIterator with skipping";
 
-  EXPECT_EQ(1, f_end.handle().idx()) << "Wrong end index in FaceIterator with skipping";
+  EXPECT_EQ(1, f_end->idx()) << "Wrong end index in FaceIterator with skipping";
 
   EXPECT_TRUE(f_it == f_end ) << "Iterator not at end for FaceIterator with skipping";
 
@@ -763,9 +763,9 @@ TEST_F(OpenMeshIterators, FaceIterEmptyMeshOneDeletedFace) {
   cf_it  = mesh_.faces_sbegin();
   cf_end = mesh_.faces_end();
 
-  EXPECT_EQ(1, cf_it.handle().idx()) << "Wrong start index in ConstFaceIterator with skipping";
+  EXPECT_EQ(1, cf_it->idx()) << "Wrong start index in ConstFaceIterator with skipping";
 
-  EXPECT_EQ(1, cf_end.handle().idx()) << "Wrong end index in ConstFaceIterator with skipping";
+  EXPECT_EQ(1, cf_end->idx()) << "Wrong end index in ConstFaceIterator with skipping";
 
   EXPECT_TRUE(cf_it == cf_end ) << "Iterator not at end for ConstFaceIterator with skipping";
 

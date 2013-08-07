@@ -245,18 +245,18 @@ TEST_F(OpenMeshCollapse, CollapseTetrahedronComplex) {
 
   Mesh::FaceVertexIter fv_it =  mesh_.fv_begin(fh_1);
 
-  EXPECT_EQ(1 , fv_it.handle().idx() ) << "Index wrong for Vertex 1 of face 1";
+  EXPECT_EQ(1 , fv_it->idx() ) << "Index wrong for Vertex 1 of face 1";
   ++fv_it;
-  EXPECT_EQ(2 , fv_it.handle().idx() ) << "Index wrong for Vertex 2 of face 1";
+  EXPECT_EQ(2 , fv_it->idx() ) << "Index wrong for Vertex 2 of face 1";
   ++fv_it;
-  EXPECT_EQ(3 , fv_it.handle().idx() ) << "Index wrong for Vertex 3 of face 1";
+  EXPECT_EQ(3 , fv_it->idx() ) << "Index wrong for Vertex 3 of face 1";
 
   fv_it =  mesh_.fv_begin(fh_2);
-  EXPECT_EQ(2 , fv_it.handle().idx() ) << "Index wrong for Vertex 1 of face 2";
+  EXPECT_EQ(2 , fv_it->idx() ) << "Index wrong for Vertex 1 of face 2";
   ++fv_it;
-  EXPECT_EQ(1 , fv_it.handle().idx() ) << "Index wrong for Vertex 2 of face 2";
+  EXPECT_EQ(1 , fv_it->idx() ) << "Index wrong for Vertex 2 of face 2";
   ++fv_it;
-  EXPECT_EQ(3 , fv_it.handle().idx() ) << "Index wrong for Vertex 3 of face 2";
+  EXPECT_EQ(3 , fv_it->idx() ) << "Index wrong for Vertex 3 of face 2";
 
   // Get the first halfedge of face 1
   Mesh::HalfedgeHandle fh_1_he = mesh_.halfedge_handle(fh_1);
@@ -288,27 +288,27 @@ TEST_F(OpenMeshCollapse, CollapseTetrahedronComplex) {
 
   // Vertex 1 outgoing
   Mesh::VertexOHalfedgeIter voh_it = mesh_.voh_begin(mesh_.vertex_handle(1));
-  EXPECT_EQ(10 , voh_it.handle().idx() ) << "Index wrong for first outgoing halfedge of vertex 1";
+  EXPECT_EQ(10 , voh_it->idx() ) << "Index wrong for first outgoing halfedge of vertex 1";
   ++voh_it;
-  EXPECT_EQ(2  , voh_it.handle().idx() ) << "Index wrong for second outgoing halfedge of vertex 1";
+  EXPECT_EQ(2  , voh_it->idx() ) << "Index wrong for second outgoing halfedge of vertex 1";
   ++voh_it;
-  EXPECT_EQ(10 , voh_it.handle().idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 1";
+  EXPECT_EQ(10 , voh_it->idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 1";
 
   // Vertex 2 outgoing
   voh_it = mesh_.voh_begin(mesh_.vertex_handle(2));
-  EXPECT_EQ(3 , voh_it.handle().idx() ) << "Index wrong for first outgoing halfedge of vertex 2";
+  EXPECT_EQ(3 , voh_it->idx() ) << "Index wrong for first outgoing halfedge of vertex 2";
   ++voh_it;
-  EXPECT_EQ(6 , voh_it.handle().idx() ) << "Index wrong for second outgoing halfedge of vertex 2";
+  EXPECT_EQ(6 , voh_it->idx() ) << "Index wrong for second outgoing halfedge of vertex 2";
   ++voh_it;
-  EXPECT_EQ(3 , voh_it.handle().idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 2";
+  EXPECT_EQ(3 , voh_it->idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 2";
 
   // Vertex 3 outgoing
   voh_it = mesh_.voh_begin(mesh_.vertex_handle(3));
-  EXPECT_EQ(11 , voh_it.handle().idx() ) << "Index wrong for first outgoing halfedge of vertex 3";
+  EXPECT_EQ(11 , voh_it->idx() ) << "Index wrong for first outgoing halfedge of vertex 3";
   ++voh_it;
-  EXPECT_EQ(7  , voh_it.handle().idx() ) << "Index wrong for second outgoing halfedge of vertex 3";
+  EXPECT_EQ(7  , voh_it->idx() ) << "Index wrong for second outgoing halfedge of vertex 3";
   ++voh_it;
-  EXPECT_EQ(11 , voh_it.handle().idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 3";
+  EXPECT_EQ(11 , voh_it->idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 3";
 
   // ===================================================================
   // Cleanup
@@ -341,18 +341,18 @@ TEST_F(OpenMeshCollapse, CollapseTetrahedronComplex) {
 
   fv_it =  mesh_.fv_begin(fh_0);
 
-  EXPECT_EQ(2 , fv_it.handle().idx() ) << "Index wrong for Vertex 1 of face 0 after garbage collection";
+  EXPECT_EQ(2 , fv_it->idx() ) << "Index wrong for Vertex 1 of face 0 after garbage collection";
   ++fv_it;
-  EXPECT_EQ(1 , fv_it.handle().idx() ) << "Index wrong for Vertex 2 of face 0 after garbage collection";
+  EXPECT_EQ(1 , fv_it->idx() ) << "Index wrong for Vertex 2 of face 0 after garbage collection";
   ++fv_it;
-  EXPECT_EQ(0 , fv_it.handle().idx() ) << "Index wrong for Vertex 3 of face 0 after garbage collection";
+  EXPECT_EQ(0 , fv_it->idx() ) << "Index wrong for Vertex 3 of face 0 after garbage collection";
 
   fv_it =  mesh_.fv_begin(fh_1);
-  EXPECT_EQ(1 , fv_it.handle().idx() ) << "Index wrong for Vertex 1 of face 1 after garbage collection";
+  EXPECT_EQ(1 , fv_it->idx() ) << "Index wrong for Vertex 1 of face 1 after garbage collection";
   ++fv_it;
-  EXPECT_EQ(2 , fv_it.handle().idx() ) << "Index wrong for Vertex 2 of face 1 after garbage collection";
+  EXPECT_EQ(2 , fv_it->idx() ) << "Index wrong for Vertex 2 of face 1 after garbage collection";
   ++fv_it;
-  EXPECT_EQ(0 , fv_it.handle().idx() ) << "Index wrong for Vertex 3 of face 1 after garbage collection";
+  EXPECT_EQ(0 , fv_it->idx() ) << "Index wrong for Vertex 3 of face 1 after garbage collection";
 
   // Get the first halfedge of face 1
   Mesh::HalfedgeHandle fh_0_he = mesh_.halfedge_handle(fh_0);
@@ -385,27 +385,27 @@ TEST_F(OpenMeshCollapse, CollapseTetrahedronComplex) {
 
   // Vertex 0 outgoing
   voh_it = mesh_.voh_begin(mesh_.vertex_handle(0));
-  EXPECT_EQ(1 , voh_it.handle().idx() ) << "Index wrong for first outgoing halfedge of vertex 0";
+  EXPECT_EQ(1 , voh_it->idx() ) << "Index wrong for first outgoing halfedge of vertex 0";
   ++voh_it;
-  EXPECT_EQ(5 , voh_it.handle().idx() ) << "Index wrong for second outgoing halfedge of vertex 0";
+  EXPECT_EQ(5 , voh_it->idx() ) << "Index wrong for second outgoing halfedge of vertex 0";
   ++voh_it;
-  EXPECT_EQ(1 , voh_it.handle().idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 0";
+  EXPECT_EQ(1 , voh_it->idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 0";
 
   // Vertex 1 outgoing
   voh_it = mesh_.voh_begin(mesh_.vertex_handle(1));
-  EXPECT_EQ(0 , voh_it.handle().idx() ) << "Index wrong for first outgoing halfedge of vertex 1";
+  EXPECT_EQ(0 , voh_it->idx() ) << "Index wrong for first outgoing halfedge of vertex 1";
   ++voh_it;
-  EXPECT_EQ(2 , voh_it.handle().idx() ) << "Index wrong for second outgoing halfedge of vertex 1";
+  EXPECT_EQ(2 , voh_it->idx() ) << "Index wrong for second outgoing halfedge of vertex 1";
   ++voh_it;
-  EXPECT_EQ(0 , voh_it.handle().idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 1";
+  EXPECT_EQ(0 , voh_it->idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 1";
 
   // Vertex 2 outgoing
   voh_it = mesh_.voh_begin(mesh_.vertex_handle(2));
-  EXPECT_EQ(3 , voh_it.handle().idx() ) << "Index wrong for first outgoing halfedge of vertex 2";
+  EXPECT_EQ(3 , voh_it->idx() ) << "Index wrong for first outgoing halfedge of vertex 2";
   ++voh_it;
-  EXPECT_EQ(4 , voh_it.handle().idx() ) << "Index wrong for second outgoing halfedge of vertex 2";
+  EXPECT_EQ(4 , voh_it->idx() ) << "Index wrong for second outgoing halfedge of vertex 2";
   ++voh_it;
-  EXPECT_EQ(3 , voh_it.handle().idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 2";
+  EXPECT_EQ(3 , voh_it->idx() ) << "Index wrong for third(one lap) outgoing halfedge of vertex 2";
 
   EXPECT_FALSE( mesh_.is_collapse_ok(mesh_.halfedge_handle(0)) ) << "Collapse should be not ok for halfedge 0";
   EXPECT_FALSE( mesh_.is_collapse_ok(mesh_.halfedge_handle(1)) ) << "Collapse should be not ok for halfedge 1";

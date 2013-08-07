@@ -262,7 +262,7 @@ TEST_F(OpenMeshProperties, VertexPropertyCopypropertiesInt) {
 
   // Fill property
   for ( Mesh::VertexIter v_it = mesh_.vertices_begin() ; v_it != mesh_.vertices_end(); ++v_it ) {
-    mesh_.property(intHandle,v_it) = v_it.handle().idx();
+    mesh_.property(intHandle,v_it) = v_it->idx();
   }
 
   // Check if property it is ok.

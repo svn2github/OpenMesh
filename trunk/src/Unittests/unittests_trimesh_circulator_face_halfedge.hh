@@ -96,32 +96,32 @@ TEST_F(OpenMeshTrimeshCirculatorFaceHalfEdge, FaceHalfedgeIterWithoutHolesIncrem
   Mesh::FaceHalfedgeIter fh_it  = mesh_.fh_begin(mesh_.face_handle(1));
   Mesh::FaceHalfedgeIter fh_end = mesh_.fh_end(mesh_.face_handle(1));
 
-  EXPECT_EQ(8, fh_it.handle().idx() ) << "Index wrong in FaceHalfedgeIter at initialization";
+  EXPECT_EQ(8, fh_it->idx() ) << "Index wrong in FaceHalfedgeIter at initialization";
   EXPECT_TRUE(fh_it) << "Iterator invalid in FaceHalfedgeIter at initialization";
   ++fh_it;
-  EXPECT_EQ(3, fh_it.handle().idx() ) << "Index wrong in FaceHalfedgeIter at step 1";
+  EXPECT_EQ(3, fh_it->idx() ) << "Index wrong in FaceHalfedgeIter at step 1";
   EXPECT_TRUE(fh_it) << "Iterator invalid in FaceHalfedgeIter at step 1";
   ++fh_it;
-  EXPECT_EQ(6, fh_it.handle().idx() ) << "Index wrong in FaceHalfedgeIter at step 2";
+  EXPECT_EQ(6, fh_it->idx() ) << "Index wrong in FaceHalfedgeIter at step 2";
   EXPECT_TRUE(fh_it) << "Iterator invalid in FaceHalfedgeIter at step 2";
   ++fh_it;
-  EXPECT_EQ(8, fh_it.handle().idx() ) << "Index wrong in FaceHalfedgeIter at end";
+  EXPECT_EQ(8, fh_it->idx() ) << "Index wrong in FaceHalfedgeIter at end";
   EXPECT_FALSE(fh_it) << "Iterator invalid in FaceHalfedgeIter at end";
   EXPECT_TRUE( fh_it == fh_end )  << "End iterator for FaceHalfedgeIter not matching";
 
   Mesh::ConstFaceHalfedgeIter cfh_it  = mesh_.cfh_begin(mesh_.face_handle(1));
   Mesh::ConstFaceHalfedgeIter cfh_end = mesh_.cfh_end(mesh_.face_handle(1));
 
-  EXPECT_EQ(8, cfh_it.handle().idx() ) << "Index wrong in ConstFaceHalfedgeIter at initialization";
+  EXPECT_EQ(8, cfh_it->idx() ) << "Index wrong in ConstFaceHalfedgeIter at initialization";
   EXPECT_TRUE(cfh_it) << "Iterator invalid in ConstFaceHalfedgeIter at initialization";
   ++cfh_it;
-  EXPECT_EQ(3, cfh_it.handle().idx() ) << "Index wrong in ConstFaceHalfedgeIter at step 1";
+  EXPECT_EQ(3, cfh_it->idx() ) << "Index wrong in ConstFaceHalfedgeIter at step 1";
   EXPECT_TRUE(cfh_it) << "Iterator invalid in ConstFaceHalfedgeIter at step 1";
   ++cfh_it;
-  EXPECT_EQ(6, cfh_it.handle().idx() ) << "Index wrong in ConstFaceHalfedgeIter at step 2";
+  EXPECT_EQ(6, cfh_it->idx() ) << "Index wrong in ConstFaceHalfedgeIter at step 2";
   EXPECT_TRUE(cfh_it) << "Iterator invalid in ConstFaceHalfedgeIter at step 2";
   ++cfh_it;
-  EXPECT_EQ(8, cfh_it.handle().idx() ) << "Index wrong in ConstFaceHalfedgeIter at end";
+  EXPECT_EQ(8, cfh_it->idx() ) << "Index wrong in ConstFaceHalfedgeIter at end";
   EXPECT_FALSE(cfh_it) << "Iterator invalid in ConstFaceHalfedgeIter at end";
   EXPECT_TRUE( cfh_it == cfh_end )  << "End iterator for ConstFaceHalfedgeIter not matching";
 

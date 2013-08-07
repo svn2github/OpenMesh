@@ -83,26 +83,26 @@ TEST_F(OpenMeshTrimeshCirculatorFaceFace, FaceFaceIterWithHoles) {
   Mesh::FaceFaceIter ff_it  = mesh_.ff_begin(mesh_.face_handle(1));
   Mesh::FaceFaceIter ff_end = mesh_.ff_end(mesh_.face_handle(1));
 
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at initialization";
+  EXPECT_EQ(2, ff_it->idx() ) << "Index wrong in FaceFaceIter at initialization";
   EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at initialization";
   ++ff_it;
-  EXPECT_EQ(0, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at step 1";
+  EXPECT_EQ(0, ff_it->idx() ) << "Index wrong in FaceFaceIter at step 1";
   EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at step 1";
   ++ff_it;
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at end";
+  EXPECT_EQ(2, ff_it->idx() ) << "Index wrong in FaceFaceIter at end";
   EXPECT_FALSE(ff_it) << "Iterator invalid in FaceFaceIter at end";
   EXPECT_TRUE( ff_it == ff_end )  << "End iterator for FaceFaceIter not matching";
 
   Mesh::ConstFaceFaceIter cff_it  = mesh_.cff_begin(mesh_.face_handle(1));
   Mesh::ConstFaceFaceIter cff_end = mesh_.cff_end(mesh_.face_handle(1));
 
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at initialization";
+  EXPECT_EQ(2, cff_it->idx() ) << "Index wrong in ConstFaceFaceIter at initialization";
   EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at initialization";
   ++cff_it;
-  EXPECT_EQ(0, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at step 1";
+  EXPECT_EQ(0, cff_it->idx() ) << "Index wrong in ConstFaceFaceIter at step 1";
   EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at step 1";
   ++cff_it;
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at end";
+  EXPECT_EQ(2, cff_it->idx() ) << "Index wrong in ConstFaceFaceIter at end";
   EXPECT_FALSE(cff_it) << "Iterator invalid in ConstFaceFaceIter at end";
   EXPECT_TRUE( cff_it == cff_end )  << "End iterator for ConstFaceFaceIter not matching";
 
@@ -174,32 +174,32 @@ TEST_F(OpenMeshTrimeshCirculatorFaceFace, FaceFaceIterWithoutHoles) {
   Mesh::FaceFaceIter ff_it  = mesh_.ff_begin(mesh_.face_handle(1));
   Mesh::FaceFaceIter ff_end = mesh_.ff_end(mesh_.face_handle(1));
 
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at initialization";
+  EXPECT_EQ(2, ff_it->idx() ) << "Index wrong in FaceFaceIter at initialization";
   EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at initialization";
   ++ff_it;
-  EXPECT_EQ(0, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at step 1";
+  EXPECT_EQ(0, ff_it->idx() ) << "Index wrong in FaceFaceIter at step 1";
   EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at step 1";
   ++ff_it;
-  EXPECT_EQ(3, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at step 2";
+  EXPECT_EQ(3, ff_it->idx() ) << "Index wrong in FaceFaceIter at step 2";
   EXPECT_TRUE(ff_it) << "Iterator invalid in FaceFaceIter at step 2";
   ++ff_it;
-  EXPECT_EQ(2, ff_it.handle().idx() ) << "Index wrong in FaceFaceIter at end";
+  EXPECT_EQ(2, ff_it->idx() ) << "Index wrong in FaceFaceIter at end";
   EXPECT_FALSE(ff_it) << "Iterator invalid in FaceFaceIter at end";
   EXPECT_TRUE( ff_it == ff_end )  << "End iterator for FaceFaceIter not matching";
 
   Mesh::ConstFaceFaceIter cff_it  = mesh_.cff_begin(mesh_.face_handle(1));
   Mesh::ConstFaceFaceIter cff_end = mesh_.cff_end(mesh_.face_handle(1));
 
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at initialization";
+  EXPECT_EQ(2, cff_it->idx() ) << "Index wrong in ConstFaceFaceIter at initialization";
   EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at initialization";
   ++cff_it;
-  EXPECT_EQ(0, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at step 1";
+  EXPECT_EQ(0, cff_it->idx() ) << "Index wrong in ConstFaceFaceIter at step 1";
   EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at step 1";
   ++cff_it;
-  EXPECT_EQ(3, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at step 2";
+  EXPECT_EQ(3, cff_it->idx() ) << "Index wrong in ConstFaceFaceIter at step 2";
   EXPECT_TRUE(cff_it) << "Iterator invalid in ConstFaceFaceIter at step 2";
   ++cff_it;
-  EXPECT_EQ(2, cff_it.handle().idx() ) << "Index wrong in ConstFaceFaceIter at end";
+  EXPECT_EQ(2, cff_it->idx() ) << "Index wrong in ConstFaceFaceIter at end";
   EXPECT_FALSE(cff_it) << "Iterator invalid in ConstFaceFaceIter at end";
   EXPECT_TRUE( cff_it == cff_end )  << "End iterator for ConstFaceFaceIter not matching";
 
