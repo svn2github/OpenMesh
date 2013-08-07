@@ -98,23 +98,23 @@ public:
   /*
    * Vertex-centered circulators
    */
-  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::VertexHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::VertexHandle,  This::VertexHandle,
           &Iterators::GenericCirculatorBaseT<This>::toVertexHandle>
   VertexVertexIter;
 
-  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::HalfedgeHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::VertexHandle,  This::HalfedgeHandle,
           &Iterators::GenericCirculatorBaseT<This>::toHalfedgeHandle>
   VertexOHalfedgeIter;
 
-  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::HalfedgeHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::VertexHandle,  This::HalfedgeHandle,
           &Iterators::GenericCirculatorBaseT<This>::toOppositeHalfedgeHandle>
   VertexIHalfedgeIter;
 
-  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::FaceHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::VertexHandle,  This::FaceHandle,
           &Iterators::GenericCirculatorBaseT<This>::toFaceHandle>
   VertexFaceIter;
 
-  typedef Iterators::GenericCirculatorT<This, typename This::VertexHandle, typename This::EdgeHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::VertexHandle,  This::EdgeHandle,
           &Iterators::GenericCirculatorBaseT<This>::toEdgeHandle>
   VertexEdgeIter;
 
@@ -127,19 +127,19 @@ public:
   /*
    * Face-centered circulators
    */
-  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::VertexHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::FaceHandle,  This::VertexHandle,
           &Iterators::GenericCirculatorBaseT<This>::toVertexHandle>
   FaceVertexIter;
 
-  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::HalfedgeHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::FaceHandle,  This::HalfedgeHandle,
           &Iterators::GenericCirculatorBaseT<This>::toHalfedgeHandle>
   FaceHalfedgeIter;
 
-  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::EdgeHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::FaceHandle,  This::EdgeHandle,
           &Iterators::GenericCirculatorBaseT<This>::toEdgeHandle>
   FaceEdgeIter;
 
-  typedef Iterators::GenericCirculatorT<This, typename This::FaceHandle, typename This::FaceHandle,
+  typedef Iterators::GenericCirculatorT<This,  This::FaceHandle,  This::FaceHandle,
           &Iterators::GenericCirculatorBaseT<This>::toOppositeFaceHandle>
   FaceFaceIter;
 
