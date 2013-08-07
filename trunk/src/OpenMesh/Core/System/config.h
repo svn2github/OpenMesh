@@ -80,8 +80,7 @@
 #if defined(_MSC_VER)
 #  define DEPRECATED(msg) __declspec(deprecated(msg))
 #elif defined(__GNUC__)
-#  include <features.h>
-#  if __GNUC_PREREQ(4,5)
+#  if (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__) >= 40500 /* Test for GCC >= 4.5.0 */
 #    define DEPRECATED(msg) __attribute__ ((deprecated(msg)))
 #  else
 #    define DEPRECATED(msg) __attribute__ ((deprecated))
