@@ -120,7 +120,7 @@ public:
     typename Mesh::FaceHandle          fh;
     typename Mesh::Scalar              c(1.0);
 
-    for (; vf_it; ++vf_it)
+    for (; vf_it.is_valid(); ++vf_it)
     {
       fh = *vf_it;
       if (fh != _ci.fl && fh != _ci.fr)

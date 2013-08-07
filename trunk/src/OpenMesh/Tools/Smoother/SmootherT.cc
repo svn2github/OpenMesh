@@ -172,7 +172,7 @@ set_active_vertices()
       active = active && !mesh_.status(v_it).feature();
 
       typename Mesh::VertexOHalfedgeIter  voh_it(mesh_,v_it);
-      for ( ; voh_it ; ++voh_it ) {
+      for ( ; voh_it.is_valid() ; ++voh_it ) {
 
         // If the edge is a feature edge, skip the current vertex while smoothing
         if ( mesh_.status(mesh_.edge_handle(*voh_it)).feature() )
@@ -201,8 +201,8 @@ set_active_vertices()
 
     for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
       if (mesh_.is_boundary(v_it))
-	for (vv_it=mesh_.vv_iter(v_it); vv_it; ++vv_it)
-	  mesh_.property(is_active_, vv_it) = false;
+        for (vv_it=mesh_.vv_iter(*v_it); vv_it.is_valid(); ++vv_it)
+          mesh_.property(is_active_, *vv_it) = false;
   }
 
 
@@ -213,26 +213,26 @@ set_active_vertices()
 
     for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
     {
-      mesh_.status(v_it).set_tagged(false);
-      mesh_.status(v_it).set_tagged2(false);
+      mesh_.status(*v_it).set_tagged(false);
+      mesh_.status(*v_it).set_tagged2(false);
     }
 
     for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
-      if (mesh_.is_boundary(v_it))
-	for (vv_it=mesh_.vv_iter(v_it); vv_it; ++vv_it)
-	  mesh_.status(v_it).set_tagged(true);
+      if (mesh_.is_boundary(*v_it))
+        for (vv_it=mesh_.vv_iter(*v_it); vv_it.is_valid(); ++vv_it)
+          mesh_.status(*v_it).set_tagged(true);
 
     for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
-      if (mesh_.status(v_it).tagged())
-	for (vv_it=mesh_.vv_iter(v_it); vv_it; ++vv_it)
-	  mesh_.status(v_it).set_tagged2(true);
+      if (mesh_.status(*v_it).tagged())
+        for (vv_it=mesh_.vv_iter(*v_it); vv_it.is_valid(); ++vv_it)
+          mesh_.status(*v_it).set_tagged2(true);
 
     for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
     {
-      if (mesh_.status(v_it).tagged2())
-	mesh_.property(is_active_, vv_it) = false;
-      mesh_.status(v_it).set_tagged(false);
-      mesh_.status(v_it).set_tagged2(false);
+      if (mesh_.status(*v_it).tagged2())
+        mesh_.property(is_active_, *vv_it) = false;
+      mesh_.status(*v_it).set_tagged(false);
+      mesh_.status(*v_it).set_tagged2(false);
     }
   }
 }

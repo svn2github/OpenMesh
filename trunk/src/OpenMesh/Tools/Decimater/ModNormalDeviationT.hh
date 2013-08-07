@@ -166,7 +166,7 @@ public:
     if (_ci.v0vl.is_valid())  fhl = mesh_.face_handle(_ci.v0vl);
     if (_ci.vrv0.is_valid())  fhr = mesh_.face_handle(_ci.vrv0);
 
-    for (; vf_it; ++vf_it) {
+    for (; vf_it.is_valid(); ++vf_it) {
       fh = *vf_it;
       if (fh != _ci.fl && fh != _ci.fr) {
         NormalCone nc = mesh_.property(normal_cones_, fh);
@@ -207,7 +207,7 @@ public:
   void  postprocess_collapse(const CollapseInfo& _ci) {
     // account for changed normals
     typename Mesh::VertexFaceIter vf_it(mesh_, _ci.v1);
-    for (; vf_it; ++vf_it)
+    for (; vf_it.is_valid(); ++vf_it)
       mesh_.property(normal_cones_, vf_it).
       merge(NormalCone(mesh_.normal(vf_it)));
 

@@ -82,8 +82,8 @@ class ModIndependentSetsT: public ModBaseT<MeshT> {
 
       Base::mesh().status(_ci.v1).set_locked(true);
       vv_it = Base::mesh().vv_iter(_ci.v1);
-      for (; vv_it; ++vv_it)
-        Base::mesh().status(vv_it).set_locked(true);
+      for (; vv_it.is_valid(); ++vv_it)
+        Base::mesh().status(*vv_it).set_locked(true);
     }
 
   private:

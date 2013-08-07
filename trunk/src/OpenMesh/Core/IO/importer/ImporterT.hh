@@ -349,8 +349,8 @@ public:
         // Mark edges of failed face as non-two-manifold
         if (mesh_.has_edge_status()) {
             typename Mesh::FaceEdgeIter fe_it = mesh_.fe_iter(fh);
-            for(; fe_it; ++fe_it) {
-                mesh_.status(fe_it).set_fixed_nonmanifold(true);
+            for(; fe_it.is_valid(); ++fe_it) {
+                mesh_.status(*fe_it).set_fixed_nonmanifold(true);
             }
         }
       }

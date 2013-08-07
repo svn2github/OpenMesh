@@ -153,14 +153,14 @@ bool TriConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
   VertexVertexIter  vv_it;
 
   // test intersection of the one-rings of v0 and v1
-  for (vv_it = vv_iter(v0); vv_it; ++vv_it)
-    status(vv_it).set_tagged(false);
+  for (vv_it = vv_iter(v0); vv_it.is_valid(); ++vv_it)
+    status(*vv_it).set_tagged(false);
 
-  for (vv_it = vv_iter(v1); vv_it; ++vv_it)
-    status(vv_it).set_tagged(true);
+  for (vv_it = vv_iter(v1); vv_it.is_valid(); ++vv_it)
+    status(*vv_it).set_tagged(true);
 
-  for (vv_it = vv_iter(v0); vv_it; ++vv_it)
-    if (status(vv_it).tagged() && *vv_it != vl && *vv_it != vr)
+  for (vv_it = vv_iter(v0); vv_it.is_valid(); ++vv_it)
+    if (status(*vv_it).tagged() && *vv_it != vl && *vv_it != vr)
       return false;
 
 
@@ -279,8 +279,8 @@ TriConnectivity::insert_edge(VertexHandle _vh, HalfedgeHandle _h0, HalfedgeHandl
 
 
   // halfedge -> vertex
-  for (VertexIHalfedgeIter vih_it(vih_iter(v0)); vih_it; ++vih_it)
-    set_vertex_handle(vih_it.handle(), v0);
+  for (VertexIHalfedgeIter vih_it(vih_iter(v0)); vih_it.is_valid(); ++vih_it)
+    set_vertex_handle(*vih_it, v0);
 
 
   // halfedge -> face
@@ -323,8 +323,8 @@ bool TriConnectivity::is_flip_ok(EdgeHandle _eh) const
   if (ah == bh)   // this is generally a bad sign !!!
     return false;
 
-  for (ConstVertexVertexIter vvi(*this, ah); vvi; ++vvi)
-    if (vvi.handle() == bh)
+  for (ConstVertexVertexIter vvi(*this, ah); vvi.is_valid(); ++vvi)
+    if (*vvi == bh)
       return false;
 
   return true;
@@ -487,8 +487,8 @@ void TriConnectivity::split_copy(EdgeHandle _eh, VertexHandle _vh)
 
   // Copy the properties of the original edge to all neighbor edges that
   // have been created
-  for(VEIter ve_it = ve_iter(_vh); ve_it; ++ve_it)
-    copy_all_properties(_eh, ve_it);
+  for(VEIter ve_it = ve_iter(_vh); ve_it.is_valid(); ++ve_it)
+    copy_all_properties(_eh, *ve_it);
 }
 
 }// namespace OpenMesh

@@ -112,7 +112,7 @@ void ModAspectRatioT<MeshT>::preprocess_collapse(const CollapseInfo& _ci) {
   typename Mesh::FaceHandle fh;
   typename Mesh::FVIter fv_it;
 
-  for (typename Mesh::VFIter vf_it = mesh_.vf_iter(_ci.v0); vf_it; ++vf_it) {
+  for (typename Mesh::VFIter vf_it = mesh_.vf_iter(_ci.v0); vf_it.is_valid(); ++vf_it) {
     fh = *vf_it;
     if (fh != _ci.fl && fh != _ci.fr) {
       typename Mesh::Point& p0 = mesh_.point(fv_it = mesh_.fv_iter(fh));
@@ -137,7 +137,7 @@ float ModAspectRatioT<MeshT>::collapse_priority(const CollapseInfo& _ci) {
   v3 = *vv_it;
   p3 = &mesh_.point(v3);
 
-  while (vv_it) {
+  while (vv_it.is_valid()) {
     v2 = v3;
     p2 = p3;
 

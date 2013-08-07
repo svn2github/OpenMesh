@@ -215,7 +215,7 @@ protected:
           size_t valence=0;
 
           pos = zero;
-          for ( vvit = _m.vv_iter(vit); vvit; ++vvit)
+          for ( vvit = _m.vv_iter(vit); vvit.is_valid(); ++vvit)
           {
             pos += _m.point( vvit );
             ++valence;
@@ -232,12 +232,12 @@ protected:
       {
         if ( (gen%2) && _m.is_boundary(fit))
         {
-          boundary_split( _m, fit );
+          boundary_split( _m, *fit );
         }
         else
         {
-          fvit = _m.fv_iter( fit );        
-          pos  = _m.point(  fvit);
+          fvit = _m.fv_iter( *fit );
+          pos  = _m.point(  *fvit);
           pos += _m.point(++fvit);
           pos += _m.point(++fvit);
           pos *= _1over3;

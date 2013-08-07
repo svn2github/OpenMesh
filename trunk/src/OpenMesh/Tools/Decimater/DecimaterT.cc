@@ -101,7 +101,7 @@ void DecimaterT<Mesh>::heap_vertex(VertexHandle _vh) {
 
   // find best target in one ring
   typename Mesh::VertexOHalfedgeIter voh_it(mesh_, _vh);
-  for (; voh_it; ++voh_it) {
+  for (; voh_it.is_valid(); ++voh_it) {
     heh = *voh_it;
     CollapseInfo ci(mesh_, heh);
 
@@ -168,8 +168,8 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
 
   for (v_it = mesh_.vertices_begin(); v_it != v_end; ++v_it) {
     heap_->reset_heap_position(v_it.handle());
-    if (!mesh_.status(v_it).deleted())
-      heap_vertex(v_it.handle());
+    if (!mesh_.status(*v_it).deleted())
+      heap_vertex(*v_it);
   }
 
   // process heap
@@ -189,7 +189,7 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
     // store support (= one ring of *vp)
     vv_it = mesh_.vv_iter(ci.v0);
     support.clear();
-    for (; vv_it; ++vv_it)
+    for (; vv_it.is_valid(); ++vv_it)
       support.push_back(*vv_it);
 
     // perform collapse
@@ -198,9 +198,9 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
 
     // update triangle normals
     vf_it = mesh_.vf_iter(ci.v1);
-    for (; vf_it; ++vf_it)
-      if (!mesh_.status(vf_it).deleted())
-        mesh_.set_normal(vf_it, mesh_.calc_face_normal(vf_it.handle()));
+    for (; vf_it.is_valid(); ++vf_it)
+      if (!mesh_.status(*vf_it).deleted())
+        mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
 
     // post-process collapse
     this->postprocess_collapse(ci);

@@ -96,10 +96,10 @@ calc_face_normal(FaceHandle _fh) const
   assert(this->halfedge_handle(_fh).is_valid());
   ConstFaceVertexIter fv_it(this->cfv_iter(_fh));
   
-  Point p0 = this->point(fv_it);
+  Point p0 = this->point(*fv_it);
   Point p0i = p0; //save point of vertex 0
   ++fv_it;
-  Point p1 = this->point(fv_it);
+  Point p1 = this->point(*fv_it);
   Point p1i = p1; //save point of vertex 1
   ++fv_it;
   Point p2;
@@ -108,7 +108,7 @@ calc_face_normal(FaceHandle _fh) const
   Normal n(0,0,0);
   for(; fv_it.is_valid(); ++fv_it)
   {
-    p2 = this->point(fv_it);
+    p2 = this->point(*fv_it);
     n += vector_cast<Normal>(calc_face_normal(p0, p1, p2)); 
     p0 = p1;
     p1 = p2;
@@ -331,7 +331,7 @@ void PolyMeshT<Kernel>::
 calc_vertex_normal_fast(VertexHandle _vh, Normal& _n) const
 {
   _n.vectorize(0.0);
-  for (ConstVertexFaceIter vf_it=this->cvf_iter(_vh); vf_it; ++vf_it)
+  for (ConstVertexFaceIter vf_it=this->cvf_iter(_vh); vf_it.is_valid(); ++vf_it)
     _n += this->normal(*vf_it);
 }
 
