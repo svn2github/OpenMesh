@@ -191,6 +191,13 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size
         patch_start = next_halfedge_handle(inner_prev);
         patch_end   = prev_halfedge_handle(inner_next);
 
+        assert(boundary_prev.is_valid());
+        assert(patch_start.is_valid());
+        assert(patch_end.is_valid());
+        assert(boundary_next.is_valid());
+        assert(inner_prev.is_valid());
+        assert(inner_next.is_valid());
+
         // relink
         next_cache_[next_cache_count_++] = std::make_pair(boundary_prev, patch_start);
         next_cache_[next_cache_count_++] = std::make_pair(patch_end, boundary_next);
@@ -215,6 +222,8 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size
 
     inner_prev = edgeData_[i].halfedge_handle;
     inner_next = edgeData_[ii].halfedge_handle;
+    assert(inner_prev.is_valid());
+    assert(inner_next.is_valid());
 
     id = 0;
     if (edgeData_[i].is_new)  id |= 1;
@@ -225,18 +234,22 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size
     {
       outer_prev = opposite_halfedge_handle(inner_next);
       outer_next = opposite_halfedge_handle(inner_prev);
+      assert(outer_prev.is_valid());
+      assert(outer_next.is_valid());
 
       // set outer links
       switch (id)
       {
         case 1: // prev is new, next is old
           boundary_prev = prev_halfedge_handle(inner_next);
+          assert(boundary_prev.is_valid());
           next_cache_[next_cache_count_++] = std::make_pair(boundary_prev, outer_next);
           set_halfedge_handle(vh, outer_next);
           break;
 
         case 2: // next is new, prev is old
           boundary_next = next_halfedge_handle(inner_prev);
+          assert(boundary_next.is_valid());
           next_cache_[next_cache_count_++] = std::make_pair(outer_prev, boundary_next);
           set_halfedge_handle(vh, boundary_next);
           break;
@@ -251,6 +264,8 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size
           {
             boundary_next = halfedge_handle(vh);
             boundary_prev = prev_halfedge_handle(boundary_next);
+            assert(boundary_prev.is_valid());
+            assert(boundary_next.is_valid());
             next_cache_[next_cache_count_++] = std::make_pair(boundary_prev, outer_next);
             next_cache_[next_cache_count_++] = std::make_pair(outer_prev, boundary_next);
           }
