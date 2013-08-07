@@ -93,31 +93,31 @@ TEST_F(OpenMeshTrimeshCirculatorVertexIHalfEdge, VertexIncomingHalfedgeWithoutHo
   EXPECT_EQ(10, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter begin at initialization";
   EXPECT_EQ(10, vih_end->idx() ) << "Index wrong in VertexIHalfedgeIter end at initialization";
   EXPECT_EQ(1, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter begin at initialization";
-  EXPECT_TRUE(vih_it) << "Iterator invalid in VertexIHalfedgeIter at initialization";
+  EXPECT_TRUE(vih_it.is_valid()) << "Iterator invalid in VertexIHalfedgeIter at initialization";
 
   ++vih_it ;
 
   EXPECT_EQ(7, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter step 1";
   EXPECT_EQ(2, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter step 1";
-  EXPECT_TRUE(vih_it) << "Iterator invalid in VertexIHalfedgeIter at step 1";
+  EXPECT_TRUE(vih_it.is_valid()) << "Iterator invalid in VertexIHalfedgeIter at step 1";
 
   ++vih_it ;
 
   EXPECT_EQ(0, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter step 2";
   EXPECT_EQ(0, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter step 2";
-  EXPECT_TRUE(vih_it) << "Iterator invalid in VertexIHalfedgeIter at step 2";
+  EXPECT_TRUE(vih_it.is_valid()) << "Iterator invalid in VertexIHalfedgeIter at step 2";
 
   ++vih_it ;
 
   EXPECT_EQ(3, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter step 3";
   EXPECT_EQ(3, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter step 3";
-  EXPECT_TRUE(vih_it) << "Iterator invalid in VertexIHalfedgeIter at step 3";
+  EXPECT_TRUE(vih_it.is_valid()) << "Iterator invalid in VertexIHalfedgeIter at step 3";
 
   ++vih_it ;
 
   EXPECT_EQ(10, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter step 4";
   EXPECT_EQ(1, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter step 4";
-  EXPECT_FALSE(vih_it) << "Iterator still valid in VertexIHalfedgeIter at step 4";
+  EXPECT_FALSE(vih_it.is_valid()) << "Iterator still valid in VertexIHalfedgeIter at step 4";
   EXPECT_TRUE( vih_it == vih_end ) << "Miss matched end iterator";
 
 
@@ -128,31 +128,31 @@ TEST_F(OpenMeshTrimeshCirculatorVertexIHalfEdge, VertexIncomingHalfedgeWithoutHo
   EXPECT_EQ(10, cvih_it->idx() ) << "Index wrong in ConstVertexIHalfedgeIter begin at initialization";
   EXPECT_EQ(10, cvoh_end->idx() ) << "Index wrong in ConstVertexIHalfedgeIter end at initialization";
   EXPECT_EQ(1, mesh_.face_handle(*cvih_it).idx() ) << "Corresponding face Index wrong in ConstVertexIHalfedgeIter begin at initialization";
-  EXPECT_TRUE(cvih_it) << "Iterator invalid in ConstVertexIHalfedgeIter at initialization";
+  EXPECT_TRUE(cvih_it.is_valid()) << "Iterator invalid in ConstVertexIHalfedgeIter at initialization";
 
   ++cvih_it ;
 
   EXPECT_EQ(7, cvih_it->idx() ) << "Index wrong in ConstVertexIHalfedgeIter step 1";
   EXPECT_EQ(2, mesh_.face_handle(*cvih_it).idx() ) << "Corresponding face Index wrong in ConstVertexIHalfedgeIter step 1";
-  EXPECT_TRUE(cvih_it) << "Iterator invalid in ConstVertexIHalfedgeIter at step 1";
+  EXPECT_TRUE(cvih_it.is_valid()) << "Iterator invalid in ConstVertexIHalfedgeIter at step 1";
 
   ++cvih_it ;
 
   EXPECT_EQ(0, cvih_it->idx() ) << "Index wrong in ConstVertexIHalfedgeIter step 2";
   EXPECT_EQ(0, mesh_.face_handle(*cvih_it).idx() ) << "Corresponding face Index wrong in ConstVertexIHalfedgeIter step 2";
-  EXPECT_TRUE(cvih_it) << "Iterator invalid in ConstVertexIHalfedgeIter at step 2";
+  EXPECT_TRUE(cvih_it.is_valid()) << "Iterator invalid in ConstVertexIHalfedgeIter at step 2";
 
   ++cvih_it ;
 
   EXPECT_EQ(3, cvih_it->idx() ) << "Index wrong in ConstVertexIHalfedgeIter step 3";
   EXPECT_EQ(3, mesh_.face_handle(*cvih_it).idx() ) << "Corresponding face Index wrong in ConstVertexIHalfedgeIter step 3";
-  EXPECT_TRUE(cvih_it) << "Iterator invalid in ConstVertexIHalfedgeIter at step 3";
+  EXPECT_TRUE(cvih_it.is_valid()) << "Iterator invalid in ConstVertexIHalfedgeIter at step 3";
 
   ++cvih_it ;
 
   EXPECT_EQ(10, cvih_it->idx() ) << "Index wrong in ConstVertexIHalfedgeIter step 4";
   EXPECT_EQ(1, mesh_.face_handle(*cvih_it).idx() ) << "Corresponding face Index wrong in ConstVertexIHalfedgeIter step 4";
-  EXPECT_FALSE(cvih_it) << "Iterator still valid in ConstVertexIHalfedgeIter at step 4";
+  EXPECT_FALSE(cvih_it.is_valid()) << "Iterator still valid in ConstVertexIHalfedgeIter at step 4";
   EXPECT_TRUE( cvih_it == cvoh_end ) << "Miss matched end iterator";
 
 }
@@ -220,25 +220,25 @@ TEST_F(OpenMeshTrimeshCirculatorVertexIHalfEdge, VertexOIncomingHalfedgeBoundary
   EXPECT_EQ(14, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter begin at initialization";
   EXPECT_EQ(14, vih_end->idx() ) << "Index wrong in VertexIHalfedgeIter end at initialization";
   EXPECT_EQ(3, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter begin at initialization";
-  EXPECT_TRUE(vih_it) << "Iterator invalid in VertexIHalfedgeIter at initialization";
+  EXPECT_TRUE(vih_it.is_valid()) << "Iterator invalid in VertexIHalfedgeIter at initialization";
 
   ++vih_it ;
 
   EXPECT_EQ(2, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter step 1";
   EXPECT_EQ(0, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter step 1";
-  EXPECT_TRUE(vih_it) << "Iterator invalid in VertexIHalfedgeIter at step 1";
+  EXPECT_TRUE(vih_it.is_valid()) << "Iterator invalid in VertexIHalfedgeIter at step 1";
 
   ++vih_it ;
 
   EXPECT_EQ(5, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter step 2";
   EXPECT_EQ(-1, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter step 2";
-  EXPECT_TRUE(vih_it) << "Iterator invalid in VertexIHalfedgeIter at step 2";
+  EXPECT_TRUE(vih_it.is_valid()) << "Iterator invalid in VertexIHalfedgeIter at step 2";
 
   ++vih_it ;
 
   EXPECT_EQ(14, vih_it->idx() ) << "Index wrong in VertexIHalfedgeIter step 3";
   EXPECT_EQ(3, mesh_.face_handle(*vih_it).idx() ) << "Corresponding face Index wrong in VertexIHalfedgeIter step 3";
-  EXPECT_FALSE(vih_it) << "Iterator still valid in VertexIHalfedgeIter at step 3";
+  EXPECT_FALSE(vih_it.is_valid()) << "Iterator still valid in VertexIHalfedgeIter at step 3";
   EXPECT_TRUE( vih_it == vih_end ) << "Miss matched end iterator";
 
 
@@ -304,11 +304,11 @@ TEST_F(OpenMeshTrimeshCirculatorVertexIHalfEdge, VertexIncomingHalfedgeDereferen
 
   // TODO: If called without handle, it won't build
   Mesh::EdgeHandle       eh  = mesh_.edge_handle(*vih_it);
-  Mesh::HalfedgeHandle   heh = mesh_.halfedge_handle(vih_it);
-  Mesh::VertexHandle     vh2 = mesh_.to_vertex_handle(vih_it);
+  Mesh::HalfedgeHandle   heh = *vih_it;
+  Mesh::VertexHandle     vh2 = mesh_.to_vertex_handle(*vih_it);
 
-  EXPECT_EQ(eh.idx()  , 5 ) << "Wrong edge handle after dereferencing";
-  EXPECT_EQ(heh.idx() , 1 ) << "Wrong half edge handle after dereferencing";
-  EXPECT_EQ(vh2.idx() , 1 ) << "Wrong vertex handle after dereferencing";
+  EXPECT_EQ(eh.idx()  , 5 )  << "Wrong edge handle after dereferencing";
+  EXPECT_EQ(heh.idx() , 10 ) << "Wrong half edge handle after dereferencing";
+  EXPECT_EQ(vh2.idx() , 1 )  << "Wrong vertex handle after dereferencing";
 
 }

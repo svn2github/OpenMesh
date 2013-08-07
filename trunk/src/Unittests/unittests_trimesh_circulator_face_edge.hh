@@ -98,32 +98,32 @@ TEST_F(OpenMeshTrimeshCirculatorFaceEdge, FaceEdgeIterWithoutHolesIncrement) {
   Mesh::FaceEdgeIter fe_end = mesh_.fe_end(mesh_.face_handle(1));
 
   EXPECT_EQ(4, fe_it->idx() ) << "Index wrong in FaceEdgeIter at initialization";
-  EXPECT_TRUE(fe_it) << "Iterator invalid in FaceEdgeIter at initialization";
+  EXPECT_TRUE(fe_it.is_valid()) << "Iterator invalid in FaceEdgeIter at initialization";
   ++fe_it;
   EXPECT_EQ(1, fe_it->idx() ) << "Index wrong in FaceEdgeIter at step 1";
-  EXPECT_TRUE(fe_it) << "Iterator invalid in FaceEdgeIter at step 1";
+  EXPECT_TRUE(fe_it.is_valid()) << "Iterator invalid in FaceEdgeIter at step 1";
   ++fe_it;
   EXPECT_EQ(3, fe_it->idx() ) << "Index wrong in FaceEdgeIter at step 2";
-  EXPECT_TRUE(fe_it) << "Iterator invalid in FaceEdgeIter at step 2";
+  EXPECT_TRUE(fe_it.is_valid()) << "Iterator invalid in FaceEdgeIter at step 2";
   ++fe_it;
   EXPECT_EQ(4, fe_it->idx() ) << "Index wrong in FaceEdgeIter at end";
-  EXPECT_FALSE(fe_it) << "Iterator invalid in FaceEdgeIter at end";
+  EXPECT_FALSE(fe_it.is_valid()) << "Iterator invalid in FaceEdgeIter at end";
   EXPECT_TRUE( fe_it == fe_end )  << "End iterator for FaceEdgeIter not matching";
 
   Mesh::ConstFaceEdgeIter cfe_it  = mesh_.cfe_begin(mesh_.face_handle(1));
   Mesh::ConstFaceEdgeIter cfe_end = mesh_.cfe_end(mesh_.face_handle(1));
 
   EXPECT_EQ(4, cfe_it->idx() ) << "Index wrong in ConstFaceEdgeIter at initialization";
-  EXPECT_TRUE(cfe_it) << "Iterator invalid in ConstFaceEdgeIter at initialization";
+  EXPECT_TRUE(cfe_it.is_valid()) << "Iterator invalid in ConstFaceEdgeIter at initialization";
   ++cfe_it;
   EXPECT_EQ(1, cfe_it->idx() ) << "Index wrong in ConstFaceEdgeIter at step 1";
-  EXPECT_TRUE(cfe_it) << "Iterator invalid in ConstFaceEdgeIter at step 1";
+  EXPECT_TRUE(cfe_it.is_valid()) << "Iterator invalid in ConstFaceEdgeIter at step 1";
   ++cfe_it;
   EXPECT_EQ(3, cfe_it->idx() ) << "Index wrong in ConstFaceEdgeIter at step 2";
-  EXPECT_TRUE(cfe_it) << "Iterator invalid in ConstFaceEdgeIter at step 2";
+  EXPECT_TRUE(cfe_it.is_valid()) << "Iterator invalid in ConstFaceEdgeIter at step 2";
   ++cfe_it;
   EXPECT_EQ(4, cfe_it->idx() ) << "Index wrong in ConstFaceEdgeIter at end";
-  EXPECT_FALSE(cfe_it) << "Iterator invalid in ConstFaceEdgeIter at end";
+  EXPECT_FALSE(cfe_it.is_valid()) << "Iterator invalid in ConstFaceEdgeIter at end";
   EXPECT_TRUE( cfe_it == cfe_end )  << "End iterator for ConstFaceEdgeIter not matching";
 
 }

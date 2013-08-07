@@ -94,27 +94,27 @@ TEST_F(OpenMeshTrimeshCirculatorVertexVertex, VertexVertexIncrement) {
 
   EXPECT_EQ(4, vv_it->idx() ) << "Index wrong in VertexVertexIter begin at initialization";
   EXPECT_EQ(4, vv_end->idx() ) << "Index wrong in VertexVertexIter end at initialization";
-  EXPECT_TRUE(vv_it) << "Iterator invalid in VertexVertexIter at initialization";
+  EXPECT_TRUE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at initialization";
 
   ++vv_it ;
 
   EXPECT_EQ(3, vv_it->idx() ) << "Index wrong in VertexVertexIter step 1";
-  EXPECT_TRUE(vv_it) << "Iterator invalid in VertexVertexIter at step 1";
+  EXPECT_TRUE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at step 1";
 
   ++vv_it ;
 
   EXPECT_EQ(0, vv_it->idx() ) << "Index wrong in VertexVertexIter step 2";
-  EXPECT_TRUE(vv_it) << "Iterator invalid in VertexVertexIter at step 2";
+  EXPECT_TRUE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at step 2";
 
   ++vv_it ;
 
   EXPECT_EQ(2, vv_it->idx() ) << "Index wrong in VertexVertexIter step 3";
-  EXPECT_TRUE(vv_it) << "Iterator invalid in VertexVertexIter at step 3";
+  EXPECT_TRUE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at step 3";
 
   ++vv_it ;
 
   EXPECT_EQ(4, vv_it->idx() ) << "Index wrong in VertexVertexIter step 4";
-  EXPECT_FALSE(vv_it) << "Iterator still valid in VertexVertexIter at step 4";
+  EXPECT_FALSE(vv_it.is_valid()) << "Iterator still valid in VertexVertexIter at step 4";
   EXPECT_TRUE( vv_it == vv_end ) << "Miss matched end iterator";
 
 }
@@ -181,22 +181,22 @@ TEST_F(OpenMeshTrimeshCirculatorVertexVertex, VertexVertexBoundaryIncrement) {
 
   EXPECT_EQ(4, vv_it->idx() ) << "Index wrong in VertexVertexIter begin at initialization";
   EXPECT_EQ(4, vv_end->idx() ) << "Index wrong in VertexVertexIter end at initialization";
-  EXPECT_TRUE(vv_it) << "Iterator invalid in VertexVertexIter at initialization";
+  EXPECT_TRUE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at initialization";
 
   ++vv_it ;
 
   EXPECT_EQ(1, vv_it->idx() ) << "Index wrong in VertexVertexIter step 1";
-  EXPECT_TRUE(vv_it) << "Iterator invalid in VertexVertexIter at step 1";
+  EXPECT_TRUE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at step 1";
 
   ++vv_it ;
 
   EXPECT_EQ(0, vv_it->idx() ) << "Index wrong in VertexVertexIter step 2";
-  EXPECT_TRUE(vv_it) << "Iterator invalid in VertexVertexIter at step 2";
+  EXPECT_TRUE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at step 2";
 
   ++vv_it ;
 
   EXPECT_EQ(4, vv_it->idx() ) << "Index wrong in VertexVertexIter step 3";
-  EXPECT_FALSE(vv_it) << "Iterator invalid in VertexVertexIter at step 3";
+  EXPECT_FALSE(vv_it.is_valid()) << "Iterator invalid in VertexVertexIter at step 3";
   EXPECT_TRUE( vv_it == vv_end ) << "Miss matched end iterator";
 
 }

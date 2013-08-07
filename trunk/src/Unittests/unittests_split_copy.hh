@@ -94,7 +94,7 @@ TEST_F(OpenMeshSplitCopyTriangleMesh, SplitCopyTriangleMesh) {
   Mesh::FaceIter f_it = mesh_.faces_begin();
   Mesh::FaceIter f_end = mesh_.faces_end();
   for (; f_it != f_end; ++f_it)
-    EXPECT_EQ(999, mesh_.property(fprop_int, f_it)) << "Different Property value";
+    EXPECT_EQ(999, mesh_.property(fprop_int, *f_it)) << "Different Property value";
 }
 
 /* splits a face that has a property in a poly mesh with split_copy
@@ -142,7 +142,7 @@ TEST_F(OpenMeshSplitCopyPolyMesh, SplitCopyPolymesh) {
   PolyMesh::FaceIter f_it = mesh_.faces_begin();
   PolyMesh::FaceIter f_end = mesh_.faces_end();
   for (; f_it != f_end; ++f_it)
-    EXPECT_EQ(999, mesh_.property(fprop_int, f_it)) << "Different Property value";
+    EXPECT_EQ(999, mesh_.property(fprop_int, *f_it)) << "Different Property value";
 
 }
 

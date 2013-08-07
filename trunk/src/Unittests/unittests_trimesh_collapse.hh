@@ -587,8 +587,8 @@ TEST_F(OpenMeshCollapse, LargeCollapseHalfEdge) {
 
   // Iterate over all halfedges to find the correct one
   for ( Mesh::HalfedgeIter he_it = mesh_.halfedges_begin() ; he_it != mesh_.halfedges_end() ; ++he_it ) {
-    if ( mesh_.from_vertex_handle(he_it).idx() == 1 && mesh_.to_vertex_handle(he_it).idx() == 4  )
-      heh_collapse = he_it;
+    if ( mesh_.from_vertex_handle(*he_it).idx() == 1 && mesh_.to_vertex_handle(*he_it).idx() == 4  )
+      heh_collapse = *he_it;
   }
 
   // Check our halfedge

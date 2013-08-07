@@ -65,12 +65,12 @@ TEST_F(OpenMeshReadWriteOFF, WriteAndReadVertexColorsToAndFromOFFFile) {
 
     // setting colors (different from black)
     for (Mesh::VertexIter vit = mesh_.vertices_begin(), vitend = mesh_.vertices_end(); vit != vitend; ++vit)
-      mesh_.set_color(vit, testColor);
+      mesh_.set_color(*vit, testColor);
 
     // check if the colors are correctly setted
     int count = 0;
     for (Mesh::VertexIter vit = mesh_.vertices_begin(), vitend = mesh_.vertices_end(); vit != vitend; ++vit) {
-      Mesh::Color color = mesh_.color(vit);
+      Mesh::Color color = mesh_.color(*vit);
       if ( color[0] != testColor[0] || color[1] != testColor[1] || color[2] != testColor[2] )
         ++ count;
     }
@@ -85,7 +85,7 @@ TEST_F(OpenMeshReadWriteOFF, WriteAndReadVertexColorsToAndFromOFFFile) {
     // check if vertices still have the same color
     count = 0;
     for (Mesh::VertexIter vit = mesh_.vertices_begin(), vitend = mesh_.vertices_end(); vit != vitend; ++vit) {
-      Mesh::Color color = mesh_.color(vit);
+      Mesh::Color color = mesh_.color(*vit);
       if ( color[0] != testColor[0] || color[1] != testColor[1] || color[2] != testColor[2] )
         ++ count;
     }

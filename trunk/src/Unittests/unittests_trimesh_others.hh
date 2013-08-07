@@ -93,23 +93,23 @@ TEST_F(OpenMeshOthers, IsEstimatedFeatureEdge) {
 
   Mesh::HalfedgeIter he_it  = mesh_.halfedges_begin();
 
-  EXPECT_TRUE(mesh_.is_estimated_feature_edge(he_it,0.0))          << "Wrong feature edge detection 0.0";
+  EXPECT_TRUE(mesh_.is_estimated_feature_edge(*he_it,0.0))          << "Wrong feature edge detection 0.0";
 
-  EXPECT_TRUE(mesh_.is_estimated_feature_edge(he_it,0.125 * M_PI)) << "Wrong feature edge detection 0.125";
+  EXPECT_TRUE(mesh_.is_estimated_feature_edge(*he_it,0.125 * M_PI)) << "Wrong feature edge detection 0.125";
 
-  EXPECT_TRUE(mesh_.is_estimated_feature_edge(he_it,0.25 * M_PI))  << "Wrong feature edge detection 0.25";
+  EXPECT_TRUE(mesh_.is_estimated_feature_edge(*he_it,0.25 * M_PI))  << "Wrong feature edge detection 0.25";
 
-  EXPECT_TRUE(mesh_.is_estimated_feature_edge(he_it,0.375 * M_PI)) << "Wrong feature edge detection 0.375";
+  EXPECT_TRUE(mesh_.is_estimated_feature_edge(*he_it,0.375 * M_PI)) << "Wrong feature edge detection 0.375";
 
-  EXPECT_TRUE(mesh_.is_estimated_feature_edge(he_it,0.5 * M_PI))   << "Wrong feature edge detection 0.5";
+  EXPECT_TRUE(mesh_.is_estimated_feature_edge(*he_it,0.5 * M_PI))   << "Wrong feature edge detection 0.5";
 
-  EXPECT_FALSE(mesh_.is_estimated_feature_edge(he_it,0.625 * M_PI))<< "Wrong feature edge detection 0.625";
+  EXPECT_FALSE(mesh_.is_estimated_feature_edge(*he_it,0.625 * M_PI))<< "Wrong feature edge detection 0.625";
 
-  EXPECT_FALSE(mesh_.is_estimated_feature_edge(he_it,0.75 * M_PI)) << "Wrong feature edge detection 0.75";
+  EXPECT_FALSE(mesh_.is_estimated_feature_edge(*he_it,0.75 * M_PI)) << "Wrong feature edge detection 0.75";
 
-  EXPECT_FALSE(mesh_.is_estimated_feature_edge(he_it,0.875 * M_PI))<< "Wrong feature edge detection 0.875";
+  EXPECT_FALSE(mesh_.is_estimated_feature_edge(*he_it,0.875 * M_PI))<< "Wrong feature edge detection 0.875";
 
-  EXPECT_FALSE(mesh_.is_estimated_feature_edge(he_it,1.0 * M_PI))  << "Wrong feature edge detection 1.0";
+  EXPECT_FALSE(mesh_.is_estimated_feature_edge(*he_it,1.0 * M_PI))  << "Wrong feature edge detection 1.0";
 
 }
 

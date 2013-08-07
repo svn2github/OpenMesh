@@ -77,26 +77,26 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithHolesIncrement) {
   Mesh::VertexFaceIter vf_it  = mesh_.vf_begin(vhandle[1]);
   Mesh::VertexFaceIter vf_end = mesh_.vf_end(vhandle[1]);
   EXPECT_EQ(0, vf_it->idx() ) << "Index wrong in VertexFaceIter at initialization";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at initialization";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at initialization";
   ++vf_it ;
   EXPECT_EQ(1, vf_it->idx() ) << "Index wrong in VertexFaceIter at step 1";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 1";
   ++vf_it ;
   EXPECT_FALSE(vf_it.is_valid() ) << "Index wrong in VertexFaceIter at end";
-  EXPECT_FALSE(vf_it) << "Iterator not invalid in VertexFaceIter at end";
+  EXPECT_FALSE(vf_it.is_valid()) << "Iterator not invalid in VertexFaceIter at end";
   EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
 
   // Iterate around vertex 1 at the middle (with holes in between) with const iterator
   Mesh::ConstVertexFaceIter cvf_it  = mesh_.cvf_begin(vhandle[1]);
   Mesh::ConstVertexFaceIter cvf_end = mesh_.cvf_end(vhandle[1]);
   EXPECT_EQ(0, cvf_it->idx() ) << "Index wrong in ConstVertexFaceIter at initialization";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at initialization";
+  EXPECT_TRUE(cvf_it.is_valid()) << "Iterator invalid in ConstVertexFaceIter at initialization";
   ++cvf_it ;
   EXPECT_EQ(1, cvf_it->idx() ) << "Index wrong in ConstVertexFaceIter at step one";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step one";
+  EXPECT_TRUE(cvf_it.is_valid()) << "Iterator invalid in ConstVertexFaceIter at step one";
   ++cvf_it ;
   EXPECT_FALSE(cvf_it.is_valid() ) << "Index wrong in ConstVertexFaceIter at end";
-  EXPECT_FALSE(cvf_it) << "Iterator not invalid in ConstVertexFaceIter at end";
+  EXPECT_FALSE(cvf_it.is_valid()) << "Iterator not invalid in ConstVertexFaceIter at end";
   EXPECT_TRUE( cvf_it == cvf_end )  << "End iterator for ConstVertexFaceIter not matching";
 
 }
@@ -163,38 +163,38 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithoutHolesIncrement)
   Mesh::VertexFaceIter vf_it  = mesh_.vf_begin(vhandle[1]);
   Mesh::VertexFaceIter vf_end = mesh_.vf_end(vhandle[1]);
   EXPECT_EQ(3, vf_it->idx() ) << "Index wrong in VertexFaceIter at initialization";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at initialization";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at initialization";
   ++vf_it ;
   EXPECT_EQ(1, vf_it->idx() ) << "Index wrong in VertexFaceIter at step 1";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 1";
   ++vf_it ;
   EXPECT_EQ(2, vf_it->idx() ) << "Index wrong in VertexFaceIter at step 2";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 2";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 2";
   ++vf_it ;
   EXPECT_EQ(0, vf_it->idx() ) << "Index wrong in VertexFaceIter at step 3";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 3";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 3";
   ++vf_it ;
   EXPECT_EQ(3, vf_it->idx() ) << "Index wrong in VertexFaceIter at end";
-  EXPECT_FALSE(vf_it) << "Iterator not invalid in VertexFaceIter at end";
+  EXPECT_FALSE(vf_it.is_valid()) << "Iterator not invalid in VertexFaceIter at end";
   EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
 
   // Iterate around vertex 1 at the middle (with holes in between) with const iterator
   Mesh::ConstVertexFaceIter cvf_it  = mesh_.cvf_begin(vhandle[1]);
   Mesh::ConstVertexFaceIter cvf_end = mesh_.cvf_end(vhandle[1]);
   EXPECT_EQ(3, cvf_it->idx() ) << "Index wrong in ConstVertexFaceIter at initialization";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at initialization";
+  EXPECT_TRUE(cvf_it.is_valid()) << "Iterator invalid in ConstVertexFaceIter at initialization";
   ++cvf_it ;
   EXPECT_EQ(1, cvf_it->idx() ) << "Index wrong in ConstVertexFaceIter at step 1";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step 1";
+  EXPECT_TRUE(cvf_it.is_valid()) << "Iterator invalid in ConstVertexFaceIter at step 1";
   ++cvf_it ;
   EXPECT_EQ(2, cvf_it->idx() ) << "Index wrong in ConstVertexFaceIter at step 2";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step 2";
+  EXPECT_TRUE(cvf_it.is_valid()) << "Iterator invalid in ConstVertexFaceIter at step 2";
   ++cvf_it ;
   EXPECT_EQ(0, cvf_it->idx() ) << "Index wrong in ConstVertexFaceIter at step 3";
-  EXPECT_TRUE(cvf_it) << "Iterator invalid in ConstVertexFaceIter at step 3";
+  EXPECT_TRUE(cvf_it.is_valid()) << "Iterator invalid in ConstVertexFaceIter at step 3";
   ++cvf_it ;
   EXPECT_EQ(3, cvf_it->idx() ) << "Index wrong in ConstVertexFaceIter at end";
-  EXPECT_FALSE(cvf_it) << "Iterator not invalid in VertexFaceIter at end";
+  EXPECT_FALSE(cvf_it.is_valid()) << "Iterator not invalid in VertexFaceIter at end";
   EXPECT_TRUE( cvf_it == cvf_end )  << "End iterator for ConstVertexFaceIter not matching";
 
 }
@@ -258,10 +258,10 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterBoundaryIncrement) {
   Mesh::VertexFaceIter vf_it  = mesh_.vf_begin(vhandle[2]);
   Mesh::VertexFaceIter vf_end = mesh_.vf_end(vhandle[2]);
   EXPECT_EQ(3, vf_it->idx() ) << "Index wrong in VertexFaceIter at initialization";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at initialization";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at initialization";
   ++vf_it ;
   EXPECT_EQ(0, vf_it->idx() ) << "Index wrong in VertexFaceIter at step 1";
-  EXPECT_TRUE(vf_it) << "Iterator invalid in VertexFaceIter at step 1";
+  EXPECT_TRUE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 1";
   ++vf_it ;
   EXPECT_FALSE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 2";
   EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
