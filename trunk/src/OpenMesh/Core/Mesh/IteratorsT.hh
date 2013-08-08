@@ -117,13 +117,22 @@ class GenericIteratorT {
             return &hnd_;
         }
 
-        /// Get the handle of the item the iterator refers to.
+        /**
+         * \brief Get the handle of the item the iterator refers to.
+         * \deprecated 
+         * This function clutters your code. Use dereferencing operators -> and * instead.
+         */
         DEPRECATED("This function clutters your code. Use dereferencing operators -> and * instead.")
         value_handle handle() const {
             return hnd_;
         }
 
-        /// Cast to the handle of the item the iterator refers to.
+        /**
+         * \brief Cast to the handle of the item the iterator refers to.
+         * \deprecated
+         * Implicit casts of iterators are unsafe. Use dereferencing operators
+         * -> and * instead.
+         */
         DEPRECATED("Implicit casts of iterators are unsafe. Use dereferencing operators -> and * instead.")
         operator value_handle() const {
             return hnd_;

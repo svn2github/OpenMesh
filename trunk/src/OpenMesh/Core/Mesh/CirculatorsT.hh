@@ -314,22 +314,41 @@ class GenericCirculatorT : protected GenericCirculatorBaseT<Mesh> {
         }
 
         //DEPRECATED("current_halfedge_handle() is an implementation detail and should not be accessed from outside the iterator class.")
+        /**
+         * \deprecated
+         * current_halfedge_handle() is an implementation detail and should not
+         * be accessed from outside the iterator class.
+         */
         const HalfedgeHandle &current_halfedge_handle() const {
             return this->heh_;
         }
 
         DEPRECATED("Do not use this error prone implicit cast. Compare to end-iterator or use is_valid(), instead.")
+        /**
+         * \deprecated
+         * Do not use this error prone implicit cast. Compare to the
+         * end-iterator or use is_valid() instead.
+         */
         operator bool() const {
             return is_valid();
         }
 
-        /// Return the handle of the current target.
+        /**
+         * \brief Return the handle of the current target.
+         * \deprecated
+         * This function clutters your code. Use dereferencing operators -> and * instead.
+         */
         DEPRECATED("This function clutters your code. Use dereferencing operators -> and * instead.")
         value_type handle() const {
           return **this;
         }
 
-        /// Cast to the handle of the current target.
+        /**
+         * \brief Cast to the handle of the current target.
+         * \deprecated
+         * Implicit casts of iterators are unsafe. Use dereferencing operators
+         * -> and * instead.
+         */
         DEPRECATED("Implicit casts of iterators are unsafe. Use dereferencing operators -> and * instead.")
         operator value_type() const {
           return **this;

@@ -744,16 +744,16 @@ The corresponding \c const counterparts are
 \arg \c ConstFaceIter.
 
 
-The linear iterators are (almost) conformant to STL iterators. For a
+The linear iterators are conformant to STL iterators. For a
 description of their interface see OpenMesh::Concepts::IteratorT.
 
-For efficiency reasons the \c operation++(int) (post-increment)
-and \c operation--(int) (post-decrement) are not implemented.
-Hence, when using iterators, use the pre-increment operation
-(++it).
-Additionally to the standard operations, each linear iterator
-provides a method \c handle(), which returns the handle of the
-item referred to by the iterator.
+When using iterators, use the pre-increment operation (++it) for efficiency
+reasons. 
+
+\deprecated
+While it is possible to use \c handle() to get the handle of the item referred
+to by the iterator, this function is deprecated. Simply dereference the iterator
+instead.
 
 \subsection deletedElements Deleted Elements
 If no elements of a mesh are marked as deleted, the indices provided by \c idx()
@@ -842,9 +842,10 @@ All circulators provide the operations listed in
 CirculatorT<Mesh>, which are basically the same as the
 iterator funtions.
 
-Furthermore, circulators provide \c operator \c bool(), which returns
-true, as long as the circulator hasn't reached the end of the
-sequence.
+\deprecated
+While it is possible to use \c operator \c bool(), which returns true, as long
+as the circulator hasn't reached the end of the sequence, this function is
+deprecated. Use the function \c is_valid() instead.
 
 %OpenMesh provides the following functions (defined in OpenMesh::PolyConnectivity)
 to get circulators around a specified center item:
@@ -889,7 +890,7 @@ MyMesh mesh;
 
 MyMesh::FaceHalfedgeIter fh_it = mesh.fh_iter(faceHandle);
 
-for(; fh_it; ++fh_it) {
+for(; fh_it.is_valid(); ++fh_it) {
     std::cout << "Halfedge has handle " << *fh_it << std::endl;
 }
 

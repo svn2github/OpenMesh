@@ -49,9 +49,9 @@ int main(int argc, char **argv)
     {
       cog[0] = cog[1] = cog[2] = valence = 0.0;
       
-      for (vv_it=mesh.vv_iter( v_it ); vv_it; ++vv_it)
+      for (vv_it=mesh.vv_iter( *v_it ); vv_it.is_valid(); ++vv_it)
       {
-        cog += mesh.point( vv_it );
+        cog += mesh.point( *vv_it );
         ++valence;
       }
 
@@ -60,8 +60,8 @@ int main(int argc, char **argv)
     
     for (v_it=mesh.vertices_begin(), cog_it=cogs.begin(); 
          v_it!=v_end; ++v_it, ++cog_it)
-      if ( !mesh.is_boundary( v_it ) )
-        mesh.set_point( v_it, *cog_it );
+      if ( !mesh.is_boundary( *v_it ) )
+        mesh.set_point( *v_it, *cog_it );
   }
 
 
