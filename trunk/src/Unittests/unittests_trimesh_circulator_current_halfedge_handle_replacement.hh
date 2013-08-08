@@ -88,7 +88,7 @@ TEST_F(OpenMeshTrimeshCirculatorCurrentHalfedgeHandleReplacement, dereference) {
   // Starting vertex is 1->4
 
   // output from fh_it.current_halfedge_handle()
-  size_t current_halfedge_handles[12] = {
+  int current_halfedge_handles[12] = {
     4,0,2,10,6,8,1,12,7,14,3,11
   };
 
