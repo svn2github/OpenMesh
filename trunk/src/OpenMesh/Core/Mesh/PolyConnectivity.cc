@@ -57,9 +57,9 @@ PolyConnectivity::find_halfedge(VertexHandle _start_vh, VertexHandle _end_vh ) c
 {
   assert(_start_vh.is_valid() && _end_vh.is_valid());
 
-  for (ConstVertexVertexIter vvIt=cvv_iter(_start_vh); vvIt.is_valid(); ++vvIt)
-    if (*vvIt == _end_vh)
-      return vvIt.current_halfedge_handle();
+  for (ConstVertexOHalfedgeIter voh_it = cvoh_iter(_start_vh); voh_it.is_valid(); ++voh_it)
+    if (to_vertex_handle(*voh_it) == _end_vh)
+      return *voh_it;
 
   return InvalidHalfedgeHandle;
 }

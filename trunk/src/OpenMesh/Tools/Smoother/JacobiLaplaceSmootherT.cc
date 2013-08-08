@@ -97,10 +97,10 @@ void
 JacobiLaplaceSmootherT<Mesh>::
 compute_new_positions_C0()
 {
-  typename Mesh::VertexIter  v_it, v_end(Base::mesh_.vertices_end());
-  typename Mesh::CVVIter     vv_it;
-  typename Mesh::Normal      u, p, zero(0,0,0);
-  typename Mesh::Scalar      w;
+  typename Mesh::VertexIter  							v_it, v_end(Base::mesh_.vertices_end());
+  typename Mesh::ConstVertexOHalfedgeIter voh_it;
+  typename Mesh::Normal      							u, p, zero(0,0,0);
+  typename Mesh::Scalar      							w;
 
   for (v_it=Base::mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
@@ -108,10 +108,9 @@ compute_new_positions_C0()
     {
       // compute umbrella
       u = zero;
-      for (vv_it=Base::mesh_.cvv_iter(*v_it); vv_it.is_valid(); ++vv_it)
-      {
-        w = this->weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
-        u += vector_cast<typename Mesh::Normal>(Base::mesh_.point(*vv_it)) * w;
+      for (voh_it = Base::mesh_.cvoh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
+        w = this->weight(Base::mesh_.edge_handle(*voh_it));
+        u += vector_cast<typename Mesh::Normal>(Base::mesh_.point(Base::mesh_.to_vertex_handle(*voh_it))) * w;
       }
       u *= this->weight(*v_it);
       u -= vector_cast<typename Mesh::Normal>(Base::mesh_.point(*v_it));
@@ -136,20 +135,19 @@ void
 JacobiLaplaceSmootherT<Mesh>::
 compute_new_positions_C1()
 {
-  typename Mesh::VertexIter  v_it, v_end(Base::mesh_.vertices_end());
-  typename Mesh::CVVIter     vv_it;
-  typename Mesh::Normal      u, uu, p, zero(0,0,0);
-  typename Mesh::Scalar      w, diag;
+  typename Mesh::VertexIter  							v_it, v_end(Base::mesh_.vertices_end());
+  typename Mesh::ConstVertexOHalfedgeIter voh_it;
+  typename Mesh::Normal      							u, uu, p, zero(0,0,0);
+  typename Mesh::Scalar      							w, diag;
 
 
   // 1st pass: compute umbrellas
   for (v_it=Base::mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
     u = zero;
-    for (vv_it=Base::mesh_.cvv_iter(*v_it); vv_it.is_valid(); ++vv_it)
-    {
-      w  = this->weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
-      u -= vector_cast<typename Mesh::Normal>(Base::mesh_.point(*vv_it))*w;
+    for (voh_it = Base::mesh_.cvoh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
+      w  = this->weight(Base::mesh_.edge_handle(*voh_it));
+      u -= vector_cast<typename Mesh::Normal>(Base::mesh_.point(Base::mesh_.to_vertex_handle(*voh_it)))*w;
     }
     u *= this->weight(*v_it);
     u += vector_cast<typename Mesh::Normal>(Base::mesh_.point(*v_it));
@@ -165,11 +163,10 @@ compute_new_positions_C1()
     {
       uu   = zero;
       diag = 0.0;   
-      for (vv_it=Base::mesh_.cvv_iter(*v_it); vv_it.is_valid(); ++vv_it)
-      {
-        w     = this->weight(Base::mesh_.edge_handle(vv_it.current_halfedge_handle()));
-        uu   -= Base::mesh_.property(umbrellas_, *vv_it);
-        diag += (w * this->weight(*vv_it) + 1.0) * w;
+      for (voh_it = Base::mesh_.cvoh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
+        w  = this->weight(Base::mesh_.edge_handle(*voh_it));
+        uu   -= Base::mesh_.property(umbrellas_, Base::mesh_.to_vertex_handle(*voh_it));
+        diag += (w * this->weight(Base::mesh_.to_vertex_handle(*voh_it)) + 1.0) * w;
       }
       uu   *= this->weight(*v_it);
       diag *= this->weight(*v_it);

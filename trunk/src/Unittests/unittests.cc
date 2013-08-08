@@ -36,6 +36,7 @@
 #include "unittests_trimesh_circulator_vertex_ihalfedge.hh"
 #include "unittests_trimesh_circulator_vertex_ohalfedge.hh"
 #include "unittests_trimesh_circulator_vertex_vertex.hh"
+#include "unittests_trimesh_circulator_current_halfedge_handle_replacement.hh"
 
 int main(int _argc, char** _argv) {
 

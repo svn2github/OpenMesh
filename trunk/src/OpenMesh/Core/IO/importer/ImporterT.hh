@@ -140,7 +140,7 @@ public:
             fh_iter != mesh_.fh_end(fh); ++fh_iter)
         {
           //and write the normals to it
-          typename Mesh::HalfedgeHandle heh = fh_iter.current_halfedge_handle();
+          typename Mesh::HalfedgeHandle heh = *fh_iter;
           typename Mesh::VertexHandle vh = mesh_.to_vertex_handle(heh);
           typename std::map<VertexHandle,Normal>::iterator it_heNs = halfedgeNormals_.find(vh);
           if (it_heNs != halfedgeNormals_.end())
