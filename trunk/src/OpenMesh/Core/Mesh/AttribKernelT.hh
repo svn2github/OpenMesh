@@ -73,6 +73,8 @@ public:
 
   //---------------------------------------------------------------- item types
 
+  typedef MeshItems MeshItemsT;
+  typedef Connectivity ConnectivityT;
   typedef typename Connectivity::Vertex     Vertex;
   typedef typename Connectivity::Halfedge   Halfedge;
   typedef typename Connectivity::Edge       Edge;

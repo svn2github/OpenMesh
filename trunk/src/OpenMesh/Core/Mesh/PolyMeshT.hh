@@ -492,6 +492,55 @@ public:
   inline void split(EdgeHandle _eh, VertexHandle _vh)
   { Kernel::split_edge(_eh, _vh); }
   
+  /**
+   * @brief Cast a mesh with different but identical traits into each other.
+   *
+   * Example:
+   * @code{.cpp}
+   * struct Traits1 : public OpenMesh::DefaultTraits {
+   *   typedef Vec3d Point;
+   * }
+   * struct Traits2 : public OpenMesh::DefaultTraits {
+   *   typedef Vec3d Point;
+   * }
+   * struct Traits3 : public OpenMesh::DefaultTraits {
+   *   typedef Vec3f Point;
+   * }
+   *
+   * TriMesh_ArrayKernelT<TriTraits1> a;
+   * TriMesh_ArrayKernelT<TriTraits2> &b = mesh_cast<TriMesh_ArrayKernelT<TriTraits2>&>(a); // OK
+   * TriMesh_ArrayKernelT<TriTraits3> &c = mesh_cast<TriMesh_ArrayKernelT<TriTraits3>&>(a); // ERROR
+   * @endcode
+   *
+   * @see MeshCast
+   *
+   * @param rhs
+   * @return
+   */
+  template<typename LHS>
+  friend
+  LHS mesh_cast(PolyMeshT &rhs) {
+      return MeshCast<LHS, PolyMeshT&>::cast(rhs);
+  }
+
+  template<typename LHS>
+  friend
+  LHS mesh_cast(PolyMeshT *rhs) {
+      return MeshCast<LHS, PolyMeshT*>::cast(rhs);
+  }
+
+  template<typename LHS>
+  friend
+  const LHS mesh_cast(const PolyMeshT &rhs) {
+      return MeshCast<LHS, const PolyMeshT&>::cast(rhs);
+  }
+
+  template<typename LHS>
+  friend
+  const LHS mesh_cast(const PolyMeshT *rhs) {
+      return MeshCast<LHS, const PolyMeshT*>::cast(rhs);
+  }
+
 };
 
 
