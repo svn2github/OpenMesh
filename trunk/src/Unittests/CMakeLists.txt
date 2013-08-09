@@ -21,6 +21,11 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
     include_directories(${GTEST_INCLUDE_DIRS})
     # set additional link directories
     link_directories(${GTEST_LIBRARY_DIR} )
+
+    if ( CMAKE_GENERATOR MATCHES "^Visual Studio 11.*" ) 
+      add_definitions( /D _VARIADIC_MAX=10 )
+    endif()
+
     # Create new target named unittests_hexmeshing
     add_executable(unittests unittests.cc)
 	
