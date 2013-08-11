@@ -9,6 +9,37 @@
 
 <tr valign=top><td><b>3.0</b> (?/?/?,Rev.882)</td><td>
 
+<b>Core</b>
+<ul>
+<li>Rewrote all circulators (STL compliant, removed redundant code)</li>
+<li>Added stream operator for FVIter.</li>
+<li>Added mesh cast for meshes with different but identical traits.</li>
+</ul>
+
+
+<b>IO</b>
+<ul>
+<li>close stl files with endsolid</li>
+</ul>
+
+
+<b>Utils</b>
+<ul>
+<li>PropertyManager: Added ability to get property name</li>
+<li>Improved C++11-branch of PropertyManager and at the same time fixed compile error with gcc 4.7</li>
+</ul>
+
+<b>Documentation</b>
+<ul>
+<li>Adapt to new iterators</li>
+<li>Use short names in Doxygen to prevent windows build failure due to excessive name length</li>
+</ul>
+
+<b>Build system</b>
+<ul>
+<li>Build unittests with variadic max of 10 on VS 2012</li>
+</ul>
+
 </tr>
 
 <tr valign=top><td><b>2.4</b> (08/06/2013,Rev.882)</td><td>
