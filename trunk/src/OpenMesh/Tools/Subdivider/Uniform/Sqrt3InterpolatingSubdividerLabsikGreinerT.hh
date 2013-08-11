@@ -1,7 +1,7 @@
 /*===========================================================================*\
 *                                                                           *
 *                               OpenMesh                                    *
-*      Copyright (C) 2001-2012 by Computer Graphics Group, RWTH Aachen      *
+*      Copyright (C) 2001-2013 by Computer Graphics Group, RWTH Aachen      *
 *                           www.openmesh.org                                *
 *                                                                           *
 *---------------------------------------------------------------------------* 
