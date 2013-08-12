@@ -25,6 +25,7 @@ include (ACGOutput)
 if (WIN32)
   add_definitions(
       -D_USE_MATH_DEFINES -DNOMINMAX
+      -D_CRT_SECURE_NO_WARNINGS
   )
 endif ()
 

@@ -85,7 +85,6 @@
 #    define OM_PARTIAL_SPECIALIZATION      1
 #    define OM_INCLUDE_TEMPLATES           1
 #  elif (_MSC_VER >= 1400) // settings for .NET 2005 (NOTE: not fully tested)
-#    pragma warning(disable : 4996)
 #    define OM_TYPENAME
 #    define OM_OUT_OF_CLASS_TEMPLATE       1
 #    define OM_PARTIAL_SPECIALIZATION      1

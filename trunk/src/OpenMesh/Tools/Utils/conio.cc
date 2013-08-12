@@ -42,8 +42,23 @@
 #include <OpenMesh/Core/System/config.hh>
 #include <OpenMesh/Tools/Utils/conio.hh>
 
+// ----------------------------------------------------------------- MSVC Compiler ----
+#ifdef _MSC_VER
+
+#include <conio.h>
+
+namespace OpenMesh {
+namespace Utils {
+
+int kbhit()  { return ::_kbhit();  }
+int getch()  { return ::_getch();  }
+int getche() { return ::_getche(); }
+
+} // Tools
+} // AS
+
 // ----------------------------------------------------------------- Win32 ----
-#ifdef WIN32
+#elif defined(WIN32)
 
 #include <conio.h>
 
