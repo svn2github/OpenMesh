@@ -11,6 +11,7 @@
 #include "unittests_trimesh_collapse.hh"
 #include "unittests_decimater.hh"
 #include "unittests_mc_decimater.hh"
+#include "unittests_mesh_dual.hh"
 #include "unittests_mixed_decimater.hh"
 #include "unittests_subdivider_uniform.hh"
 #include "unittests_subdivider_adaptive.hh"
