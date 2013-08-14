@@ -136,22 +136,22 @@ public:
     weights_.resize(_max_valence);
 
     weights_[3].resize(4);
-    weights_[3][0] = +4.0/27;
-    weights_[3][1] = -5.0/27;
-    weights_[3][2] = +4.0/27;
-    weights_[3][3] = +8.0/9;
+    weights_[3][0] = real_t(+4.0/27);
+    weights_[3][1] = real_t(-5.0/27);
+    weights_[3][2] = real_t(+4.0/27);
+    weights_[3][3] = real_t(+8.0/9);
 
     weights_[4].resize(5);
-    weights_[4][0] = +2.0/9;
-    weights_[4][1] = -1.0/9;
-    weights_[4][2] = -1.0/9;
-    weights_[4][3] = +2.0/9;
-    weights_[4][4] = +7.0/9 ;
+    weights_[4][0] = real_t(+2.0/9);
+    weights_[4][1] = real_t(-1.0/9);
+    weights_[4][2] = real_t(-1.0/9);
+    weights_[4][3] = real_t(+2.0/9);
+    weights_[4][4] = real_t(+7.0/9);
 
     for(unsigned int K=5; K<_max_valence; ++K)
     {
         weights_[K].resize(K+1);
-        double aH = 2.0*cos(M_PI/K)/3.0;
+        real_t aH = 2.0*cos(M_PI/K)/3.0;
         weights_[K][K] = 1.0 - aH*aH;
         for(unsigned int i=0; i<K; ++i)
         {
