@@ -308,7 +308,7 @@ int main(int argc, char **argv)
     std::cout << "  done [" << t.as_string() << "]\n";
     t.reset();
 
-    int    rc;
+    size_t rc;
     size_t nv = mesh.n_vertices();
 
     std::cout << "Begin decimation (#V " << nv << ")\n";

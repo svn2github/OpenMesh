@@ -301,8 +301,8 @@ int main(int argc, char **argv)
     i = 0;
 
     // calculate target states for faces and vertices
-    int target1 = (n - 1) * n_rules + subdivider.subdiv_rule().number() + 1;
-    int target2 = n * n_rules;
+    size_t target1 = (n - 1) * n_rules + subdivider.subdiv_rule().number() + 1;
+    size_t target2 = n * n_rules;
 
     for (f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it) {
       

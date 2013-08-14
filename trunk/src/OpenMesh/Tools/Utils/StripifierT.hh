@@ -98,7 +98,7 @@ public:
   void clear() { Strips().swap(strips_); }
 
   /// returns number of strips
-  unsigned int n_strips() const { return strips_.size(); }
+  size_t n_strips() const { return strips_.size(); }
 
   /// are strips computed?
   bool is_valid() const { return !strips_.empty(); }

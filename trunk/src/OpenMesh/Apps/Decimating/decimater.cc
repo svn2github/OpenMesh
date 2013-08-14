@@ -369,7 +369,7 @@ decimate(const std::string &_ifname,
      float nv_before = float(mesh.n_vertices());
 
      timer.start();
-     int rc = 0;
+     size_t rc = 0;
      if (_opt.n_collapses < 0.0)
        rc = decimater.decimate_to( size_t(-_opt.n_collapses) );
      else if (_opt.n_collapses >= 1.0 || _opt.n_collapses == 0.0)
