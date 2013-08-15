@@ -13,6 +13,7 @@
 #include "unittests_mc_decimater.hh"
 #include "unittests_mesh_dual.hh"
 #include "unittests_mixed_decimater.hh"
+#include "unittests_stripifier.hh"
 #include "unittests_subdivider_uniform.hh"
 #include "unittests_subdivider_adaptive.hh"
 #include "unittests_trimesh_normal_calculations.hh"
