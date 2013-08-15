@@ -125,7 +125,7 @@ class ModRoundnessT : public ModBaseT<MeshT>
     typename Mesh::FaceHandle               fhC, fhB;
     Vec3f                                   B,C;
 
-    if ( min_r_ < 0.0 ) // continues mode
+    if ( min_r_ < 0.0f ) // continues mode
     {
       C   = vector_cast<Vec3f>(Base::mesh().point( Base::mesh().to_vertex_handle(*voh_it)));
       fhC = Base::mesh().face_handle( *voh_it );
@@ -196,17 +196,17 @@ public: // specific methods
 
     Vec3f A,B,C;
 
-    A = Vec3f(             0, 0,           0);
-    B = Vec3f( 2*cos(_angle), 0,           0);
-    C = Vec3f(   cos(_angle), sin(_angle), 0);
+    A = Vec3f(               0.0f, 0.0f,           0.0f);
+    B = Vec3f( 2.0f * cos(_angle), 0.0f,           0.0f);
+    C = Vec3f(        cos(_angle), sin(_angle),    0.0f);
 
     double r1 = roundness(A,B,C);
 
     _angle = float(0.5 * ( M_PI - _angle ));
 
-    A = Vec3f(             0, 0,           0);
-    B = Vec3f( 2*cos(_angle), 0,           0);
-    C = Vec3f(   cos(_angle), sin(_angle), 0);
+    A = Vec3f(             0.0f, 0.0f,           0.0f);
+    B = Vec3f( 2.0f*cos(_angle), 0.0f,           0.0f);
+    C = Vec3f(      cos(_angle), sin(_angle),    0.0f);
 
     double r2 = roundness(A,B,C);
 

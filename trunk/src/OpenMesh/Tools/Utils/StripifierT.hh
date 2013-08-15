@@ -92,7 +92,7 @@ public:
   ~StripifierT();
 
   /// Compute triangle strips, returns number of strips
-  unsigned int stripify();
+  size_t stripify();
 
   /// delete all strips
   void clear() { Strips().swap(strips_); }

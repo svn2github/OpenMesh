@@ -75,7 +75,7 @@ StripifierT<Mesh>::
 }
 
 template <class Mesh>
-unsigned int
+size_t
 StripifierT<Mesh>::
 stripify()
 {
@@ -107,7 +107,7 @@ build_strips()
 {
   Strip                           experiments[3];
   typename Mesh::HalfedgeHandle   h[3];
-  unsigned int                    best_idx, best_length, length;
+  size_t                          best_length,length , best_idx;
   FaceHandles                     faces[3];
   typename FaceHandles::iterator  fh_it, fh_end;
   typename Mesh::FaceIter         f_it, f_end=mesh_.faces_end();
@@ -148,8 +148,9 @@ build_strips()
 
 
     // build 3 strips, take best one
-    best_length = best_idx = 0;
-    for (unsigned int i=0; i<3; ++i)
+    best_length = 0;
+    best_idx    = 0;
+    for (size_t i=0; i<3; ++i)
     {
       build_strip(h[i], experiments[i], faces[i]);
       if ((length = experiments[i].size()) > best_length)

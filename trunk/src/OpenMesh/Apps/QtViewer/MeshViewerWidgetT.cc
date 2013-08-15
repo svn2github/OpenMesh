@@ -500,7 +500,7 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
     for (; strip_it!=strip_last; ++strip_it)
     {
       glDrawElements(GL_TRIANGLE_STRIP, 
-		     strip_it->size(), GL_UNSIGNED_INT, &(*strip_it)[0] );
+          static_cast<GLsizei>(strip_it->size()), GL_UNSIGNED_INT, &(*strip_it)[0] );
     }
 
     glDisableClientState(GL_VERTEX_ARRAY);
@@ -554,7 +554,7 @@ MeshViewerWidgetT<M>::draw_openmesh(const std::string& _draw_mode)
       glColorPointer(3, GL_UNSIGNED_BYTE, 0, mesh_.vertex_colors());
     }
 
-    glDrawArrays( GL_POINTS, 0, mesh_.n_vertices() );
+    glDrawArrays( GL_POINTS, 0, static_cast<GLsizei>(mesh_.n_vertices()) );
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
   }

@@ -94,7 +94,7 @@ distPointTriangleSquared( const Point& _p,
 
   Point v0p = _p - _v0;
   Point t = v0p % n;
-  double  s01, s02, s12;
+  typename Point::value_type  s01, s02, s12;
   const double a = (t | v0v2) * -invD;
   const double b = (t | v0v1) * invD;
 

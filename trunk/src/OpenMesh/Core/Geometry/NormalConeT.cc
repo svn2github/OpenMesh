@@ -121,16 +121,16 @@ merge(const NormalConeT& _cone)
 {
   Scalar dotp = (center_normal_ | _cone.center_normal_);
 
-  if (fabs(dotp) < 0.99999)
+  if (fabs(dotp) < 0.99999f)
   {
     // new angle
     Scalar centerAngle = acos(dotp);
     Scalar minAngle    = std::min(-angle(), centerAngle - _cone.angle());
     Scalar maxAngle    = std::max( angle(), centerAngle + _cone.angle());
-    angle_     = (maxAngle - minAngle) * 0.5;
+    angle_     = (maxAngle - minAngle) * Scalar(0.5f);
 
     // axis by SLERP
-    Scalar axisAngle = 0.5*(minAngle + maxAngle);
+    Scalar axisAngle =  Scalar(0.5f) * (minAngle + maxAngle);
     center_normal_ = ((center_normal_ * sin(centerAngle-axisAngle)
 		                   + _cone.center_normal_ * sin(axisAngle))
 		                    / sin(centerAngle));
@@ -138,12 +138,12 @@ merge(const NormalConeT& _cone)
   else
   {
     // axes point in same direction
-    if (dotp > 0.0)
+    if (dotp > 0.0f)
       angle_ = std::max(angle_, _cone.angle_);
 
     // axes point in opposite directions
     else
-      angle_ = 2.0 * M_PI;
+      angle_ =  Scalar(2.0f * M_PI);
   }
 }
 
