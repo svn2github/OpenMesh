@@ -43,12 +43,9 @@ TEST_F(OpenMeshMeshDual, Dualize) {
 
   dualMesh = OpenMesh::Util::MeshDual(mesh_);
 
-
-  std::cerr << "Original has " << mesh_.n_vertices() << " , " << mesh_.n_edges() << " , "  << mesh_.n_faces() << std::endl;
-
-  EXPECT_EQ(15048u, dualMesh->n_vertices()) << "The number of vertices after decimation is not correct!";
-  EXPECT_EQ(22572u, dualMesh->n_edges()) << "The number of edges after decimation is not correct!";
-  EXPECT_EQ(7526u, dualMesh->n_faces()) << "The number of faces after decimation is not correct!";
+  EXPECT_EQ(15048u, dualMesh->n_vertices()) << "The number of vertices after dual computation is not correct!";
+  EXPECT_EQ(22572u, dualMesh->n_edges()) << "The number of edges after dual computation is not correct!";
+  EXPECT_EQ(7526u, dualMesh->n_faces()) << "The number of faces after dual computation is not correct!";
 
   delete(dualMesh);
 }
