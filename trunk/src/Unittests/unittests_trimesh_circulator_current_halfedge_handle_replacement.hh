@@ -181,7 +181,7 @@ TEST_F(OpenMeshTrimeshCirculatorCurrentHalfedgeHandleReplacement, vv_iter) {
   size_t i(0);
   for (Mesh::VertexIter v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
     for (Mesh::VertexVertexIter vv_it = mesh_.vv_iter(*v_it); vv_it.is_valid(); ++vv_it, ++i)
-      eh0.push_back(mesh_.edge_handle(Mesh::HalfedgeHandle(current_halfedge_handles[i])));
+      eh0.push_back(mesh_.edge_handle(Mesh::HalfedgeHandle(int(current_halfedge_handles[i]))));
   }
   for (Mesh::VertexIter v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
     for (Mesh::VertexOHalfedgeIter voh_it = mesh_.voh_iter(*v_it); voh_it.is_valid(); ++voh_it)
@@ -261,7 +261,7 @@ TEST_F(OpenMeshTrimeshCirculatorCurrentHalfedgeHandleReplacement, fe_iter) {
 
   for (Mesh::FaceIter f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it) {
     for (Mesh::FaceEdgeIter fe_it = mesh_.fe_iter(*f_it); fe_it.is_valid(); ++fe_it, ++i) {
-      heh0.push_back(Mesh::HalfedgeHandle(current_halfedge_handles[i]));
+      heh0.push_back(Mesh::HalfedgeHandle(int(current_halfedge_handles[i])));
     }
   }
   for (Mesh::FaceIter f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it) {
