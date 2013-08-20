@@ -89,7 +89,6 @@ initialize()
   typename Mesh::FaceVertexIter    fv_it;
   typename Mesh::VertexHandle      vh0, vh1, vh2;
   typedef Vec3d                    Vec3;
-  double                           a,b,c,d, area;
 
   for (; f_it != f_end; ++f_it)
   {
@@ -108,17 +107,17 @@ initialize()
     }
 
     Vec3 n = (v1-v0) % (v2-v0);
-    area = n.norm();
+    double area = n.norm();
     if (area > FLT_MIN)
     {
       n /= area;
       area *= 0.5;
     }
 
-    a = n[0];
-    b = n[1];
-    c = n[2];
-    d = -(vector_cast<Vec3>(Base::mesh().point(vh0))|n);
+    const double a = n[0];
+    const double b = n[1];
+    const double c = n[2];
+    const double d = -(vector_cast<Vec3>(Base::mesh().point(vh0))|n);
 
     Quadricd q(a, b, c, d);
     q *= area;

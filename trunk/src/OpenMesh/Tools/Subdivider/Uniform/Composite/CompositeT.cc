@@ -286,15 +286,13 @@ void CompositeT<MeshType,RealType>::VF()
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                  valence;
-  typename MeshType::Point          cog,
-                                zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point          cog,zero_point(0.0, 0.0, 0.0);
   typename MeshType::FaceVertexIter fv_it;
   typename MeshType::FaceIter       f_it;
 
   for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it) {
 
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (fv_it = mesh_.fv_iter(*f_it); fv_it.is_valid(); ++fv_it) {
@@ -313,8 +311,7 @@ void CompositeT<MeshType,RealType>::VFa(Coeff& _coeff)
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   unsigned int                        valence[3], i;
-  typename MeshType::Point                cog,
-                                      zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point                cog,zero_point(0.0, 0.0, 0.0);
   typename MeshType::Scalar               alpha;
   typename MeshType::FaceIter             f_it;
   typename MeshType::HalfedgeHandle       heh;
@@ -331,7 +328,7 @@ void CompositeT<MeshType,RealType>::VFa(Coeff& _coeff)
       vh[i] = mesh_.to_vertex_handle(heh);
 
       for (voh_it = mesh_.voh_iter(vh[i]); voh_it; ++voh_it) {
-  ++valence[i];
+        ++valence[i];
       }
 
       heh = mesh_.next_halfedge_handle(heh);
@@ -339,14 +336,14 @@ void CompositeT<MeshType,RealType>::VFa(Coeff& _coeff)
 
     if (valence[0] <= valence[1])
       if (valence[0] <= valence[2])
-  i = 0;
+        i = 0;
       else
-  i = 2;
+        i = 2;
     else
       if (valence[1] <= valence[2])
-  i = 1;
+        i = 1;
       else
-  i = 2;
+        i = 2;
 
     alpha = _coeff(valence[i]);
 
@@ -425,7 +422,6 @@ void CompositeT<MeshType,RealType>::FF()
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int valence;
   typename MeshType::Point              cog,
                                     zero_point(0.0, 0.0, 0.0);
   typename MeshType::FaceFaceIter       ff_it;
@@ -436,7 +432,7 @@ void CompositeT<MeshType,RealType>::FF()
 
   for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it)
   {
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (ff_it = mesh_.ff_iter(*f_it); ff_it.is_valid(); ++ff_it)
@@ -462,7 +458,6 @@ void CompositeT<MeshType,RealType>::FFc(Coeff& _coeff)
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                   valence;
   typename MeshType::Point           cog,
                                  zero_point(0.0, 0.0, 0.0);
   typename MeshType::FaceFaceIter    ff_it;
@@ -472,7 +467,7 @@ void CompositeT<MeshType,RealType>::FFc(Coeff& _coeff)
 
   for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it) {
 
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (ff_it = mesh_.ff_iter(*f_it); ff_it; ++ff_it) {
@@ -503,16 +498,14 @@ void CompositeT<MeshType,RealType>::FFc(scalar_t _c)
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                   valence;
-  typename MeshType::Point           cog,
-    zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point           cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::FaceFaceIter    ff_it;
   typename MeshType::FaceIter        f_it;
   std::vector<typename MeshType::Point> point_vector;
 
   for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it) {
 
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (ff_it = mesh_.ff_iter(*f_it); ff_it; ++ff_it) {
@@ -540,7 +533,6 @@ void CompositeT<MeshType,RealType>::FV()
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                  valence;
   typename MeshType::Point          cog,
                                 zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexFaceIter vf_it;
@@ -548,7 +540,7 @@ void CompositeT<MeshType,RealType>::FV()
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
 
-    valence = 0;
+    unsigned int  valence = 0;
     cog = zero_point;
 
     for (vf_it = mesh_.vf_iter(*v_it); vf_it; ++vf_it) {
@@ -566,7 +558,7 @@ void CompositeT<MeshType,RealType>::FVc(Coeff& _coeff)
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                        valence;
+
   typename MeshType::Point                cog,
                                       zero_point(0.0, 0.0, 0.0);
   scalar_t               c;
@@ -575,7 +567,7 @@ void CompositeT<MeshType,RealType>::FVc(Coeff& _coeff)
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
 
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (voh_it = mesh_.voh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
@@ -588,14 +580,14 @@ void CompositeT<MeshType,RealType>::FVc(Coeff& _coeff)
 
       if (mesh_.face_handle(*voh_it).is_valid()) {
 
-  if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it))).is_valid()) {
-    cog += mesh_.data(mesh_.face_handle(*voh_it)).position() * c;
-    cog += mesh_.data(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it)))).position() * (1.0 - c);
-  } else {
-    cog += mesh_.data(mesh_.face_handle(*voh_it)).position();
-  }
+        if (mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it))).is_valid()) {
+          cog += mesh_.data(mesh_.face_handle(*voh_it)).position() * c;
+          cog += mesh_.data(mesh_.face_handle(mesh_.opposite_halfedge_handle(mesh_.next_halfedge_handle(*voh_it)))).position() * (1.0 - c);
+        } else {
+          cog += mesh_.data(mesh_.face_handle(*voh_it)).position();
+        }
       } else {
-  --valence;
+        --valence;
       }
     }
 
@@ -612,15 +604,13 @@ void CompositeT<MeshType,RealType>::FVc(scalar_t _c)
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                       valence;
-  typename MeshType::Point               cog,
-  zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point               cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexOHalfedgeIter voh_it;
   typename MeshType::VertexIter          v_it;
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
 
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (voh_it = mesh_.voh_iter(*v_it); voh_it; ++voh_it) {
@@ -656,15 +646,13 @@ void CompositeT<MeshType,RealType>::VdE()
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   typename MeshType::EdgeIter             e_it;
-  typename MeshType::Point                cog,
-                                      zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point                cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::HalfedgeHandle       heh1, heh2;
-  unsigned int                        valence;
 
   for (e_it = mesh_.edges_begin(); e_it != mesh_.edges_end(); ++e_it) {
 
     cog = zero_point;
-    valence = 2;
+    unsigned int valence = 2;
 
     heh1 = mesh_.halfedge_handle(*e_it, 0);
     heh2 = mesh_.opposite_halfedge_handle(heh1);
@@ -694,8 +682,7 @@ void CompositeT<MeshType,RealType>::VdEc(scalar_t _c)
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   typename MeshType::EdgeIter           e_it;
-  typename MeshType::Point              cog,
-                                    zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point              cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::HalfedgeHandle     heh;
 
   for (e_it = mesh_.edges_begin(); e_it != mesh_.edges_end(); ++e_it) {
@@ -727,8 +714,7 @@ void CompositeT<MeshType,RealType>::VdEg(scalar_t _gamma)
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   typename MeshType::EdgeIter             e_it;
-  typename MeshType::Point                cog,
-                                      zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point                cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::HalfedgeHandle       heh;
   typename MeshType::VertexOHalfedgeIter  voh_it;
   unsigned int                        valence[2], i;
@@ -787,8 +773,7 @@ void CompositeT<MeshType,RealType>::VdEg(Coeff& _coeff)
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   typename MeshType::EdgeIter             e_it;
-  typename MeshType::Point                cog,
-                                      zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point                cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::HalfedgeHandle       heh;
   typename MeshType::VertexOHalfedgeIter  voh_it;
   unsigned int                        valence[2], i;
@@ -850,14 +835,12 @@ void CompositeT<MeshType,RealType>::EV()
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   typename MeshType::VertexIter       v_it;
-  typename MeshType::Point            cog,
-                                  zero_point(0.0, 0.0, 0.0);
-  unsigned int                    valence;
+  typename MeshType::Point            cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexEdgeIter   ve_it;
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it)
   {
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (ve_it = mesh_.ve_iter(*v_it); ve_it; ++ve_it) {
@@ -878,15 +861,13 @@ void CompositeT<MeshType,RealType>::EVc(Coeff& _coeff)
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   typename MeshType::VertexIter            v_it;
-  typename MeshType::Point                 cog,
-                                       zero_point(0.0, 0.0, 0.0);
-  unsigned int                         valence;
+  typename MeshType::Point                 cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexOHalfedgeIter   voh_it;
   scalar_t                c;
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it)
   {
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (voh_it = mesh_.voh_iter(*v_it); voh_it.is_valid(); ++voh_it)
@@ -913,13 +894,11 @@ void CompositeT<MeshType,RealType>::EVc(scalar_t _c)
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
   typename MeshType::VertexIter           v_it;
-  typename MeshType::Point                cog,
-                                      zero_point(0.0, 0.0, 0.0);
-  unsigned int                        valence;
+  typename MeshType::Point                cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexOHalfedgeIter  voh_it;
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (voh_it = mesh_.voh_iter(*v_it); voh_it; ++voh_it) {
@@ -945,12 +924,10 @@ void CompositeT<MeshType,RealType>::EF()
 
   typename MeshType::FaceIter         f_it;
   typename MeshType::FaceEdgeIter     fe_it;
-  unsigned int                    valence;
-  typename MeshType::Point            cog,
-                                  zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point            cog, zero_point(0.0, 0.0, 0.0);
 
   for (f_it = mesh_.faces_begin(); f_it != mesh_.faces_end(); ++f_it) {
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (fe_it = mesh_.fe_iter(*f_it); fe_it; ++fe_it) {
@@ -970,12 +947,10 @@ void CompositeT<MeshType,RealType>::FE()
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
   typename MeshType::EdgeIter       e_it;
-  unsigned int                  valence;
-  typename MeshType::Point          cog,
-                                zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point          cog, zero_point(0.0, 0.0, 0.0);
 
   for (e_it = mesh_.edges_begin(); e_it != mesh_.edges_end(); ++e_it) {
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     if (mesh_.face_handle(mesh_.halfedge_handle(*e_it, 0)).is_valid()) {
@@ -1053,7 +1028,6 @@ void CompositeT<MeshType,RealType>::VVc(Coeff& _coeff)
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                      valence;
   typename MeshType::Point              cog,
                                     zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexVertexIter   vv_it;
@@ -1063,7 +1037,7 @@ void CompositeT<MeshType,RealType>::VVc(Coeff& _coeff)
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it)
   {
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (vv_it = mesh_.vv_iter(*v_it); vv_it; ++vv_it)
@@ -1090,16 +1064,14 @@ void CompositeT<MeshType,RealType>::VVc(scalar_t _c)
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                      valence;
-  typename MeshType::Point              cog,
-                                    zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point              cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::VertexVertexIter   vv_it;
   typename MeshType::VertexIter         v_it;
   std::vector<typename MeshType::Point> point_vector;
 
   for (v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
 
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (vv_it = mesh_.vv_iter(*v_it); vv_it; ++vv_it) {
@@ -1128,9 +1100,7 @@ void CompositeT<MeshType,RealType>::EdE()
 {
   assert(p_mesh_); MeshType& mesh_ = *p_mesh_;
 
-  unsigned int                      valence;
-  typename MeshType::Point              cog,
-                                    zero_point(0.0, 0.0, 0.0);
+  typename MeshType::Point              cog, zero_point(0.0, 0.0, 0.0);
   typename MeshType::EdgeIter           e_it;
   typename MeshType::HalfedgeHandle     heh;
   std::vector<typename MeshType::Point> point_vector;
@@ -1139,7 +1109,7 @@ void CompositeT<MeshType,RealType>::EdE()
 
   for (e_it = mesh_.edges_begin(); e_it != mesh_.edges_end(); ++e_it) {
 
-    valence = 0;
+    unsigned int valence = 0;
     cog = zero_point;
 
     for (int i = 0; i <= 1; ++i) {
