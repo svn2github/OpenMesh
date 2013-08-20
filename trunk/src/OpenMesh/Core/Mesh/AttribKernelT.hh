@@ -213,7 +213,7 @@ public:
     for (typename Connectivity::VertexIter v_it = Connectivity::vertices_begin();
          v_it != Connectivity::vertices_end(); ++v_it)
     {//assumes Point constructor supports cast from _AttribKernel::Point
-      set_point(v_it, (Point)_other.point(v_it));
+      set_point(*v_it, (Point)_other.point(*v_it));
     }
   }
 

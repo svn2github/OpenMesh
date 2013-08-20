@@ -89,7 +89,7 @@ class ModRoundnessT : public ModBaseT<MeshT>
   public:
 
   // typedefs
-  typedef typename Mesh::Point                      Point;
+  typedef typename MeshT::Point                      Point;
   typedef typename vector_traits<Point>::value_type value_type;
 
   public:
