@@ -296,7 +296,7 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
       // if we are ina a new material block, specify in the file which material to use
       if(lastMat != material) {
         _out << "usemtl mat" << material << std::endl;
-	lastMat = material;
+        lastMat = material;
       }
     }
 

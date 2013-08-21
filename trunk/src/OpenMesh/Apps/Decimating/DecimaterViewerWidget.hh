@@ -141,11 +141,7 @@ public: // inherited
     {
       std::cout << "prepare decimater" << std::endl;
 
-      // to be compatible with gcc 2.95.3
-      {
-        decimater_o  tmp( new decimater_t  ( mesh() ) );
-        decimater_ = tmp;
-      }
+      decimater_ = decimater_o ( new decimater_t  ( mesh() ) );
 
       decimater_->add(mod_quadric_);
       decimater_->module(mod_quadric_).set_binary(false);

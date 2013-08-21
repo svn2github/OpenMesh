@@ -149,11 +149,13 @@ build_strips()
     // build 3 strips, take best one
     size_t best_length = 0;
     size_t best_idx    = 0;
-    size_t length;
+
     for (size_t i=0; i<3; ++i)
     {
       build_strip(h[i], experiments[i], faces[i]);
-      if ((length = experiments[i].size()) > best_length)
+
+      const size_t length = experiments[i].size();
+      if ( length  > best_length)
       {
         best_length = length;
         best_idx    = i;
