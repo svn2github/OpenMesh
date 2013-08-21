@@ -178,7 +178,7 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
   omlog() << "[OFFWriter] : write ascii file\n";
 
 
-  unsigned int i, j, nV, nF;
+  unsigned int i, nV, nF;
   Vec3f v, n;
   Vec2f t;
   OpenMesh::Vec3i c;
@@ -292,7 +292,7 @@ write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
     {
       nV = _be.get_vhandles(FaceHandle(i), vhandles);
       _out << nV << " ";
-      for (j=0; j<vhandles.size(); ++j)
+      for (size_t j=0; j<vhandles.size(); ++j)
 	       _out << vhandles[j].idx() << " ";
 
       //face color
@@ -356,7 +356,7 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
   omlog() << "[OFFWriter] : write binary file\n";
 
 
-  unsigned int i, j, nV, nF;
+  unsigned int i, nV, nF;
   Vec3f v, n;
   Vec2f t;
   OpenMesh::Vec4i c;
@@ -457,7 +457,7 @@ write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
       //face
       nV = _be.get_vhandles(FaceHandle(i), vhandles);
       writeValue(_out, nV);
-      for (j=0; j<vhandles.size(); ++j)
+      for (size_t j=0; j<vhandles.size(); ++j)
         writeValue(_out, vhandles[j].idx() );
 
       //face color
@@ -535,15 +535,12 @@ binary_size(BaseExporter& _be, Options _opt) const
   }
   else
   {
-    unsigned int i, nV, nF;
+    unsigned int i, nF;
     std::vector<VertexHandle> vhandles;
 
     for (i=0, nF=int(_be.n_faces()); i<nF; ++i)
-    {
-      nV = _be.get_vhandles(FaceHandle(i), vhandles);
-      data += nV * sizeof(unsigned int);
+      data += _be.get_vhandles(FaceHandle(i), vhandles) * sizeof(unsigned int);
 
-    }
   }
 
   // face colors

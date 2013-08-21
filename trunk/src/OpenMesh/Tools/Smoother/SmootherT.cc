@@ -160,12 +160,11 @@ set_active_vertices()
 
 
   // tagg all active vertices
-  bool active;
   for (v_it=mesh_.vertices_begin(); v_it!=v_end; ++v_it)
   {
-    active = ((nothing_selected || mesh_.status(*v_it).selected())
-	          && !mesh_.is_boundary(*v_it)
-	          && !mesh_.status(*v_it).locked());
+    bool active = ((nothing_selected || mesh_.status(*v_it).selected())
+	                 && !mesh_.is_boundary(*v_it)
+	                 && !mesh_.status(*v_it).locked());
 
     if ( skip_features_ ) {
 
