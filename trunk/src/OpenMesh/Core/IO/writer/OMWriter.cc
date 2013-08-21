@@ -250,10 +250,10 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     chunk_header.name_     = false;
     chunk_header.entity_   = OMFormat::Chunk::Entity_Vertex;
     chunk_header.type_     = OMFormat::Chunk::Type_Color;
-    chunk_header.signed_   = OMFormat::is_signed( c );
-    chunk_header.float_    = OMFormat::is_float( c );
+    chunk_header.signed_   = OMFormat::is_signed( c[0] );
+    chunk_header.float_    = OMFormat::is_float( c[0] );
     chunk_header.dim_      = OMFormat::dim( c );
-    chunk_header.bits_     = OMFormat::bits( c );
+    chunk_header.bits_     = OMFormat::bits( c[0] );
 
     bytes += store( _os, chunk_header, swap );
     for (i=0, nV=header.n_vertices_; i<nV; ++i)
