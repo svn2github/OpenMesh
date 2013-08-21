@@ -107,7 +107,7 @@ Tvv3<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
     typename M::Point                     face_position;
     const typename M::Point               zero_point(0.0, 0.0, 0.0);
     std::vector<typename M::VertexHandle> vertex_vector;
-    int                                      valence(0);
+
 
     // raise all adjacent vertices to level x-1
     for (fv_it = Base::mesh_.fv_iter(_fh); fv_it.is_valid(); ++fv_it) {
@@ -136,6 +136,8 @@ Tvv3<M>::raise(typename M::FaceHandle& _fh, state_t _target_state)
       vh = Base::mesh_.new_vertex();
 
       Base::mesh_.split(_fh, vh);
+
+      int  valence = 0;
 
       // calculate display position for new vertex
       for (vv_it = Base::mesh_.vv_iter(vh); vv_it.is_valid(); ++vv_it)
@@ -1758,7 +1760,6 @@ EVc<M>::init_coeffs(size_t _max_valence)
   if (coeffs_.size() < _max_valence+1) // less than? add additional valences
   {
     const double _2pi = 2.0*M_PI;
-    double c;
   
     if (coeffs_.empty())
       coeffs_.push_back(0.0); // dummy for invalid valences 0,1,2
@@ -1766,7 +1767,7 @@ EVc<M>::init_coeffs(size_t _max_valence)
     for(size_t v=coeffs_.size(); v <= _max_valence; ++v)
     {
       // ( 3/2 + cos ( 2 PI / valence ) )� / 2 - 1
-      c = 1.5 + cos( _2pi / v );
+      double c = 1.5 + cos( _2pi / v );
       c = c * c * 0.5 - 1.0;
       coeffs_.push_back(c);
     }

@@ -115,7 +115,7 @@ PolyConnectivity::FaceHandle
 PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size)
 {
   VertexHandle                   vh;
-  size_t                         i, ii, n(_vhs_size), id;
+  size_t                         i, ii, n(_vhs_size);
   HalfedgeHandle                 inner_next, inner_prev,
                                  outer_next, outer_prev,
                                  boundary_next, boundary_prev,
@@ -225,7 +225,7 @@ PolyConnectivity::add_face(const VertexHandle* _vertex_handles, size_t _vhs_size
     assert(inner_prev.is_valid());
     assert(inner_next.is_valid());
 
-    id = 0;
+    size_t id = 0;
     if (edgeData_[i].is_new)  id |= 1;
     if (edgeData_[ii].is_new) id |= 2;
 

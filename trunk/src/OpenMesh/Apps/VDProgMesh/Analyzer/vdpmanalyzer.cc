@@ -808,19 +808,18 @@ void
 compute_cone_of_normals(VHierarchyNodeHandle           node_handle,
 			VHierarchyNodeHandleContainer &leaf_nodes)
 {
-  float                     max_angle, angle;
   Vec3f           n, ln;
   VertexHandle              vh = vhierarchy_.node(node_handle).vertex_handle();
   VHierarchyNodeHandleContainer::iterator  n_it, n_end(leaf_nodes.end());
 
-  n         = mesh_.calc_vertex_normal(vh);
-  max_angle = 0.0f;
+  n               = mesh_.calc_vertex_normal(vh);
+  float max_angle = 0.0f;
 
   n_it = leaf_nodes.begin();
   while( n_it != n_end )
   {
     ln        = vhierarchy_.node(*n_it).normal();
-    angle     = acosf( dot(n,ln) );
+    const float angle     = acosf( dot(n,ln) );
     max_angle = std::max(max_angle, angle );
 
     ++n_it;
@@ -844,7 +843,6 @@ compute_screen_space_error(VHierarchyNodeHandle node_handle, VHierarchyNodeHandl
   Mesh::VertexHandle    vh;
   Vec3f                 residual, res;
   Vec3f                 lp, tri[3];
-  float                 min_distance;
   float                 s, t;
   VHierarchyNodeHandleContainer::iterator  n_it, n_end(leaf_nodes.end());
 
@@ -855,7 +853,7 @@ compute_screen_space_error(VHierarchyNodeHandle node_handle, VHierarchyNodeHandl
     // compute residual of a leaf-vertex from the current mesh_
     vh = vhierarchy_.node(node_handle).vertex_handle();
     residual = lp - mesh_.point(vh);
-    min_distance = residual.length();
+    float min_distance = residual.length();
 
     for (vf_it=mesh_.vf_iter(vh); vf_it.is_valid(); ++vf_it)
     {
@@ -912,18 +910,16 @@ compute_mue_sigma(VHierarchyNodeHandle node_handle,
     float  ratio = std::max(1.0f, max_inner/max_cross);
     float  whole_degree = acosf(1.0f/ratio);
     float  mue, max_mue;
-    float  degree;
-    float  res_length;
     Vec3f  res;
 
     max_mue = 0.0f;
     for (r_it = residuals.begin(); r_it != r_end; ++r_it)
     {
       res = *r_it;
-      res_length = res.length();
+      float res_length = res.length();
 
       // TODO: take care when res.length() is too small
-      degree = acosf(dot(vn,res) / res_length);
+      float degree = acosf(dot(vn,res) / res_length);
 
       if (degree < 0.0f)    degree = -degree;
       if (degree > float(M_PI_2))  degree = float(M_PI) - degree;

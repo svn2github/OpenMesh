@@ -275,8 +275,7 @@ int main(int argc, char **argv)
 
   // 
   MyMesh::FaceFaceIter   ff_it;
-  double                 quality(0.0), face_quality, temp_quality;
-  int                    valence;         
+  double                 quality(0.0);
 
   // ---------------------------------------- subdivide
   std::cout << "\nSubdividing...\n";
@@ -306,7 +305,7 @@ int main(int argc, char **argv)
 
     for (f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it) {
       
-      if (mesh.data(*f_it).state() < target1) {
+      if (mesh.data(*f_it).state() < int(target1) ) {
         ++i;        
         fh = *f_it;
         timer2.start();
@@ -317,7 +316,7 @@ int main(int argc, char **argv)
 
     for (v_it = mesh.vertices_begin(); v_it != mesh.vertices_end(); ++v_it) {
       
-      if (mesh.data(*v_it).state() < target2) {
+      if (mesh.data(*v_it).state() < int(target2) ) {
         vh = *v_it;
         timer2.cont();
         subdivider.refine(vh);
@@ -355,12 +354,12 @@ int main(int argc, char **argv)
       // check every face
       for (f_it = mesh.faces_begin(); f_it != mesh.faces_end(); ++f_it) {
 
-        face_quality = 0.0;
-        valence      = 0;
+        double face_quality = 0.0;
+        int valence      = 0;
 
         for (ff_it = mesh.ff_iter(*f_it); ff_it.is_valid(); ++ff_it) {
 
-          temp_quality = OpenMesh::dot( mesh.normal(*f_it), mesh.normal(*ff_it) );
+          double temp_quality = OpenMesh::dot( mesh.normal(*f_it), mesh.normal(*ff_it) );
 
           if (temp_quality >= 1.0)
             temp_quality = .99;
