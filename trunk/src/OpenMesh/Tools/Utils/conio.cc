@@ -212,11 +212,11 @@ int getche(void)
 int main (void) 
 { 
    char  msg[] = "press key to continue...";
-   char *ptr   = msg, tmp; 
+   char *ptr   = msg;
 
   while ( !OpenMesh::Utils::kbhit() )
   {
-    tmp = *ptr;
+    char* tmp = *ptr;
     *ptr = islower(tmp) ? toupper(tmp) : tolower(tmp);
     printf("\r%s", msg); fflush(stdout);
     *ptr = (char)tmp;
