@@ -55,6 +55,7 @@
 #include <stdexcept>
 #include <OpenMesh/Core/System/config.h>
 #include <OpenMesh/Core/IO/SR_binary.hh>
+#include <OpenMesh/Core/IO/SR_binary_spec.hh>
 
 //== NAMESPACES ===============================================================
 
