@@ -116,7 +116,7 @@ void DecimaterViewerWidget::keyPressEvent(QKeyEvent* _event)
     case Key_Q:
     case Key_Escape:
       qApp->quit();      
-
+      break;
     default:
       this->inherited_t::keyPressEvent(_event);
       break;

@@ -111,7 +111,10 @@ public:
 
   /// default constructor
   DecimaterViewerWidget(QWidget* _parent=0)
-    : MeshViewerWidget(_parent), steps_(1)
+    : MeshViewerWidget(_parent),
+      animate_(false),
+      timer_(0),
+      steps_(1)
   {
     timer_ = new QTimer(this);
     
