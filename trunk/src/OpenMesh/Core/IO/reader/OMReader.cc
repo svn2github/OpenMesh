@@ -159,7 +159,6 @@ bool _OMReader_::read_binary(std::istream& _is, BaseImporter& _bi, Options& _opt
 
   bytes_ += restore(_is, header_, swap);
 
-  size_t data_bytes;
 
   while (!_is.eof()) {
     bytes_ += restore(_is, chunk_header_, swap);
@@ -175,7 +174,6 @@ bool _OMReader_::read_binary(std::istream& _is, BaseImporter& _bi, Options& _opt
 
     // Read in the property data. If it is an anonymous or unknown named
     // property, then skip data.
-    data_bytes = bytes_;
     switch (chunk_header_.entity_) {
       case OMFormat::Chunk::Entity_Vertex:
         if (!read_binary_vertex_chunk(_is, _bi, _opt, swap))
@@ -200,7 +198,7 @@ bool _OMReader_::read_binary(std::istream& _is, BaseImporter& _bi, Options& _opt
       default:
         return false;
     }
-    data_bytes = bytes_ - data_bytes;
+
   }
 
   // File was successfully parsed.

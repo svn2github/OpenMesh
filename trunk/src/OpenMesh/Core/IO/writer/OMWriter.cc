@@ -299,16 +299,14 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     {
       nV = _be.get_vhandles(FaceHandle(i), vhandles);
       if ( header.mesh_ == 'P' )
-         bytes += store( _os, vhandles.size(),
-			OMFormat::Chunk::Integer_16, swap );
+        bytes += store( _os, vhandles.size(), OMFormat::Chunk::Integer_16, swap );
 
       for (size_t j=0; j < vhandles.size(); ++j)
       {
-         using namespace OMFormat;
-         using namespace GenProg;
+        using namespace OMFormat;
+        using namespace GenProg;
 
-	    bytes += store( _os, vhandles[j].idx(),
-			Chunk::Integer_Size(chunk_header.bits_), swap );
+        bytes += store( _os, vhandles[j].idx(), Chunk::Integer_Size(chunk_header.bits_), swap );
       }
     }
   }
