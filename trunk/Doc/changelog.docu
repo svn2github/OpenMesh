@@ -7,21 +7,22 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.0</b> (?/?/?,Rev.923)</td><td>
+<tr valign=top><td><b>3.0</b> (?/?/?,Rev.951)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Rewrote all circulators (STL compliant, removed redundant code)</li>
 <li>Added stream operator for FVIter.</li>
 <li>Added mesh cast for meshes with different but identical traits.</li>
+<li>Fixed segfault of copy_all_properties if one property has been removed before. (Thanks to Simon Flöry for the patch)</li>
 </ul>
-
 
 <b>IO</b>
 <ul>
 <li>close stl files with endsolid</li>
+<li>fix om writer writing colors</li>
+<li>Fixed regression and Problem in OM writer</li>
 </ul>
-
 
 <b>Utils</b>
 <ul>
@@ -33,11 +34,21 @@
 <ul>
 <li>Adapt to new iterators</li>
 <li>Use short names in Doxygen to prevent windows build failure due to excessive name length</li>
+<li>Updated doxygen files</li>
+<li>Use different DOT_FONTNAME</li>
+</ul>
+
+<b>Unittests</b>
+<ul>
+<li>Added more om reader/writer unittests</li>
+<li>Mesh Dual test</li>
+<li>Stripifier test</li>
 </ul>
 
 <b>Build system</b>
 <ul>
 <li>Build unittests with variadic max of 10 on VS 2012</li>
+<li>enable deprecated warning for msvc</li>
 </ul>
 
 </tr>
