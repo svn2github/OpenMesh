@@ -472,7 +472,7 @@ public:
 
       // Copy all properties, if build in is true
       // Otherwise, copy only properties without build in specifier
-      if ( _copyBuildIn || (*p_it)->name().substr(0,2) != "v:")
+      if ( *p_it && ( _copyBuildIn || (*p_it)->name().substr(0,2) != "v:" ) )
         (*p_it)->copy(_vh_from.idx(), _vh_to.idx());
 
     }
@@ -491,7 +491,7 @@ public:
 
       // Copy all properties, if build in is true
       // Otherwise, copy only properties without build in specifier
-      if ( _copyBuildIn || (*p_it)->name().substr(0,2) != "h:")
+      if ( *p_it && ( _copyBuildIn || (*p_it)->name().substr(0,2) != "h:") )
         (*p_it)->copy(_hh_from.idx(), _hh_to.idx());
 
     }
@@ -509,7 +509,7 @@ public:
 
       // Copy all properties, if build in is true
       // Otherwise, copy only properties without build in specifier
-      if ( _copyBuildIn || (*p_it)->name().substr(0,2) != "e:")
+      if ( *p_it && ( _copyBuildIn || (*p_it)->name().substr(0,2) != "e:") )
         (*p_it)->copy(_eh_from.idx(), _eh_to.idx());
 
     }
@@ -529,7 +529,7 @@ public:
 
       // Copy all properties, if build in is true
       // Otherwise, copy only properties without build in specifier
-      if ( _copyBuildIn || (*p_it)->name().substr(0,2) != "f:")
+      if ( *p_it && ( _copyBuildIn || (*p_it)->name().substr(0,2) != "f:") )
         (*p_it)->copy(_fh_from.idx(), _fh_to.idx());
     }
 
