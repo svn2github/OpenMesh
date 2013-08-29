@@ -7,6 +7,25 @@
 
 <!-- --------------------------------------------------------------------- -->
 
+<tr valign=top><td><b>2.4.1</b> (?/?/?,Rev.953)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Fixed segfault of copy_all_properties if one property has been removed before. (Thanks to Simon Flöry for the patch)</li>
+</ul>
+
+<b>IO</b>
+<ul>
+<li>fix om writer writing colors</li>
+<li>Fixed regression and Problem in OM writer</li>
+</ul>
+
+<b>Unittests</b>
+<ul>
+<li>Added more om reader/writer unittests</li>
+</ul>
+
+</tr>
 
 <tr valign=top><td><b>2.4</b> (08/06/2013,Rev.882)</td><td>
 
