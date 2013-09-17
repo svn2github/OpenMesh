@@ -301,6 +301,78 @@ TEST_F(OpenMeshReadWriteOM, WriteTriangleVertexBoolProperty) {
 }
 
 /*
+ * Save and load simple mesh with custom property
+ */
+TEST_F(OpenMeshReadWriteOM, WriteTriangleVertexBoolPropertySpaceEquivalent) {
+
+    Mesh mesh;
+
+    const std::string filename = "triangle-minimal-VBProp-pattern-test.om";
+
+    // generate data
+    Mesh::VertexHandle v1 = mesh.add_vertex(Mesh::Point(1.0,0.0,0.0));
+    Mesh::VertexHandle v2 = mesh.add_vertex(Mesh::Point(0.0,1.0,0.0));
+    Mesh::VertexHandle v3 = mesh.add_vertex(Mesh::Point(0.0,0.0,1.0));
+    mesh.add_face(v1,v2,v3);
+
+    Mesh::VertexHandle v4 = mesh.add_vertex(Mesh::Point(0.0,0.0,1.0));
+    Mesh::VertexHandle v5 = mesh.add_vertex(Mesh::Point(0.0,0.0,1.0));
+    Mesh::VertexHandle v6 = mesh.add_vertex(Mesh::Point(0.0,0.0,1.0));
+    mesh.add_face(v4,v5,v6);
+
+    Mesh::VertexHandle v7 = mesh.add_vertex(Mesh::Point(0.0,0.0,1.0));
+    Mesh::VertexHandle v8 = mesh.add_vertex(Mesh::Point(0.0,0.0,1.0));
+    Mesh::VertexHandle v9 = mesh.add_vertex(Mesh::Point(0.0,0.0,1.0));
+
+    OpenMesh::VPropHandleT<bool> prop;
+    mesh.add_property(prop,"VBProp");
+    mesh.property(prop).set_persistent(true);
+
+    // Create a 0x20 hex pattern in the bitset
+    mesh.property(prop,v1) = false;
+    mesh.property(prop,v2) = false;
+    mesh.property(prop,v3) = false;
+    mesh.property(prop,v4) = false;
+    mesh.property(prop,v5) = false;
+    mesh.property(prop,v6) = true;
+    mesh.property(prop,v7) = false;
+    mesh.property(prop,v8) = false;
+    mesh.property(prop,v9) = true;
+
+    // save
+    bool ok = OpenMesh::IO::write_mesh(mesh,filename);
+    EXPECT_TRUE(ok) << "Unable to write "<<filename;
+
+    // load
+    Mesh cmpMesh;
+
+    cmpMesh.add_property(prop,"VBProp");
+    cmpMesh.property(prop).set_persistent(true);
+
+    ok = OpenMesh::IO::read_mesh(cmpMesh,filename);
+    EXPECT_TRUE(ok) << "Unable to read "<<filename;
+
+    // compare
+    EXPECT_EQ(9u , cmpMesh.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(6u , cmpMesh.n_edges())    << "The number of loaded edges is not correct!";
+    EXPECT_EQ(2u , cmpMesh.n_faces())    << "The number of loaded faces is not correct!";
+
+    EXPECT_FALSE(cmpMesh.property(prop,v1)) << "Wrong Property value at vertex 0";
+    EXPECT_FALSE(cmpMesh.property(prop,v2)) << "Wrong Property value at vertex 1";
+    EXPECT_FALSE(cmpMesh.property(prop,v3)) << "Wrong Property value at vertex 2";
+    EXPECT_FALSE(cmpMesh.property(prop,v4)) << "Wrong Property value at vertex 3";
+    EXPECT_FALSE(cmpMesh.property(prop,v5)) << "Wrong Property value at vertex 4";
+    EXPECT_TRUE(cmpMesh.property(prop,v6))  << "Wrong Property value at vertex 5";
+    EXPECT_FALSE(cmpMesh.property(prop,v7)) << "Wrong Property value at vertex 6";
+    EXPECT_FALSE(cmpMesh.property(prop,v8)) << "Wrong Property value at vertex 7";
+    EXPECT_TRUE(cmpMesh.property(prop,v9))  << "Wrong Property value at vertex 8";
+
+    // cleanup
+    remove(filename.c_str());
+
+}
+
+/*
  * Save and load simple mesh with multiple custom property
  */
 TEST_F(OpenMeshReadWriteOM, WriteTriangleTwoVertexBoolProperty) {
