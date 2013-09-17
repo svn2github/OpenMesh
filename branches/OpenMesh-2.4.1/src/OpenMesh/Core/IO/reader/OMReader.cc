@@ -93,6 +93,13 @@ bool _OMReader_::read(const std::string& _filename, BaseImporter& _bi, Options& 
 
   // Open file
   std::ifstream ifs(_filename.c_str(), std::ios::binary);
+
+  /* Clear formatting flag skipws (Skip whitespaces). If set, operator>> will
+   * skip bytes set to whitespace chars (e.g. 0x20 bytes) in
+   * Property<bool>::restore.
+   */
+  ifs.unsetf(std::ios::skipws);
+
   if (!ifs.is_open() || !ifs.good()) {
     omerr() << "[OMReader] : cannot not open file " << _filename << std::endl;
     return false;
