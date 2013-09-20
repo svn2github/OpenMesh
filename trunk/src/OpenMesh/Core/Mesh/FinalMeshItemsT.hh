@@ -153,15 +153,15 @@ template<typename LhsTraits, typename RhsTraits> struct ItemsEquality {
  *
  * Example:
  * @code{.cpp}
- * struct Traits1 : public OpenMesh::DefaultTraits {
+ * struct TriTraits1 : public OpenMesh::DefaultTraits {
  *   typedef Vec3d Point;
- * }
- * struct Traits2 : public OpenMesh::DefaultTraits {
+ * };
+ * struct TriTraits2 : public OpenMesh::DefaultTraits {
  *   typedef Vec3d Point;
- * }
- * struct Traits3 : public OpenMesh::DefaultTraits {
+ * };
+ * struct TriTraits3 : public OpenMesh::DefaultTraits {
  *   typedef Vec3f Point;
- * }
+ * };
  *
  * TriMesh_ArrayKernelT<TriTraits1> a;
  * TriMesh_ArrayKernelT<TriTraits2> &b = MeshCast<TriMesh_ArrayKernelT<TriTraits2>&, TriMesh_ArrayKernelT<TriTraits1>&>::cast(a); // OK
