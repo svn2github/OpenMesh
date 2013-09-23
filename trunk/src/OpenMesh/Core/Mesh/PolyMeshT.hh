@@ -66,7 +66,6 @@
 
 namespace OpenMesh {
 
-
 //== CLASS DEFINITION =========================================================
 
 
@@ -493,56 +492,52 @@ public:
   inline void split(EdgeHandle _eh, VertexHandle _vh)
   { Kernel::split_edge(_eh, _vh); }
   
-  /**
-   * @brief Cast a mesh with different but identical traits into each other.
-   *
-   * Example:
-   * @code{.cpp}
-   * struct TriTraits1 : public OpenMesh::DefaultTraits {
-   *   typedef Vec3d Point;
-   * };
-   * struct TriTraits2 : public OpenMesh::DefaultTraits {
-   *   typedef Vec3d Point;
-   * };
-   * struct TriTraits3 : public OpenMesh::DefaultTraits {
-   *   typedef Vec3f Point;
-   * };
-   *
-   * TriMesh_ArrayKernelT<TriTraits1> a;
-   * TriMesh_ArrayKernelT<TriTraits2> &b = mesh_cast<TriMesh_ArrayKernelT<TriTraits2>&>(a); // OK
-   * TriMesh_ArrayKernelT<TriTraits3> &c = mesh_cast<TriMesh_ArrayKernelT<TriTraits3>&>(a); // ERROR
-   * @endcode
-   *
-   * @see MeshCast
-   *
-   * @param rhs
-   * @return
-   */
-  template<typename LHS>
-  friend
-  LHS mesh_cast(PolyMeshT &rhs) {
-      return MeshCast<LHS, PolyMeshT&>::cast(rhs);
-  }
-
-  template<typename LHS>
-  friend
-  LHS mesh_cast(PolyMeshT *rhs) {
-      return MeshCast<LHS, PolyMeshT*>::cast(rhs);
-  }
-
-  template<typename LHS>
-  friend
-  const LHS mesh_cast(const PolyMeshT &rhs) {
-      return MeshCast<LHS, const PolyMeshT&>::cast(rhs);
-  }
-
-  template<typename LHS>
-  friend
-  const LHS mesh_cast(const PolyMeshT *rhs) {
-      return MeshCast<LHS, const PolyMeshT*>::cast(rhs);
-  }
-
 };
+
+/**
+ * @brief Cast a mesh with different but identical traits into each other.
+ *
+ * Example:
+ * @code{.cpp}
+ * struct TriTraits1 : public OpenMesh::DefaultTraits {
+ *   typedef Vec3d Point;
+ * };
+ * struct TriTraits2 : public OpenMesh::DefaultTraits {
+ *   typedef Vec3d Point;
+ * };
+ * struct TriTraits3 : public OpenMesh::DefaultTraits {
+ *   typedef Vec3f Point;
+ * };
+ *
+ * TriMesh_ArrayKernelT<TriTraits1> a;
+ * TriMesh_ArrayKernelT<TriTraits2> &b = mesh_cast<TriMesh_ArrayKernelT<TriTraits2>&>(a); // OK
+ * TriMesh_ArrayKernelT<TriTraits3> &c = mesh_cast<TriMesh_ArrayKernelT<TriTraits3>&>(a); // ERROR
+ * @endcode
+ *
+ * @see MeshCast
+ *
+ * @param rhs
+ * @return
+ */
+template<typename LHS, typename KERNEL>
+LHS mesh_cast(PolyMeshT<KERNEL> &rhs) {
+    return MeshCast<LHS, PolyMeshT<KERNEL>&>::cast(rhs);
+}
+
+template<typename LHS, typename KERNEL>
+LHS mesh_cast(PolyMeshT<KERNEL> *rhs) {
+    return MeshCast<LHS, PolyMeshT<KERNEL>*>::cast(rhs);
+}
+
+template<typename LHS, typename KERNEL>
+const LHS mesh_cast(const PolyMeshT<KERNEL> &rhs) {
+    return MeshCast<LHS, const PolyMeshT<KERNEL>&>::cast(rhs);
+}
+
+template<typename LHS, typename KERNEL>
+const LHS mesh_cast(const PolyMeshT<KERNEL> *rhs) {
+    return MeshCast<LHS, const PolyMeshT<KERNEL>*>::cast(rhs);
+}
 
 
 //=============================================================================
