@@ -57,6 +57,7 @@
 #include <OpenMesh/Core/System/config.h>
 #include <OpenMesh/Core/Geometry/MathDefs.hh>
 #include <OpenMesh/Core/Mesh/PolyConnectivity.hh>
+#include <OpenMesh/Core/Mesh/FinalMeshItemsT.hh>
 #include <vector>
 
 
