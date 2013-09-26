@@ -120,10 +120,10 @@ private:
   enum STL_Type { STLA, STLB, NONE };
   STL_Type check_stl_type(const std::string& _filename) const;
 
-  bool read_stla(const std::string& _filename, BaseImporter& _bi) const;
-  bool read_stla(std::istream& _in, BaseImporter& _bi) const;
-  bool read_stlb(const std::string& _filename, BaseImporter& _bi) const;
-  bool read_stlb(std::istream& _in, BaseImporter& _bi) const;
+  bool read_stla(const std::string& _filename, BaseImporter& _bi, Options& _opt) const;
+  bool read_stla(std::istream& _in, BaseImporter& _bi, Options& _opt) const;
+  bool read_stlb(const std::string& _filename, BaseImporter& _bi, Options& _opt) const;
+  bool read_stlb(std::istream& _in, BaseImporter& _bi, Options& _opt) const;
 
 
 private:
