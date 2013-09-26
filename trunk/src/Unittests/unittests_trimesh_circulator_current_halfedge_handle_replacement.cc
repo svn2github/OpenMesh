@@ -275,4 +275,77 @@ TEST_F(OpenMeshTrimeshCirculatorCurrentHalfedgeHandleReplacement, fe_iter) {
     EXPECT_EQ(heh0[i], heh1[i]) << "halfedge handles do not match";
 
 }
+
+/*
+ * Small BoundaryVertexFaceIterator Test
+ */
+TEST_F(OpenMeshTrimeshCirculatorCurrentHalfedgeHandleReplacement, vf_iter_boundary) {
+
+  mesh_.clear();
+
+  // Add some vertices
+  Mesh::VertexHandle vhandle[6];
+
+  vhandle[0] = mesh_.add_vertex(Mesh::Point(0, 1, 0));
+  vhandle[1] = mesh_.add_vertex(Mesh::Point(1, 0, 0));
+  vhandle[2] = mesh_.add_vertex(Mesh::Point(2, 1, 0));
+  vhandle[3] = mesh_.add_vertex(Mesh::Point(3, 0, 0));
+  vhandle[4] = mesh_.add_vertex(Mesh::Point(4, 1, 0));
+  vhandle[5] = mesh_.add_vertex(Mesh::Point(2,-1, 0));
+
+  // Add three faces
+  std::vector<Mesh::VertexHandle> face_vhandles;
+
+  face_vhandles.push_back(vhandle[0]);
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[2]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[2]);
+  face_vhandles.push_back(vhandle[3]);
+  face_vhandles.push_back(vhandle[4]);
+  mesh_.add_face(face_vhandles);
+
+  face_vhandles.clear();
+
+  face_vhandles.push_back(vhandle[1]);
+  face_vhandles.push_back(vhandle[5]);
+  face_vhandles.push_back(vhandle[3]);
+  mesh_.add_face(face_vhandles);
+
+  /* Test setup:
+   *
+   * 0 ------ 2 ------ 4
+   *  \      / \      /
+   *   \  0 /   \  1 /
+   *    \  /     \  /
+   *     1 ------- 3
+   *      \       /
+   *       \  2  /
+   *        \   /
+   *         \ /
+   *          5
+   */
+  size_t current_halfedge_handles[9] = {
+    0,2,12,4,6,8,16,10,14
+  };
+  std::vector<Mesh::FaceHandle> fh0;
+  std::vector<Mesh::FaceHandle> fh1;
+  size_t i(0);
+  for (Mesh::VertexIter v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
+    for (Mesh::VertexFaceIter vf_it = mesh_.vf_iter(*v_it); vf_it.is_valid(); ++vf_it, ++i)
+      fh0.push_back(mesh_.face_handle(Mesh::HalfedgeHandle(current_halfedge_handles[i])));
+  }
+  for (Mesh::VertexIter v_it = mesh_.vertices_begin(); v_it != mesh_.vertices_end(); ++v_it) {
+    for (Mesh::VertexFaceIter vf_it = mesh_.vf_iter(*v_it); vf_it.is_valid(); ++vf_it)
+      fh1.push_back(*vf_it);
+  }
+
+  EXPECT_EQ(fh0.size(), fh1.size()) << "size of vectors does not match";
+  for (size_t i = 0; i < fh0.size(); ++i)
+    EXPECT_EQ(fh0[i], fh1[i]) << "face handles do not match";
+}
+
 }
