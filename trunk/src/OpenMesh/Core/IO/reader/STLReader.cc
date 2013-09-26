@@ -323,7 +323,7 @@ read_stla(std::istream& _in, BaseImporter& _bi, Options& _opt) const
         // set the normal if requested
         // if a normal was requested but could not be found we unset the option
         if (facet_normal) {
-          if (_opt.face_has_normal())
+          if (fh.is_valid() && _opt.face_has_normal())
             _bi.set_normal(fh, n);
         } else
           _opt -= Options::FaceNormal;
@@ -432,7 +432,7 @@ read_stlb(std::istream& _in, BaseImporter& _bi, Options& _opt) const
 	(vhandles[1] != vhandles[2])) {
       FaceHandle fh = _bi.add_face(vhandles);
 
-      if (_opt.face_has_normal())
+      if (fh.is_valid() && _opt.face_has_normal())
         _bi.set_normal(fh, n);
     }
 
