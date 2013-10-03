@@ -139,6 +139,8 @@ class PropertyManager {
 
         const std::string &getName() const { return name_; }
 
+        MeshT &getMesh() const { return *mesh_; }
+
 #if __cplusplus > 199711L or __GXX_EXPERIMENTAL_CXX0X__
         /**
          * Move constructor. Transfers ownership (delete responsibility).
