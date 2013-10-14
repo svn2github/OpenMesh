@@ -146,8 +146,8 @@ namespace OpenMesh {
         unsigned int N = 0;
         _v.clear();
         bytes += IO::restore( _is, N, _swap );
-        std::string key;
-        size_t      val;
+        value_type::key_type key;
+        value_type::mapped_type  val;
         for (size_t i=0; i<N && _is.good(); ++i)
         {
           bytes += IO::restore( _is, key, _swap );
