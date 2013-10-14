@@ -81,9 +81,7 @@ fill_props( Mesh& _m, OpenMesh::HPropHandleT<T> _ph, bool _check=false)
   {
     const int n = it->idx();
 
-    v = it->idx()+1; // ival
-    v = values[n%9];         // dval
-    v = ((n&(n-1))==0);      // bval
+    v = ((n&(n-1))==0);
     v.vec4fval[0] = a[n%9];
     v.vec4fval[1] = b[n%9];
     v.vec4fval[2] = c[n%9];
