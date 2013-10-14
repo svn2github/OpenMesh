@@ -73,8 +73,6 @@ fill_props( Mesh& _m, OpenMesh::HPropHandleT<T> _ph, bool _check=false)
   static float b[9] = { 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f, 8.8f, 9.9f, 1.1f };
   static float c[9] = { 3.3f, 4.4f, 5.5f, 6.6f, 7.7f, 8.8f, 9.9f, 1.1f, 2.2f };
   static float d[9] = { 4.4f, 5.5f, 6.6f, 7.7f, 8.8f, 9.9f, 1.1f, 2.2f, 3.3f };
-  static double values[9] = { 0.1, 0.02, 0.003, 0.0004, 0.00005, 0.000006,
-                              0.0000007, 0.00000008, 0.000000009 };
 
   for( typename Mesh::HalfedgeIter it=_m.halfedges_begin();
        it != _m.halfedges_end(); ++it)
