@@ -52,21 +52,20 @@ private:
       : mesh_(_mesh), cog_(_cog)
     {}
 
-    void operator()(typename Mesh::Vertex& _v)
+    void operator()(const typename Mesh::VertexHandle& _vh)
     {
-      typename Mesh::VertexHandle      vh( mesh_.handle(_v) );
       typename Mesh::VertexVertexIter  vv_it;
       typename Mesh::Scalar            valence(0.0);
     
-      mesh_.property(cog_, vh) = typename Mesh::Point(0.0, 0.0, 0.0);
+      mesh_.property(cog_, _vh) = typename Mesh::Point(0.0, 0.0, 0.0);
 
-      for (vv_it=mesh_.vv_iter(vh); vv_it; ++vv_it)
+      for (vv_it=mesh_.vv_iter(_vh); vv_it.is_valid(); ++vv_it)
       {
-	mesh_.property(cog_, vh) += mesh_.point( vv_it );
+	mesh_.property(cog_, _vh) += mesh_.point( *vv_it );
 	++valence;
       }
 
-      mesh_.property(cog_, mesh_.handle(_v) ) /= valence;
+      mesh_.property(cog_, _vh ) /= valence;
     }
 
   private:
@@ -82,12 +81,11 @@ private:
       : mesh_(_mesh), cog_(_cog)
     {}
 
-    void operator()(typename Mesh::Vertex& _v)
+    void operator()(const typename Mesh::VertexHandle& _vh)
     {
-      typename Mesh::VertexHandle vh(mesh_.handle(_v));
 
-      if (!mesh_.is_boundary(vh))
-	mesh_.set_point( vh, mesh_.property(cog_, vh) );
+      if (!mesh_.is_boundary(_vh))
+	mesh_.set_point( _vh, mesh_.property(cog_, _vh) );
     }
 
   private:

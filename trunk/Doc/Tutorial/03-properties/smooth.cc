@@ -46,20 +46,20 @@ int main(int argc, char **argv)
   {
     for (v_it=mesh.vertices_begin(); v_it!=v_end; ++v_it)
     {      
-      mesh.property(cogs,v_it).vectorize(0.0f);
-      valence = 0;
+      mesh.property(cogs,*v_it).vectorize(0.0f);
+      valence = 0.0;
       
-      for (vv_it=mesh.vv_iter( v_it ); vv_it; ++vv_it)
+      for (vv_it=mesh.vv_iter( *v_it ); vv_it; ++vv_it)
       {
-	mesh.property(cogs,v_it) += mesh.point( vv_it );
+	mesh.property(cogs,*v_it) += mesh.point( *vv_it );
 	++valence;
       }
-      mesh.property(cogs,v_it) /= valence;
+      mesh.property(cogs,*v_it) /= valence;
     }
     
     for (v_it=mesh.vertices_begin(); v_it!=v_end; ++v_it)
-      if ( !mesh.is_boundary( v_it ) )
-	mesh.set_point( v_it, mesh.property(cogs,v_it) );
+      if ( !mesh.is_boundary( *v_it ) )
+	mesh.set_point( *v_it, mesh.property(cogs,*v_it) );
   }
 
 

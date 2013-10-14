@@ -85,9 +85,9 @@ int main(int argc, char **argv)
   for (MyMesh::VertexIter v_it = mesh.vertices_begin();
        v_it != mesh.vertices_end(); ++v_it)
   {
-    std::cout << "Vertex #" << v_it << ": " << mesh.point( v_it );
-    mesh.set_point( v_it, mesh.point(v_it)+mesh.normal(v_it) );
-    std::cout << " moved to " << mesh.point( v_it ) << std::endl;
+    std::cout << "Vertex #" << *v_it << ": " << mesh.point( *v_it );
+    mesh.set_point( *v_it, mesh.point(*v_it)+mesh.normal(*v_it) );
+    std::cout << " moved to " << mesh.point( *v_it ) << std::endl;
   }
 
   return 0;

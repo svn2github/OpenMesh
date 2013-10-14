@@ -100,13 +100,13 @@ int main(int argc, char **argv)
     {
       cog[0] = cog[1] = cog[2] = valence = 0.0;
       
-      for (vv_it=mesh.vv_iter(*v_it); vv_it; ++vv_it)
+      for (vv_it=mesh.vv_iter(*v_it); vv_it.is_valid(); ++vv_it)
       {
         cog += mesh.point( *vv_it );
         ++valence;
       }
 
-      mesh.data(v_it).set_cog(cog / valence);
+      mesh.data(*v_it).set_cog(cog / valence);
     }
     
     for (v_it=mesh.vertices_begin(); v_it!=v_end; ++v_it)
