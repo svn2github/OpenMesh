@@ -360,17 +360,17 @@ public:
   ConstVertexRange vertices() const { return ConstVertexRange(*this); }
 
   /**
-   * @return The vertices as a range object suitable for C++11 range based for loops.
+   * @return The halfedges as a range object suitable for C++11 range based for loops.
    */
   ConstHalfedgeRange halfedges() const { return ConstHalfedgeRange(*this); }
 
   /**
-   * @return The vertices as a range object suitable for C++11 range based for loops.
+   * @return The edges as a range object suitable for C++11 range based for loops.
    */
   ConstEdgeRange edges() const { return ConstEdgeRange(*this); }
 
   /**
-   * @return The vertices as a range object suitable for C++11 range based for loops.
+   * @return The faces as a range object suitable for C++11 range based for loops.
    */
   ConstFaceRange faces() const { return ConstFaceRange(*this); }
   //@}
