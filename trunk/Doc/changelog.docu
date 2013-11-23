@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.0</b> (?/?/?,Rev.951)</td><td>
+<tr valign=top><td><b>3.0</b> (?/?/?,Rev.976)</td><td>
 
 <b>Core</b>
 <ul>
@@ -22,17 +22,22 @@
 <li>close stl files with endsolid</li>
 <li>fix om writer writing colors</li>
 <li>Fixed regression and Problem in OM writer</li>
+<li>Fixed bug in OM Writer when bool property is written which contains 0x20. (Thanks to Simon Flöry for the patch)</li>
+<li>The OpenMesh STLReader now also reads face normals if requested</li>
 </ul>
 
 <b>Utils</b>
 <ul>
 <li>PropertyManager: Added ability to get property name</li>
+<li>PropertyManager: Added getMesh property to PropertyManager.</li>
 <li>Improved C++11-branch of PropertyManager and at the same time fixed compile error with gcc 4.7</li>
+<li>Put mesh_cast methods into surrounding namespace so clang finds them.</li>
 </ul>
 
 <b>Documentation</b>
 <ul>
 <li>Adapt to new iterators</li>
+<li>Updated the OpenMesh tutorials to be OM 3 compliant</li>
 <li>Use short names in Doxygen to prevent windows build failure due to excessive name length</li>
 <li>Updated doxygen files</li>
 <li>Use different DOT_FONTNAME</li>
@@ -43,12 +48,18 @@
 <li>Added more om reader/writer unittests</li>
 <li>Mesh Dual test</li>
 <li>Stripifier test</li>
+<li>Split unittests into seperate compile units</li>
+<li>Added mesh_cast unit test</li>
+<li>STL normal reader unit tests</li>
 </ul>
 
 <b>Build system</b>
 <ul>
 <li>Build unittests with variadic max of 10 on VS 2012</li>
 <li>enable deprecated warning for msvc</li>
+<li>Added flag to activate largeaddressaware option on WIN</li>
+<li>Removed obsolete ftemplate-depth, as the defaults should be fine</li>
+<li>Removed outdated VS2008 project file</li>
 </ul>
 
 </tr>
