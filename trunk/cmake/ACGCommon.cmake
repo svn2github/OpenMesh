@@ -472,11 +472,18 @@ function (acg_add_library _target _libtype)
   endif(WIN32 OR (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE))
   
   if (_and_static)
-      add_custom_command (TARGET ${_target}Static POST_BUILD
-                          COMMAND ${CMAKE_COMMAND} -E
-                          copy_if_different
-                            $<TARGET_FILE:${_target}Static>
-                            ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/$<TARGET_FILE_NAME:${_target}Static>)
+    if( ${CMAKE_BUILD_TYPE} STREQUAL Debug )
+      set ( postfix ${CMAKE_DEBUG_POSTFIX} )
+    else ()
+      set ( postfix "" )
+    endif ()
+
+    set( fullname ${_target}${postfix} )
+    add_custom_command (TARGET ${_target}Static POST_BUILD
+                        COMMAND ${CMAKE_COMMAND} -E
+                        copy_if_different
+                          $<TARGET_FILE:${_target}Static>
+                          ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${fullname}.a)
 
   endif ()
  
