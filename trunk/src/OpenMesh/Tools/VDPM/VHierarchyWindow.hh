@@ -52,7 +52,7 @@
 //== INCLUDES =================================================================
 
 #include <OpenMesh/Tools/VDPM/VHierarchy.hh>
-
+#include <algorithm>
 
 //== FORWARDDECLARATIONS ======================================================
 
