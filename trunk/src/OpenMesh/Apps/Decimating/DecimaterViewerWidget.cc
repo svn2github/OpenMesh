@@ -114,6 +114,8 @@ void DecimaterViewerWidget::keyPressEvent(QKeyEvent* _event)
     break;
 
     case Key_Q:
+      qApp->quit();
+      break;
     case Key_Escape:
       qApp->quit();      
       break;
