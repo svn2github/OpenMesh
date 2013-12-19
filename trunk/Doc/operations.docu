@@ -67,7 +67,9 @@ two adjacent vertices join. %OpenMesh provides the function OpenMesh::PolyConnec
 perform this operation. This will collapse the from-vertex (remeber that halfedges are directed)
 to the to-vertex of the halfedge as illustrated below. Note that collapsing edges
 might cause topological inconsistencies to your mesh. You should verify consistency after
-collapsing edges by calling OpenMesh::PolyConnectivity::is_collapse_ok().
+collapsing edges by calling OpenMesh::PolyConnectivity::is_collapse_ok(). 
+
+\note You have to request status attributes in order to use the collapse and delete functions!
 
 \image html mesh.collapse.png "Collapsing will always be performed in the direction the halfedge points to."
 
