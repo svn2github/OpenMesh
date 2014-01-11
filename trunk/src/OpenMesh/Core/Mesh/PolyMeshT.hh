@@ -316,14 +316,30 @@ public:
   /** Calculates the edge vector as the vector defined by
       the halfedge with id #0 (see below)  */
   void calc_edge_vector(EdgeHandle _eh, Normal& _edge_vec) const
-  { calc_edge_vector( this->halfedge_handle(_eh,0), _edge_vec); }
+  {
+    _edge_vec = calc_edge_vector(_eh);
+  }
+
+  /** Calculates the edge vector as the vector defined by
+      the halfedge with id #0 (see below)  */
+  Normal calc_edge_vector(EdgeHandle _eh) const
+  {
+    return calc_edge_vector(this->halfedge_handle(_eh,0));
+  }
 
   /** Calculates the edge vector as the difference of the
       the points defined by to_vertex_handle() and from_vertex_handle() */
   void calc_edge_vector(HalfedgeHandle _heh, Normal& _edge_vec) const
   {
-    _edge_vec = this->point(this->to_vertex_handle(_heh));
-    _edge_vec -= this->point(this->from_vertex_handle(_heh));
+    _edge_vec = calc_edge_vector(_heh);
+  }
+
+  /** Calculates the edge vector as the difference of the
+      the points defined by to_vertex_handle() and from_vertex_handle() */
+  Normal calc_edge_vector(HalfedgeHandle _heh) const
+  {
+    return this->point(this->to_vertex_handle(_heh)) -
+            this->point(this->from_vertex_handle(_heh));
   }
 
   // Calculates the length of the edge _eh
