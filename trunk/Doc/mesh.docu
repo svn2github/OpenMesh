@@ -838,6 +838,9 @@ The circulators around a face are:
 \arg \c FaceEdgeIter: iterate over the face's edges.
 \arg \c FaceFaceIter: iterate over all edge-neighboring faces.
 
+Other circulators:
+\arg \c HalfedgeLoopIter: iterate over a sequence of Halfedges. (all Halfedges over a face or a hole)
+
 All circulators provide the operations listed in
 CirculatorT<Mesh>, which are basically the same as the
 iterator funtions.

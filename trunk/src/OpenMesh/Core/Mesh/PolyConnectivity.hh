@@ -118,6 +118,10 @@ public:
           &Iterators::GenericCirculatorBaseT<This>::toEdgeHandle>
   VertexEdgeIter;
 
+  typedef Iterators::GenericCirculatorT<This, This::FaceHandle, This::HalfedgeHandle,
+      &Iterators::GenericCirculatorBaseT<This>::toHalfedgeHandle>
+  HalfedgeLoopIter;
+
   typedef VertexVertexIter    ConstVertexVertexIter;
   typedef VertexOHalfedgeIter ConstVertexOHalfedgeIter;
   typedef VertexIHalfedgeIter ConstVertexIHalfedgeIter;
@@ -147,6 +151,12 @@ public:
   typedef FaceHalfedgeIter    ConstFaceHalfedgeIter;
   typedef FaceEdgeIter        ConstFaceEdgeIter;
   typedef FaceFaceIter        ConstFaceFaceIter;
+
+  /*
+   * Halfedge circulator
+   */
+  typedef HalfedgeLoopIter   ConstHalfedgeLoopIter;
+
   //@}
 
   // --- shortcuts
@@ -521,6 +531,9 @@ public:
   /// face - face circulator
   FaceFaceIter ff_begin(FaceHandle _fh)
   { return FaceFaceIter(*this, _fh); }
+  /// halfedge circulator
+  HalfedgeLoopIter hl_begin(HalfedgeHandle _heh)
+  { return HalfedgeLoopIter(*this, _heh); }
 
   /// const face - vertex circulator
   ConstFaceVertexIter cfv_begin(FaceHandle _fh) const
@@ -534,6 +547,9 @@ public:
   /// const face - face circulator
   ConstFaceFaceIter cff_begin(FaceHandle _fh) const
   { return ConstFaceFaceIter(*this, _fh); }
+  /// const halfedge circulator
+  ConstHalfedgeLoopIter chl_begin(HalfedgeHandle _heh) const
+  { return ConstHalfedgeLoopIter(*this, _heh); }
   
   // 'end' circulators
   
@@ -581,6 +597,9 @@ public:
   /// face - face circulator
   FaceFaceIter ff_end(FaceHandle _fh)
   { return FaceFaceIter(*this, _fh, true); }
+  /// face - face circulator
+  HalfedgeLoopIter hl_end(HalfedgeHandle _heh)
+  { return HalfedgeLoopIter(*this, _heh, true); }
 
   /// const face - vertex circulator
   ConstFaceVertexIter cfv_end(FaceHandle _fh) const
@@ -594,6 +613,9 @@ public:
   /// const face - face circulator
   ConstFaceFaceIter cff_end(FaceHandle _fh) const
   { return ConstFaceFaceIter(*this, _fh, true); }
+  /// const face - face circulator
+  ConstHalfedgeLoopIter chl_end(HalfedgeHandle _heh) const
+  { return ConstHalfedgeLoopIter(*this, _heh, true); }
   //@}
 
 
