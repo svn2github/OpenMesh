@@ -164,10 +164,11 @@ calc_face_normal(const Point& _p0,
 //-----------------------------------------------------------------------------
 
 template <class Kernel>
-void
+typename PolyMeshT<Kernel>::Point
 PolyMeshT<Kernel>::
-calc_face_centroid(FaceHandle _fh, Point& _pt) const
+calc_face_centroid(FaceHandle _fh) const
 {
+  Point _pt;
   _pt.vectorize(0);
   Scalar valence = 0.0;
   for (ConstFaceVertexIter cfv_it = this->cfv_iter(_fh); cfv_it.is_valid(); ++cfv_it, valence += 1.0)
@@ -175,6 +176,7 @@ calc_face_centroid(FaceHandle _fh, Point& _pt) const
     _pt += this->point(*cfv_it);
   }
   _pt /= valence;
+  return _pt;
 }
 //-----------------------------------------------------------------------------
 

@@ -232,7 +232,12 @@ public:
   Normal calc_face_normal(const Point& _p0, const Point& _p1,
                                             const Point& _p2) const;
   /// calculates the average of the vertices defining _fh
-  void calc_face_centroid(FaceHandle _fh, Point& _pt) const;
+  void calc_face_centroid(FaceHandle _fh, Point& _pt) const {
+      _pt = calc_face_centroid(_fh);
+  }
+
+  /// Computes and returns the average of the vertices defining _gh
+  Point calc_face_centroid(FaceHandle _fh) const;
 
   /// Update normal for halfedge _heh
   void update_normal(HalfedgeHandle _heh, const double _feature_angle = 0.8)
