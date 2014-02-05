@@ -2,7 +2,6 @@
 2. check files with release numbers:
    Doc/changelog.docu
    System/config.h
-   CHANGELOG
    README
    VERSION
 3. Tag the current version in the svn (checkout, remove .svn readd as tag)
