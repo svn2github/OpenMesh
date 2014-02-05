@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.0</b> (?/?/?,Rev.976)</td><td>
+<tr valign=top><td><b>3.0</b> (?/?/?,Rev.990)</td><td>
 
 <b>Core</b>
 <ul>
@@ -15,6 +15,9 @@
 <li>Added stream operator for FVIter.</li>
 <li>Added mesh cast for meshes with different but identical traits.</li>
 <li>Fixed segfault of copy_all_properties if one property has been removed before. (Thanks to Simon Flöry for the patch)</li>
+<li>Added more convenient versions of calc_edge_vector to PolyMeshT.</li>
+<li>Added HalfedgeLoop iterator to iterate over loops of halfedges (faces, hoes)</li>
+<li>OpenMesh: Added convenience method for face centroid computation.</li>
 </ul>
 
 <b>IO</b>
@@ -32,6 +35,7 @@
 <li>PropertyManager: Added getMesh property to PropertyManager.</li>
 <li>Improved C++11-branch of PropertyManager and at the same time fixed compile error with gcc 4.7</li>
 <li>Put mesh_cast methods into surrounding namespace so clang finds them.</li>
+<li>Build fix for getopt.h on Apple. (Thanks to Adam Vandenberg for the fix)</li>
 </ul>
 
 <b>Documentation</b>
@@ -41,6 +45,8 @@
 <li>Use short names in Doxygen to prevent windows build failure due to excessive name length</li>
 <li>Updated doxygen files</li>
 <li>Use different DOT_FONTNAME</li>
+<li>Added hint that collapse needs status attrributes on the mesh</li>
+<li>Raised Documentation to Doxyfile 1.8.5</li>
 </ul>
 
 <b>Unittests</b>
@@ -60,6 +66,7 @@
 <li>Added flag to activate largeaddressaware option on WIN</li>
 <li>Removed obsolete ftemplate-depth, as the defaults should be fine</li>
 <li>Removed outdated VS2008 project file</li>
+<li>Use cmake generator targetnames for copying files</li>
 </ul>
 
 </tr>
