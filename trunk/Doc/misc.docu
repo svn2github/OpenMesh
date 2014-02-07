@@ -56,6 +56,7 @@ gcc 4.8.x<br>
 Microsoft Visual Studio 2008<br>
 Microsoft Visual Studio 2010<br>
 Microsoft Visual Studio 2012<br>
+Microsoft Visual Studio 2013<br>
 </td></tr>
 
 <tr><td> MacOS X <br>(Panther,Tiger,Leopard,Snow Leopard)</td><td> 
@@ -126,14 +127,14 @@ download and install CMake from <a href="http://www.cmake.org/cmake/resources/so
 <br>
 <br>
 <ul>
-<li> Get Visual Studio 2008 or 2010 </li>
+<li> Get Visual Studio ( 2008-2013 ) </li>
 <li> Extract %OpenMesh source code. </li>
 <li> Get all required libraries and install them ( including headers! ).</li>
 <li> Get cmake for windows from http://www.cmake.org/cmake/resources/software.html <li>
 <li> Start the cmake gui and open the %OpenMesh toplevel directory as source directory </li>
 <li> Choose a build directory (e.g. create a directory called "build" in OpenMesh's root folder) </li>
 <li> Click on configure .... If any libraries are left unconfigured, you can adjust the path manually. Rerun configure until everything is configured correctly.
-     Attention: Some build variables are only visible in advanced view mode. Select Visual Studio 9 2008 or Visual Studio 10 (Depending on your version) as
+     Attention: Some build variables are only visible in advanced view mode. Select Visual Studio 9 (2008), Visual Studio 10(2010), Visual Studio 11 (2012), Visual Studio 12 (2013)  (Depending on your version) as
      generator. </li>
 <li> Click generate to create the visual studio project files </li>
 <li> You can now find a Visual Studio solution file (OpenMesh.sln) in the <b>build</b> directory you chose in cmake </li>
