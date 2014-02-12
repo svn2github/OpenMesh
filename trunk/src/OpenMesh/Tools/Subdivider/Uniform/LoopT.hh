@@ -58,6 +58,7 @@
 #include <OpenMesh/Core/System/config.hh>
 #include <OpenMesh/Tools/Subdivider/Uniform/SubdividerT.hh>
 #include <OpenMesh/Core/Utils/vector_cast.hh>
+#include <OpenMesh/Core/Utils/Property.hh>
 // -------------------- STL
 #include <vector>
 #if defined(OM_CC_MIPS)
