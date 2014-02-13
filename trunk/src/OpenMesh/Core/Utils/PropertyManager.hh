@@ -177,6 +177,13 @@ class PropertyManager {
             return std::move(pm);
         }
 
+
+        PropertyManager duplicate(const char *clone_name) {
+            PropertyManager pm(*mesh_, clone_name, false);
+            pm.mesh_->property(pm.prop_) = mesh_->property(prop_);
+            return std::move(pm);
+        }
+
 #else
         class Proxy {
             private:
@@ -213,6 +220,12 @@ class PropertyManager {
             PROPTYPE dummy_prop;
             PropertyManager pm(mesh, propname, mesh.get_property_handle(dummy_prop, propname));
             pm.retain();
+            return (Proxy)pm;
+        }
+
+        Proxy duplicate(const char *clone_name) {
+            PropertyManager pm(*mesh_, clone_name, false);
+            pm.mesh_->property(pm.prop_) = mesh_->property(prop_);
             return (Proxy)pm;
         }
 #endif
