@@ -278,6 +278,37 @@ class PropertyManager {
             return mesh_->property(prop_, handle);
         }
 
+        /**
+         * Conveniently set the property for an entire range of values.
+         *
+         * Examples:
+         * \code
+         * MeshT mesh;
+         * PropertyManager<VPropHandleT<double>, MeshT> distance(
+         *     mesh, "distance.plugin-example.i8.informatik.rwth-aachen.de");
+         * distance.set_range(
+         *     mesh.vertices_begin(), mesh.vertices_end(),
+         *     std::numeric_limits<double>::infinity());
+         * \endcode
+         * or
+         * \code
+         * MeshT::VertexHandle vh;
+         * distance.set_range(
+         *     mesh.vv_begin(vh), mesh.vv_end(vh),
+         *     std::numeric_limits<double>::infinity());
+         * \endcode
+         *
+         * @param begin Start iterator. Needs to dereference to HandleType.
+         * @param end End iterator. (Exclusive.)
+         * @param value The value the range will be set to.
+         */
+        template<typename HandleTypeIterator>
+        void set_range(HandleTypeIterator begin, HandleTypeIterator end,
+                typename PROPTYPE::const_reference value) {
+            for (; begin != end; ++begin)
+                (*this)[*begin] = value;
+        }
+
     private:
         void deleteProperty() {
             if (!retain_)
