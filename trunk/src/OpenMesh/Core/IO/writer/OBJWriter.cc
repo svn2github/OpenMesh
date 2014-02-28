@@ -234,7 +234,7 @@ write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _prec
 
     std::fstream matStream(matFile.c_str(), std::ios_base::out );
 
-    if (!_out)
+    if (!matStream)
     {
       omerr() << "[OBJWriter] : cannot write material file " << matFile << std::endl;
 
