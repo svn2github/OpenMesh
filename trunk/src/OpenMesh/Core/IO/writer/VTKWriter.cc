@@ -42,7 +42,6 @@ bool _VTKWriter_::write(const std::string& _filename, BaseExporter& _be, Options
 
 bool _VTKWriter_::write(std::ostream& _out, BaseExporter& _be, Options _opt, std::streamsize _precision) const
 {
-    unsigned int idx;
     Vec3f v, n;
     Vec2f t;
     VertexHandle vh;
