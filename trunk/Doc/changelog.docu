@@ -7,7 +7,24 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.1</b> (?/?/?,Rev.990)</td><td>
+<tr valign=top><td><b>3.1</b> (?/?/?,Rev.1001)</td><td>
+
+<b>Utils</b>
+<ul>
+<li>PropertyManager: Added set_range method</li>
+<li>PropertyManager: Added duplicate method</li>
+</ul>
+
+<b>Subdivider</b>
+<ul>
+<li>Added missing include of Property.hh to uniform loop subdivider. (Thanks to Jonathan Balzer for the hint)</li>
+</ul>
+
+<b>IO</b>
+<ul>
+<li>OBJ Writer: Fixed material writer using wrong stream (Thanks to  Vladimir Chalupecky for the fix). closes 2037</li> 
+<li>VTK Writer: Added simple VTK writer writing only vertices and faces (Thanks to Vladimir Chalupecky for the code). closes 2039</li>
+</ul>
 
 </tr>
 
