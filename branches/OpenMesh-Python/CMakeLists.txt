@@ -94,6 +94,8 @@ endif()
 
 add_subdirectory (Doc)
 
+add_subdirectory (src/Python)
+
 # ========================================================================
 # Bundle generation (Targets exist, now configure them)
 # ========================================================================
