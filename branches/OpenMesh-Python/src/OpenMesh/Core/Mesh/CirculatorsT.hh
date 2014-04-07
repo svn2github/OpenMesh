@@ -222,6 +222,8 @@ class GenericCirculatorT : protected GenericCirculatorBaseT<Mesh> {
     public:
         typedef std::ptrdiff_t difference_type;
         typedef ValueHandle value_type;
+        typedef CenterEntityHandle center_type;
+        typedef Mesh mesh_type;
         typedef const value_type& reference;
         typedef const value_type* pointer;
         typedef std::bidirectional_iterator_tag iterator_category;
