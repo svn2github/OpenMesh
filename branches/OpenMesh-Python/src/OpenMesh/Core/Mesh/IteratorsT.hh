@@ -97,6 +97,11 @@ class GenericIteratorT {
         : mesh_(0), skip_bits_(0)
         {}
 
+        /// Copy constructor.
+        GenericIteratorT(const GenericIteratorT& rhs)
+          : mesh_(rhs.mesh_), hnd_(rhs.hnd_), skip_bits_(rhs.skip_bits_)
+        {}
+
         /// Construct with mesh and a target handle.
         GenericIteratorT(mesh_ref _mesh, value_handle _hnd, bool _skip=false)
         : mesh_(&_mesh), hnd_(_hnd), skip_bits_(0)
