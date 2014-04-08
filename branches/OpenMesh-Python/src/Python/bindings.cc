@@ -280,21 +280,20 @@ void expose_openmesh_type(const char *typeName) {
     }
 }
 
+template<class Mesh, class Circulator, class CenterHandle>
+void expose_circulator(const char *typeName) {
+    class_<CirculatorWrapperT<Circulator> >(typeName, init<MeshWrapperT<Mesh>&, CenterHandle>())
+        .def("__iter__", &CirculatorWrapperT<Circulator>::iter)
+        .def("__next__", &CirculatorWrapperT<Circulator>::next)
+        ;
+}
+
 BOOST_PYTHON_MODULE(openmesh) {
     typedef OpenMesh::TriMesh_ArrayKernelT<TriTraits> TriMesh;
     expose_vec3d();
     expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
 
-    class_<CirculatorWrapperT<typename TriMesh::VertexVertexIter> >("VertexVertexIter", no_init)
-            .def("__iter__", &CirculatorWrapperT<typename TriMesh::VertexVertexIter>::iter)
-            .def("__next__", &CirculatorWrapperT<typename TriMesh::VertexVertexIter>::next)
-            ;
-    class_<CirculatorWrapperT<typename TriMesh::VertexFaceIter> >("VertexFaceIter", no_init)
-            .def("__iter__", &CirculatorWrapperT<typename TriMesh::VertexFaceIter>::iter)
-            .def("__next__", &CirculatorWrapperT<typename TriMesh::VertexFaceIter>::next)
-            ;
-    class_<CirculatorWrapperT<typename TriMesh::FaceVertexIter> >("FaceVertexIter", no_init)
-            .def("__iter__", &CirculatorWrapperT<typename TriMesh::FaceVertexIter>::iter)
-            .def("__next__", &CirculatorWrapperT<typename TriMesh::FaceVertexIter>::next)
-            ;
+    expose_circulator<TriMesh, typename TriMesh::VertexVertexIter, typename TriMesh::VertexHandle>("VertexVertexIter");
+    expose_circulator<TriMesh, typename TriMesh::VertexFaceIter, typename TriMesh::VertexHandle>("VertexFaceIter");
+    expose_circulator<TriMesh, typename TriMesh::FaceVertexIter, typename TriMesh::FaceHandle>("FaceVertexIter");
 }
