@@ -11,20 +11,25 @@
 #include <boost/python/iterator.hpp>
 #include <boost/python/return_internal_reference.hpp>
 #include "OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh"
+#include "OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh"
 
 using namespace boost::python;
 
-struct TriTraits : public OpenMesh::DefaultTraits
+struct MeshTraits : public OpenMesh::DefaultTraits
 {
-  /// Use double precision points
-  typedef OpenMesh::Vec3d Point;
-  /// Use double precision Normals
-  typedef OpenMesh::Vec3d Normal;
+    /// Use double precision points
+    typedef OpenMesh::Vec3d Point;
 
-  /// Use RGBA Color
-  typedef OpenMesh::Vec4f Color;
+    /// Use double precision Normals
+    typedef OpenMesh::Vec3d Normal;
+
+    /// Use RGBA Color
+    typedef OpenMesh::Vec4f Color;
 
 };
+
+typedef OpenMesh::TriMesh_ArrayKernelT<MeshTraits> TriMesh;
+typedef OpenMesh::PolyMesh_ArrayKernelT<MeshTraits> PolyMesh;
 
 namespace {
     inline object pass_through(object const& o) { return o; }
@@ -188,6 +193,20 @@ void expose_vec3d() {
 
 }
 
+void expose_handles() {
+    class_<OpenMesh::BaseHandle>("BaseHandle")
+        .def("idx", &OpenMesh::BaseHandle::idx)
+        .def("is_valid", &OpenMesh::BaseHandle::is_valid)
+        .def("reset", &OpenMesh::BaseHandle::reset)
+        .def("invalidate", &OpenMesh::BaseHandle::invalidate)
+        .def(self == self)
+        .def(self != self)
+        .def(self < self)
+        ;
+    class_<OpenMesh::PolyConnectivity::VertexHandle, bases<OpenMesh::BaseHandle> >("VertexHandle");
+    class_<OpenMesh::PolyConnectivity::FaceHandle, bases<OpenMesh::BaseHandle> >("FaceHandle");
+}
+
 template<class Circulator>
 class CirculatorWrapperT {
     public:
@@ -265,35 +284,26 @@ void expose_openmesh_type(const char *typeName) {
             .def("vf", &MeshT::vf)
             .def("fv", &MeshT::fv)
             ;
-
-        class_<OpenMesh::BaseHandle>("BaseHandle")
-            .def("idx", &OpenMesh::BaseHandle::idx)
-            .def("is_valid", &OpenMesh::BaseHandle::is_valid)
-            .def("reset", &OpenMesh::BaseHandle::reset)
-            .def("invalidate", &OpenMesh::BaseHandle::invalidate)
-            .def(self == self)
-            .def(self != self)
-            .def(self < self)
-            ;
-        class_<typename MeshT::VertexHandle, bases<OpenMesh::BaseHandle> >("VertexHandle");
-        class_<typename MeshT::FaceHandle, bases<OpenMesh::BaseHandle> >("FaceHandle");
     }
 }
 
-template<class Mesh, class Circulator, class CenterHandle>
+template<class Circulator>
 void expose_circulator(const char *typeName) {
-    class_<CirculatorWrapperT<Circulator> >(typeName, init<MeshWrapperT<Mesh>&, CenterHandle>())
+    class_<CirculatorWrapperT<Circulator> >(typeName, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
+        .def(init<MeshWrapperT<PolyMesh>&, typename Circulator::center_type>())
         .def("__iter__", &CirculatorWrapperT<Circulator>::iter)
         .def("__next__", &CirculatorWrapperT<Circulator>::next)
         ;
 }
 
 BOOST_PYTHON_MODULE(openmesh) {
-    typedef OpenMesh::TriMesh_ArrayKernelT<TriTraits> TriMesh;
     expose_vec3d();
-    expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
+    expose_handles();
 
-    expose_circulator<TriMesh, typename TriMesh::VertexVertexIter, typename TriMesh::VertexHandle>("VertexVertexIter");
-    expose_circulator<TriMesh, typename TriMesh::VertexFaceIter, typename TriMesh::VertexHandle>("VertexFaceIter");
-    expose_circulator<TriMesh, typename TriMesh::FaceVertexIter, typename TriMesh::FaceHandle>("FaceVertexIter");
+    expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
+    expose_openmesh_type<MeshWrapperT<PolyMesh> >("PolyMesh");
+
+    expose_circulator<OpenMesh::PolyConnectivity::VertexVertexIter>("VertexVertexIter");
+    expose_circulator<OpenMesh::PolyConnectivity::VertexFaceIter>("VertexFaceIter");
+    expose_circulator<OpenMesh::PolyConnectivity::FaceVertexIter>("FaceVertexIter");
 }
