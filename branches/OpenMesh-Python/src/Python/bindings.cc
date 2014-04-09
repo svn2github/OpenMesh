@@ -204,6 +204,8 @@ void expose_handles() {
         .def(self < self)
         ;
     class_<OpenMesh::PolyConnectivity::VertexHandle, bases<OpenMesh::BaseHandle> >("VertexHandle");
+    class_<OpenMesh::PolyConnectivity::HalfedgeHandle, bases<OpenMesh::BaseHandle> >("HalfedgeHandle");
+    class_<OpenMesh::PolyConnectivity::EdgeHandle, bases<OpenMesh::BaseHandle> >("EdgeHandle");
     class_<OpenMesh::PolyConnectivity::FaceHandle, bases<OpenMesh::BaseHandle> >("FaceHandle");
 }
 
@@ -304,6 +306,15 @@ BOOST_PYTHON_MODULE(openmesh) {
     expose_openmesh_type<MeshWrapperT<PolyMesh> >("PolyMesh");
 
     expose_circulator<OpenMesh::PolyConnectivity::VertexVertexIter>("VertexVertexIter");
+    expose_circulator<OpenMesh::PolyConnectivity::VertexIHalfedgeIter>("VertexIHalfedgeIter");
+    expose_circulator<OpenMesh::PolyConnectivity::VertexOHalfedgeIter>("VertexOHalfedgeIter");
+    expose_circulator<OpenMesh::PolyConnectivity::VertexEdgeIter>("VertexEdgeIter");
     expose_circulator<OpenMesh::PolyConnectivity::VertexFaceIter>("VertexFaceIter");
+
     expose_circulator<OpenMesh::PolyConnectivity::FaceVertexIter>("FaceVertexIter");
+    expose_circulator<OpenMesh::PolyConnectivity::FaceHalfedgeIter>("FaceHalfedgeIter");
+    expose_circulator<OpenMesh::PolyConnectivity::FaceEdgeIter>("FaceEdgeIter");
+    expose_circulator<OpenMesh::PolyConnectivity::FaceFaceIter>("FaceFaceIter");
+
+    expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
 }
