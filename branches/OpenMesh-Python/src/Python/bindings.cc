@@ -259,6 +259,12 @@ class MeshWrapperT : public Mesh {
 template<typename MeshT>
 void expose_openmesh_type(const char *typeName) {
     {
+        // Member function pointers for overloaded functions
+        typename MeshT::EdgeHandle (MeshT::*edge_handle_uint)(unsigned int) const = &MeshT::edge_handle;
+        typename MeshT::EdgeHandle (MeshT::*edge_handle_heh)(typename MeshT::HalfedgeHandle) const = &MeshT::edge_handle;
+        typename MeshT::FaceHandle (MeshT::*face_handle_uint)(unsigned int) const = &MeshT::face_handle;
+        typename MeshT::FaceHandle (MeshT::*face_handle_heh)(typename MeshT::HalfedgeHandle) const = &MeshT::face_handle;
+
         class_<MeshT> classMeshT = class_<MeshT>(typeName);
 
         /*
@@ -282,6 +288,11 @@ void expose_openmesh_type(const char *typeName) {
             .def("point", (typename MeshT::Point &(MeshT::*)(typename MeshT::VertexHandle))&MeshT::point, return_internal_reference<>())
             .def("add_face", (typename MeshT::FaceHandle (MeshT::*)(typename MeshT::VertexHandle, typename MeshT::VertexHandle, typename MeshT::VertexHandle))&MeshT::add_face)
             .def("vertex_handle", &MeshT::vertex_handle)
+            .def("edge_handle", edge_handle_uint)
+            .def("edge_handle", edge_handle_heh)
+            .def("face_handle", face_handle_uint)
+            .def("face_handle", face_handle_heh)
+            .def("to_vertex_handle", &MeshT::to_vertex_handle)
             .def("vv", &MeshT::vv)
             .def("vf", &MeshT::vf)
             .def("fv", &MeshT::fv)
