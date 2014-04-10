@@ -1,7 +1,7 @@
 import unittest
 import openmesh
 
-class TriMeshCirculatorVertexIHalfEdge(unittest.TestCase):
+class TriMeshCirculatorVertexOHalfEdge(unittest.TestCase):
 
     def setUp(self):
         self.mesh = openmesh.TriMesh()
@@ -33,48 +33,48 @@ class TriMeshCirculatorVertexIHalfEdge(unittest.TestCase):
         Starting halfedge is 1->4
         '''
 
-    def test_vertex_incoming_halfedge_without_holes_increment(self):
+    def test_vertex_outgoing_halfedge_without_holes_increment(self):
         # Iterate around vertex 1 at the middle
-        vih_it = openmesh.VertexIHalfedgeIter(self.mesh, self.vhandle[1])
-        heh = vih_it.__next__()
-        self.assertEqual(heh.idx(), 10)
+        voh_it = openmesh.VertexOHalfedgeIter(self.mesh, self.vhandle[1])
+        heh = voh_it.__next__()
+        self.assertEqual(heh.idx(), 11)
+        self.assertEqual(self.mesh.face_handle(heh).idx(), 3)
+        heh = voh_it.__next__()
+        self.assertEqual(heh.idx(), 6)
         self.assertEqual(self.mesh.face_handle(heh).idx(), 1)
-        heh = vih_it.__next__()
-        self.assertEqual(heh.idx(), 7)
+        heh = voh_it.__next__()
+        self.assertEqual(heh.idx(), 1)
         self.assertEqual(self.mesh.face_handle(heh).idx(), 2)
-        heh = vih_it.__next__()
-        self.assertEqual(heh.idx(), 0)
-        self.assertEqual(self.mesh.face_handle(heh).idx(), 0)
-        heh = vih_it.__next__()
-        self.assertEqual(heh.idx(), 3)
-        self.assertEqual(self.mesh.face_handle(heh).idx(), 3)
-        self.assertRaises(StopIteration, vih_it.__next__)
-        
-    def test_vertex_incoming_halfedge_boundary_increment(self):
-        # Iterate around vertex 2 at the boundary
-        vih_it = openmesh.VertexIHalfedgeIter(self.mesh, self.vhandle[2])
-        heh = vih_it.__next__()
-        self.assertEqual(heh.idx(), 14)
-        self.assertEqual(self.mesh.face_handle(heh).idx(), 3)
-        heh = vih_it.__next__()
+        heh = voh_it.__next__()
         self.assertEqual(heh.idx(), 2)
         self.assertEqual(self.mesh.face_handle(heh).idx(), 0)
-        heh = vih_it.__next__()
-        self.assertEqual(heh.idx(), 5)
-        self.assertEqual(self.mesh.face_handle(heh).idx(), -1)
-        self.assertRaises(StopIteration, vih_it.__next__)
+        self.assertRaises(StopIteration, voh_it.__next__)
         
-    def test_vertex_incoming_halfedge_dereference_increment(self):
+    def test_vertex_outgoing_halfedge_boundary_increment(self):
+        # Iterate around vertex 2 at the boundary
+        voh_it = openmesh.VertexOHalfedgeIter(self.mesh, self.vhandle[2])
+        heh = voh_it.__next__()
+        self.assertEqual(heh.idx(), 15)
+        self.assertEqual(self.mesh.face_handle(heh).idx(), -1)
+        heh = voh_it.__next__()
+        self.assertEqual(heh.idx(), 3)
+        self.assertEqual(self.mesh.face_handle(heh).idx(), 3)
+        heh = voh_it.__next__()
+        self.assertEqual(heh.idx(), 4)
+        self.assertEqual(self.mesh.face_handle(heh).idx(), 0)
+        self.assertRaises(StopIteration, voh_it.__next__)
+        
+    def test_vertex_outgoing_halfedge_dereference_increment(self):
         # Iterate around vertex 1 at the middle
-        vih_it = openmesh.VertexIHalfedgeIter(self.mesh, self.vhandle[1])
-        heh = vih_it.__next__()
+        voh_it = openmesh.VertexOHalfedgeIter(self.mesh, self.vhandle[1])
+        heh = voh_it.__next__()
         eh = self.mesh.edge_handle(heh)
         vh = self.mesh.to_vertex_handle(heh)
-        self.assertEqual(heh.idx(), 10)
+        self.assertEqual(heh.idx(), 11)
         self.assertEqual(eh.idx(), 5)
-        self.assertEqual(vh.idx(), 1)
+        self.assertEqual(vh.idx(), 4)
 
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TriMeshCirculatorVertexIHalfEdge)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TriMeshCirculatorVertexOHalfEdge)
     unittest.TextTestRunner(verbosity=2).run(suite)
