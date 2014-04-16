@@ -306,6 +306,7 @@ void expose_circulator(const char *typeName) {
         .def(init<MeshWrapperT<PolyMesh>&, typename Circulator::center_type>())
         .def("__iter__", &CirculatorWrapperT<Circulator>::iter)
         .def("__next__", &CirculatorWrapperT<Circulator>::next)
+        .def("next", &CirculatorWrapperT<Circulator>::next)
         ;
 }
 
@@ -327,5 +328,5 @@ BOOST_PYTHON_MODULE(openmesh) {
     expose_circulator<OpenMesh::PolyConnectivity::FaceEdgeIter>("FaceEdgeIter");
     expose_circulator<OpenMesh::PolyConnectivity::FaceFaceIter>("FaceFaceIter");
 
-    expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
+    // TODO expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
 }

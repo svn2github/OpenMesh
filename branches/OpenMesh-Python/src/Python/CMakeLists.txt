@@ -4,8 +4,8 @@ endif()
 
 if ( OPENMESH_BUILD_PYTHON_INTEGRATION )
     # TODO: ensure that python libs and boost python libs match up
-    FIND_PACKAGE( PythonLibs 3.2 REQUIRED )
-    FIND_PACKAGE( Boost 1.46.0 COMPONENTS python-py32 REQUIRED )
+    FIND_PACKAGE( PythonLibs 2.7 REQUIRED )
+    FIND_PACKAGE( Boost 1.50.0 COMPONENTS python-py27 REQUIRED )
 
     include_directories(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
     file(GLOB SOURCES *.cc)
