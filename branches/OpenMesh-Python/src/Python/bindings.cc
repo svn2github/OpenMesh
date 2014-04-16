@@ -1,15 +1,9 @@
-/*
- * bindings.cc
- *
- *  Created on: May 30, 2012
- *      Author: ebke
- */
-
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include <boost/python.hpp>
 #include <boost/python/iterator.hpp>
 #include <boost/python/return_internal_reference.hpp>
+#include <boost/python/copy_non_const_reference.hpp>
 #include "OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh"
 #include "OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh"
 
@@ -17,316 +11,253 @@ using namespace boost::python;
 
 struct MeshTraits : public OpenMesh::DefaultTraits
 {
-    /// Use double precision points
-    typedef OpenMesh::Vec3d Point;
+	/// Use double precision points
+	typedef OpenMesh::Vec3d Point;
 
-    /// Use double precision Normals
-    typedef OpenMesh::Vec3d Normal;
+	/// Use double precision Normals
+	typedef OpenMesh::Vec3d Normal;
 
-    /// Use RGBA Color
-    typedef OpenMesh::Vec4f Color;
-
+	/// Use RGBA Color
+	typedef OpenMesh::Vec4f Color;
 };
 
 typedef OpenMesh::TriMesh_ArrayKernelT<MeshTraits> TriMesh;
 typedef OpenMesh::PolyMesh_ArrayKernelT<MeshTraits> PolyMesh;
 
-namespace {
-    inline object pass_through(object const& o) { return o; }
+typedef OpenMesh::VertexHandle VertexHandle;
+typedef OpenMesh::HalfedgeHandle HalfedgeHandle;
+typedef OpenMesh::EdgeHandle EdgeHandle;
+typedef OpenMesh::FaceHandle FaceHandle;
+
+template <class Vector, class Scalar>
+void set_item(Vector& _vec, int _index, Scalar _value) {
+	if (_index < 0) {
+		_index += _vec.size();
+	}
+
+	if ((size_t)_index < _vec.size()) {
+		_vec[_index] = _value;
+	}
+	else {
+		PyErr_SetString(PyExc_IndexError, "index out of range");
+		throw_error_already_set();
+	}
 }
 
-template<typename IterType, typename Type>
-class IteratorWrapper {
-    public:
-        typedef IteratorWrapper<IterType, Type> This;
+template <class Vector, class Scalar>
+Scalar get_item(Vector& _vec, int _index) {
+	if (_index < 0) {
+		_index += _vec.size();
+	}
 
-        IteratorWrapper(IterType begin, IterType end) :
-            it(begin), end(end) {
+	if ((size_t)_index < _vec.size()) {
+		return _vec[_index];
+	}
+	else {
+		PyErr_SetString(PyExc_IndexError, "index out of range");
+		throw_error_already_set();
+	}
 
-        }
-
-        Type next() {
-            IterType result = it;
-            if (++it == end) {
-                PyErr_SetString(PyExc_StopIteration, "No more data.");
-                boost::python::throw_error_already_set();
-            }
-            return *result;
-        }
-
-        static void wrap(const char *name) {
-            class_<This>(name, no_init)
-                    .def("next", &This::next, with_custodian_and_ward_postcall<0, 1>())
-                    .def("__iter__", pass_through)
-                    ;
-        }
-
-    private:
-        IterType it, end;
-};
-
-template<class SurroundingType, class ParamType, class IterType, class Type>
-class IteratorWrapperBuilder {
-    public:
-        typedef IteratorWrapper<IterType, Type> *result_type;
-        typedef IteratorWrapper<IterType, Type> result_deref_type;
-
-        typedef IterType (SurroundingType::*IterBuilder)(ParamType);
-        IteratorWrapperBuilder(IterBuilder beginFn, IterBuilder endFn)
-            : beginFn(beginFn), endFn(endFn) {
-        }
-
-        IteratorWrapper<IterType, Type> *operator() (SurroundingType &collection, ParamType param) {
-            return new IteratorWrapper<IterType, Type>((collection.*beginFn)(param), (collection.*endFn)(param));
-        }
-
-    private:
-        IterBuilder beginFn, endFn;
-};
-
-template<class SurroundingType, class ParamType, class IterType>
-object buildIteratorWrapperBuilder(
-        IterType (SurroundingType::*beginFn)(ParamType), IterType (SurroundingType::*endFn)(ParamType), const char *wrappedTypeName) {
-
-    typedef IteratorWrapperBuilder<SurroundingType, ParamType, IterType, typename IterType::value_type> IWB;
-
-    static bool wrapped = false;
-    if (!wrapped) {
-        wrapped = true;
-        IWB::result_deref_type::wrap(wrappedTypeName);
-    }
-
-    return make_function(
-            IWB(beginFn, endFn),
-            return_value_policy<manage_new_object, with_custodian_and_ward_postcall<0, 1> >(),
-            boost::mpl::vector<typename IWB::result_type, SurroundingType&, ParamType>());
-}
-
-template <class VectorT, class Scalar>
-void set_item(VectorT& _vec, int _index, Scalar _value) {
-  if (_index < 0)
-    _index += _vec.size();
-
-  if ((size_t)_index < _vec.size())
-    _vec[_index] = _value;
-  else {
-    PyErr_SetString(PyExc_IndexError, "index out of range");
-    throw_error_already_set();
-  }
-}
-
-template <class VectorT, class Scalar>
-Scalar get_item(VectorT& _vec, int _index) {
-  if (_index < 0)
-    _index += _vec.size();
-
-  if ((size_t)_index < _vec.size())
-    return _vec[_index];
-  else {
-    PyErr_SetString(PyExc_IndexError, "index out of range");
-    throw_error_already_set();
-  }
-
-  return 0.0;
-}
-
-void expose_vec3d() {
-  struct VecFn {
-    static OpenMesh::Vec3d *makeNullPoint() { return new OpenMesh::Vec3d(0, 0, 0); }
-  };
-
-  double (OpenMesh::Vec3d::*max1)() const = &OpenMesh::Vec3d::max;
-  OpenMesh::Vec3d (OpenMesh::Vec3d::*max2)(const OpenMesh::Vec3d&) const = &OpenMesh::Vec3d::max;
-  double (OpenMesh::Vec3d::*min1)() const = &OpenMesh::Vec3d::min;
-  OpenMesh::Vec3d (OpenMesh::Vec3d::*min2)(const OpenMesh::Vec3d&) const = &OpenMesh::Vec3d::min;
-
-  OpenMesh::Vec3d& (OpenMesh::Vec3d::*maximize)(const OpenMesh::Vec3d&) = &OpenMesh::Vec3d::maximize;
-  OpenMesh::Vec3d& (OpenMesh::Vec3d::*minimize)(const OpenMesh::Vec3d&) = &OpenMesh::Vec3d::minimize;
-  OpenMesh::Vec3d& (OpenMesh::Vec3d::*normalize)() = &OpenMesh::Vec3d::normalize;
-  OpenMesh::Vec3d& (OpenMesh::Vec3d::*normalize_cond)() = &OpenMesh::Vec3d::normalize_cond;
-
-
-  class_<OpenMesh::Vec3d>("Vec3d", init<double, double, double>())
-      .def("__init__", make_constructor(&VecFn::makeNullPoint))
-      .def(self_ns::str(self))
-      .def(self == self)
-      .def(self != self)
-      .def(self < self)
-      .def(self * self)
-      .def(self / self)
-      .def(self + self)
-      .def(self - self)
-      .def(self *= self)
-      .def(self /= self)
-      .def(self += self)
-      .def(self -= self)
-      .def(double() * self)
-      .def(self * double())
-      .def(self / double())
-      .def(self *= double())
-      .def(self /= double())
-      .def("dot", &OpenMesh::Vec3d::operator|)
-      .def("cross", &OpenMesh::Vec3d::operator%)
-      .def("length", &OpenMesh::Vec3d::length)
-      .def("norm", &OpenMesh::Vec3d::norm)
-      .def("sqrnorm", &OpenMesh::Vec3d::sqrnorm)
-      .def("l1_norm", &OpenMesh::Vec3d::l1_norm)
-      .def("l8_norm", &OpenMesh::Vec3d::l8_norm)
-      .def("max", max1)
-      .def("max", max2)
-      .def("min", min1)
-      .def("min", min2)
-      .def("maximize", maximize, return_internal_reference<>())
-      .def("minimize", minimize, return_internal_reference<>())
-      .def("mean", &OpenMesh::Vec3d::mean)
-      .def("mean_abs", &OpenMesh::Vec3d::mean_abs)
-      .def("max_abs", &OpenMesh::Vec3d::max_abs)
-      .def("min_abs", &OpenMesh::Vec3d::min_abs)
-      .def("maximized", &OpenMesh::Vec3d::maximized)
-      .def("minimized", &OpenMesh::Vec3d::minimized)
-      .def("normalize", normalize, return_internal_reference<>())
-      .def("normalize_cond", normalize_cond, return_internal_reference<>())
-      .def("normalized", &OpenMesh::Vec3d::normalized)
-      .def("__setitem__", &set_item<OpenMesh::Vec3d, double>)
-      .def("__getitem__", &get_item<OpenMesh::Vec3d, double>)
-      ;
-
-}
-
-void expose_handles() {
-    class_<OpenMesh::BaseHandle>("BaseHandle")
-        .def("idx", &OpenMesh::BaseHandle::idx)
-        .def("is_valid", &OpenMesh::BaseHandle::is_valid)
-        .def("reset", &OpenMesh::BaseHandle::reset)
-        .def("invalidate", &OpenMesh::BaseHandle::invalidate)
-        .def(self == self)
-        .def(self != self)
-        .def(self < self)
-        ;
-    class_<OpenMesh::PolyConnectivity::VertexHandle, bases<OpenMesh::BaseHandle> >("VertexHandle");
-    class_<OpenMesh::PolyConnectivity::HalfedgeHandle, bases<OpenMesh::BaseHandle> >("HalfedgeHandle");
-    class_<OpenMesh::PolyConnectivity::EdgeHandle, bases<OpenMesh::BaseHandle> >("EdgeHandle");
-    class_<OpenMesh::PolyConnectivity::FaceHandle, bases<OpenMesh::BaseHandle> >("FaceHandle");
+	return 0.0;
 }
 
 template<class Circulator>
 class CirculatorWrapperT {
-    public:
-        CirculatorWrapperT(typename Circulator::mesh_type& mesh, typename Circulator::center_type center) :
-            circulator(mesh, center) {
-        }
+	public:
+		CirculatorWrapperT(typename Circulator::mesh_type& mesh, typename Circulator::center_type center) :
+			circulator(mesh, center) {
+		}
 
-        CirculatorWrapperT iter() {
-            return *this;
-        }
+		CirculatorWrapperT iter() {
+			return *this;
+		}
 
-        typename Circulator::value_type next() {
-            if (circulator.is_valid()) {
-                typename Circulator::value_type res = *circulator;
-                ++circulator;
-                return res;
-            }
-            else {
-                PyErr_SetString(PyExc_StopIteration, "No more data.");
-                boost::python::throw_error_already_set();
-            }
-            return typename Circulator::value_type();
-        }
+		typename Circulator::value_type next() {
+			if (circulator.is_valid()) {
+				typename Circulator::value_type res = *circulator;
+				++circulator;
+				return res;
+			}
+			else {
+				PyErr_SetString(PyExc_StopIteration, "No more data.");
+				throw_error_already_set();
+			}
+			return typename Circulator::value_type();
+		}
 
-    private:
-        Circulator circulator;
+	private:
+		Circulator circulator;
 };
 
 template<class Mesh>
 class MeshWrapperT : public Mesh {
-    public:
-        typedef typename Mesh::VertexHandle VertexHandle;
-        typedef typename Mesh::FaceHandle FaceHandle;
+	public:
+		CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle handle) {
+			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, handle);
+		}
 
-        CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle handle) {
-            return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, handle);
-        }
+		CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle handle) {
+			return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, handle);
+		}
 
-        CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle handle) {
-            return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, handle);
-        }
-
-        CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle handle) {
-            return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, handle);
-        }
+		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle handle) {
+			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, handle);
+		}
 };
 
-template<typename MeshT>
+void expose_vec3d() {
+	struct VecFn {
+		static OpenMesh::Vec3d *makeNullPoint() { return new OpenMesh::Vec3d(0, 0, 0); }
+	};
+
+	double (OpenMesh::Vec3d::*max1)() const = &OpenMesh::Vec3d::max;
+	OpenMesh::Vec3d (OpenMesh::Vec3d::*max2)(const OpenMesh::Vec3d&) const = &OpenMesh::Vec3d::max;
+	double (OpenMesh::Vec3d::*min1)() const = &OpenMesh::Vec3d::min;
+	OpenMesh::Vec3d (OpenMesh::Vec3d::*min2)(const OpenMesh::Vec3d&) const = &OpenMesh::Vec3d::min;
+
+	OpenMesh::Vec3d& (OpenMesh::Vec3d::*maximize)(const OpenMesh::Vec3d&) = &OpenMesh::Vec3d::maximize;
+	OpenMesh::Vec3d& (OpenMesh::Vec3d::*minimize)(const OpenMesh::Vec3d&) = &OpenMesh::Vec3d::minimize;
+	OpenMesh::Vec3d& (OpenMesh::Vec3d::*normalize)() = &OpenMesh::Vec3d::normalize;
+	OpenMesh::Vec3d& (OpenMesh::Vec3d::*normalize_cond)() = &OpenMesh::Vec3d::normalize_cond;
+
+	class_<OpenMesh::Vec3d>("Vec3d", init<double, double, double>())
+		.def("__init__", make_constructor(&VecFn::makeNullPoint))
+		.def(self_ns::str(self))
+		.def(self == self)
+		.def(self != self)
+		.def(self < self)
+		.def(self * self)
+		.def(self / self)
+		.def(self + self)
+		.def(self - self)
+		.def(self *= self)
+		.def(self /= self)
+		.def(self += self)
+		.def(self -= self)
+		.def(double() * self)
+		.def(self * double())
+		.def(self / double())
+		.def(self *= double())
+		.def(self /= double())
+		.def("dot", &OpenMesh::Vec3d::operator|)
+		.def("cross", &OpenMesh::Vec3d::operator%)
+		.def("length", &OpenMesh::Vec3d::length)
+		.def("norm", &OpenMesh::Vec3d::norm)
+		.def("sqrnorm", &OpenMesh::Vec3d::sqrnorm)
+		.def("l1_norm", &OpenMesh::Vec3d::l1_norm)
+		.def("l8_norm", &OpenMesh::Vec3d::l8_norm)
+		.def("max", max1)
+		.def("max", max2)
+		.def("min", min1)
+		.def("min", min2)
+		.def("maximize", maximize, return_internal_reference<>())
+		.def("minimize", minimize, return_internal_reference<>())
+		.def("mean", &OpenMesh::Vec3d::mean)
+		.def("mean_abs", &OpenMesh::Vec3d::mean_abs)
+		.def("max_abs", &OpenMesh::Vec3d::max_abs)
+		.def("min_abs", &OpenMesh::Vec3d::min_abs)
+		.def("maximized", &OpenMesh::Vec3d::maximized)
+		.def("minimized", &OpenMesh::Vec3d::minimized)
+		.def("normalize", normalize, return_internal_reference<>())
+		.def("normalize_cond", normalize_cond, return_internal_reference<>())
+		.def("normalized", &OpenMesh::Vec3d::normalized)
+		.def("__setitem__", &set_item<OpenMesh::Vec3d, double>)
+		.def("__getitem__", &get_item<OpenMesh::Vec3d, double>)
+		;
+}
+
+void expose_handles() {
+	class_<OpenMesh::BaseHandle>("BaseHandle")
+		.def("idx", &OpenMesh::BaseHandle::idx)
+		.def("is_valid", &OpenMesh::BaseHandle::is_valid)
+		.def("reset", &OpenMesh::BaseHandle::reset)
+		.def("invalidate", &OpenMesh::BaseHandle::invalidate)
+		.def(self == self)
+		.def(self != self)
+		.def(self < self)
+		;
+	class_<OpenMesh::PolyConnectivity::VertexHandle, bases<OpenMesh::BaseHandle> >("VertexHandle");
+	class_<OpenMesh::PolyConnectivity::HalfedgeHandle, bases<OpenMesh::BaseHandle> >("HalfedgeHandle");
+	class_<OpenMesh::PolyConnectivity::EdgeHandle, bases<OpenMesh::BaseHandle> >("EdgeHandle");
+	class_<OpenMesh::PolyConnectivity::FaceHandle, bases<OpenMesh::BaseHandle> >("FaceHandle");
+}
+
+template<typename Mesh>
 void expose_openmesh_type(const char *typeName) {
-    {
-        // Member function pointers for overloaded functions
-        typename MeshT::EdgeHandle (MeshT::*edge_handle_uint)(unsigned int) const = &MeshT::edge_handle;
-        typename MeshT::EdgeHandle (MeshT::*edge_handle_heh)(typename MeshT::HalfedgeHandle) const = &MeshT::edge_handle;
-        typename MeshT::FaceHandle (MeshT::*face_handle_uint)(unsigned int) const = &MeshT::face_handle;
-        typename MeshT::FaceHandle (MeshT::*face_handle_heh)(typename MeshT::HalfedgeHandle) const = &MeshT::face_handle;
+	EdgeHandle (Mesh::*edge_handle_uint)(unsigned int) const = &Mesh::edge_handle;
+	FaceHandle (Mesh::*face_handle_uint)(unsigned int) const = &Mesh::face_handle;
 
-        class_<MeshT> classMeshT = class_<MeshT>(typeName);
+	EdgeHandle (Mesh::*edge_handle_heh)(HalfedgeHandle) const = &Mesh::edge_handle;
+	FaceHandle (Mesh::*face_handle_heh)(HalfedgeHandle) const = &Mesh::face_handle;
 
-        /*
-         * It is important that we enter the scope before we add
-         * the definitions because in some of the builders classes
-         * which are supposed to be inside the scope are defined.
-         */
-        scope scope_MeshT = classMeshT;
+	typename Mesh::VertexIter (Mesh::*vertices_begin)() = &Mesh::vertices_begin;
+	typename Mesh::VertexIter (Mesh::*vertices_end  )() = &Mesh::vertices_end;
 
-        classMeshT
-            /*
-             * vertices should return an iterable object with __len__
-             * defined. Then we could get rid of n_vertices.
-             */
-            .add_property("vertices", range((typename MeshT::VertexIter (MeshT::*)())&MeshT::vertices_begin, (typename MeshT::VertexIter (MeshT::*)())&MeshT::vertices_end))
-            .def("n_vertices", &MeshT::n_vertices)
-            .def("n_halfedges", &MeshT::n_halfedges)
-            .def("n_edges", &MeshT::n_edges)
-            .def("n_faces", &MeshT::n_faces)
-            .def("add_vertex", &MeshT::add_vertex)
-            .def("point", (typename MeshT::Point &(MeshT::*)(typename MeshT::VertexHandle))&MeshT::point, return_internal_reference<>())
-            .def("add_face", (typename MeshT::FaceHandle (MeshT::*)(typename MeshT::VertexHandle, typename MeshT::VertexHandle, typename MeshT::VertexHandle))&MeshT::add_face)
-            .def("vertex_handle", &MeshT::vertex_handle)
-            .def("edge_handle", edge_handle_uint)
-            .def("edge_handle", edge_handle_heh)
-            .def("face_handle", face_handle_uint)
-            .def("face_handle", face_handle_heh)
-            .def("to_vertex_handle", &MeshT::to_vertex_handle)
-            .def("vv", &MeshT::vv)
-            .def("vf", &MeshT::vf)
-            .def("fv", &MeshT::fv)
-            ;
-    }
+	typename Mesh::Point& (Mesh::*point)(typename Mesh::VertexHandle) = &Mesh::point;
+
+	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
+
+	class_<Mesh> classMeshT = class_<Mesh>(typeName);
+
+	/*
+	 * It is important that we enter the scope before we add
+	 * the definitions because in some of the builders classes
+	 * which are supposed to be inside the scope are defined.
+	 */
+	scope scope_MeshT = classMeshT;
+
+	classMeshT
+		/*
+		 * vertices should return an iterable object with __len__
+		 * defined. Then we could get rid of n_vertices.
+		 */
+		.add_property("vertices", range(vertices_begin, vertices_end))
+		.def("n_vertices", &Mesh::n_vertices)
+		.def("n_halfedges", &Mesh::n_halfedges)
+		.def("n_edges", &Mesh::n_edges)
+		.def("n_faces", &Mesh::n_faces)
+		.def("add_vertex", &Mesh::add_vertex)
+		.def("point", point, return_value_policy<copy_non_const_reference>())
+		.def("add_face", add_face)
+		.def("vertex_handle", &Mesh::vertex_handle)
+		.def("edge_handle", edge_handle_uint)
+		.def("edge_handle", edge_handle_heh)
+		.def("face_handle", face_handle_uint)
+		.def("face_handle", face_handle_heh)
+		.def("to_vertex_handle", &Mesh::to_vertex_handle)
+		.def("vv", &Mesh::vv)
+		.def("vf", &Mesh::vf)
+		.def("fv", &Mesh::fv)
+		;
 }
 
 template<class Circulator>
 void expose_circulator(const char *typeName) {
-    class_<CirculatorWrapperT<Circulator> >(typeName, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
-        .def(init<MeshWrapperT<PolyMesh>&, typename Circulator::center_type>())
-        .def("__iter__", &CirculatorWrapperT<Circulator>::iter)
-        .def("__next__", &CirculatorWrapperT<Circulator>::next)
-        .def("next", &CirculatorWrapperT<Circulator>::next)
-        ;
+	class_<CirculatorWrapperT<Circulator> >(typeName, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
+		.def(init<MeshWrapperT<PolyMesh>&, typename Circulator::center_type>())
+		.def("__iter__", &CirculatorWrapperT<Circulator>::iter)
+		.def("__next__", &CirculatorWrapperT<Circulator>::next)
+		.def("next", &CirculatorWrapperT<Circulator>::next)
+		;
 }
 
 BOOST_PYTHON_MODULE(openmesh) {
-    expose_vec3d();
-    expose_handles();
+	expose_vec3d();
+	expose_handles();
 
-    expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
-    expose_openmesh_type<MeshWrapperT<PolyMesh> >("PolyMesh");
+	expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
+	expose_openmesh_type<MeshWrapperT<PolyMesh> >("PolyMesh");
 
-    expose_circulator<OpenMesh::PolyConnectivity::VertexVertexIter>("VertexVertexIter");
-    expose_circulator<OpenMesh::PolyConnectivity::VertexIHalfedgeIter>("VertexIHalfedgeIter");
-    expose_circulator<OpenMesh::PolyConnectivity::VertexOHalfedgeIter>("VertexOHalfedgeIter");
-    expose_circulator<OpenMesh::PolyConnectivity::VertexEdgeIter>("VertexEdgeIter");
-    expose_circulator<OpenMesh::PolyConnectivity::VertexFaceIter>("VertexFaceIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexVertexIter>("VertexVertexIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexIHalfedgeIter>("VertexIHalfedgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexOHalfedgeIter>("VertexOHalfedgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexEdgeIter>("VertexEdgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexFaceIter>("VertexFaceIter");
 
-    expose_circulator<OpenMesh::PolyConnectivity::FaceVertexIter>("FaceVertexIter");
-    expose_circulator<OpenMesh::PolyConnectivity::FaceHalfedgeIter>("FaceHalfedgeIter");
-    expose_circulator<OpenMesh::PolyConnectivity::FaceEdgeIter>("FaceEdgeIter");
-    expose_circulator<OpenMesh::PolyConnectivity::FaceFaceIter>("FaceFaceIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceVertexIter>("FaceVertexIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceHalfedgeIter>("FaceHalfedgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceEdgeIter>("FaceEdgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceFaceIter>("FaceFaceIter");
 
-    // TODO expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
+	// TODO expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
 }
