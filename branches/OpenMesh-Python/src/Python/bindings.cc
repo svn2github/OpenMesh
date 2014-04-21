@@ -1,3 +1,4 @@
+#include <Python.h>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include <boost/python.hpp>
@@ -24,6 +25,7 @@ struct MeshTraits : public OpenMesh::DefaultTraits
 typedef OpenMesh::TriMesh_ArrayKernelT<MeshTraits> TriMesh;
 typedef OpenMesh::PolyMesh_ArrayKernelT<MeshTraits> PolyMesh;
 
+typedef OpenMesh::BaseHandle BaseHandle;
 typedef OpenMesh::VertexHandle VertexHandle;
 typedef OpenMesh::HalfedgeHandle HalfedgeHandle;
 typedef OpenMesh::EdgeHandle EdgeHandle;
@@ -61,6 +63,39 @@ Scalar get_item(Vector& _vec, int _index) {
 	return 0.0;
 }
 
+template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
+class IteratorWrapperT {
+	public:
+		IteratorWrapperT(OpenMesh::PolyConnectivity& mesh) :
+			iterator(mesh, typename Iterator::value_type(0)), iterator_end(mesh, typename Iterator::value_type(int((mesh.*n_items)()))) {
+		}
+
+		IteratorWrapperT iter() {
+			return *this;
+		}
+
+		typename Iterator::value_type next() {
+			if (iterator != iterator_end) {
+				typename Iterator::value_type res = *iterator;
+				++iterator;
+				return res;
+			}
+			else {
+				PyErr_SetString(PyExc_StopIteration, "No more data.");
+				throw_error_already_set();
+			}
+			return typename Iterator::value_type();
+		}
+
+		unsigned int len() {
+			return std::distance(iterator, iterator_end);
+		}
+
+	private:
+		Iterator iterator;
+		Iterator iterator_end;
+};
+
 template<class Circulator>
 class CirculatorWrapperT {
 	public:
@@ -92,6 +127,22 @@ class CirculatorWrapperT {
 template<class Mesh>
 class MeshWrapperT : public Mesh {
 	public:
+		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this);
+		}
+
+		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> halfedges() {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this);
+		}
+
+		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> edges() {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this);
+		}
+
+		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> faces() {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this);
+		}
+
 		CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle handle) {
 			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, handle);
 		}
@@ -167,19 +218,19 @@ void expose_vec3d() {
 }
 
 void expose_handles() {
-	class_<OpenMesh::BaseHandle>("BaseHandle")
-		.def("idx", &OpenMesh::BaseHandle::idx)
-		.def("is_valid", &OpenMesh::BaseHandle::is_valid)
-		.def("reset", &OpenMesh::BaseHandle::reset)
-		.def("invalidate", &OpenMesh::BaseHandle::invalidate)
+	class_<BaseHandle>("BaseHandle")
+		.def("idx", &BaseHandle::idx)
+		.def("is_valid", &BaseHandle::is_valid)
+		.def("reset", &BaseHandle::reset)
+		.def("invalidate", &BaseHandle::invalidate)
 		.def(self == self)
 		.def(self != self)
 		.def(self < self)
 		;
-	class_<OpenMesh::PolyConnectivity::VertexHandle, bases<OpenMesh::BaseHandle> >("VertexHandle");
-	class_<OpenMesh::PolyConnectivity::HalfedgeHandle, bases<OpenMesh::BaseHandle> >("HalfedgeHandle");
-	class_<OpenMesh::PolyConnectivity::EdgeHandle, bases<OpenMesh::BaseHandle> >("EdgeHandle");
-	class_<OpenMesh::PolyConnectivity::FaceHandle, bases<OpenMesh::BaseHandle> >("FaceHandle");
+	class_<VertexHandle, bases<BaseHandle> >("VertexHandle");
+	class_<HalfedgeHandle, bases<BaseHandle> >("HalfedgeHandle");
+	class_<EdgeHandle, bases<BaseHandle> >("EdgeHandle");
+	class_<FaceHandle, bases<BaseHandle> >("FaceHandle");
 }
 
 template<typename Mesh>
@@ -190,10 +241,7 @@ void expose_openmesh_type(const char *typeName) {
 	EdgeHandle (Mesh::*edge_handle_heh)(HalfedgeHandle) const = &Mesh::edge_handle;
 	FaceHandle (Mesh::*face_handle_heh)(HalfedgeHandle) const = &Mesh::face_handle;
 
-	typename Mesh::VertexIter (Mesh::*vertices_begin)() = &Mesh::vertices_begin;
-	typename Mesh::VertexIter (Mesh::*vertices_end  )() = &Mesh::vertices_end;
-
-	typename Mesh::Point& (Mesh::*point)(typename Mesh::VertexHandle) = &Mesh::point;
+	typename Mesh::Point& (Mesh::*point)(VertexHandle) = &Mesh::point;
 
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
 
@@ -207,11 +255,10 @@ void expose_openmesh_type(const char *typeName) {
 	scope scope_MeshT = classMeshT;
 
 	classMeshT
-		/*
-		 * vertices should return an iterable object with __len__
-		 * defined. Then we could get rid of n_vertices.
-		 */
-		.add_property("vertices", range(vertices_begin, vertices_end))
+		.def("vertices", &Mesh::vertices)
+		.def("halfedges", &Mesh::halfedges)
+		.def("edges", &Mesh::edges)
+		.def("faces", &Mesh::faces)
 		.def("n_vertices", &Mesh::n_vertices)
 		.def("n_halfedges", &Mesh::n_halfedges)
 		.def("n_edges", &Mesh::n_edges)
@@ -231,6 +278,17 @@ void expose_openmesh_type(const char *typeName) {
 		;
 }
 
+template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
+void expose_iterator(const char *typeName) {
+	class_<IteratorWrapperT<Iterator, n_items> >(typeName, init<MeshWrapperT<TriMesh>&>())
+		.def(init<MeshWrapperT<PolyMesh>&>())
+		.def("__iter__", &IteratorWrapperT<Iterator, n_items>::iter)
+		.def("__next__", &IteratorWrapperT<Iterator, n_items>::next)
+		.def("__len__", &IteratorWrapperT<Iterator, n_items>::len)
+		.def("next", &IteratorWrapperT<Iterator, n_items>::next)
+		;
+}
+
 template<class Circulator>
 void expose_circulator(const char *typeName) {
 	class_<CirculatorWrapperT<Circulator> >(typeName, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
@@ -247,6 +305,11 @@ BOOST_PYTHON_MODULE(openmesh) {
 
 	expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
 	expose_openmesh_type<MeshWrapperT<PolyMesh> >("PolyMesh");
+
+	expose_iterator<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>("VertexIter");
+	expose_iterator<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>("HalfedgeIter");
+	expose_iterator<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>("EdgeIter");
+	expose_iterator<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>("FaceIter");
 
 	expose_circulator<OpenMesh::PolyConnectivity::VertexVertexIter>("VertexVertexIter");
 	expose_circulator<OpenMesh::PolyConnectivity::VertexIHalfedgeIter>("VertexIHalfedgeIter");
