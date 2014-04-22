@@ -4,7 +4,7 @@
 #include <boost/python.hpp>
 #include <boost/python/iterator.hpp>
 #include <boost/python/return_internal_reference.hpp>
-#include <boost/python/copy_non_const_reference.hpp>
+#include <boost/python/copy_const_reference.hpp>
 #include "OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh"
 #include "OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh"
 
@@ -154,6 +154,10 @@ class MeshWrapperT : public Mesh {
 		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle handle) {
 			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, handle);
 		}
+
+		void garbage_collection() {
+			Mesh::garbage_collection();
+		}
 };
 
 void expose_vec3d() {
@@ -235,16 +239,23 @@ void expose_handles() {
 
 template<typename Mesh>
 void expose_openmesh_type(const char *typeName) {
-	EdgeHandle (Mesh::*edge_handle_uint)(unsigned int) const = &Mesh::edge_handle;
-	FaceHandle (Mesh::*face_handle_uint)(unsigned int) const = &Mesh::face_handle;
+	VertexHandle   (Mesh::*vertex_handle_uint  )(unsigned int  ) const = &Mesh::vertex_handle;
+	HalfedgeHandle (Mesh::*halfedge_handle_uint)(unsigned int  ) const = &Mesh::halfedge_handle;
+	EdgeHandle     (Mesh::*edge_handle_uint    )(unsigned int  ) const = &Mesh::edge_handle;
+	FaceHandle     (Mesh::*face_handle_uint    )(unsigned int  ) const = &Mesh::face_handle;
+	HalfedgeHandle (Mesh::*halfedge_handle_vh  )(VertexHandle  ) const = &Mesh::halfedge_handle;
+	HalfedgeHandle (Mesh::*halfedge_handle_fh  )(FaceHandle    ) const = &Mesh::halfedge_handle;
+	EdgeHandle     (Mesh::*edge_handle_heh     )(HalfedgeHandle) const = &Mesh::edge_handle;
+	FaceHandle     (Mesh::*face_handle_heh     )(HalfedgeHandle) const = &Mesh::face_handle;
 
-	EdgeHandle (Mesh::*edge_handle_heh)(HalfedgeHandle) const = &Mesh::edge_handle;
-	FaceHandle (Mesh::*face_handle_heh)(HalfedgeHandle) const = &Mesh::face_handle;
+	HalfedgeHandle (Mesh::*halfedge_handle_eh_uint)(EdgeHandle, unsigned int) const = &Mesh::halfedge_handle;
+	HalfedgeHandle (Mesh::*prev_halfedge_handle_heh)(HalfedgeHandle) const = &Mesh::prev_halfedge_handle;
 
-	typename Mesh::Point& (Mesh::*point)(VertexHandle) = &Mesh::point;
+	void (Mesh::*set_halfedge_handle_vh_heh)(VertexHandle, HalfedgeHandle) = &Mesh::set_halfedge_handle;
+	void (Mesh::*set_halfedge_handle_fh_heh)(FaceHandle, HalfedgeHandle  ) = &Mesh::set_halfedge_handle;
 
+	const typename Mesh::Point& (Mesh::*point_vh)(VertexHandle) const = &Mesh::point;
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
-
 	class_<Mesh> classMeshT = class_<Mesh>(typeName);
 
 	/*
@@ -255,23 +266,56 @@ void expose_openmesh_type(const char *typeName) {
 	scope scope_MeshT = classMeshT;
 
 	classMeshT
-		.def("vertices", &Mesh::vertices)
-		.def("halfedges", &Mesh::halfedges)
-		.def("edges", &Mesh::edges)
-		.def("faces", &Mesh::faces)
+		.def("vertex_handle", vertex_handle_uint)
+		.def("halfedge_handle", halfedge_handle_uint)
+		.def("edge_handle", edge_handle_uint)
+		.def("face_handle", face_handle_uint)
+
+		.def("clear", &Mesh::clear)
+		.def("clean", &Mesh::clean)
+		.def("garbage_collection", &Mesh::garbage_collection)
+
 		.def("n_vertices", &Mesh::n_vertices)
 		.def("n_halfedges", &Mesh::n_halfedges)
 		.def("n_edges", &Mesh::n_edges)
 		.def("n_faces", &Mesh::n_faces)
+		.def("vertices_empty", &Mesh::vertices_empty)
+		.def("halfedges_empty", &Mesh::halfedges_empty)
+		.def("edges_empty", &Mesh::edges_empty)
+		.def("faces_empty", &Mesh::faces_empty)
+
+		.def("halfedge_handle", halfedge_handle_vh)
+		.def("set_halfedge_handle", set_halfedge_handle_vh_heh)
+		.def("point", point_vh, return_value_policy<copy_const_reference>())
+		.def("set_point", &Mesh::set_point)
+
+		.def("vertices", &Mesh::vertices)
+		.def("halfedges", &Mesh::halfedges)
+		.def("edges", &Mesh::edges)
+		.def("faces", &Mesh::faces)
+
+		.def("to_vertex_handle", &Mesh::to_vertex_handle)
+		.def("from_vertex_handle", &Mesh::from_vertex_handle)
+		.def("set_vertex_handle", &Mesh::set_vertex_handle)
+		.def("face_handle", face_handle_heh)
+		.def("set_face_handle", &Mesh::set_face_handle)
+		.def("next_halfedge_handle", &Mesh::next_halfedge_handle)
+		.def("set_next_halfedge_handle", &Mesh::set_next_halfedge_handle)
+		.def("prev_halfedge_handle", prev_halfedge_handle_heh)
+		.def("opposite_halfedge_handle", &Mesh::opposite_halfedge_handle)
+		.def("ccw_rotated_halfedge_handle", &Mesh::ccw_rotated_halfedge_handle)
+		.def("cw_rotated_halfedge_handle", &Mesh::cw_rotated_halfedge_handle)
+		.def("edge_handle", edge_handle_heh)
+
+		.def("halfedge_handle", halfedge_handle_eh_uint)
+
+		.def("halfedge_handle", halfedge_handle_fh)
+		.def("set_halfedge_handle", set_halfedge_handle_fh_heh)
+
 		.def("add_vertex", &Mesh::add_vertex)
-		.def("point", point, return_value_policy<copy_non_const_reference>())
 		.def("add_face", add_face)
 		.def("vertex_handle", &Mesh::vertex_handle)
-		.def("edge_handle", edge_handle_uint)
-		.def("edge_handle", edge_handle_heh)
-		.def("face_handle", face_handle_uint)
-		.def("face_handle", face_handle_heh)
-		.def("to_vertex_handle", &Mesh::to_vertex_handle)
+
 		.def("vv", &Mesh::vv)
 		.def("vf", &Mesh::vf)
 		.def("fv", &Mesh::fv)
