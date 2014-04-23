@@ -349,7 +349,7 @@ public:
   /// Const end iterator for faces
   ConstFaceIter faces_end() const;
 
-  template<typename CONTAINER_TYPE, typename ITER_TYPE, ITER_TYPE (CONTAINER_TYPE::*begin_fn)(), ITER_TYPE (CONTAINER_TYPE::*end_fn)()>
+  template<typename CONTAINER_TYPE, typename ITER_TYPE, ITER_TYPE (CONTAINER_TYPE::*begin_fn)() const, ITER_TYPE (CONTAINER_TYPE::*end_fn)() const>
   class EntityRange {
       public:
           EntityRange(CONTAINER_TYPE &container) : container_(container) {}
