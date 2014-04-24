@@ -66,18 +66,20 @@ Scalar get_item(Vector& _vec, int _index) {
 template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
 class IteratorWrapperT {
 	public:
-		IteratorWrapperT(OpenMesh::PolyConnectivity& mesh) :
-			iterator(mesh, typename Iterator::value_type(0)), iterator_end(mesh, typename Iterator::value_type(int((mesh.*n_items)()))) {
+		IteratorWrapperT(const OpenMesh::PolyConnectivity& _mesh) :
+			mesh_(_mesh), n_items_(n_items),
+			iterator_(_mesh, typename Iterator::value_type(0)),
+			iterator_end_(_mesh, typename Iterator::value_type(int((_mesh.*n_items)()))) {
 		}
 
-		IteratorWrapperT iter() {
+		IteratorWrapperT iter() const {
 			return *this;
 		}
 
 		typename Iterator::value_type next() {
-			if (iterator != iterator_end) {
-				typename Iterator::value_type res = *iterator;
-				++iterator;
+			if (iterator_ != iterator_end_) {
+				typename Iterator::value_type res = *iterator_;
+				++iterator_;
 				return res;
 			}
 			else {
@@ -87,30 +89,32 @@ class IteratorWrapperT {
 			return typename Iterator::value_type();
 		}
 
-		unsigned int len() {
-			return std::distance(iterator, iterator_end);
+		unsigned int len() const {
+			return (mesh_.*n_items_)();
 		}
 
 	private:
-		Iterator iterator;
-		Iterator iterator_end;
+		const OpenMesh::PolyConnectivity& mesh_;
+		size_t (OpenMesh::ArrayKernel::*n_items_)() const;
+		Iterator iterator_;
+		Iterator iterator_end_;
 };
 
 template<class Circulator>
 class CirculatorWrapperT {
 	public:
-		CirculatorWrapperT(typename Circulator::mesh_type& mesh, typename Circulator::center_type center) :
-			circulator(mesh, center) {
+		CirculatorWrapperT(const typename Circulator::mesh_type& _mesh, typename Circulator::center_type _center) :
+			circulator_(_mesh, _center) {
 		}
 
-		CirculatorWrapperT iter() {
+		CirculatorWrapperT iter() const {
 			return *this;
 		}
 
 		typename Circulator::value_type next() {
-			if (circulator.is_valid()) {
-				typename Circulator::value_type res = *circulator;
-				++circulator;
+			if (circulator_.is_valid()) {
+				typename Circulator::value_type res = *circulator_;
+				++circulator_;
 				return res;
 			}
 			else {
@@ -121,38 +125,38 @@ class CirculatorWrapperT {
 		}
 
 	private:
-		Circulator circulator;
+		Circulator circulator_;
 };
 
 template<class Mesh>
 class MeshWrapperT : public Mesh {
 	public:
-		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() {
+		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
 			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this);
 		}
 
-		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> halfedges() {
+		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> halfedges() const {
 			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this);
 		}
 
-		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> edges() {
+		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> edges() const {
 			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this);
 		}
 
-		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> faces() {
+		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> faces() const {
 			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this);
 		}
 
-		CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle handle) {
-			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, handle);
+		CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, _handle);
 		}
 
-		CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle handle) {
-			return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, handle);
+		CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, _handle);
 		}
 
-		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle handle) {
-			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, handle);
+		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, _handle);
 		}
 
 		void garbage_collection() {
@@ -238,13 +242,14 @@ void expose_handles() {
 }
 
 template<typename Mesh>
-void expose_openmesh_type(const char *typeName) {
+void expose_openmesh_type(const char *_name) {
 	VertexHandle   (Mesh::*vertex_handle_uint  )(unsigned int  ) const = &Mesh::vertex_handle;
 	HalfedgeHandle (Mesh::*halfedge_handle_uint)(unsigned int  ) const = &Mesh::halfedge_handle;
 	EdgeHandle     (Mesh::*edge_handle_uint    )(unsigned int  ) const = &Mesh::edge_handle;
 	FaceHandle     (Mesh::*face_handle_uint    )(unsigned int  ) const = &Mesh::face_handle;
 	HalfedgeHandle (Mesh::*halfedge_handle_vh  )(VertexHandle  ) const = &Mesh::halfedge_handle;
 	HalfedgeHandle (Mesh::*halfedge_handle_fh  )(FaceHandle    ) const = &Mesh::halfedge_handle;
+
 	EdgeHandle     (Mesh::*edge_handle_heh     )(HalfedgeHandle) const = &Mesh::edge_handle;
 	FaceHandle     (Mesh::*face_handle_heh     )(HalfedgeHandle) const = &Mesh::face_handle;
 
@@ -256,7 +261,7 @@ void expose_openmesh_type(const char *typeName) {
 
 	const typename Mesh::Point& (Mesh::*point_vh)(VertexHandle) const = &Mesh::point;
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
-	class_<Mesh> classMeshT = class_<Mesh>(typeName);
+	class_<Mesh> classMeshT = class_<Mesh>(_name);
 
 	/*
 	 * It is important that we enter the scope before we add
@@ -323,8 +328,8 @@ void expose_openmesh_type(const char *typeName) {
 }
 
 template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
-void expose_iterator(const char *typeName) {
-	class_<IteratorWrapperT<Iterator, n_items> >(typeName, init<MeshWrapperT<TriMesh>&>())
+void expose_iterator(const char *_name) {
+	class_<IteratorWrapperT<Iterator, n_items> >(_name, init<MeshWrapperT<TriMesh>&>())
 		.def(init<MeshWrapperT<PolyMesh>&>())
 		.def("__iter__", &IteratorWrapperT<Iterator, n_items>::iter)
 		.def("__next__", &IteratorWrapperT<Iterator, n_items>::next)
@@ -334,8 +339,8 @@ void expose_iterator(const char *typeName) {
 }
 
 template<class Circulator>
-void expose_circulator(const char *typeName) {
-	class_<CirculatorWrapperT<Circulator> >(typeName, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
+void expose_circulator(const char *_name) {
+	class_<CirculatorWrapperT<Circulator> >(_name, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
 		.def(init<MeshWrapperT<PolyMesh>&, typename Circulator::center_type>())
 		.def("__iter__", &CirculatorWrapperT<Circulator>::iter)
 		.def("__next__", &CirculatorWrapperT<Circulator>::next)
