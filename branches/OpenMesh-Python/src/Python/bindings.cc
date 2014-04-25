@@ -1,5 +1,6 @@
 #include <Python.h>
 #include <boost/function.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/bind.hpp>
 #include <boost/python.hpp>
 #include <boost/python/iterator.hpp>
@@ -7,6 +8,7 @@
 #include <boost/python/copy_const_reference.hpp>
 #include "OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh"
 #include "OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh"
+#include "OpenMesh/Core/Utils/PropertyManager.hh"
 
 using namespace boost::python;
 
@@ -161,6 +163,24 @@ class MeshWrapperT : public Mesh {
 
 		void garbage_collection() {
 			Mesh::garbage_collection();
+		}
+};
+
+template<class PropertyManager, class IndexHandle>
+class PropertyManagerWrapperT : public PropertyManager {
+	public:
+		PropertyManagerWrapperT(OpenMesh::PolyConnectivity &_mesh, const char *_propname, bool _existing = false) :
+			PropertyManager(_mesh, _propname, _existing) {
+		}
+
+		PropertyManagerWrapperT() : PropertyManager() { }
+
+		object getitem(IndexHandle _handle) const {
+			return (*this)[_handle];
+		}
+
+		void setitem(IndexHandle _handle, object _item) {
+			(*this)[_handle] = _item;
 		}
 };
 
@@ -348,6 +368,19 @@ void expose_circulator(const char *_name) {
 		;
 }
 
+template<class PropHandle, class IndexHandle>
+void expose_property_manager(const char *_name) {
+	typedef OpenMesh::PropertyManager<PropHandle, OpenMesh::PolyConnectivity > PropertyManager;
+	typedef PropertyManagerWrapperT<PropertyManager, IndexHandle> PropertyManagerWrapper;
+
+	class_<PropertyManagerWrapper, boost::noncopyable>(_name)
+		.def(init<MeshWrapperT<TriMesh>&, const char *, optional<bool> >())
+		.def(init<MeshWrapperT<PolyMesh>&, const char *, optional<bool> >())
+		.def("__getitem__", &PropertyManagerWrapper::getitem)
+		.def("__setitem__", &PropertyManagerWrapper::setitem)
+		;
+}
+
 BOOST_PYTHON_MODULE(openmesh) {
 	expose_vec3d();
 	expose_handles();
@@ -372,4 +405,6 @@ BOOST_PYTHON_MODULE(openmesh) {
 	expose_circulator<OpenMesh::PolyConnectivity::FaceFaceIter>("FaceFaceIter");
 
 	// TODO expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
+
+	expose_property_manager<OpenMesh::VPropHandleT<object>, VertexHandle>("VPropertyManager");
 }
