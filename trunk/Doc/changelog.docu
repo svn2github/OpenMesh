@@ -7,7 +7,13 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.1</b> (?/?/?,Rev.1001)</td><td>
+<tr valign=top><td><b>3.1</b> (?/?/?,Rev.1021)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Fix for c++11 call to pointer to member function of type 'VertexIter ()' drops 'const' qualifier (Thanks to Ronald Richter and Kenshi Takayama for the fix)</li>
+</ul>
+
 
 <b>Utils</b>
 <ul>
