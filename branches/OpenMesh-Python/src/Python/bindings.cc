@@ -184,23 +184,23 @@ class PropertyManagerWrapperT : public PropertyManager {
 		}
 };
 
-void expose_vec3d() {
-	struct VecFn {
-		static OpenMesh::Vec3d *makeNullPoint() { return new OpenMesh::Vec3d(0, 0, 0); }
-	};
+template<class Scalar, int n>
+void expose_vec(const char *_name) {
+	typedef OpenMesh::VectorT<Scalar, n> Vector;
 
-	double (OpenMesh::Vec3d::*max1)() const = &OpenMesh::Vec3d::max;
-	OpenMesh::Vec3d (OpenMesh::Vec3d::*max2)(const OpenMesh::Vec3d&) const = &OpenMesh::Vec3d::max;
-	double (OpenMesh::Vec3d::*min1)() const = &OpenMesh::Vec3d::min;
-	OpenMesh::Vec3d (OpenMesh::Vec3d::*min2)(const OpenMesh::Vec3d&) const = &OpenMesh::Vec3d::min;
+	Scalar (Vector::*max1)() const = &Vector::max;
+	Vector (Vector::*max2)(const Vector&) const = &Vector::max;
+	Scalar (Vector::*min1)() const = &Vector::min;
+	Vector (Vector::*min2)(const Vector&) const = &Vector::min;
 
-	OpenMesh::Vec3d& (OpenMesh::Vec3d::*maximize)(const OpenMesh::Vec3d&) = &OpenMesh::Vec3d::maximize;
-	OpenMesh::Vec3d& (OpenMesh::Vec3d::*minimize)(const OpenMesh::Vec3d&) = &OpenMesh::Vec3d::minimize;
-	OpenMesh::Vec3d& (OpenMesh::Vec3d::*normalize)() = &OpenMesh::Vec3d::normalize;
-	OpenMesh::Vec3d& (OpenMesh::Vec3d::*normalize_cond)() = &OpenMesh::Vec3d::normalize_cond;
+	Vector& (Vector::*maximize)(const Vector&) = &Vector::maximize;
+	Vector& (Vector::*minimize)(const Vector&) = &Vector::minimize;
+	Vector& (Vector::*normalize)() = &Vector::normalize;
+	Vector& (Vector::*normalize_cond)() = &Vector::normalize_cond;
 
-	class_<OpenMesh::Vec3d>("Vec3d", init<double, double, double>())
-		.def("__init__", make_constructor(&VecFn::makeNullPoint))
+	class_<Vector> classVectorT = class_<Vector>(_name);
+
+	classVectorT
 		.def(self_ns::str(self))
 		.def(self == self)
 		.def(self != self)
@@ -213,36 +213,70 @@ void expose_vec3d() {
 		.def(self /= self)
 		.def(self += self)
 		.def(self -= self)
-		.def(double() * self)
-		.def(self * double())
-		.def(self / double())
-		.def(self *= double())
-		.def(self /= double())
-		.def("dot", &OpenMesh::Vec3d::operator|)
-		.def("cross", &OpenMesh::Vec3d::operator%)
-		.def("length", &OpenMesh::Vec3d::length)
-		.def("norm", &OpenMesh::Vec3d::norm)
-		.def("sqrnorm", &OpenMesh::Vec3d::sqrnorm)
-		.def("l1_norm", &OpenMesh::Vec3d::l1_norm)
-		.def("l8_norm", &OpenMesh::Vec3d::l8_norm)
+		.def(Scalar() * self)
+		.def(self * Scalar())
+		.def(self / Scalar())
+		.def(self *= Scalar())
+		.def(self /= Scalar())
+		.def("dot", &Vector::operator|)
+		.def("length", &Vector::length)
+		.def("norm", &Vector::norm)
+		.def("sqrnorm", &Vector::sqrnorm)
+		.def("l1_norm", &Vector::l1_norm)
+		.def("l8_norm", &Vector::l8_norm)
 		.def("max", max1)
 		.def("max", max2)
 		.def("min", min1)
 		.def("min", min2)
 		.def("maximize", maximize, return_internal_reference<>())
 		.def("minimize", minimize, return_internal_reference<>())
-		.def("mean", &OpenMesh::Vec3d::mean)
-		.def("mean_abs", &OpenMesh::Vec3d::mean_abs)
-		.def("max_abs", &OpenMesh::Vec3d::max_abs)
-		.def("min_abs", &OpenMesh::Vec3d::min_abs)
-		.def("maximized", &OpenMesh::Vec3d::maximized)
-		.def("minimized", &OpenMesh::Vec3d::minimized)
+		.def("mean", &Vector::mean)
+		.def("mean_abs", &Vector::mean_abs)
+		.def("max_abs", &Vector::max_abs)
+		.def("min_abs", &Vector::min_abs)
+		.def("maximized", &Vector::maximized)
+		.def("minimized", &Vector::minimized)
 		.def("normalize", normalize, return_internal_reference<>())
 		.def("normalize_cond", normalize_cond, return_internal_reference<>())
-		.def("normalized", &OpenMesh::Vec3d::normalized)
-		.def("__setitem__", &set_item<OpenMesh::Vec3d, double>)
-		.def("__getitem__", &get_item<OpenMesh::Vec3d, double>)
+		.def("normalized", &Vector::normalized)
+		.def("__setitem__", &set_item<Vector, Scalar>)
+		.def("__getitem__", &get_item<Vector, Scalar>)
 		;
+
+	typedef OpenMesh::VectorT<Scalar, 3> Vector3;
+	typedef OpenMesh::VectorT<Scalar, 4> Vector4;
+
+	struct Factory {
+		static Vector3 *vec3_default() {
+			return new Vector3(Scalar(), Scalar(), Scalar());
+		}
+		static Vector3 *vec3_user_defined(const Scalar& _v0, const Scalar& _v1, const Scalar& _v2) {
+			return new Vector3(_v0, _v1, _v2);
+		}
+		static Vector4 *vec4_default() {
+			return new Vector4(Scalar(), Scalar(), Scalar(), Scalar());
+		}
+		static Vector4 *vec4_user_defined(const Scalar& _v0, const Scalar& _v1, const Scalar& _v2, const Scalar& _v3) {
+			return new Vector4(_v0, _v1, _v2, _v3);
+		}
+	};
+
+	Vector3 (Vector3::*cross)(const Vector3&) const = &Vector3::operator%;
+
+	if (n == 3) {
+		classVectorT
+			.def("__init__", make_constructor(&Factory::vec3_default))
+			.def("__init__", make_constructor(&Factory::vec3_user_defined))
+			.def("cross", cross)
+			;
+	}
+
+	if (n == 4) {
+		classVectorT
+			.def("__init__", make_constructor(&Factory::vec4_default))
+			.def("__init__", make_constructor(&Factory::vec4_user_defined))
+			;
+	}
 }
 
 void expose_handles() {
@@ -261,7 +295,7 @@ void expose_handles() {
 	class_<FaceHandle, bases<BaseHandle> >("FaceHandle");
 }
 
-template<typename Mesh>
+template<class Mesh>
 void expose_openmesh_type(const char *_name) {
 	VertexHandle   (Mesh::*vertex_handle_uint  )(unsigned int  ) const = &Mesh::vertex_handle;
 	HalfedgeHandle (Mesh::*halfedge_handle_uint)(unsigned int  ) const = &Mesh::halfedge_handle;
@@ -279,7 +313,6 @@ void expose_openmesh_type(const char *_name) {
 	void (Mesh::*set_halfedge_handle_vh_heh)(VertexHandle, HalfedgeHandle) = &Mesh::set_halfedge_handle;
 	void (Mesh::*set_halfedge_handle_fh_heh)(FaceHandle, HalfedgeHandle  ) = &Mesh::set_halfedge_handle;
 
-	const typename Mesh::Point& (Mesh::*point_vh)(VertexHandle) const = &Mesh::point;
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
 	class_<Mesh> classMeshT = class_<Mesh>(_name);
 
@@ -311,8 +344,6 @@ void expose_openmesh_type(const char *_name) {
 
 		.def("halfedge_handle", halfedge_handle_vh)
 		.def("set_halfedge_handle", set_halfedge_handle_vh_heh)
-		.def("point", point_vh, return_value_policy<copy_const_reference>())
-		.def("set_point", &Mesh::set_point)
 
 		.def("vertices", &Mesh::vertices)
 		.def("halfedges", &Mesh::halfedges)
@@ -439,7 +470,11 @@ void expose_property_manager(const char *_name) {
 }
 
 BOOST_PYTHON_MODULE(openmesh) {
-	expose_vec3d();
+	expose_vec<float,  3>("Vec3f");
+	expose_vec<float,  4>("Vec4f");
+	expose_vec<double, 3>("Vec3d");
+	expose_vec<double, 4>("Vec4d");
+
 	expose_handles();
 
 	expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
