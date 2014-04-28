@@ -106,4 +106,47 @@ TEST_F(OpenMeshDecimater, DecimateMeshToFaceFaceLimit) {
   EXPECT_EQ(14994u, mesh_.n_edges()) << "The number of edges after decimation is not correct!";
   EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
 }
+
+TEST_F(OpenMeshDecimater, DecimateMeshExampleFromDoc) {
+
+  bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1.off");
+
+  ASSERT_TRUE(ok);
+
+  typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
+  typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
+  typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
+
+  Decimater decimaterDBG(mesh_);
+  HModQuadric hModQuadricDBG;
+  decimaterDBG.add( hModQuadricDBG );
+
+  std::cout << decimaterDBG.module( hModQuadricDBG ).name() << std::endl;
+
+  decimaterDBG.module( hModQuadricDBG ).unset_max_err();
+
+  decimaterDBG.initialize();
+  size_t removedVertices = 0;
+  removedVertices = decimaterDBG.decimate_to_faces(4500, 9996);
+                    decimaterDBG.mesh().garbage_collection();
+
+  EXPECT_EQ(2526u, removedVertices) << "The number of remove vertices is not correct!";
+  EXPECT_EQ(5000u, mesh_.n_vertices()) << "The number of vertices after decimation is not correct!";
+  EXPECT_EQ(14994u, mesh_.n_edges()) << "The number of edges after decimation is not correct!";
+  EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
