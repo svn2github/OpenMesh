@@ -3,7 +3,6 @@
 #include <Unittests/unittests_common.hh>
 #include <OpenMesh/Tools/Decimater/DecimaterT.hh>
 #include <OpenMesh/Tools/Decimater/ModQuadricT.hh>
-#include <OpenMesh/Tools/Decimater/ModNormalFlippingT.hh>
 
 namespace {
 
@@ -43,7 +42,6 @@ TEST_F(OpenMeshDecimater, DecimateMesh) {
 
   typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
-  typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
   Decimater decimaterDBG(mesh_);
   HModQuadric hModQuadricDBG;
@@ -67,7 +65,6 @@ TEST_F(OpenMeshDecimater, DecimateMeshToFaceVerticesLimit) {
 
   typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
-  typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
   Decimater decimaterDBG(mesh_);
   HModQuadric hModQuadricDBG;
@@ -91,7 +88,6 @@ TEST_F(OpenMeshDecimater, DecimateMeshToFaceFaceLimit) {
 
   typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
-  typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
   Decimater decimaterDBG(mesh_);
   HModQuadric hModQuadricDBG;
@@ -115,7 +111,6 @@ TEST_F(OpenMeshDecimater, DecimateMeshExampleFromDoc) {
 
   typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
   typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
-  typedef OpenMesh::Decimater::ModNormalFlippingT< Mesh >::Handle HModNormal;
 
   Decimater decimaterDBG(mesh_);
   HModQuadric hModQuadricDBG;
