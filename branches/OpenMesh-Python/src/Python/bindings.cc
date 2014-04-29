@@ -248,10 +248,17 @@ void expose_vec(const char *_name) {
 		.staticmethod("vectorized")
 		;
 
+	typedef OpenMesh::VectorT<Scalar, 2> Vector2;
 	typedef OpenMesh::VectorT<Scalar, 3> Vector3;
 	typedef OpenMesh::VectorT<Scalar, 4> Vector4;
 
 	struct Factory {
+		static Vector2 *vec2_default() {
+			return new Vector2(Scalar(), Scalar());
+		}
+		static Vector2 *vec2_user_defined(const Scalar& _v0, const Scalar& _v1) {
+			return new Vector2(_v0, _v1);
+		}
 		static Vector3 *vec3_default() {
 			return new Vector3(Scalar(), Scalar(), Scalar());
 		}
@@ -267,6 +274,13 @@ void expose_vec(const char *_name) {
 	};
 
 	Vector3 (Vector3::*cross)(const Vector3&) const = &Vector3::operator%;
+
+	if (N == 2) {
+		classVector
+			.def("__init__", make_constructor(&Factory::vec2_default))
+			.def("__init__", make_constructor(&Factory::vec2_user_defined))
+			;
+	}
 
 	if (N == 3) {
 		classVector
@@ -476,8 +490,10 @@ void expose_property_manager(const char *_name) {
 }
 
 BOOST_PYTHON_MODULE(openmesh) {
+	expose_vec<float,  2>("Vec2f");
 	expose_vec<float,  3>("Vec3f");
 	expose_vec<float,  4>("Vec4f");
+	expose_vec<double, 2>("Vec2d");
 	expose_vec<double, 3>("Vec3d");
 	expose_vec<double, 4>("Vec4d");
 
