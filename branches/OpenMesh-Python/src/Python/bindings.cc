@@ -184,63 +184,68 @@ class PropertyManagerWrapperT : public PropertyManager {
 		}
 };
 
-template<class Scalar, int n>
+template<class Scalar, int N>
 void expose_vec(const char *_name) {
-	typedef OpenMesh::VectorT<Scalar, n> Vector;
+	typedef OpenMesh::VectorT<Scalar, N> Vector;
 
-	Scalar (Vector::*max1)() const = &Vector::max;
-	Vector (Vector::*max2)(const Vector&) const = &Vector::max;
-	Scalar (Vector::*min1)() const = &Vector::min;
-	Vector (Vector::*min2)(const Vector&) const = &Vector::min;
+	Scalar (Vector::*min_void)() const = &Vector::min;
+	Scalar (Vector::*max_void)() const = &Vector::max;
 
-	Vector& (Vector::*maximize)(const Vector&) = &Vector::maximize;
-	Vector& (Vector::*minimize)(const Vector&) = &Vector::minimize;
-	Vector& (Vector::*normalize)() = &Vector::normalize;
-	Vector& (Vector::*normalize_cond)() = &Vector::normalize_cond;
+	Vector (Vector::*max_vector)(const Vector&) const = &Vector::max;
+	Vector (Vector::*min_vector)(const Vector&) const = &Vector::min;
 
-	class_<Vector> classVectorT = class_<Vector>(_name);
+	class_<Vector> classVector = class_<Vector>(_name);
 
-	classVectorT
-		.def(self_ns::str(self))
+	classVector
+		.def("__setitem__", &set_item<Vector, Scalar>)
+		.def("__getitem__", &get_item<Vector, Scalar>)
 		.def(self == self)
 		.def(self != self)
-		.def(self < self)
+		.def(self *= Scalar())
+		.def(self /= Scalar())
+		.def(self * Scalar())
+		.def(Scalar() * self)
+		.def(self / Scalar())
+		.def(self *= self)
+		.def(self /= self)
+		.def(self -= self)
+		.def(self += self)
 		.def(self * self)
 		.def(self / self)
 		.def(self + self)
 		.def(self - self)
-		.def(self *= self)
-		.def(self /= self)
-		.def(self += self)
-		.def(self -= self)
-		.def(Scalar() * self)
-		.def(self * Scalar())
-		.def(self / Scalar())
-		.def(self *= Scalar())
-		.def(self /= Scalar())
+		.def(-self)
 		.def("dot", &Vector::operator|)
-		.def("length", &Vector::length)
+		.def("vectorize", &Vector::vectorize, return_internal_reference<>())
+		.def(self < self)
+
 		.def("norm", &Vector::norm)
+		.def("length", &Vector::length)
 		.def("sqrnorm", &Vector::sqrnorm)
+		.def("normalize", &Vector::normalize, return_internal_reference<>())
+		.def("normalized", &Vector::normalized)
+		.def("normalize_cond", &Vector::normalize_cond, return_internal_reference<>())
+
 		.def("l1_norm", &Vector::l1_norm)
 		.def("l8_norm", &Vector::l8_norm)
-		.def("max", max1)
-		.def("max", max2)
-		.def("min", min1)
-		.def("min", min2)
-		.def("maximize", maximize, return_internal_reference<>())
-		.def("minimize", minimize, return_internal_reference<>())
+
+		.def("max", max_void)
+		.def("max_abs", &Vector::max_abs)
+		.def("min", min_void)
+		.def("min_abs", &Vector::min_abs)
 		.def("mean", &Vector::mean)
 		.def("mean_abs", &Vector::mean_abs)
-		.def("max_abs", &Vector::max_abs)
-		.def("min_abs", &Vector::min_abs)
-		.def("maximized", &Vector::maximized)
+		.def("minimize", &Vector::minimize, return_internal_reference<>())
 		.def("minimized", &Vector::minimized)
-		.def("normalize", normalize, return_internal_reference<>())
-		.def("normalize_cond", normalize_cond, return_internal_reference<>())
-		.def("normalized", &Vector::normalized)
-		.def("__setitem__", &set_item<Vector, Scalar>)
-		.def("__getitem__", &get_item<Vector, Scalar>)
+		.def("maximize", &Vector::maximize, return_internal_reference<>())
+		.def("maximized", &Vector::maximized)
+		.def("min", min_vector)
+		.def("max", max_vector)
+
+		.def("size", &Vector::size)
+		.staticmethod("size")
+		.def("vectorized", &Vector::vectorized)
+		.staticmethod("vectorized")
 		;
 
 	typedef OpenMesh::VectorT<Scalar, 3> Vector3;
@@ -263,16 +268,16 @@ void expose_vec(const char *_name) {
 
 	Vector3 (Vector3::*cross)(const Vector3&) const = &Vector3::operator%;
 
-	if (n == 3) {
-		classVectorT
+	if (N == 3) {
+		classVector
 			.def("__init__", make_constructor(&Factory::vec3_default))
 			.def("__init__", make_constructor(&Factory::vec3_user_defined))
 			.def("cross", cross)
 			;
 	}
 
-	if (n == 4) {
-		classVectorT
+	if (N == 4) {
+		classVector
 			.def("__init__", make_constructor(&Factory::vec4_default))
 			.def("__init__", make_constructor(&Factory::vec4_user_defined))
 			;
@@ -314,16 +319,17 @@ void expose_openmesh_type(const char *_name) {
 	void (Mesh::*set_halfedge_handle_fh_heh)(FaceHandle, HalfedgeHandle  ) = &Mesh::set_halfedge_handle;
 
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
-	class_<Mesh> classMeshT = class_<Mesh>(_name);
+
+	class_<Mesh> classMesh = class_<Mesh>(_name);
 
 	/*
 	 * It is important that we enter the scope before we add
 	 * the definitions because in some of the builders classes
 	 * which are supposed to be inside the scope are defined.
 	 */
-	scope scope_MeshT = classMeshT;
+	scope scope_Mesh = classMesh;
 
-	classMeshT
+	classMesh
 		.def("vertex_handle", vertex_handle_uint)
 		.def("halfedge_handle", halfedge_handle_uint)
 		.def("edge_handle", edge_handle_uint)
