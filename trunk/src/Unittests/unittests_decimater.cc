@@ -3,6 +3,7 @@
 #include <Unittests/unittests_common.hh>
 #include <OpenMesh/Tools/Decimater/DecimaterT.hh>
 #include <OpenMesh/Tools/Decimater/ModQuadricT.hh>
+#include <OpenMesh/Tools/Decimater/ModNormalFlippingT.hh>
 
 namespace {
 
@@ -131,5 +132,40 @@ TEST_F(OpenMeshDecimater, DecimateMeshExampleFromDoc) {
   EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
 }
 
+
+TEST_F(OpenMeshDecimater, DecimateMeshNormalFlipping) {
+
+  bool ok = OpenMesh::IO::read_mesh(mesh_, "cube1.off");
+
+  ASSERT_TRUE(ok);
+
+  typedef OpenMesh::Decimater::DecimaterT< Mesh >  Decimater;
+  typedef OpenMesh::Decimater::ModNormalFlippingT < Mesh >::Handle HModNormalFlipping;
+  typedef OpenMesh::Decimater::ModQuadricT< Mesh >::Handle HModQuadric;
+
+  Decimater decimaterDBG(mesh_);
+
+  HModQuadric hModQuadricDBG;
+  decimaterDBG.add( hModQuadricDBG );
+  std::cout << decimaterDBG.module( hModQuadricDBG ).name() << std::endl;
+  decimaterDBG.module( hModQuadricDBG ).unset_max_err();
+  decimaterDBG.module( hModQuadricDBG ).set_binary(false);
+
+  HModNormalFlipping hModNormalFlippingDGB;
+  decimaterDBG.add( hModNormalFlippingDGB );
+  std::cout << decimaterDBG.module( hModNormalFlippingDGB ).name() << std::endl;
+  decimaterDBG.module( hModNormalFlippingDGB ).set_max_normal_deviation(45.0);
+  EXPECT_TRUE(decimaterDBG.module( hModNormalFlippingDGB ).is_binary()) << "Normal Flipping Module is not binary.";
+
+  decimaterDBG.initialize();
+  size_t removedVertices = 0;
+  removedVertices = decimaterDBG.decimate_to_faces(4500, 9996);
+                    decimaterDBG.mesh().garbage_collection();
+
+  EXPECT_EQ(2526u, removedVertices) << "The number of remove vertices is not correct!";
+  EXPECT_EQ(5000u, mesh_.n_vertices()) << "The number of vertices after decimation is not correct!";
+  EXPECT_EQ(14994u, mesh_.n_edges()) << "The number of edges after decimation is not correct!";
+  EXPECT_EQ(9996u, mesh_.n_faces()) << "The number of faces after decimation is not correct!";
+}
 
 }
