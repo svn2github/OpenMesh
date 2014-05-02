@@ -348,43 +348,7 @@ public:
   FaceIter faces_end();
   /// Const end iterator for faces
   ConstFaceIter faces_end() const;
-
-  template<typename CONTAINER_TYPE, typename ITER_TYPE, ITER_TYPE (CONTAINER_TYPE::*begin_fn)() const, ITER_TYPE (CONTAINER_TYPE::*end_fn)() const>
-  class EntityRange {
-      public:
-          EntityRange(CONTAINER_TYPE &container) : container_(container) {}
-          ITER_TYPE begin() { return (container_.*begin_fn)(); }
-          ITER_TYPE end() { return (container_.*end_fn)(); }
-
-      private:
-          CONTAINER_TYPE &container_;
-  };
-  typedef EntityRange<const PolyConnectivity, PolyConnectivity::ConstVertexIter, &PolyConnectivity::vertices_begin, &PolyConnectivity::vertices_end> ConstVertexRange;
-  typedef EntityRange<const PolyConnectivity, PolyConnectivity::ConstHalfedgeIter, &PolyConnectivity::halfedges_begin, &PolyConnectivity::halfedges_end> ConstHalfedgeRange;
-  typedef EntityRange<const PolyConnectivity, PolyConnectivity::ConstEdgeIter, &PolyConnectivity::edges_begin, &PolyConnectivity::edges_end> ConstEdgeRange;
-  typedef EntityRange<const PolyConnectivity, PolyConnectivity::ConstFaceIter, &PolyConnectivity::faces_begin, &PolyConnectivity::faces_end> ConstFaceRange;
-
-  /**
-   * @return The vertices as a range object suitable for C++11 range based for loops.
-   */
-  ConstVertexRange vertices() const { return ConstVertexRange(*this); }
-
-  /**
-   * @return The halfedges as a range object suitable for C++11 range based for loops.
-   */
-  ConstHalfedgeRange halfedges() const { return ConstHalfedgeRange(*this); }
-
-  /**
-   * @return The edges as a range object suitable for C++11 range based for loops.
-   */
-  ConstEdgeRange edges() const { return ConstEdgeRange(*this); }
-
-  /**
-   * @return The faces as a range object suitable for C++11 range based for loops.
-   */
-  ConstFaceRange faces() const { return ConstFaceRange(*this); }
   //@}
-
 
 
   /** \name Begin for skipping iterators
@@ -618,6 +582,217 @@ public:
   { return ConstHalfedgeLoopIter(*this, _heh, true); }
   //@}
 
+  /** @name Range based iterators and circulators */
+  //@{
+
+  /// Generic class for vertex/halfedge/edge/face ranges.
+  template<
+      typename CONTAINER_TYPE,
+      typename ITER_TYPE,
+      ITER_TYPE (CONTAINER_TYPE::*begin_fn)() const,
+      ITER_TYPE (CONTAINER_TYPE::*end_fn)() const>
+  class EntityRange {
+      public:
+          EntityRange(CONTAINER_TYPE &container) : container_(container) {}
+          ITER_TYPE begin() { return (container_.*begin_fn)(); }
+          ITER_TYPE end() { return (container_.*end_fn)(); }
+
+      private:
+          CONTAINER_TYPE &container_;
+  };
+  typedef EntityRange<
+          const PolyConnectivity,
+          PolyConnectivity::ConstVertexIter,
+          &PolyConnectivity::vertices_begin,
+          &PolyConnectivity::vertices_end> ConstVertexRange;
+  typedef EntityRange<
+          const PolyConnectivity,
+          PolyConnectivity::ConstHalfedgeIter,
+          &PolyConnectivity::halfedges_begin,
+          &PolyConnectivity::halfedges_end> ConstHalfedgeRange;
+  typedef EntityRange<
+          const PolyConnectivity,
+          PolyConnectivity::ConstEdgeIter,
+          &PolyConnectivity::edges_begin,
+          &PolyConnectivity::edges_end> ConstEdgeRange;
+  typedef EntityRange<
+          const PolyConnectivity,
+          PolyConnectivity::ConstFaceIter,
+          &PolyConnectivity::faces_begin,
+          &PolyConnectivity::faces_end> ConstFaceRange;
+
+  /**
+   * @return The vertices as a range object suitable
+   * for C++11 range based for loops.
+   */
+  ConstVertexRange vertices() const { return ConstVertexRange(*this); }
+
+  /**
+   * @return The halfedges as a range object suitable
+   * for C++11 range based for loops.
+   */
+  ConstHalfedgeRange halfedges() const { return ConstHalfedgeRange(*this); }
+
+  /**
+   * @return The edges as a range object suitabl
+   * for C++11 range based for loops.
+   */
+  ConstEdgeRange edges() const { return ConstEdgeRange(*this); }
+
+  /**
+   * @return The faces as a range object suitable
+   * for C++11 range based for loops.
+   */
+  ConstFaceRange faces() const { return ConstFaceRange(*this); }
+
+  /// Generic class for iterator ranges.
+  template<
+      typename CONTAINER_TYPE,
+      typename ITER_TYPE,
+      typename CENTER_ENTITY_TYPE,
+      ITER_TYPE (CONTAINER_TYPE::*begin_fn)(CENTER_ENTITY_TYPE) const,
+      ITER_TYPE (CONTAINER_TYPE::*end_fn)(CENTER_ENTITY_TYPE) const>
+  class CirculatorRange {
+      public:
+          CirculatorRange(
+                  CONTAINER_TYPE &container,
+                  CENTER_ENTITY_TYPE center) :
+              container_(container), center_(center) {}
+          ITER_TYPE begin() { return (container_.*begin_fn)(center_); }
+          ITER_TYPE end() { return (container_.*end_fn)(center_); }
+
+      private:
+          CONTAINER_TYPE &container_;
+          CENTER_ENTITY_TYPE center_;
+  };
+
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstVertexVertexIter,
+          VertexHandle,
+          &PolyConnectivity::cvv_begin,
+          &PolyConnectivity::cvv_end> ConstVertexVertexRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstVertexIHalfedgeIter,
+          VertexHandle,
+          &PolyConnectivity::cvih_begin,
+          &PolyConnectivity::cvih_end> ConstVertexIHalfedgeRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstVertexOHalfedgeIter, VertexHandle,
+          &PolyConnectivity::cvoh_begin,
+          &PolyConnectivity::cvoh_end> ConstVertexOHalfedgeRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstVertexEdgeIter,
+          VertexHandle,
+          &PolyConnectivity::cve_begin,
+          &PolyConnectivity::cve_end> ConstVertexEdgeRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstVertexFaceIter,
+          VertexHandle,
+          &PolyConnectivity::cvf_begin,
+          &PolyConnectivity::cvf_end> ConstVertexFaceRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstFaceVertexIter,
+          FaceHandle,
+          &PolyConnectivity::cfv_begin,
+          &PolyConnectivity::cfv_end> ConstFaceVertexRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstFaceHalfedgeIter,
+          FaceHandle,
+          &PolyConnectivity::cfh_begin,
+          &PolyConnectivity::cfh_end> ConstFaceHalfedgeRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstFaceEdgeIter,
+          FaceHandle,
+          &PolyConnectivity::cfe_begin,
+          &PolyConnectivity::cfe_end> ConstFaceEdgeRange;
+  typedef CirculatorRange<
+          const PolyConnectivity,
+          ConstFaceFaceIter,
+          FaceHandle,
+          &PolyConnectivity::cff_begin,
+          &PolyConnectivity::cff_end> ConstFaceFaceRange;
+
+  /**
+   * @return The vertices adjacent to the specified vertex
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstVertexVertexRange vv_range(VertexHandle _vh) const {
+      return ConstVertexVertexRange(*this, _vh);
+  }
+
+  /**
+   * @return The incoming halfedges incident to the specified vertex
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstVertexIHalfedgeRange vih_range(VertexHandle _vh) const {
+      return ConstVertexIHalfedgeRange(*this, _vh);
+  }
+
+  /**
+   * @return The outgoing halfedges incident to the specified vertex
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstVertexOHalfedgeRange voh_range(VertexHandle _vh) const {
+      return ConstVertexOHalfedgeRange(*this, _vh);
+  }
+
+  /**
+   * @return The edges incident to the specified vertex
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstVertexEdgeRange ve_range(VertexHandle _vh) const {
+      return ConstVertexEdgeRange(*this, _vh);
+  }
+
+  /**
+   * @return The faces incident to the specified vertex
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstVertexFaceIter vf_range(VertexHandle _vh) const {
+      return ConstVertexFaceIter(*this, _vh);
+  }
+
+  /**
+   * @return The vertices incident to the specified face
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstFaceVertexRange fv_range(FaceHandle _fh) const {
+      return ConstFaceVertexRange(*this, _fh);
+  }
+
+  /**
+   * @return The halfedges incident to the specified face
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstFaceHalfedgeRange fh_range(FaceHandle _fh) const {
+      return ConstFaceHalfedgeRange(*this, _fh);
+  }
+
+  /**
+   * @return The edges incident to the specified face
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstFaceEdgeRange fe_range(FaceHandle _fh) const {
+      return ConstFaceEdgeRange(*this, _fh);
+  }
+
+  /**
+   * @return The faces adjacent to the specified face
+   * as a range object suitable for C++11 range based for loops.
+   */
+  ConstFaceFaceIter ff_range(FaceHandle _fh) const {
+      return ConstFaceFaceIter(*this, _fh);
+  }
+
+  //@}
 
   //===========================================================================
   /** @name Boundary and manifold tests
