@@ -333,7 +333,7 @@ void PolyMeshT<Kernel>::
 calc_vertex_normal_fast(VertexHandle _vh, Normal& _n) const
 {
   _n.vectorize(0.0);
-  for (ConstVertexFaceIter vf_it=this->cvf_iter(_vh); vf_it.is_valid(); ++vf_it)
+  for (ConstVertexFaceIter vf_it = this->cvf_iter(_vh); vf_it.is_valid(); ++vf_it)
     _n += this->normal(*vf_it);
 }
 
@@ -343,20 +343,20 @@ void PolyMeshT<Kernel>::
 calc_vertex_normal_correct(VertexHandle _vh, Normal& _n) const
 {
   _n.vectorize(0.0);
-  ConstVertexIHalfedgeIter cvih_it = cvih_iter(_vh);
-  if (!cvih_it)
+  ConstVertexIHalfedgeIter cvih_it = this->cvih_iter(_vh);
+  if (! cvih_it.is_valid() )
   {//don't crash on isolated vertices
     return;
   }
   Normal in_he_vec;
-  calc_edge_vector(cvih_it, in_he_vec);
-  for ( ; cvih_it; ++cvih_it)
+  calc_edge_vector(*cvih_it, in_he_vec);
+  for ( ; cvih_it.is_valid(); ++cvih_it)
   {//calculates the sector normal defined by cvih_it and adds it to _n
-    if (is_boundary(cvih_it))
+    if (this->is_boundary(*cvih_it))
     {
       continue;
     }
-    HalfedgeHandle out_heh(next_halfedge_handle(cvih_it));
+    HalfedgeHandle out_heh(this->next_halfedge_handle(*cvih_it));
     Normal out_he_vec;
     calc_edge_vector(out_heh, out_he_vec);
     _n += cross(in_he_vec, out_he_vec);//sector area is taken into account
@@ -374,11 +374,11 @@ calc_vertex_normal_loop(VertexHandle _vh, Normal& _n) const
                   LoopSchemeMaskDoubleSingleton::Instance();
 
   Normal t_v(0.0,0.0,0.0), t_w(0.0,0.0,0.0);
-  unsigned int vh_val = valence(_vh);
+  unsigned int vh_val = this->valence(_vh);
   unsigned int i = 0;
-  for (ConstVertexOHalfedgeIter cvoh_it = cvoh_iter(_vh); cvoh_it; ++cvoh_it, ++i)
+  for (ConstVertexOHalfedgeIter cvoh_it = this->cvoh_iter(_vh); cvoh_it.is_valid(); ++cvoh_it, ++i)
   {
-    VertexHandle r1_v(to_vertex_handle(cvoh_it));
+    VertexHandle r1_v( this->to_vertex_handle(*cvoh_it) );
     t_v += (typename vector_traits<Point>::value_type)(loop_scheme_mask__.tang0_weight(vh_val, i))*this->point(r1_v);
     t_w += (typename vector_traits<Point>::value_type)(loop_scheme_mask__.tang1_weight(vh_val, i))*this->point(r1_v);
   }
