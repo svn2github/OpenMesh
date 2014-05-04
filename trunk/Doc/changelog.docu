@@ -7,11 +7,14 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.1</b> (?/?/?,Rev.1021)</td><td>
+<tr valign=top><td><b>3.1</b> (?/?/?,Rev.1036)</td><td>
 
 <b>Core</b>
 <ul>
 <li>Fix for c++11 call to pointer to member function of type 'VertexIter ()' drops 'const' qualifier (Thanks to Ronald Richter and Kenshi Takayama for the fix)</li>
+<li>PolyConnectivity: Added range based circulators courtesy of Kenshi Takayama. (Thanks!)</li>
+<li>Rearranged the code a bit in order to have all range based stuff in one place.</li>
+<li>Fixed calc_normals_... functions (Missing this pointer) Thanks to Martin Schmidt for the report</li>
 </ul>
 
 
@@ -30,6 +33,12 @@
 <ul>
 <li>OBJ Writer: Fixed material writer using wrong stream (Thanks to  Vladimir Chalupecky for the fix). closes 2037</li> 
 <li>VTK Writer: Added simple VTK writer writing only vertices and faces (Thanks to Vladimir Chalupecky for the code). closes 2039</li>
+</ul>
+
+
+<b>IO</b>
+<ul>
+<li>Added unittests for the normal calculation functions </li>
 </ul>
 
 </tr>
