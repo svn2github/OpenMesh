@@ -334,6 +334,41 @@ void expose_openmesh_type(const char *_name) {
 
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
 
+	// Get value of a standard property (points, normals, colors)
+	const typename Mesh::Point&  (Mesh::*point_vh )(VertexHandle  ) const = &Mesh::point;
+	const typename Mesh::Normal& (Mesh::*normal_vh)(VertexHandle  ) const = &Mesh::normal;
+	const typename Mesh::Normal& (Mesh::*normal_hh)(HalfedgeHandle) const = &Mesh::normal;
+	const typename Mesh::Normal& (Mesh::*normal_fh)(FaceHandle    ) const = &Mesh::normal;
+	const typename Mesh::Color&  (Mesh::*color_vh )(VertexHandle  ) const = &Mesh::color;
+	const typename Mesh::Color&  (Mesh::*color_hh )(HalfedgeHandle) const = &Mesh::color;
+	const typename Mesh::Color&  (Mesh::*color_eh )(EdgeHandle    ) const = &Mesh::color;
+	const typename Mesh::Color&  (Mesh::*color_fh )(FaceHandle    ) const = &Mesh::color;
+
+	// Get value of a standard property (texture coordinates)
+	const typename Mesh::TexCoord1D& (Mesh::*texcoord1D_vh)(VertexHandle  ) const = &Mesh::texcoord1D;
+	const typename Mesh::TexCoord1D& (Mesh::*texcoord1D_hh)(HalfedgeHandle) const = &Mesh::texcoord1D;
+	const typename Mesh::TexCoord2D& (Mesh::*texcoord2D_vh)(VertexHandle  ) const = &Mesh::texcoord2D;
+	const typename Mesh::TexCoord2D& (Mesh::*texcoord2D_hh)(HalfedgeHandle) const = &Mesh::texcoord2D;
+	const typename Mesh::TexCoord3D& (Mesh::*texcoord3D_vh)(VertexHandle  ) const = &Mesh::texcoord3D;
+	const typename Mesh::TexCoord3D& (Mesh::*texcoord3D_hh)(HalfedgeHandle) const = &Mesh::texcoord3D;
+
+	// Set value of a standard property (points, normals, colors)
+	void (Mesh::*set_normal_vh)(VertexHandle,   const typename Mesh::Normal&) = &Mesh::set_normal;
+	void (Mesh::*set_normal_hh)(HalfedgeHandle, const typename Mesh::Normal&) = &Mesh::set_normal;
+	void (Mesh::*set_normal_fh)(FaceHandle,     const typename Mesh::Normal&) = &Mesh::set_normal;
+	void (Mesh::*set_color_vh )(VertexHandle,   const typename Mesh::Color& ) = &Mesh::set_color;
+	void (Mesh::*set_color_hh )(HalfedgeHandle, const typename Mesh::Color& ) = &Mesh::set_color;
+	void (Mesh::*set_color_eh )(EdgeHandle,     const typename Mesh::Color& ) = &Mesh::set_color;
+	void (Mesh::*set_color_fh )(FaceHandle,     const typename Mesh::Color& ) = &Mesh::set_color;
+
+	// Set value of a standard property (texture coordinates)
+	void (Mesh::*set_texcoord1D_vh)(VertexHandle,   const typename Mesh::TexCoord1D&) = &Mesh::set_texcoord1D;
+	void (Mesh::*set_texcoord1D_hh)(HalfedgeHandle, const typename Mesh::TexCoord1D&) = &Mesh::set_texcoord1D;
+	void (Mesh::*set_texcoord2D_vh)(VertexHandle,   const typename Mesh::TexCoord2D&) = &Mesh::set_texcoord2D;
+	void (Mesh::*set_texcoord2D_hh)(HalfedgeHandle, const typename Mesh::TexCoord2D&) = &Mesh::set_texcoord2D;
+	void (Mesh::*set_texcoord3D_vh)(VertexHandle,   const typename Mesh::TexCoord3D&) = &Mesh::set_texcoord3D;
+	void (Mesh::*set_texcoord3D_hh)(HalfedgeHandle, const typename Mesh::TexCoord3D&) = &Mesh::set_texcoord3D;
+
 	class_<Mesh> classMesh = class_<Mesh>(_name);
 
 	/*
@@ -387,6 +422,35 @@ void expose_openmesh_type(const char *_name) {
 
 		.def("halfedge_handle", halfedge_handle_fh)
 		.def("set_halfedge_handle", set_halfedge_handle_fh_heh)
+
+		.def("point", point_vh, return_value_policy<copy_const_reference>())
+		.def("set_point", &Mesh::set_point)
+		.def("normal", normal_vh, return_value_policy<copy_const_reference>())
+		.def("set_normal", set_normal_vh)
+		.def("normal", normal_hh, return_value_policy<copy_const_reference>())
+		.def("set_normal", set_normal_hh)
+		.def("color", color_vh, return_value_policy<copy_const_reference>())
+		.def("set_color", set_color_vh)
+		.def("texcoord1D", texcoord1D_vh, return_value_policy<copy_const_reference>())
+		.def("set_texcoord1D", set_texcoord1D_vh)
+		.def("texcoord2D", texcoord2D_vh, return_value_policy<copy_const_reference>())
+		.def("set_texcoord2D", set_texcoord2D_vh)
+		.def("texcoord3D", texcoord3D_vh, return_value_policy<copy_const_reference>())
+		.def("set_texcoord3D", set_texcoord3D_vh)
+		.def("texcoord1D", texcoord1D_hh, return_value_policy<copy_const_reference>())
+		.def("set_texcoord1D", set_texcoord1D_hh)
+		.def("texcoord2D", texcoord2D_hh, return_value_policy<copy_const_reference>())
+		.def("set_texcoord2D", set_texcoord2D_hh)
+		.def("texcoord3D", texcoord3D_hh, return_value_policy<copy_const_reference>())
+		.def("set_texcoord3D", set_texcoord3D_hh)
+		.def("color", color_hh, return_value_policy<copy_const_reference>())
+		.def("set_color", set_color_hh)
+		.def("color", color_eh, return_value_policy<copy_const_reference>())
+		.def("set_color", set_color_eh)
+		.def("normal", normal_fh, return_value_policy<copy_const_reference>())
+		.def("set_normal", set_normal_fh)
+		.def("color", color_fh, return_value_policy<copy_const_reference>())
+		.def("set_color", set_color_fh)
 
 		.def("request_vertex_normals", &Mesh::request_vertex_normals)
 		.def("request_vertex_colors", &Mesh::request_vertex_colors)
