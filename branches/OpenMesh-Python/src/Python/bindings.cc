@@ -164,6 +164,22 @@ class MeshWrapperT : public Mesh {
 		void garbage_collection() {
 			Mesh::garbage_collection();
 		}
+
+		void set_status(VertexHandle _vh, const OpenMesh::Attributes::StatusInfo &_info) {
+			Mesh::status(_vh) = _info;
+		}
+
+		void set_status(HalfedgeHandle _heh, const OpenMesh::Attributes::StatusInfo &_info) {
+			Mesh::status(_heh) = _info;
+		}
+
+		void set_status(EdgeHandle _eh, const OpenMesh::Attributes::StatusInfo &_info) {
+			Mesh::status(_eh) = _info;
+		}
+
+		void set_status(FaceHandle _fh, const OpenMesh::Attributes::StatusInfo &_info) {
+			Mesh::status(_fh) = _info;
+		}
 };
 
 template<class PropertyManager, class IndexHandle>
@@ -308,14 +324,59 @@ void expose_handles() {
 		.def(self != self)
 		.def(self < self)
 		;
+
 	class_<VertexHandle, bases<BaseHandle> >("VertexHandle");
 	class_<HalfedgeHandle, bases<BaseHandle> >("HalfedgeHandle");
 	class_<EdgeHandle, bases<BaseHandle> >("EdgeHandle");
 	class_<FaceHandle, bases<BaseHandle> >("FaceHandle");
 }
 
+void expose_status_bits_and_info() {
+	using OpenMesh::Attributes::StatusBits;
+	using OpenMesh::Attributes::StatusInfo;
+
+	enum_<StatusBits>("StatusBits")
+		.value("DELETED", OpenMesh::Attributes::DELETED)
+		.value("LOCKED", OpenMesh::Attributes::LOCKED)
+		.value("SELECTED", OpenMesh::Attributes::SELECTED)
+		.value("HIDDEN", OpenMesh::Attributes::HIDDEN)
+		.value("FEATURE", OpenMesh::Attributes::FEATURE)
+		.value("TAGGED", OpenMesh::Attributes::TAGGED)
+		.value("TAGGED2", OpenMesh::Attributes::TAGGED2)
+		.value("FIXEDNONMANIFOLD", OpenMesh::Attributes::FIXEDNONMANIFOLD)
+		.value("UNUSED", OpenMesh::Attributes::UNUSED)
+		;
+
+	class_<StatusInfo>("StatusInfo")
+		.def("deleted", &StatusInfo::deleted)
+		.def("set_deleted", &StatusInfo::set_deleted)
+		.def("locked", &StatusInfo::locked)
+		.def("set_locked", &StatusInfo::set_locked)
+		.def("selected", &StatusInfo::selected)
+		.def("set_selected", &StatusInfo::set_selected)
+		.def("hidden", &StatusInfo::hidden)
+		.def("set_hidden", &StatusInfo::set_hidden)
+		.def("feature", &StatusInfo::feature)
+		.def("set_feature", &StatusInfo::set_feature)
+		.def("tagged", &StatusInfo::tagged)
+		.def("set_tagged", &StatusInfo::set_tagged)
+		.def("tagged2", &StatusInfo::tagged2)
+		.def("set_tagged2", &StatusInfo::set_tagged2)
+		.def("fixed_nonmanifold", &StatusInfo::fixed_nonmanifold)
+		.def("set_fixed_nonmanifold", &StatusInfo::set_fixed_nonmanifold)
+		.def("bits", &StatusInfo::bits)
+		.def("set_bits", &StatusInfo::set_bits)
+		.def("is_bit_set", &StatusInfo::is_bit_set)
+		.def("set_bit", &StatusInfo::set_bit)
+		.def("unset_bit", &StatusInfo::unset_bit)
+		.def("change_bit", &StatusInfo::change_bit)
+		;
+}
+
 template<class Mesh>
-void expose_openmesh_type(const char *_name) {
+void expose_mesh(const char *_name) {
+	using OpenMesh::Attributes::StatusInfo;
+
 	VertexHandle   (Mesh::*vertex_handle_uint  )(unsigned int  ) const = &Mesh::vertex_handle;
 	HalfedgeHandle (Mesh::*halfedge_handle_uint)(unsigned int  ) const = &Mesh::halfedge_handle;
 	EdgeHandle     (Mesh::*edge_handle_uint    )(unsigned int  ) const = &Mesh::edge_handle;
@@ -334,7 +395,7 @@ void expose_openmesh_type(const char *_name) {
 
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
 
-	// Get value of a standard property (points, normals, colors)
+	// Get value of a standard property (point, normal, color)
 	const typename Mesh::Point&  (Mesh::*point_vh )(VertexHandle  ) const = &Mesh::point;
 	const typename Mesh::Normal& (Mesh::*normal_vh)(VertexHandle  ) const = &Mesh::normal;
 	const typename Mesh::Normal& (Mesh::*normal_hh)(HalfedgeHandle) const = &Mesh::normal;
@@ -344,7 +405,7 @@ void expose_openmesh_type(const char *_name) {
 	const typename Mesh::Color&  (Mesh::*color_eh )(EdgeHandle    ) const = &Mesh::color;
 	const typename Mesh::Color&  (Mesh::*color_fh )(FaceHandle    ) const = &Mesh::color;
 
-	// Get value of a standard property (texture coordinates)
+	// Get value of a standard property (texture coordinate)
 	const typename Mesh::TexCoord1D& (Mesh::*texcoord1D_vh)(VertexHandle  ) const = &Mesh::texcoord1D;
 	const typename Mesh::TexCoord1D& (Mesh::*texcoord1D_hh)(HalfedgeHandle) const = &Mesh::texcoord1D;
 	const typename Mesh::TexCoord2D& (Mesh::*texcoord2D_vh)(VertexHandle  ) const = &Mesh::texcoord2D;
@@ -352,7 +413,13 @@ void expose_openmesh_type(const char *_name) {
 	const typename Mesh::TexCoord3D& (Mesh::*texcoord3D_vh)(VertexHandle  ) const = &Mesh::texcoord3D;
 	const typename Mesh::TexCoord3D& (Mesh::*texcoord3D_hh)(HalfedgeHandle) const = &Mesh::texcoord3D;
 
-	// Set value of a standard property (points, normals, colors)
+	// Get value of a standard property (status)
+	const StatusInfo& (Mesh::*status_vh)(VertexHandle  ) const = &Mesh::status;
+	const StatusInfo& (Mesh::*status_hh)(HalfedgeHandle) const = &Mesh::status;
+	const StatusInfo& (Mesh::*status_eh)(EdgeHandle    ) const = &Mesh::status;
+	const StatusInfo& (Mesh::*status_fh)(FaceHandle    ) const = &Mesh::status;
+
+	// Set value of a standard property (point, normal, color)
 	void (Mesh::*set_normal_vh)(VertexHandle,   const typename Mesh::Normal&) = &Mesh::set_normal;
 	void (Mesh::*set_normal_hh)(HalfedgeHandle, const typename Mesh::Normal&) = &Mesh::set_normal;
 	void (Mesh::*set_normal_fh)(FaceHandle,     const typename Mesh::Normal&) = &Mesh::set_normal;
@@ -361,13 +428,19 @@ void expose_openmesh_type(const char *_name) {
 	void (Mesh::*set_color_eh )(EdgeHandle,     const typename Mesh::Color& ) = &Mesh::set_color;
 	void (Mesh::*set_color_fh )(FaceHandle,     const typename Mesh::Color& ) = &Mesh::set_color;
 
-	// Set value of a standard property (texture coordinates)
+	// Set value of a standard property (texture coordinate)
 	void (Mesh::*set_texcoord1D_vh)(VertexHandle,   const typename Mesh::TexCoord1D&) = &Mesh::set_texcoord1D;
 	void (Mesh::*set_texcoord1D_hh)(HalfedgeHandle, const typename Mesh::TexCoord1D&) = &Mesh::set_texcoord1D;
 	void (Mesh::*set_texcoord2D_vh)(VertexHandle,   const typename Mesh::TexCoord2D&) = &Mesh::set_texcoord2D;
 	void (Mesh::*set_texcoord2D_hh)(HalfedgeHandle, const typename Mesh::TexCoord2D&) = &Mesh::set_texcoord2D;
 	void (Mesh::*set_texcoord3D_vh)(VertexHandle,   const typename Mesh::TexCoord3D&) = &Mesh::set_texcoord3D;
 	void (Mesh::*set_texcoord3D_hh)(HalfedgeHandle, const typename Mesh::TexCoord3D&) = &Mesh::set_texcoord3D;
+
+	// Set value of a standard property (status)
+	void (Mesh::*set_status_vh)(VertexHandle,   const StatusInfo&) = &Mesh::set_status;
+	void (Mesh::*set_status_hh)(HalfedgeHandle, const StatusInfo&) = &Mesh::set_status;
+	void (Mesh::*set_status_eh)(EdgeHandle,     const StatusInfo&) = &Mesh::set_status;
+	void (Mesh::*set_status_fh)(FaceHandle,     const StatusInfo&) = &Mesh::set_status;
 
 	class_<Mesh> classMesh = class_<Mesh>(_name);
 
@@ -443,14 +516,22 @@ void expose_openmesh_type(const char *_name) {
 		.def("set_texcoord2D", set_texcoord2D_hh)
 		.def("texcoord3D", texcoord3D_hh, return_value_policy<copy_const_reference>())
 		.def("set_texcoord3D", set_texcoord3D_hh)
+		.def("status", status_vh, return_value_policy<copy_const_reference>())
+		.def("set_status", set_status_vh)
+		.def("status", status_hh, return_value_policy<copy_const_reference>())
+		.def("set_status", set_status_hh)
 		.def("color", color_hh, return_value_policy<copy_const_reference>())
 		.def("set_color", set_color_hh)
 		.def("color", color_eh, return_value_policy<copy_const_reference>())
 		.def("set_color", set_color_eh)
+		.def("status", status_eh, return_value_policy<copy_const_reference>())
+		.def("set_status", set_status_eh)
 		.def("normal", normal_fh, return_value_policy<copy_const_reference>())
 		.def("set_normal", set_normal_fh)
 		.def("color", color_fh, return_value_policy<copy_const_reference>())
 		.def("set_color", set_color_fh)
+		.def("status", status_fh, return_value_policy<copy_const_reference>())
+		.def("set_status", set_status_fh)
 
 		.def("request_vertex_normals", &Mesh::request_vertex_normals)
 		.def("request_vertex_colors", &Mesh::request_vertex_colors)
@@ -562,9 +643,10 @@ BOOST_PYTHON_MODULE(openmesh) {
 	expose_vec<double, 4>("Vec4d");
 
 	expose_handles();
+	expose_status_bits_and_info();
 
-	expose_openmesh_type<MeshWrapperT<TriMesh> >("TriMesh");
-	expose_openmesh_type<MeshWrapperT<PolyMesh> >("PolyMesh");
+	expose_mesh<MeshWrapperT<TriMesh> >("TriMesh");
+	expose_mesh<MeshWrapperT<PolyMesh> >("PolyMesh");
 
 	expose_iterator<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>("VertexIter");
 	expose_iterator<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>("HalfedgeIter");
