@@ -153,12 +153,36 @@ class MeshWrapperT : public Mesh {
 			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, _handle);
 		}
 
+		CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter> vih(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter>(*this, _handle);
+		}
+
+		CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter> voh(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter>(*this, _handle);
+		}
+
+		CirculatorWrapperT<typename Mesh::VertexEdgeIter> ve(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexEdgeIter>(*this, _handle);
+		}
+
 		CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle _handle) const {
 			return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, _handle);
 		}
 
 		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle _handle) const {
 			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, _handle);
+		}
+
+		CirculatorWrapperT<typename Mesh::FaceHalfedgeIter> fh(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceHalfedgeIter>(*this, _handle);
+		}
+
+		CirculatorWrapperT<typename Mesh::FaceEdgeIter> fe(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceEdgeIter>(*this, _handle);
+		}
+
+		CirculatorWrapperT<typename Mesh::FaceFaceIter> ff(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceFaceIter>(*this, _handle);
 		}
 
 		void garbage_collection() {
@@ -473,11 +497,6 @@ void expose_mesh(const char *_name) {
 		.def("halfedge_handle", halfedge_handle_vh)
 		.def("set_halfedge_handle", set_halfedge_handle_vh_heh)
 
-		.def("vertices", &Mesh::vertices)
-		.def("halfedges", &Mesh::halfedges)
-		.def("edges", &Mesh::edges)
-		.def("faces", &Mesh::faces)
-
 		.def("to_vertex_handle", &Mesh::to_vertex_handle)
 		.def("from_vertex_handle", &Mesh::from_vertex_handle)
 		.def("set_vertex_handle", &Mesh::set_vertex_handle)
@@ -590,13 +609,25 @@ void expose_mesh(const char *_name) {
 		.def("has_face_status", &Mesh::has_face_status)
 		.def("has_face_texture_index", &Mesh::has_face_texture_index)
 
+		.def("vertices", &Mesh::vertices)
+		.def("halfedges", &Mesh::halfedges)
+		.def("edges", &Mesh::edges)
+		.def("faces", &Mesh::faces)
+
+		.def("vv", &Mesh::vv)
+		.def("vih", &Mesh::vih)
+		.def("voh", &Mesh::voh)
+		.def("ve", &Mesh::ve)
+		.def("vf", &Mesh::vf)
+
+		.def("fv", &Mesh::fv)
+		.def("fh", &Mesh::fh)
+		.def("fe", &Mesh::fe)
+		.def("ff", &Mesh::ff)
+
 		.def("add_vertex", &Mesh::add_vertex)
 		.def("add_face", add_face)
 		.def("vertex_handle", &Mesh::vertex_handle)
-
-		.def("vv", &Mesh::vv)
-		.def("vf", &Mesh::vf)
-		.def("fv", &Mesh::fv)
 		;
 }
 
