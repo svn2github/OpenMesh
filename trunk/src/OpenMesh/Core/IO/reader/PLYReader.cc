@@ -938,14 +938,20 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
                         faceIndexType_ = ValueTypeUCHAR;
                     } else {
                         omerr() << "Unsupported Index type for face list: " << listIndexType << std::endl;
+                        return false;
                     }
 
                     if (listEntryType == "int32") {
                         faceEntryType_ = ValueTypeINT32;
                     } else if (listEntryType == "int") {
                         faceEntryType_ = ValueTypeINT;
+                    } else if (listEntryType == "uint32") {
+                        faceEntryType_ = ValueTypeUINT32;
+                    } else if (listEntryType == "uint") {
+                        faceEntryType_ = ValueTypeUINT;
                     } else {
                         omerr() << "Unsupported Entry type for face list: " << listEntryType << std::endl;
+                        return false;
                     }
 
                 }
