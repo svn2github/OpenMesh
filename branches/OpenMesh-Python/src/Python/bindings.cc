@@ -215,12 +215,36 @@ class PropertyManagerWrapperT : public PropertyManager {
 
 		PropertyManagerWrapperT() : PropertyManager() { }
 
+		void retain_void() {
+			PropertyManager::retain();
+		}
+
+		void retain_bool(bool _retain) {
+			PropertyManager::retain(_retain);
+		}
+
 		object getitem(IndexHandle _handle) const {
 			return (*this)[_handle];
 		}
 
 		void setitem(IndexHandle _handle, object _item) {
 			(*this)[_handle] = _item;
+		}
+
+		static bool property_exists(MeshWrapperT<TriMesh> &_mesh, const char *_propname) {
+			return PropertyManager::propertyExists(_mesh, _propname);
+		}
+
+		static bool property_exists(MeshWrapperT<PolyMesh> &_mesh, const char *_propname) {
+			return PropertyManager::propertyExists(_mesh, _propname);
+		}
+
+		static typename PropertyManager::Proxy create_if_not_exists(MeshWrapperT<TriMesh> &_mesh, const char *_propname) {
+			return PropertyManager::createIfNotExists(_mesh, _propname);
+		}
+
+		static typename PropertyManager::Proxy create_if_not_exists(MeshWrapperT<PolyMesh> &_mesh, const char *_propname) {
+			return PropertyManager::createIfNotExists(_mesh, _propname);
 		}
 };
 
@@ -654,14 +678,42 @@ void expose_circulator(const char *_name) {
 
 template<class PropHandle, class IndexHandle>
 void expose_property_manager(const char *_name) {
-	typedef OpenMesh::PropertyManager<PropHandle, OpenMesh::PolyConnectivity > PropertyManager;
+	typedef OpenMesh::PropertyManager<PropHandle, OpenMesh::PolyConnectivity> PropertyManager;
 	typedef PropertyManagerWrapperT<PropertyManager, IndexHandle> PropertyManagerWrapper;
+
+	bool (*property_exists_tri )(MeshWrapperT<TriMesh>&,  const char*) = &PropertyManagerWrapper::property_exists;
+	bool (*property_exists_poly)(MeshWrapperT<PolyMesh>&, const char*) = &PropertyManagerWrapper::property_exists;
+
+	typename PropertyManager::Proxy (*create_if_not_exists_tri )(MeshWrapperT<TriMesh>&,  const char*) = &PropertyManagerWrapper::create_if_not_exists;
+	typename PropertyManager::Proxy (*create_if_not_exists_poly)(MeshWrapperT<PolyMesh>&, const char*) = &PropertyManagerWrapper::create_if_not_exists;
+
+	class_<typename PropertyManager::Proxy>("Proxy", no_init);
 
 	class_<PropertyManagerWrapper, boost::noncopyable>(_name)
 		.def(init<MeshWrapperT<TriMesh>&, const char *, optional<bool> >())
 		.def(init<MeshWrapperT<PolyMesh>&, const char *, optional<bool> >())
+
+		.def("swap", &PropertyManagerWrapper::swap)
+		.def("is_valid", &PropertyManagerWrapper::isValid)
+
+		.def("__bool__", &PropertyManagerWrapper::operator bool)
+		.def("__nonzero__", &PropertyManagerWrapper::operator bool)
+
+		.def("get_name", &PropertyManagerWrapper::getName, return_internal_reference<>())
+		.def("get_mesh", &PropertyManagerWrapper::getMesh, return_value_policy<reference_existing_object>())
+		.def("retain", &PropertyManagerWrapper::retain_void)
+		.def("retain", &PropertyManagerWrapper::retain_bool)
+
 		.def("__getitem__", &PropertyManagerWrapper::getitem)
 		.def("__setitem__", &PropertyManagerWrapper::setitem)
+
+		.def("property_exists", property_exists_tri)
+		.def("property_exists", property_exists_poly)
+		.staticmethod("property_exists")
+
+		.def("create_if_not_exists", create_if_not_exists_tri)
+		.def("create_if_not_exists", create_if_not_exists_poly)
+		.staticmethod("create_if_not_exists")
 		;
 }
 
