@@ -41,15 +41,13 @@ systems / compilers:
 <table>
 
 <tr><td> Linux </td><td>
-gcc 4.0.x<br>
-gcc 4.1.x<br>
-gcc 4.2.x<br>
 gcc 4.3.x<br>
 gcc 4.4.x<br>
 gcc 4.5.x<br>
 gcc 4.6.x<br>
 gcc 4.7.x<br>
 gcc 4.8.x<br>
+gcc 4.9.x<br>
 </td></tr>
 
 <tr><td> Windows </td><td> 
