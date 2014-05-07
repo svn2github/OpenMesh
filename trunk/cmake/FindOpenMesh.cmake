@@ -7,7 +7,7 @@
 # OPENMESH_LIBRARIES       - Link these to use OPENMESH
 # OPENMESH_LIBRARY_DIR     - directory where the libraries are included
 #
-# Copyright 2013 Computer Graphics Group, RWTH Aachen University
+# Copyright 2014 Computer Graphics Group, RWTH Aachen University
 # Authors: Jan Möbius <moebius@cs.rwth-aachen.de>
 #          Hans-Christian Ebke <ebke@cs.rwth-aachen.de>
 #
@@ -56,10 +56,12 @@ IF (NOT OPENMESH_FOUND)
     "${CMAKE_SOURCE_DIR}/OpenMesh/src/OpenMesh"
     "${CMAKE_SOURCE_DIR}/libs_required/OpenMesh/src/OpenMesh"
     "${CMAKE_SOURCE_DIR}/../OpenMesh/src/OpenMesh"
+    "C:/Program Files/OpenMesh 3.1"
     "C:/Program Files/OpenMesh 3.0"
     "C:/Program Files/OpenMesh 2.4.1"
     "C:/Program Files/OpenMesh 2.4"
     "C:/Program Files/OpenMesh 2.0/include"
+    "C:/libs/OpenMesh 3.1"
     "C:/libs/OpenMesh 3.0"
     "C:/libs/OpenMesh 2.4.1"
     "C:/libs/OpenMesh 2.4"

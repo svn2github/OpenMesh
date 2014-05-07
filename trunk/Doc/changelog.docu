@@ -37,10 +37,18 @@
 </ul>
 
 
-<b>IO</b>
+<b>Unittests</b>
 <ul>
 <li>Added unittests for the normal calculation functions </li>
 </ul>
+
+<b>Build system</b>
+<ul>
+<ul>
+<li>Added OpenMesh finder. Closes 959</li>
+</ul>
+
+
 
 </tr>
 
