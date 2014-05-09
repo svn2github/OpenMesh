@@ -116,8 +116,6 @@ TEST_F(OpenMeshDecimater, DecimateMeshExampleFromDoc) {
   HModQuadric hModQuadricDBG;
   decimaterDBG.add( hModQuadricDBG );
 
-  std::cout << decimaterDBG.module( hModQuadricDBG ).name() << std::endl;
-
   decimaterDBG.module( hModQuadricDBG ).unset_max_err();
 
   decimaterDBG.initialize();
