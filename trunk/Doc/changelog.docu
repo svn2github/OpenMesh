@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.1</b> (?/?/?,Rev.1042)</td><td>
+<tr valign=top><td><b>3.1</b> (2014/05/09,Rev.1050)</td><td>
 
 <b>Core</b>
 <ul>
@@ -15,6 +15,12 @@
 <li>PolyConnectivity: Added range based circulators courtesy of Kenshi Takayama. (Thanks!)</li>
 <li>Rearranged the code a bit in order to have all range based stuff in one place.</li>
 <li>Fixed calc_normals_... functions (Missing this pointer) Thanks to Martin Schmidt for the report</li>
+</ul>
+
+<b>Decimater</b>
+<ul>
+<li>Fixed Destructor of ModNormaldeviation: Requested normals on destruction</li>
+<li>Decimater doesn't need normals anymore, if no module requires normals</li>
 </ul>
 
 
