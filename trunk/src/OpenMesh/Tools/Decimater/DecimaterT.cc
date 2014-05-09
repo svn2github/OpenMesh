@@ -172,6 +172,8 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
       heap_vertex(*v_it);
   }
 
+  const bool update_normals = mesh_.has_face_normals();
+
   // process heap
   while ((!heap_->empty()) && (n_collapses < _n_collapses)) {
     // get 1st heap entry
@@ -196,11 +198,14 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
     mesh_.collapse(v0v1);
     ++n_collapses;
 
-    // update triangle normals
-    vf_it = mesh_.vf_iter(ci.v1);
-    for (; vf_it.is_valid(); ++vf_it)
-      if (!mesh_.status(*vf_it).deleted())
-        mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+    if (update_normals)
+    {
+      // update triangle normals
+      vf_it = mesh_.vf_iter(ci.v1);
+      for (; vf_it.is_valid(); ++vf_it)
+        if (!mesh_.status(*vf_it).deleted())
+          mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+    }
 
     // post-process collapse
     this->postprocess_collapse(ci);
@@ -258,6 +263,8 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
       heap_vertex(*v_it);
   }
 
+  const bool update_normals = mesh_.has_face_normals();
+
   // process heap
   while ((!heap_->empty()) && (_nv < nv) && (_nf < nf)) {
     // get 1st heap entry
@@ -293,10 +300,13 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
     mesh_.collapse(v0v1);
 
     // update triangle normals
-    vf_it = mesh_.vf_iter(ci.v1);
-    for (; vf_it.is_valid(); ++vf_it)
-      if (!mesh_.status(*vf_it).deleted())
-        mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+    if (update_normals)
+    {
+      vf_it = mesh_.vf_iter(ci.v1);
+      for (; vf_it.is_valid(); ++vf_it)
+        if (!mesh_.status(*vf_it).deleted())
+          mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+    }
 
     // post-process collapse
     this->postprocess_collapse(ci);

@@ -87,11 +87,21 @@ public:
   ModNormalFlippingT( MeshT &_mesh) : Base(_mesh, true)
   {
     set_max_normal_deviation( 90.0f );
+    const bool mesh_has_normals = _mesh.has_face_normals();
+    _mesh.request_face_normals();
+
+    if (!mesh_has_normals)
+    {
+      std::cerr << "Mesh has no face normals. Compute them automatically." << std::endl;
+      _mesh.update_face_normals();
+    }
   }
 
 
   ~ModNormalFlippingT()
-  { }
+  {
+    Base::mesh().release_face_normals();
+  }
 
 
 public:

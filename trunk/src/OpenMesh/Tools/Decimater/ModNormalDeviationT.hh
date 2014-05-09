@@ -108,12 +108,22 @@ public:
   {
     set_normal_deviation(_max_dev);
     mesh_.add_property(normal_cones_);
+
+    const bool mesh_has_normals = _mesh.has_face_normals();
+    _mesh.request_face_normals();
+
+    if (!mesh_has_normals)
+    {
+      std::cerr << "Mesh has no face normals. Compute them automatically." << std::endl;
+      _mesh.update_face_normals();
+    }
   }
 
 
   /// Destructor
   ~ModNormalDeviationT() {
     mesh_.remove_property(normal_cones_);
+    mesh_.release_face_normals();
   }
 
 

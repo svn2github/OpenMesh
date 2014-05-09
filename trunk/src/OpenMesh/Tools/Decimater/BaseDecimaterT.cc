@@ -72,7 +72,7 @@ BaseDecimaterT<Mesh>::BaseDecimaterT(Mesh& _mesh) :
   mesh_.request_vertex_status();
   mesh_.request_edge_status();
   mesh_.request_face_status();
-  mesh_.request_face_normals();
+
 }
 
 //-----------------------------------------------------------------------------
@@ -83,7 +83,6 @@ BaseDecimaterT<Mesh>::~BaseDecimaterT() {
   mesh_.release_vertex_status();
   mesh_.release_edge_status();
   mesh_.release_face_status();
-  mesh_.release_face_normals();
 
   // dispose of modules
   {
