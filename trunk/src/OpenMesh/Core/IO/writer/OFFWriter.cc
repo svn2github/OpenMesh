@@ -175,8 +175,6 @@ bool
 _OFFWriter_::
 write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
-  omlog() << "[OFFWriter] : write ascii file\n";
-
 
   unsigned int i, nV, nF;
   Vec3f v, n;
@@ -353,8 +351,6 @@ bool
 _OFFWriter_::
 write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
-  omlog() << "[OFFWriter] : write binary file\n";
-
 
   unsigned int i, nV, nF;
   Vec3f v, n;

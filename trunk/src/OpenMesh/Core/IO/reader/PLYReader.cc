@@ -171,8 +171,6 @@ bool _PLYReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt) {
 
 bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options& _opt) const {
 
-    omlog() << "[PLYReader] : read ascii file\n";
-
     // Reparse the header
     if (!can_u_read(_in)) {
         omerr() << "[PLYReader] : Unable to parse header\n";
@@ -321,8 +319,6 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options
 //-----------------------------------------------------------------------------
 
 bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap*/, const Options& _opt) const {
-
-    omlog() << "[PLYReader] : read binary file format\n";
 
     // Reparse the header
     if (!can_u_read(_in)) {
@@ -859,8 +855,6 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
     if (line != "PLY" && line != "ply")
         return false;
 
-    //   omlog() << "PLY header found" << std::endl;
-
     vertexCount_ = 0;
     faceCount_ = 0;
     vertexDimension_ = 0;
@@ -907,7 +901,6 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
 
         if (keyword == "comment") {
             std::getline(_is, line);
-            omlog() << "PLY header comment : " << line << std::endl;
         } else if (keyword == "element") {
             _is >> elementName;
             if (elementName == "vertex") {

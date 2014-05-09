@@ -176,8 +176,6 @@ _OFFReader_::read_ascii(std::istream& _in, BaseImporter& _bi, Options& _opt) con
 {
 
 
-omlog() << "[OFFReader] : read ascii file\n";
-
   unsigned int            i, j, k, l, idx;
   unsigned int            nV, nF, dummy;
   OpenMesh::Vec3f         v, n;
@@ -433,8 +431,6 @@ void _OFFReader_::readValue(std::istream& _in, unsigned int& _value) const{
 bool
 _OFFReader_::read_binary(std::istream& _in, BaseImporter& _bi, Options& _opt, bool /*_swap*/) const
 {
-  omlog() << "[OFFReader] : read binary file\n";
-
   unsigned int            i, j, k, l, idx;
   unsigned int            nV, nF, dummy;
   OpenMesh::Vec3f         v, n;

@@ -231,8 +231,7 @@ bool
 _PLYWriter_::
 write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
-  omlog() << "[PLYWriter] : write ascii file\n";
-
+  
   unsigned int i, nV, nF;
   Vec3f v, n;
   OpenMesh::Vec3ui c;
@@ -418,8 +417,7 @@ bool
 _PLYWriter_::
 write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
-  omlog() << "[PLYWriter] : write binary file\n";
-
+  
   unsigned int i, nV, nF;
   Vec3f v, n;
   Vec2f t;

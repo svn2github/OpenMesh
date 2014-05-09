@@ -206,8 +206,6 @@ bool
 _STLReader_::
 read_stla(const std::string& _filename, BaseImporter& _bi, Options& _opt) const
 {
-  omlog() << "[STLReader] : read ascii file\n";
-
   std::fstream in( _filename.c_str(), std::ios_base::in );
 
   if (!in)
@@ -232,8 +230,6 @@ bool
 _STLReader_::
 read_stla(std::istream& _in, BaseImporter& _bi, Options& _opt) const
 {
-  omlog() << "[STLReader] : read ascii stream\n";
-
 
   unsigned int               i;
   OpenMesh::Vec3f            v;
@@ -342,8 +338,6 @@ bool
 _STLReader_::
 read_stlb(const std::string& _filename, BaseImporter& _bi, Options& _opt) const
 {
-  omlog() << "[STLReader] : read binary file\n";
-
   std::fstream in( _filename.c_str(), std::ios_base::in | std::ios_base::binary);
 
   if (!in)
@@ -368,8 +362,6 @@ bool
 _STLReader_::
 read_stlb(std::istream& _in, BaseImporter& _bi, Options& _opt) const
 {
-  omlog() << "[STLReader] : read binary stream\n";
-
   char                       dummy[100];
   bool                       swapFlag;
   unsigned int               i, nT;

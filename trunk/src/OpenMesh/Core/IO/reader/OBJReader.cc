@@ -265,8 +265,6 @@ bool
 _OBJReader_::
 read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 {
-  omlog() << "[OBJReader] : read file\n";
-
 
   std::string line;
   std::string keyWrd;
@@ -322,7 +320,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
 
       matFile = path_ + matFile;
 
-      omlog() << "Load material file " << matFile << std::endl;
+      //omlog() << "Load material file " << matFile << std::endl;
 
       std::fstream matStream( matFile.c_str(), std::ios_base::in );
 
@@ -335,7 +333,7 @@ read(std::istream& _in, BaseImporter& _bi, Options& _opt)
       }else
 	      omerr() << "  Warning! Material file '" << matFile << "' not found!\n";
 
-      omlog() << "  " << materials_.size() << " materials loaded.\n";
+      //omlog() << "  " << materials_.size() << " materials loaded.\n";
 
       for ( MaterialList::iterator material = materials_.begin(); material != materials_.end(); ++material )
       {

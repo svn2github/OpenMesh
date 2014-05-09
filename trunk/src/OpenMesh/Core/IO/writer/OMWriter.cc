@@ -173,8 +173,6 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
     Enabler<mostream> enabler(omlog());
   #endif
 
-  omlog() << "[OMWriter] : write binary file\n";
-
   size_t bytes = 0;
 
   bool swap = _opt.check(Options::Swap) || (Endian::local() == Endian::MSB);
@@ -425,7 +423,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 				       OMFormat::Chunk::Entity_Mesh, swap );
   }
 
- std::clog << "#bytes written: " << bytes << std::endl;
+ //std::clog << "#bytes written: " << bytes << std::endl;
 
   return true;
 }
@@ -437,15 +435,15 @@ size_t _OMWriter_::store_binary_custom_chunk(std::ostream& _os,
 					     OMFormat::Chunk::Entity _entity,
 					     bool _swap) const
 {
-  omlog() << "Custom Property " << OMFormat::as_string(_entity) << " property ["
-	<< _bp.name() << "]" << std::endl;
+  //omlog() << "Custom Property " << OMFormat::as_string(_entity) << " property ["
+  //	<< _bp.name() << "]" << std::endl;
 
   // Don't store if
   // 1. it is not persistent
   // 2. it's name is empty
   if ( !_bp.persistent() || _bp.name().empty() )
   {
-    omlog() << "  skipped\n";
+    //omlog() << "  skipped\n";
     return 0;
   }
 
@@ -474,13 +472,13 @@ size_t _OMWriter_::store_binary_custom_chunk(std::ostream& _os,
 
   // 3. block size
   bytes += store( _os, _bp.size_of(), OMFormat::Chunk::Integer_32, _swap );
-  omlog() << "  n_bytes = " << _bp.size_of() << std::endl;
+  //omlog() << "  n_bytes = " << _bp.size_of() << std::endl;
 
   // 4. data
   {
     size_t b;
     bytes += ( b=_bp.store( _os, _swap ) );
-    omlog() << "  b       = " << b << std::endl;
+    //omlog() << "  b       = " << b << std::endl;
     assert( b == _bp.size_of() );
   }
   return bytes;
