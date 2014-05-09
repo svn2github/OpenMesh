@@ -113,7 +113,7 @@ public:
 
   /// Destructor
   ~ModNormalDeviationT() {
-    mesh_.add_property(normal_cones_);
+    mesh_.remove_property(normal_cones_);
   }
 
 
