@@ -423,7 +423,7 @@ bool _OMWriter_::write_binary(std::ostream& _os, BaseExporter& _be,
 				       OMFormat::Chunk::Entity_Mesh, swap );
   }
 
- //std::clog << "#bytes written: " << bytes << std::endl;
+  std::clog << "#bytes written: " << bytes << std::endl;
 
   return true;
 }
