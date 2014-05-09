@@ -7,6 +7,15 @@
 
 <!-- --------------------------------------------------------------------- -->
 
+<tr valign=top><td><b>3.2</b> (?/?/?,Rev.1052)</td><td>
+
+<b>IO</b>
+<ul>
+<li>Silence the readers/writers (Some of them always wrote output to command line).</li>
+</ul>
+
+</tr>
+
 <tr valign=top><td><b>3.1</b> (2014/05/09,Rev.1050)</td><td>
 
 <b>Core</b>
@@ -53,8 +62,6 @@
 <ul>
 <li>Added OpenMesh finder. Closes 959</li>
 </ul>
-
-
 
 </tr>
 
