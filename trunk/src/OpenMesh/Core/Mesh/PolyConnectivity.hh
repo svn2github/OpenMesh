@@ -757,7 +757,7 @@ public:
    * as a range object suitable for C++11 range based for loops.
    */
   ConstVertexFaceIter vf_range(VertexHandle _vh) const {
-      return ConstVertexFaceIter(*this, _vh);
+      return ConstVertexFaceRange(*this, _vh);
   }
 
   /**
@@ -789,7 +789,7 @@ public:
    * as a range object suitable for C++11 range based for loops.
    */
   ConstFaceFaceIter ff_range(FaceHandle _fh) const {
-      return ConstFaceFaceIter(*this, _fh);
+      return ConstFaceFaceRange(*this, _fh);
   }
 
   //@}
