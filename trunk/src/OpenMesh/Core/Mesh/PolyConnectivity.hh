@@ -756,7 +756,7 @@ public:
    * @return The faces incident to the specified vertex
    * as a range object suitable for C++11 range based for loops.
    */
-  ConstVertexFaceIter vf_range(VertexHandle _vh) const {
+  ConstVertexFaceRange vf_range(VertexHandle _vh) const {
       return ConstVertexFaceRange(*this, _vh);
   }
 
@@ -788,7 +788,7 @@ public:
    * @return The faces adjacent to the specified face
    * as a range object suitable for C++11 range based for loops.
    */
-  ConstFaceFaceIter ff_range(FaceHandle _fh) const {
+  ConstFaceFaceRange ff_range(FaceHandle _fh) const {
       return ConstFaceFaceRange(*this, _fh);
   }
 
