@@ -1,3 +1,11 @@
+/** @file */
+
+/**
+ * Defines the return value policy for functions that return references to
+ * objects that are managed by %OpenMesh.
+ */
+#define OPENMESH_PYTHON_DEFAULT_POLICY return_value_policy<copy_const_reference>()
+
 #include <Python.h>
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
@@ -10,10 +18,23 @@
 #include "OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh"
 #include "OpenMesh/Core/Utils/PropertyManager.hh"
 
+namespace OpenMesh {
+
+/**
+ * Contains everything that is needed to expose %OpenMesh to %Python.
+ */
+namespace Python {
+
 using namespace boost::python;
 
-struct MeshTraits : public OpenMesh::DefaultTraits
-{
+using OpenMesh::BaseHandle;
+using OpenMesh::VertexHandle;
+using OpenMesh::HalfedgeHandle;
+using OpenMesh::EdgeHandle;
+using OpenMesh::FaceHandle;
+
+
+struct MeshTraits : public OpenMesh::DefaultTraits {
 	/// Use double precision points
 	typedef OpenMesh::Vec3d Point;
 
@@ -26,12 +47,6 @@ struct MeshTraits : public OpenMesh::DefaultTraits
 
 typedef OpenMesh::TriMesh_ArrayKernelT<MeshTraits> TriMesh;
 typedef OpenMesh::PolyMesh_ArrayKernelT<MeshTraits> PolyMesh;
-
-typedef OpenMesh::BaseHandle BaseHandle;
-typedef OpenMesh::VertexHandle VertexHandle;
-typedef OpenMesh::HalfedgeHandle HalfedgeHandle;
-typedef OpenMesh::EdgeHandle EdgeHandle;
-typedef OpenMesh::FaceHandle FaceHandle;
 
 template <class Vector, class Scalar>
 void set_item(Vector& _vec, int _index, Scalar _value) {
@@ -65,19 +80,47 @@ Scalar get_item(Vector& _vec, int _index) {
 	return 0.0;
 }
 
+/**
+ * Wrapper for mesh item iterators.
+ *
+ * This class template is used to wrap mesh item iterators for %Python. It
+ * implements %Python's iterator protocol (the magic methods \_\_iter\_\_ and
+ * \_\_next\_\_).
+ *
+ * @tparam Iterator An iterator type.
+ * @tparam n_items A member function pointer that points to the mesh function
+ * that returns the number of items to iterate over (e.g. n_vertices).
+ */
 template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
 class IteratorWrapperT {
 	public:
+
+		/**
+		 * Constructor
+		 *
+		 * @param _mesh The mesh that contains the items to iterate over.
+		 */
 		IteratorWrapperT(const OpenMesh::PolyConnectivity& _mesh) :
 			mesh_(_mesh), n_items_(n_items),
 			iterator_(_mesh, typename Iterator::value_type(0)),
 			iterator_end_(_mesh, typename Iterator::value_type(int((_mesh.*n_items)()))) {
 		}
 
+		/**
+		 * Implementation of %Python's \_\_iter\_\_ magic method.
+		 *
+		 * @return This iterator.
+		 */
 		IteratorWrapperT iter() const {
 			return *this;
 		}
 
+		/**
+		 * Implementation of %Python's \_\_next\_\_ magic method.
+		 *
+		 * @return The next item. Raises a %Python StopIteration exception if
+		 * there are no more items.
+		 */
 		typename Iterator::value_type next() {
 			if (iterator_ != iterator_end_) {
 				typename Iterator::value_type res = *iterator_;
@@ -91,6 +134,11 @@ class IteratorWrapperT {
 			return typename Iterator::value_type();
 		}
 
+		/**
+		 * Implementation of %Python's \_\_len\_\_ magic method.
+		 *
+		 * @return The number of items in the mesh.
+		 */
 		unsigned int len() const {
 			return (mesh_.*n_items_)();
 		}
@@ -102,17 +150,44 @@ class IteratorWrapperT {
 		Iterator iterator_end_;
 };
 
+/**
+ * Wrapper for circulators.
+ *
+ * This class template is used to wrap circulators for %Python. It implements
+ * %Python's iterator protocol (the magic methods \_\_iter\_\_ and
+ * \_\_next\_\_).
+ *
+ * @tparam Circulator A circulator type.
+ */
 template<class Circulator>
 class CirculatorWrapperT {
 	public:
+
+		/**
+		 * Constructor
+		 *
+		 * @param _mesh The mesh that contains the items to iterate over.
+		 * @param _center The handle to the center item.
+		 */
 		CirculatorWrapperT(const typename Circulator::mesh_type& _mesh, typename Circulator::center_type _center) :
 			circulator_(_mesh, _center) {
 		}
 
+		/**
+		 * Implementation of %Python's \_\_iter\_\_ magic method.
+		 *
+		 * @return This circulator.
+		 */
 		CirculatorWrapperT iter() const {
 			return *this;
 		}
 
+		/**
+		 * Implementation of %Python's \_\_next\_\_ magic method.
+		 *
+		 * @return The next item. Raises a %Python StopIteration exception if
+		 * there are no more items.
+		 */
 		typename Circulator::value_type next() {
 			if (circulator_.is_valid()) {
 				typename Circulator::value_type res = *circulator_;
@@ -130,124 +205,288 @@ class CirculatorWrapperT {
 		Circulator circulator_;
 };
 
+/**
+ * Wrapper for meshes.
+ *
+ * This class template is used to wrap meshes for %Python. It inherits from it's
+ * template parameter (a mesh type) and implements functions that are required
+ * by %Python but not provided by mesh types.
+ *
+ * @tparam Mesh A mesh type.
+ */
 template<class Mesh>
 class MeshWrapperT : public Mesh {
 	public:
-		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this);
-		}
 
-		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> halfedges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this);
-		}
-
-		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> edges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this);
-		}
-
-		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> faces() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this);
-		}
-
-		CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter> vih(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter> voh(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::VertexEdgeIter> ve(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexEdgeIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::FaceHalfedgeIter> fh(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceHalfedgeIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::FaceEdgeIter> fe(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceEdgeIter>(*this, _handle);
-		}
-
-		CirculatorWrapperT<typename Mesh::FaceFaceIter> ff(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceFaceIter>(*this, _handle);
-		}
-
+		/**
+		 * Thin wrapper for Mesh::garbage_collection.
+		 *
+		 * This wrapper function is required because Mesh::garbage_collection
+		 * has default arguments and therefore cannot be exposed directly.
+		 */
 		void garbage_collection() {
 			Mesh::garbage_collection();
 		}
 
+		/**
+		 * Set the status of a vertex.
+		 *
+		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
+		 * return by value instead of reference. This function ensures that the
+		 * status of an item can be changed nonetheless.
+		 */
 		void set_status(VertexHandle _vh, const OpenMesh::Attributes::StatusInfo &_info) {
 			Mesh::status(_vh) = _info;
 		}
 
+		/**
+		 * Set the status of a halfedge.
+		 *
+		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
+		 * return by value instead of reference. This function ensures that the
+		 * status of an item can be changed nonetheless.
+		 */
 		void set_status(HalfedgeHandle _heh, const OpenMesh::Attributes::StatusInfo &_info) {
 			Mesh::status(_heh) = _info;
 		}
 
+		/**
+		 * Set the status of an edge.
+		 *
+		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
+		 * return by value instead of reference. This function ensures that the
+		 * status of an item can be changed nonetheless.
+		 */
 		void set_status(EdgeHandle _eh, const OpenMesh::Attributes::StatusInfo &_info) {
 			Mesh::status(_eh) = _info;
 		}
 
+		/**
+		 * Set the status of a face.
+		 *
+		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
+		 * return by value instead of reference. This function ensures that the
+		 * status of an item can be changed nonetheless.
+		 */
 		void set_status(FaceHandle _fh, const OpenMesh::Attributes::StatusInfo &_info) {
 			Mesh::status(_fh) = _info;
 		}
+
+		/**
+		 * Get a vertex iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this);
+		}
+
+		/**
+		 * Get a halfedge iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> halfedges() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this);
+		}
+
+		/**
+		 * Get an edge iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> edges() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this);
+		}
+
+		/**
+		 * Get a face iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> faces() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this);
+		}
+
+		/**
+		 * Get a vertex-vertex circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a vertex-(incoming)halfedge circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter> vih(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a vertex-(outgoing)halfedge circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter> voh(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a vertex-edge circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::VertexEdgeIter> ve(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexEdgeIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a vertex-face circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a face-vertex circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a face-halfedge circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::FaceHalfedgeIter> fh(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceHalfedgeIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a face-edge circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::FaceEdgeIter> fe(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceEdgeIter>(*this, _handle);
+		}
+
+		/**
+		 * Get a face-face circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::FaceFaceIter> ff(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceFaceIter>(*this, _handle);
+		}
 };
 
-template<class PropertyManager, class IndexHandle>
-class PropertyManagerWrapperT : public PropertyManager {
+/**
+ * Wrapper for property managers.
+ *
+ * This class template is used to wrap property managers for %Python. It
+ * inherits from it's first template parameter (a property manager) and
+ * implements functions that are required by %Python but not provided by
+ * property manager types.
+ *
+ * @tparam Manager A property manager type.
+ * @tparam IndexHandle The appropriate index handle type.
+ */
+template<class Manager, class IndexHandle>
+class PropertyManagerWrapperT : public Manager {
 	public:
+
+		/**
+		 * Constructor
+		 */
+		PropertyManagerWrapperT() : Manager() { }
+
+		/**
+		 * Constructor
+		 *
+		 * TODO: reference constructor
+		 */
 		PropertyManagerWrapperT(OpenMesh::PolyConnectivity &_mesh, const char *_propname, bool _existing = false) :
-			PropertyManager(_mesh, _propname, _existing) {
+			Manager(_mesh, _propname, _existing) {
 		}
 
-		PropertyManagerWrapperT() : PropertyManager() { }
-
+		/**
+		 * Thin wrapper for Manager::retain.
+		 *
+		 * This wrapper function is required because Manager::retain has default
+		 * arguments and therefore cannot be exposed directly.
+		 */
 		void retain_void() {
-			PropertyManager::retain();
+			Manager::retain();
 		}
 
+		/**
+		 * Thin wrapper for Manager::retain.
+		 *
+		 * This wrapper function is required because Manager::retain has default
+		 * arguments and therefore cannot be exposed directly.
+		 */
 		void retain_bool(bool _retain) {
-			PropertyManager::retain(_retain);
+			Manager::retain(_retain);
 		}
 
+		/**
+		 * Implementation of %Python's \_\_getitem\_\_ magic method.
+		 *
+		 * @param _handle A handle of the appropriate handle type.
+		 * @return The requested property value.
+		 */
 		object getitem(IndexHandle _handle) const {
 			return (*this)[_handle];
 		}
 
-		void setitem(IndexHandle _handle, object _item) {
-			(*this)[_handle] = _item;
+		/**
+		 * Implementation of %Python's \_\_setitem\_\_ magic method.
+		 *
+		 * @param _handle A handle of the appropriate handle type.
+		 * @param _value The property value to be set.
+		 */
+		void setitem(IndexHandle _handle, object _value) {
+			(*this)[_handle] = _value;
 		}
 
+		/**
+		 * Thin wrapper for Manager::propertyExists.
+		 *
+		 * This wrapper function is required because %Python does not know that
+		 * MeshWrapperT is derived from PolyConnectivity.
+		 */
 		static bool property_exists(MeshWrapperT<TriMesh> &_mesh, const char *_propname) {
-			return PropertyManager::propertyExists(_mesh, _propname);
+			return Manager::propertyExists(_mesh, _propname);
 		}
 
+		/**
+		 * Thin wrapper for Manager::propertyExists.
+		 *
+		 * This wrapper function is required because %Python does not know that
+		 * MeshWrapperT is derived from PolyConnectivity.
+		 */
 		static bool property_exists(MeshWrapperT<PolyMesh> &_mesh, const char *_propname) {
-			return PropertyManager::propertyExists(_mesh, _propname);
+			return Manager::propertyExists(_mesh, _propname);
 		}
 
-		static typename PropertyManager::Proxy create_if_not_exists(MeshWrapperT<TriMesh> &_mesh, const char *_propname) {
-			return PropertyManager::createIfNotExists(_mesh, _propname);
+		/**
+		 * Thin wrapper for Manager::createIfNotExists.
+		 *
+		 * This wrapper function is required because %Python does not know that
+		 * MeshWrapperT is derived from PolyConnectivity.
+		 */
+		static typename Manager::Proxy create_if_not_exists(MeshWrapperT<TriMesh> &_mesh, const char *_propname) {
+			return Manager::createIfNotExists(_mesh, _propname);
 		}
 
-		static typename PropertyManager::Proxy create_if_not_exists(MeshWrapperT<PolyMesh> &_mesh, const char *_propname) {
-			return PropertyManager::createIfNotExists(_mesh, _propname);
+		/**
+		 * Thin wrapper for Manager::createIfNotExists.
+		 *
+		 * This wrapper function is required because %Python does not know that
+		 * MeshWrapperT is derived from PolyConnectivity.
+		 */
+		static typename Manager::Proxy create_if_not_exists(MeshWrapperT<PolyMesh> &_mesh, const char *_propname) {
+			return Manager::createIfNotExists(_mesh, _propname);
 		}
 };
 
+/**
+ * Expose a vector type to %Python.
+ *
+ * This function template is used to expose vectors to %Python. The template
+ * parameters are used to instantiate the appropriate vector type.
+ *
+ * @tparam Scalar A scalar type.
+ * @tparam N The dimension of the vector.
+ *
+ * @param _name The name of the vector type to be exposed.
+ *
+ * @note N must be either 2, 3 or 4.
+ */
 template<class Scalar, int N>
 void expose_vec(const char *_name) {
 	typedef OpenMesh::VectorT<Scalar, N> Vector;
@@ -362,6 +601,9 @@ void expose_vec(const char *_name) {
 	}
 }
 
+/**
+ * Expose mesh item handles to %Python.
+ */
 void expose_handles() {
 	class_<BaseHandle>("BaseHandle")
 		.def("idx", &BaseHandle::idx)
@@ -379,6 +621,10 @@ void expose_handles() {
 	class_<FaceHandle, bases<BaseHandle> >("FaceHandle");
 }
 
+
+/**
+ * Expose the StatusBits enum and StatusInfo class to %Python.
+ */
 void expose_status_bits_and_info() {
 	using OpenMesh::Attributes::StatusBits;
 	using OpenMesh::Attributes::StatusInfo;
@@ -421,6 +667,16 @@ void expose_status_bits_and_info() {
 		;
 }
 
+/**
+ * Expose a mesh type to %Python.
+ *
+ * @tparam Mesh A mesh type.
+ *
+ * @param _name The name of the mesh type to be exposed.
+ *
+ * @note Meshes are wrapped by MeshWrapperT before they are exposed to %Python,
+ * i.e. they are not exposed directly.
+ */
 template<class Mesh>
 void expose_mesh(const char *_name) {
 	using OpenMesh::Attributes::StatusInfo;
@@ -539,41 +795,41 @@ void expose_mesh(const char *_name) {
 		.def("halfedge_handle", halfedge_handle_fh)
 		.def("set_halfedge_handle", set_halfedge_handle_fh_heh)
 
-		.def("point", point_vh, return_value_policy<copy_const_reference>())
+		.def("point", point_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_point", &Mesh::set_point)
-		.def("normal", normal_vh, return_value_policy<copy_const_reference>())
+		.def("normal", normal_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_normal", set_normal_vh)
-		.def("normal", normal_hh, return_value_policy<copy_const_reference>())
+		.def("normal", normal_hh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_normal", set_normal_hh)
-		.def("color", color_vh, return_value_policy<copy_const_reference>())
+		.def("color", color_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_color", set_color_vh)
-		.def("texcoord1D", texcoord1D_vh, return_value_policy<copy_const_reference>())
+		.def("texcoord1D", texcoord1D_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_texcoord1D", set_texcoord1D_vh)
-		.def("texcoord2D", texcoord2D_vh, return_value_policy<copy_const_reference>())
+		.def("texcoord2D", texcoord2D_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_texcoord2D", set_texcoord2D_vh)
-		.def("texcoord3D", texcoord3D_vh, return_value_policy<copy_const_reference>())
+		.def("texcoord3D", texcoord3D_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_texcoord3D", set_texcoord3D_vh)
-		.def("texcoord1D", texcoord1D_hh, return_value_policy<copy_const_reference>())
+		.def("texcoord1D", texcoord1D_hh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_texcoord1D", set_texcoord1D_hh)
-		.def("texcoord2D", texcoord2D_hh, return_value_policy<copy_const_reference>())
+		.def("texcoord2D", texcoord2D_hh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_texcoord2D", set_texcoord2D_hh)
-		.def("texcoord3D", texcoord3D_hh, return_value_policy<copy_const_reference>())
+		.def("texcoord3D", texcoord3D_hh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_texcoord3D", set_texcoord3D_hh)
-		.def("status", status_vh, return_value_policy<copy_const_reference>())
+		.def("status", status_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_status", set_status_vh)
-		.def("status", status_hh, return_value_policy<copy_const_reference>())
+		.def("status", status_hh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_status", set_status_hh)
-		.def("color", color_hh, return_value_policy<copy_const_reference>())
+		.def("color", color_hh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_color", set_color_hh)
-		.def("color", color_eh, return_value_policy<copy_const_reference>())
+		.def("color", color_eh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_color", set_color_eh)
-		.def("status", status_eh, return_value_policy<copy_const_reference>())
+		.def("status", status_eh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_status", set_status_eh)
-		.def("normal", normal_fh, return_value_policy<copy_const_reference>())
+		.def("normal", normal_fh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_normal", set_normal_fh)
-		.def("color", color_fh, return_value_policy<copy_const_reference>())
+		.def("color", color_fh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_color", set_color_fh)
-		.def("status", status_fh, return_value_policy<copy_const_reference>())
+		.def("status", status_fh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_status", set_status_fh)
 
 		.def("request_vertex_normals", &Mesh::request_vertex_normals)
@@ -655,6 +911,18 @@ void expose_mesh(const char *_name) {
 		;
 }
 
+/**
+ * Expose an iterator type to %Python.
+ *
+ * @tparam Iterator An iterator type.
+ * @tparam n_items A member function pointer that points to the mesh function
+ * that returns the number of items to iterate over (e.g. n_vertices).
+ *
+ * @param _name The name of the iterator type to be exposed.
+ *
+ * @note %Iterators are wrapped by IteratorWrapperT before they are exposed to
+ * %Python, i.e. they are not exposed directly.
+ */
 template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
 void expose_iterator(const char *_name) {
 	class_<IteratorWrapperT<Iterator, n_items> >(_name, init<MeshWrapperT<TriMesh>&>())
@@ -666,6 +934,16 @@ void expose_iterator(const char *_name) {
 		;
 }
 
+/**
+ * Expose a circulator type to %Python.
+ *
+ * @tparam Circulator A circulator type.
+ *
+ * @param _name The name of the circulator type to be exposed.
+ *
+ * @note Circulators are wrapped by CirculatorWrapperT before they are exposed
+ * to %Python, i.e. they are not exposed directly.
+ */
 template<class Circulator>
 void expose_circulator(const char *_name) {
 	class_<CirculatorWrapperT<Circulator> >(_name, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
@@ -676,6 +954,22 @@ void expose_circulator(const char *_name) {
 		;
 }
 
+/**
+ * Expose a property manager type to %Python.
+ *
+ * This function template is used to expose property managers to %Python. The
+ * template parameters are used to instantiate the appropriate property manager
+ * type.
+ *
+ * @tparam PropHandle A property handle type (e.g. %VPropHandle\<object\>).
+ * @tparam IndexHandle The appropriate index handle type (e.g. %VertexHandle for
+ * %VPropHandle\<object\>).
+ *
+ * @param _name The name of the property manager type to be exposed.
+ *
+ * @note Property managers are wrapped by PropertyManagerWrapperT before they
+ * are exposed to %Python, i.e. they are not exposed directly.
+ */
 template<class PropHandle, class IndexHandle>
 void expose_property_manager(const char *_name) {
 	typedef OpenMesh::PropertyManager<PropHandle, OpenMesh::PolyConnectivity> PropertyManager;
@@ -751,3 +1045,6 @@ BOOST_PYTHON_MODULE(openmesh) {
 
 	expose_property_manager<OpenMesh::VPropHandleT<object>, VertexHandle>("VPropertyManager");
 }
+
+} // namespace Python
+} // namespace OpenMesh
