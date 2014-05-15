@@ -8,7 +8,7 @@ if ( OPENMESH_BUILD_PYTHON_INTEGRATION )
     FIND_PACKAGE( Boost 1.50.0 COMPONENTS python-py27 REQUIRED )
 
     include_directories(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
-    file(GLOB SOURCES *.cc)
+    file(GLOB SOURCES *.cc *hh)
     add_library(openmesh SHARED
         ${SOURCES}
     )
