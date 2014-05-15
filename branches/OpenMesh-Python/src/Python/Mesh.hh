@@ -181,23 +181,39 @@ template<class Mesh>
 void expose_mesh(const char *_name) {
 	using OpenMesh::Attributes::StatusInfo;
 
-	VertexHandle   (Mesh::*vertex_handle_uint  )(unsigned int  ) const = &Mesh::vertex_handle;
-	HalfedgeHandle (Mesh::*halfedge_handle_uint)(unsigned int  ) const = &Mesh::halfedge_handle;
-	EdgeHandle     (Mesh::*edge_handle_uint    )(unsigned int  ) const = &Mesh::edge_handle;
-	FaceHandle     (Mesh::*face_handle_uint    )(unsigned int  ) const = &Mesh::face_handle;
-	HalfedgeHandle (Mesh::*halfedge_handle_vh  )(VertexHandle  ) const = &Mesh::halfedge_handle;
-	HalfedgeHandle (Mesh::*halfedge_handle_fh  )(FaceHandle    ) const = &Mesh::halfedge_handle;
+	// Get the i'th item
+	VertexHandle   (Mesh::*vertex_handle_uint  )(unsigned int) const = &Mesh::vertex_handle;
+	HalfedgeHandle (Mesh::*halfedge_handle_uint)(unsigned int) const = &Mesh::halfedge_handle;
+	EdgeHandle     (Mesh::*edge_handle_uint    )(unsigned int) const = &Mesh::edge_handle;
+	FaceHandle     (Mesh::*face_handle_uint    )(unsigned int) const = &Mesh::face_handle;
 
-	EdgeHandle     (Mesh::*edge_handle_heh     )(HalfedgeHandle) const = &Mesh::edge_handle;
-	FaceHandle     (Mesh::*face_handle_heh     )(HalfedgeHandle) const = &Mesh::face_handle;
+	// Vertex connectivity
+	HalfedgeHandle (Mesh::*halfedge_handle_vh)(VertexHandle) const = &Mesh::halfedge_handle;
+	HalfedgeHandle (Mesh::*halfedge_handle_fh)(FaceHandle  ) const = &Mesh::halfedge_handle;
 
-	HalfedgeHandle (Mesh::*halfedge_handle_eh_uint)(EdgeHandle, unsigned int) const = &Mesh::halfedge_handle;
+	// Halfedge connectivity
+	FaceHandle     (Mesh::*face_handle_heh         )(HalfedgeHandle) const = &Mesh::face_handle;
 	HalfedgeHandle (Mesh::*prev_halfedge_handle_heh)(HalfedgeHandle) const = &Mesh::prev_halfedge_handle;
+	EdgeHandle     (Mesh::*edge_handle_heh         )(HalfedgeHandle) const = &Mesh::edge_handle;
 
+	// Edge connectivity
+	HalfedgeHandle (Mesh::*halfedge_handle_eh_uint)(EdgeHandle, unsigned int) const = &Mesh::halfedge_handle;
+
+	// Set halfedge
 	void (Mesh::*set_halfedge_handle_vh_heh)(VertexHandle, HalfedgeHandle) = &Mesh::set_halfedge_handle;
 	void (Mesh::*set_halfedge_handle_fh_heh)(FaceHandle, HalfedgeHandle  ) = &Mesh::set_halfedge_handle;
 
-	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
+	// Handle -> Item
+	const typename Mesh::Vertex&   (Mesh::*vertex  )(VertexHandle  ) const = &Mesh::vertex;
+	const typename Mesh::Halfedge& (Mesh::*halfedge)(HalfedgeHandle) const = &Mesh::halfedge;
+	const typename Mesh::Edge&     (Mesh::*edge    )(EdgeHandle    ) const = &Mesh::edge;
+	const typename Mesh::Face&     (Mesh::*face    )(FaceHandle    ) const = &Mesh::face;
+
+	// Item -> Handle
+	VertexHandle   (Mesh::*handle_v)(const typename Mesh::Vertex&  ) const = &Mesh::handle;
+	HalfedgeHandle (Mesh::*handle_h)(const typename Mesh::Halfedge&) const = &Mesh::handle;
+	EdgeHandle     (Mesh::*handle_e)(const typename Mesh::Edge&    ) const = &Mesh::handle;
+	FaceHandle     (Mesh::*handle_f)(const typename Mesh::Face&    ) const = &Mesh::handle;
 
 	// Get value of a standard property (point, normal, color)
 	const typename Mesh::Point&  (Mesh::*point_vh )(VertexHandle  ) const = &Mesh::point;
@@ -246,6 +262,14 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*set_status_eh)(EdgeHandle,     const StatusInfo&) = &Mesh::set_status;
 	void (Mesh::*set_status_fh)(FaceHandle,     const StatusInfo&) = &Mesh::set_status;
 
+	// Low-level adding new items
+	VertexHandle (Mesh::*new_vertex_void )(void                        ) = &Mesh::new_vertex;
+	VertexHandle (Mesh::*new_vertex_point)(const typename Mesh::Point& ) = &Mesh::new_vertex;
+	FaceHandle   (Mesh::*new_face_void   )(void                        ) = &Mesh::new_face;
+	FaceHandle   (Mesh::*new_face_face   )(const typename Mesh::Face&  ) = &Mesh::new_face;
+
+	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
+
 	class_<Mesh> classMesh = class_<Mesh>(_name);
 
 	/*
@@ -256,6 +280,18 @@ void expose_mesh(const char *_name) {
 	scope scope_Mesh = classMesh;
 
 	classMesh
+		.def("reserve", &Mesh::reserve)
+
+		.def("vertex", vertex, return_value_policy<reference_existing_object>())
+		.def("halfedge", halfedge, return_value_policy<reference_existing_object>())
+		.def("edge", edge, return_value_policy<reference_existing_object>())
+		.def("face", face, return_value_policy<reference_existing_object>())
+
+		.def("handle", handle_v)
+		.def("handle", handle_h)
+		.def("handle", handle_e)
+		.def("handle", handle_f)
+
 		.def("vertex_handle", vertex_handle_uint)
 		.def("halfedge_handle", halfedge_handle_uint)
 		.def("edge_handle", edge_handle_uint)
@@ -388,6 +424,12 @@ void expose_mesh(const char *_name) {
 		.def("has_face_colors", &Mesh::has_face_colors)
 		.def("has_face_status", &Mesh::has_face_status)
 		.def("has_face_texture_index", &Mesh::has_face_texture_index)
+
+		.def("new_vertex", new_vertex_void)
+		.def("new_vertex", new_vertex_point)
+		.def("new_edge", &Mesh::new_edge)
+		.def("new_face", new_face_void)
+		.def("new_face", new_face_face)
 
 		.def("vertices", &Mesh::vertices)
 		.def("halfedges", &Mesh::halfedges)
