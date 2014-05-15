@@ -9,6 +9,16 @@ namespace OpenMesh {
 namespace Python {
 
 /**
+ * Expose mesh items to %Python.
+ */
+void expose_items() {
+	class_<ArrayItems::Vertex>("Vertex", no_init);
+	class_<ArrayItems::Halfedge>("Halfedge", no_init);
+	class_<ArrayItems::Edge>("Edge", no_init);
+	class_<ArrayItems::Face>("Face", no_init);
+}
+
+/**
  * Expose mesh item handles to %Python.
  */
 void expose_handles() {
@@ -75,6 +85,7 @@ void expose_status_bits_and_info() {
 }
 
 BOOST_PYTHON_MODULE(openmesh) {
+	expose_items();
 	expose_handles();
 	expose_status_bits_and_info();
 
