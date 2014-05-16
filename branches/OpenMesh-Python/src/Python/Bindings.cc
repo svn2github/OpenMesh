@@ -12,17 +12,18 @@ namespace Python {
  * Expose mesh items to %Python.
  */
 void expose_items() {
-	class_<ArrayItems::Vertex>("Vertex", no_init);
-	class_<ArrayItems::Halfedge>("Halfedge", no_init);
-	class_<ArrayItems::Edge>("Edge", no_init);
-	class_<ArrayItems::Face>("Face", no_init);
+	class_<ArrayItems::Vertex>("Vertex");
+	class_<ArrayItems::Halfedge>("Halfedge");
+	class_<ArrayItems::Edge>("Edge");
+	class_<ArrayItems::Face>("Face");
 }
 
 /**
- * Expose mesh item handles to %Python.
+ * Expose item and property handles to %Python.
  */
 void expose_handles() {
 	class_<BaseHandle>("BaseHandle")
+		.def(init<optional<int> >())
 		.def("idx", &BaseHandle::idx)
 		.def("is_valid", &BaseHandle::is_valid)
 		.def("reset", &BaseHandle::reset)
@@ -36,6 +37,17 @@ void expose_handles() {
 	class_<HalfedgeHandle, bases<BaseHandle> >("HalfedgeHandle");
 	class_<EdgeHandle, bases<BaseHandle> >("EdgeHandle");
 	class_<FaceHandle, bases<BaseHandle> >("FaceHandle");
+
+	class_<BasePropHandleT<object> >("BasePropHandle");
+
+	class_<VPropHandleT<object>, bases<BasePropHandleT<object> > >("VPropHandle")
+		.def(init<const BasePropHandleT<object>&>());
+	class_<HPropHandleT<object>, bases<BasePropHandleT<object> > >("HPropHandle")
+		.def(init<const BasePropHandleT<object>&>());
+	class_<EPropHandleT<object>, bases<BasePropHandleT<object> > >("EPropHandle")
+		.def(init<const BasePropHandleT<object>&>());
+	class_<FPropHandleT<object>, bases<BasePropHandleT<object> > >("FPropHandle")
+		.def(init<const BasePropHandleT<object>&>());
 }
 
 

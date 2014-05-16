@@ -76,6 +76,47 @@ class MeshWrapperT : public Mesh {
 		}
 
 		/**
+		 * Thin wrapper for Mesh::add_property.
+		 *
+		 * @tparam PropHandle A property handle type.
+		 *
+		 * This wrapper function is required because Mesh::add_property has
+		 * default arguments and therefore cannot be exposed directly.
+		 */
+		template <class PropHandle>
+		void add_property_ph(PropHandle& _ph) {
+			Mesh::add_property(_ph);
+		}
+
+		/**
+		 * Thin wrapper for Mesh::add_property.
+		 *
+		 * @tparam PropHandle A property handle type.
+		 *
+		 * This wrapper function is required because Mesh::add_property has
+		 * default arguments and therefore cannot be exposed directly.
+		 */
+		template <class PropHandle>
+		void add_property_ph_str(PropHandle& _ph, const std::string& _name) {
+			Mesh::add_property(_ph, _name);
+		}
+
+		/**
+		 * Set the property value for the item represented by the handle.
+		 *
+		 * @tparam PropHandle A property handle type.
+		 * @tparam IndexHandle The appropriate index handle type.
+		 *
+		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::property may
+		 * return by value instead of reference. This function ensures that the
+		 * property value of an item can be changed nonetheless.
+		 */
+		template <class PropHandle, class IndexHandle>
+		void set_property(PropHandle _ph, IndexHandle _h, const object& _value) {
+			Mesh::property(_ph, _h) = _value;
+		}
+
+		/**
 		 * Get a vertex iterator.
 		 */
 		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
@@ -262,6 +303,36 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*set_status_eh)(EdgeHandle,     const StatusInfo&) = &Mesh::set_status;
 	void (Mesh::*set_status_fh)(FaceHandle,     const StatusInfo&) = &Mesh::set_status;
 
+	// Property management - add property (1/2)
+	void (Mesh::*add_property_vph)(VPropHandleT<object>&) = &Mesh::add_property_ph;
+	void (Mesh::*add_property_eph)(EPropHandleT<object>&) = &Mesh::add_property_ph;
+	void (Mesh::*add_property_hph)(HPropHandleT<object>&) = &Mesh::add_property_ph;
+	void (Mesh::*add_property_fph)(FPropHandleT<object>&) = &Mesh::add_property_ph;
+
+	// Property management - add property (2/2)
+	void (Mesh::*add_property_vph_str)(VPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
+	void (Mesh::*add_property_eph_str)(EPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
+	void (Mesh::*add_property_hph_str)(HPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
+	void (Mesh::*add_property_fph_str)(FPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
+
+	// Property management - remove property
+	void (Mesh::*remove_property_vph)(VPropHandleT<object>&) = &Mesh::remove_property;
+	void (Mesh::*remove_property_eph)(EPropHandleT<object>&) = &Mesh::remove_property;
+	void (Mesh::*remove_property_hph)(HPropHandleT<object>&) = &Mesh::remove_property;
+	void (Mesh::*remove_property_fph)(FPropHandleT<object>&) = &Mesh::remove_property;
+
+	// Property management - get property value for an item
+	const object& (Mesh::*property_vertex  )(VPropHandleT<object>, VertexHandle  ) const = &Mesh::property;
+	const object& (Mesh::*property_edge    )(EPropHandleT<object>, EdgeHandle    ) const = &Mesh::property;
+	const object& (Mesh::*property_halfedge)(HPropHandleT<object>, HalfedgeHandle) const = &Mesh::property;
+	const object& (Mesh::*property_face    )(FPropHandleT<object>, FaceHandle    ) const = &Mesh::property;
+
+	// Property management - set property value for an item
+	void (Mesh::*set_property_vertex  )(VPropHandleT<object>, VertexHandle,   const object&) = &Mesh::set_property;
+	void (Mesh::*set_property_edge    )(EPropHandleT<object>, EdgeHandle,     const object&) = &Mesh::set_property;
+	void (Mesh::*set_property_halfedge)(HPropHandleT<object>, HalfedgeHandle, const object&) = &Mesh::set_property;
+	void (Mesh::*set_property_face    )(FPropHandleT<object>, FaceHandle,     const object&) = &Mesh::set_property;
+
 	// Low-level adding new items
 	VertexHandle (Mesh::*new_vertex_void )(void                        ) = &Mesh::new_vertex;
 	VertexHandle (Mesh::*new_vertex_point)(const typename Mesh::Point& ) = &Mesh::new_vertex;
@@ -424,6 +495,30 @@ void expose_mesh(const char *_name) {
 		.def("has_face_colors", &Mesh::has_face_colors)
 		.def("has_face_status", &Mesh::has_face_status)
 		.def("has_face_texture_index", &Mesh::has_face_texture_index)
+
+		.def("add_property", add_property_vph)
+		.def("add_property", add_property_vph_str)
+		.def("add_property", add_property_eph)
+		.def("add_property", add_property_eph_str)
+		.def("add_property", add_property_hph)
+		.def("add_property", add_property_hph_str)
+		.def("add_property", add_property_fph)
+		.def("add_property", add_property_fph_str)
+
+		.def("remove_property", remove_property_vph)
+		.def("remove_property", remove_property_eph)
+		.def("remove_property", remove_property_hph)
+		.def("remove_property", remove_property_fph)
+
+		.def("property", property_vertex, OPENMESH_PYTHON_DEFAULT_POLICY)
+		.def("property", property_edge, OPENMESH_PYTHON_DEFAULT_POLICY)
+		.def("property", property_halfedge, OPENMESH_PYTHON_DEFAULT_POLICY)
+		.def("property", property_face, OPENMESH_PYTHON_DEFAULT_POLICY)
+
+		.def("set_property", set_property_vertex)
+		.def("set_property", set_property_edge)
+		.def("set_property", set_property_halfedge)
+		.def("set_property", set_property_face)
 
 		.def("new_vertex", new_vertex_void)
 		.def("new_vertex", new_vertex_point)
