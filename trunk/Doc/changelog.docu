@@ -7,12 +7,21 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.2</b> (?/?/?,Rev.1052)</td><td>
+<tr valign=top><td><b>3.2</b> (?/?/?,Rev.1059)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Fixed copy paste typos in the vertex face and face face range code</li>
+</ul>
 
 <b>IO</b>
 <ul>
 <li>Silence the readers/writers (Some of them always wrote output to command line).</li>
 </ul>
+
+<b>Documentation</b>
+<ul>
+<li>Updated doxyfile to 1.8.6</li>
 
 </tr>
 
