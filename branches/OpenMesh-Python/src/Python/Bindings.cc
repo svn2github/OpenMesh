@@ -38,7 +38,7 @@ void expose_handles() {
 	class_<EdgeHandle, bases<BaseHandle> >("EdgeHandle");
 	class_<FaceHandle, bases<BaseHandle> >("FaceHandle");
 
-	class_<BasePropHandleT<object> >("BasePropHandle");
+	class_<BasePropHandleT<object>, bases<BaseHandle> >("BasePropHandle");
 
 	class_<VPropHandleT<object>, bases<BasePropHandleT<object> > >("VPropHandle")
 		.def(init<const BasePropHandleT<object>&>());
