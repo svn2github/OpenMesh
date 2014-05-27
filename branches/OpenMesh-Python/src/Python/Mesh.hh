@@ -117,6 +117,52 @@ class MeshWrapperT : public Mesh {
 		}
 
 		/**
+		 * Thin wrapper for Mesh::copy_all_properties.
+		 *
+		 * @tparam IndexHandle A mesh item handle type.
+		 *
+		 * This wrapper function is required because Mesh::copy_all_properties
+		 * has default arguments and therefore cannot be exposed directly.
+		 */
+		template <class IndexHandle>
+		void copy_all_properties_ih_ih(IndexHandle _from, IndexHandle _to) {
+			Mesh::copy_all_properties(_from, _to);
+		}
+
+		/**
+		 * Thin wrapper for Mesh::copy_all_properties.
+		 *
+		 * @tparam IndexHandle A mesh item handle type.
+		 *
+		 * This wrapper function is required because Mesh::copy_all_properties
+		 * has default arguments and therefore cannot be exposed directly.
+		 */
+		template <class IndexHandle>
+		void copy_all_properties_ih_ih_bool(IndexHandle _from, IndexHandle _to, bool _copyBuildIn) {
+			Mesh::copy_all_properties(_from, _to, _copyBuildIn);
+		}
+
+		/**
+		 * Thin wrapper for Mesh::delete_face.
+		 *
+		 * This wrapper function is required because Mesh::delete_face has
+		 * default arguments and therefore cannot be exposed directly.
+		 */
+		void delete_face_fh(FaceHandle _fh) {
+			Mesh::delete_face(_fh);
+		}
+
+		/**
+		 * Thin wrapper for Mesh::delete_face.
+		 *
+		 * This wrapper function is required because Mesh::delete_face has
+		 * default arguments and therefore cannot be exposed directly.
+		 */
+		void delete_face_fh_bool(FaceHandle _fh, bool _delete_isolated_vertices) {
+			Mesh::delete_face(_fh, _delete_isolated_vertices);
+		}
+
+		/**
 		 * Get a vertex iterator.
 		 */
 		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
@@ -321,6 +367,12 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*remove_property_hph)(HPropHandleT<object>&) = &Mesh::remove_property;
 	void (Mesh::*remove_property_fph)(FPropHandleT<object>&) = &Mesh::remove_property;
 
+	// Property management - get property by name
+	bool (Mesh::*get_property_handle_vph)(VPropHandleT<object>&, const std::string&) const = &Mesh::get_property_handle;
+	bool (Mesh::*get_property_handle_eph)(EPropHandleT<object>&, const std::string&) const = &Mesh::get_property_handle;
+	bool (Mesh::*get_property_handle_hph)(HPropHandleT<object>&, const std::string&) const = &Mesh::get_property_handle;
+	bool (Mesh::*get_property_handle_fph)(FPropHandleT<object>&, const std::string&) const = &Mesh::get_property_handle;
+
 	// Property management - get property value for an item
 	const object& (Mesh::*property_vertex  )(VPropHandleT<object>, VertexHandle  ) const = &Mesh::property;
 	const object& (Mesh::*property_edge    )(EPropHandleT<object>, EdgeHandle    ) const = &Mesh::property;
@@ -339,6 +391,18 @@ void expose_mesh(const char *_name) {
 	FaceHandle   (Mesh::*new_face_void   )(void                        ) = &Mesh::new_face;
 	FaceHandle   (Mesh::*new_face_face   )(const typename Mesh::Face&  ) = &Mesh::new_face;
 
+	// Copy all properties (1/2)
+	void (Mesh::*copy_all_properties_vh_vh)(VertexHandle,   VertexHandle  ) = &Mesh::copy_all_properties_ih_ih;
+	void (Mesh::*copy_all_properties_eh_eh)(EdgeHandle,     EdgeHandle    ) = &Mesh::copy_all_properties_ih_ih;
+	void (Mesh::*copy_all_properties_hh_hh)(HalfedgeHandle, HalfedgeHandle) = &Mesh::copy_all_properties_ih_ih;
+	void (Mesh::*copy_all_properties_fh_fh)(FaceHandle,     FaceHandle    ) = &Mesh::copy_all_properties_ih_ih;
+
+	// Copy all properties (2/2)
+	void (Mesh::*copy_all_properties_vh_vh_bool)(VertexHandle,   VertexHandle,   bool) = &Mesh::copy_all_properties_ih_ih_bool;
+	void (Mesh::*copy_all_properties_eh_eh_bool)(EdgeHandle,     EdgeHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
+	void (Mesh::*copy_all_properties_hh_hh_bool)(HalfedgeHandle, HalfedgeHandle, bool) = &Mesh::copy_all_properties_ih_ih_bool;
+	void (Mesh::*copy_all_properties_fh_fh_bool)(FaceHandle,     FaceHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
+
 	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
 
 	class_<Mesh> classMesh = class_<Mesh>(_name);
@@ -351,6 +415,11 @@ void expose_mesh(const char *_name) {
 	scope scope_Mesh = classMesh;
 
 	classMesh
+
+		//======================================================================
+		//  KernelT
+		//======================================================================
+
 		.def("reserve", &Mesh::reserve)
 
 		.def("vertex", vertex, return_value_policy<reference_existing_object>())
@@ -510,6 +579,11 @@ void expose_mesh(const char *_name) {
 		.def("remove_property", remove_property_hph)
 		.def("remove_property", remove_property_fph)
 
+		.def("get_property_handle", get_property_handle_vph)
+		.def("get_property_handle", get_property_handle_eph)
+		.def("get_property_handle", get_property_handle_hph)
+		.def("get_property_handle", get_property_handle_fph)
+
 		.def("property", property_vertex, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("property", property_edge, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("property", property_halfedge, OPENMESH_PYTHON_DEFAULT_POLICY)
@@ -542,9 +616,30 @@ void expose_mesh(const char *_name) {
 		.def("fe", &Mesh::fe)
 		.def("ff", &Mesh::ff)
 
+		//======================================================================
+		//  BaseKernel
+		//======================================================================
+
+		.def("copy_all_properties", copy_all_properties_vh_vh)
+		.def("copy_all_properties", copy_all_properties_eh_eh)
+		.def("copy_all_properties", copy_all_properties_hh_hh)
+		.def("copy_all_properties", copy_all_properties_fh_fh)
+
+		.def("copy_all_properties", copy_all_properties_vh_vh_bool)
+		.def("copy_all_properties", copy_all_properties_eh_eh_bool)
+		.def("copy_all_properties", copy_all_properties_hh_hh_bool)
+		.def("copy_all_properties", copy_all_properties_fh_fh_bool)
+
+		//======================================================================
+		//  PolyConnectivity
+		//======================================================================
+
 		.def("add_vertex", &Mesh::add_vertex)
 		.def("add_face", add_face)
 		.def("vertex_handle", &Mesh::vertex_handle)
+
+		.def("delete_face", &Mesh::delete_face_fh)
+		.def("delete_face", &Mesh::delete_face_fh_bool)
 		;
 }
 
