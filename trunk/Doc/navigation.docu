@@ -61,6 +61,8 @@ is very simple. In general %OpenMesh also offers a boundary attribute
 for edges, vertices and faces. So testing i.e. whether a face is a boundary
 face is quite simple using OpenMesh::PolyConnectivity::is_boundary().<br />
 
+\note You can iterate along boundaries by using the next_halfedge_handle(). If you are on a boundary, the next halfedge is guaranteed to be also a boundary halfedge.
+
 So for each type we can make use of one of the following functions:
 
 \include nav_code2.cc
