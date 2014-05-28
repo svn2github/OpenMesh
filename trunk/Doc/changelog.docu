@@ -59,7 +59,7 @@
 <b>IO</b>
 <ul>
 <li>OBJ Writer: Fixed material writer using wrong stream (Thanks to  Vladimir Chalupecky for the fix). closes 2037</li> 
-<li>VTK Writer: Added simple VTK writer writing only vertices and faces (Thanks to Vladimir Chalupecky for the code). closes 2039</li>#
+<li>VTK Writer: Added simple VTK writer writing only vertices and faces (Thanks to Vladimir Chalupecky for the code). closes 2039</li>
 <li>PLY Reader: Fix locking up when loading some binary files ( Thanks to  Peter Newman for the patch). closes 2141</li>
 </ul>
 
@@ -70,7 +70,6 @@
 </ul>
 
 <b>Build system</b>
-<ul>
 <ul>
 <li>Added OpenMesh finder. Closes 959</li>
 </ul>
