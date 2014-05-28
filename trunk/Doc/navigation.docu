@@ -7,6 +7,7 @@
 \li \ref nav_bound
 \li \ref nav_io
 \li \ref nav_opposite
+\li \ref nav_to_from
 
 \section nav_intro Introduction
 
@@ -97,5 +98,17 @@ Use this function as described in the example below:
 There are also a few more functions that offer easy access to opposing structures:
 
 \include nav_code4.cc
+
+
+\section nav_to_from Getting the to and from vertices
+
+\image  html mesh.to.from.png
+
+If you have an halfedge, you can get the to and the from handles of the adjacent vertices.
+\note The halfedges have a direction. Therefore the to vertex is the from vertex of the opposite halfedge and vice versa.
+
+\include nav_code_to_from.cc
+
+
 
 */
