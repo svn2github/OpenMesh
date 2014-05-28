@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.2</b> (?/?/?,Rev.1059)</td><td>
+<tr valign=top><td><b>3.2</b> (?/?/?,Rev.1070)</td><td>
 
 <b>Core</b>
 <ul>
@@ -21,7 +21,10 @@
 
 <b>Documentation</b>
 <ul>
-<li>Updated doxyfile to 1.8.6</li>
+<li>Updated doxyfile to 1.8.7</li>
+<li>Added some documentation to get the to and from vertices to the mesh navigation page</li>
+<li>Added boundary navigation info to mesh navigation page</li>
+</ul>
 
 </tr>
 
