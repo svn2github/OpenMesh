@@ -8,6 +8,12 @@
 namespace OpenMesh {
 namespace Python {
 
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(add_face_overloads, add_face, 3, 4)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_vertex_overloads, delete_vertex, 1, 2)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_edge_overloads, delete_edge, 1, 2)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_face_overloads, delete_face, 1, 2)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(is_boundary_overloads, is_boundary, 1, 2)
+
 /**
  * Wrapper for meshes.
  *
@@ -143,26 +149,6 @@ class MeshWrapperT : public Mesh {
 		}
 
 		/**
-		 * Thin wrapper for Mesh::delete_face.
-		 *
-		 * This wrapper function is required because Mesh::delete_face has
-		 * default arguments and therefore cannot be exposed directly.
-		 */
-		void delete_face_fh(FaceHandle _fh) {
-			Mesh::delete_face(_fh);
-		}
-
-		/**
-		 * Thin wrapper for Mesh::delete_face.
-		 *
-		 * This wrapper function is required because Mesh::delete_face has
-		 * default arguments and therefore cannot be exposed directly.
-		 */
-		void delete_face_fh_bool(FaceHandle _fh, bool _delete_isolated_vertices) {
-			Mesh::delete_face(_fh, _delete_isolated_vertices);
-		}
-
-		/**
 		 * Get a vertex iterator.
 		 */
 		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
@@ -253,6 +239,81 @@ class MeshWrapperT : public Mesh {
 			return CirculatorWrapperT<typename Mesh::FaceFaceIter>(*this, _handle);
 		}
 };
+
+/**
+ * Exposes the PolyConnectivity type to %Python.
+ */
+void expose_poly_connectivity() {
+	// Vertex and face valence
+	unsigned int (PolyConnectivity::*valence_vh)(VertexHandle) const = &PolyConnectivity::valence;
+	unsigned int (PolyConnectivity::*valence_fh)(FaceHandle  ) const = &PolyConnectivity::valence;
+
+	// Triangulate face or mesh
+	void (PolyConnectivity::*triangulate_fh  )(FaceHandle) = &PolyConnectivity::triangulate;
+	void (PolyConnectivity::*triangulate_void)(          ) = &PolyConnectivity::triangulate;
+
+	// Adding items to a mesh
+	FaceHandle (PolyConnectivity::*add_face)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &PolyConnectivity::add_face;
+
+	// Boundary and manifold tests
+	bool (PolyConnectivity::*is_boundary_hh)(HalfedgeHandle  ) const = &PolyConnectivity::is_boundary;
+	bool (PolyConnectivity::*is_boundary_eh)(EdgeHandle      ) const = &PolyConnectivity::is_boundary;
+	bool (PolyConnectivity::*is_boundary_vh)(VertexHandle    ) const = &PolyConnectivity::is_boundary;
+	bool (PolyConnectivity::*is_boundary_fh)(FaceHandle, bool) const = &PolyConnectivity::is_boundary;
+
+	// Generic handle derefertiation
+	const PolyConnectivity::Vertex&   (PolyConnectivity::*deref_vh)(VertexHandle  ) const = &PolyConnectivity::deref;
+	const PolyConnectivity::Halfedge& (PolyConnectivity::*deref_hh)(HalfedgeHandle) const = &PolyConnectivity::deref;
+	const PolyConnectivity::Edge&     (PolyConnectivity::*deref_eh)(EdgeHandle    ) const = &PolyConnectivity::deref;
+	const PolyConnectivity::Face&     (PolyConnectivity::*deref_fh)(FaceHandle    ) const = &PolyConnectivity::deref;
+
+	class_<PolyConnectivity>("PolyConnectivity")
+		.def("opposite_face_handle", &PolyConnectivity::opposite_face_handle)
+		.def("adjust_outgoing_halfedge", &PolyConnectivity::adjust_outgoing_halfedge)
+		.def("find_halfedge", &PolyConnectivity::find_halfedge)
+		.def("valence", valence_vh)
+		.def("valence", valence_fh)
+		.def("collapse", &PolyConnectivity::collapse)
+		.def("is_simple_link", &PolyConnectivity::is_simple_link)
+		.def("is_simply_connected", &PolyConnectivity::is_simply_connected)
+		.def("remove_edge", &PolyConnectivity::remove_edge)
+		.def("reinsert_edge", &PolyConnectivity::reinsert_edge)
+//		.def("insert_edge", &PolyConnectivity::insert_edge)
+//		.def("split", &PolyConnectivity::split)
+//		.def("split_copy", &PolyConnectivity::split_copy)
+		.def("triangulate", triangulate_fh)
+		.def("triangulate", triangulate_void)
+		.def("split_edge", &PolyConnectivity::split_edge)
+		.def("split_edge_copy", &PolyConnectivity::split_edge_copy)
+
+		.def("add_vertex", &PolyConnectivity::add_vertex)
+		.def("add_face", add_face, add_face_overloads())
+
+		.def("is_collapse_ok",  &PolyConnectivity::is_collapse_ok)
+		.def("delete_vertex", &PolyConnectivity::delete_vertex, delete_vertex_overloads())
+		.def("delete_edge", &PolyConnectivity::delete_edge, delete_edge_overloads())
+		.def("delete_face", &PolyConnectivity::delete_face, delete_face_overloads())
+
+		.def("is_boundary", is_boundary_hh)
+		.def("is_boundary", is_boundary_eh)
+		.def("is_boundary", is_boundary_vh)
+		.def("is_boundary", is_boundary_fh, is_boundary_overloads())
+		.def("is_manifold", &PolyConnectivity::is_manifold)
+
+		.def("deref", deref_vh, return_value_policy<reference_existing_object>())
+		.def("deref", deref_hh, return_value_policy<reference_existing_object>())
+		.def("deref", deref_eh, return_value_policy<reference_existing_object>())
+		.def("deref", deref_fh, return_value_policy<reference_existing_object>())
+
+		.def("is_triangles", &PolyConnectivity::is_triangles)
+		.staticmethod("is_triangles")
+
+		.def_readonly("InvalidVertexHandle", &PolyConnectivity::InvalidVertexHandle)
+		.def_readonly("InvalidHalfedgeHandle", &PolyConnectivity::InvalidHalfedgeHandle)
+		.def_readonly("InvalidEdgeHandle", &PolyConnectivity::InvalidEdgeHandle)
+		.def_readonly("InvalidFaceHandle", &PolyConnectivity::InvalidFaceHandle)
+		;
+}
 
 /**
  * Expose a mesh type to %Python.
@@ -403,9 +464,7 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*copy_all_properties_hh_hh_bool)(HalfedgeHandle, HalfedgeHandle, bool) = &Mesh::copy_all_properties_ih_ih_bool;
 	void (Mesh::*copy_all_properties_fh_fh_bool)(FaceHandle,     FaceHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
 
-	FaceHandle (Mesh::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &Mesh::add_face;
-
-	class_<Mesh> classMesh = class_<Mesh>(_name);
+	class_<Mesh, bases<PolyConnectivity> > classMesh(_name);
 
 	/*
 	 * It is important that we enter the scope before we add
@@ -630,16 +689,9 @@ void expose_mesh(const char *_name) {
 		.def("copy_all_properties", copy_all_properties_hh_hh_bool)
 		.def("copy_all_properties", copy_all_properties_fh_fh_bool)
 
-		//======================================================================
-		//  PolyConnectivity
-		//======================================================================
+
 
 		.def("add_vertex", &Mesh::add_vertex)
-		.def("add_face", add_face)
-		.def("vertex_handle", &Mesh::vertex_handle)
-
-		.def("delete_face", &Mesh::delete_face_fh)
-		.def("delete_face", &Mesh::delete_face_fh_bool)
 		;
 }
 

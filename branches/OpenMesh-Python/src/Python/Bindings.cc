@@ -108,6 +108,8 @@ BOOST_PYTHON_MODULE(openmesh) {
 	expose_vec<double, 3>("Vec3d");
 	expose_vec<double, 4>("Vec4d");
 
+	expose_poly_connectivity();
+
 	expose_mesh<MeshWrapperT<TriMesh> >("TriMesh");
 	expose_mesh<MeshWrapperT<PolyMesh> >("PolyMesh");
 
