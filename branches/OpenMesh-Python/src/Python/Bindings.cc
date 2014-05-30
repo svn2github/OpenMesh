@@ -109,9 +109,10 @@ BOOST_PYTHON_MODULE(openmesh) {
 	expose_vec<double, 4>("Vec4d");
 
 	expose_poly_connectivity();
+	expose_tri_connectivity();
 
-	expose_mesh<MeshWrapperT<TriMesh> >("TriMesh");
-	expose_mesh<MeshWrapperT<PolyMesh> >("PolyMesh");
+	expose_mesh<MeshWrapperT<PolyMesh>, PolyConnectivity>("PolyMesh");
+	expose_mesh<MeshWrapperT<TriMesh>, TriConnectivity>("TriMesh");
 
 	expose_iterator<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>("VertexIter");
 	expose_iterator<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>("HalfedgeIter");

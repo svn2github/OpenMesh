@@ -268,6 +268,7 @@ void expose_poly_connectivity() {
 	const PolyConnectivity::Face&     (PolyConnectivity::*deref_fh)(FaceHandle    ) const = &PolyConnectivity::deref;
 
 	class_<PolyConnectivity>("PolyConnectivity")
+		.def("assign_connectivity", &PolyConnectivity::assign_connectivity)
 		.def("opposite_face_handle", &PolyConnectivity::opposite_face_handle)
 		.def("adjust_outgoing_halfedge", &PolyConnectivity::adjust_outgoing_halfedge)
 		.def("find_halfedge", &PolyConnectivity::find_halfedge)
@@ -316,16 +317,57 @@ void expose_poly_connectivity() {
 }
 
 /**
+ * Exposes the TriConnectivity type to %Python.
+ */
+void expose_tri_connectivity() {
+	// Assign connectivity
+	void (TriConnectivity::*assign_connectivity_tri )(const TriConnectivity& ) = &TriConnectivity::assign_connectivity;
+	void (TriConnectivity::*assign_connectivity_poly)(const PolyConnectivity&) = &TriConnectivity::assign_connectivity;
+
+	// Adding items to a mesh
+	FaceHandle (TriConnectivity::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &TriConnectivity::add_face;
+
+	// Topology modifying operators
+	void (TriConnectivity::*split_eh_vh)(EdgeHandle, VertexHandle) = &TriConnectivity::split;
+	void (TriConnectivity::*split_fh_vh)(FaceHandle, VertexHandle) = &TriConnectivity::split;
+	void (TriConnectivity::*split_copy_eh_vh)(EdgeHandle, VertexHandle) = &TriConnectivity::split_copy;
+	void (TriConnectivity::*split_copy_fh_vh)(FaceHandle, VertexHandle) = &TriConnectivity::split_copy;
+
+	class_<TriConnectivity, bases<PolyConnectivity> >("TriConnectivity")
+		.def("assign_connectivity", assign_connectivity_tri)
+		.def("assign_connectivity", assign_connectivity_poly)
+		.def("opposite_vh", &TriConnectivity::opposite_vh)
+		.def("opposite_he_opposite_vh", &TriConnectivity::opposite_he_opposite_vh)
+
+		.def("add_face", add_face)
+
+		.def("is_collapse_ok", &TriConnectivity::is_collapse_ok)
+		.def("vertex_split", &TriConnectivity::vertex_split)
+		.def("is_flip_ok", &TriConnectivity::is_flip_ok)
+		.def("flip", &TriConnectivity::flip)
+		.def("split", split_eh_vh)
+		.def("split_copy", split_copy_eh_vh)
+		.def("split", split_fh_vh)
+		.def("split_copy", split_copy_fh_vh)
+
+		.def("is_triangles", &TriConnectivity::is_triangles)
+		.staticmethod("is_triangles")
+		;
+}
+
+/**
  * Expose a mesh type to %Python.
  *
  * @tparam Mesh A mesh type.
+ * @tparam Connectivity The appropriate connectivity type (e.g. TriConnectivity
+ * for triangle mesh types).
  *
  * @param _name The name of the mesh type to be exposed.
  *
  * @note Meshes are wrapped by MeshWrapperT before they are exposed to %Python,
  * i.e. they are not exposed directly.
  */
-template<class Mesh>
+template<class Mesh, class Connectivity>
 void expose_mesh(const char *_name) {
 	using OpenMesh::Attributes::StatusInfo;
 
@@ -464,7 +506,7 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*copy_all_properties_hh_hh_bool)(HalfedgeHandle, HalfedgeHandle, bool) = &Mesh::copy_all_properties_ih_ih_bool;
 	void (Mesh::*copy_all_properties_fh_fh_bool)(FaceHandle,     FaceHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
 
-	class_<Mesh, bases<PolyConnectivity> > classMesh(_name);
+	class_<Mesh, bases<Connectivity> > classMesh(_name);
 
 	/*
 	 * It is important that we enter the scope before we add
