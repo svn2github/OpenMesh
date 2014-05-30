@@ -263,7 +263,6 @@ TEST_F(OpenMeshAddFaceTriangleMesh, CreateStrangeConfig) {
 
 
   Mesh::VertexHandle vh[7];
-  Mesh::FaceHandle   fh[4];
 
   //
   //                2 x-----------x 1
