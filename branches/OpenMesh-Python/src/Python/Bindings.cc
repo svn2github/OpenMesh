@@ -133,7 +133,15 @@ BOOST_PYTHON_MODULE(openmesh) {
 
 	// TODO expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
 
-	expose_property_manager<OpenMesh::VPropHandleT<object>, VertexHandle>("VPropertyManager");
+	typedef IteratorWrapperT<PolyConnectivity::VertexIter, &ArrayKernel::n_vertices> VertexIterWrapper;
+	typedef IteratorWrapperT<PolyConnectivity::HalfedgeIter, &ArrayKernel::n_halfedges> HalfedgeIterWrapper;
+	typedef IteratorWrapperT<PolyConnectivity::EdgeIter, &ArrayKernel::n_edges> EdgeIterWrapper;
+	typedef IteratorWrapperT<PolyConnectivity::FaceIter, &ArrayKernel::n_faces> FaceIterWrapper;
+
+	expose_property_manager<VPropHandleT<object>, VertexHandle, VertexIterWrapper>("VPropertyManager");
+	expose_property_manager<HPropHandleT<object>, HalfedgeHandle, HalfedgeIterWrapper>("HPropertyManager");
+	expose_property_manager<EPropHandleT<object>, EdgeHandle, EdgeIterWrapper>("EPropertyManager");
+	expose_property_manager<FPropHandleT<object>, FaceHandle, FaceIterWrapper>("FPropertyManager");
 }
 
 } // namespace Python

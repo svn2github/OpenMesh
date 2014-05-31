@@ -18,7 +18,7 @@ namespace Python {
  * @tparam Manager A property manager type.
  * @tparam IndexHandle The appropriate index handle type.
  */
-template<class Manager, class IndexHandle>
+template <class Manager, class IndexHandle>
 class PropertyManagerWrapperT : public Manager {
 	public:
 
@@ -32,7 +32,7 @@ class PropertyManagerWrapperT : public Manager {
 		 *
 		 * TODO: reference constructor
 		 */
-		PropertyManagerWrapperT(OpenMesh::PolyConnectivity &_mesh, const char *_propname, bool _existing = false) :
+		PropertyManagerWrapperT(PolyConnectivity &_mesh, const char *_propname, bool _existing = false) :
 			Manager(_mesh, _propname, _existing) {
 		}
 
@@ -77,43 +77,25 @@ class PropertyManagerWrapperT : public Manager {
 		}
 
 		/**
-		 * Thin wrapper for Manager::propertyExists.
+		 * Conveniently set the property value for an entire range of mesh items
+		 * using a %Python iterator.
 		 *
-		 * This wrapper function is required because %Python does not know that
-		 * MeshWrapperT is derived from PolyConnectivity.
-		 */
-		static bool property_exists(MeshWrapperT<TriMesh> &_mesh, const char *_propname) {
-			return Manager::propertyExists(_mesh, _propname);
-		}
-
-		/**
-		 * Thin wrapper for Manager::propertyExists.
+		 * @tparam Iterator A %Python iterator.
 		 *
-		 * This wrapper function is required because %Python does not know that
-		 * MeshWrapperT is derived from PolyConnectivity.
+		 * @param _it An iterator that iterates over the items in the range.
+		 * @param _value The value the range will be set to.
 		 */
-		static bool property_exists(MeshWrapperT<PolyMesh> &_mesh, const char *_propname) {
-			return Manager::propertyExists(_mesh, _propname);
-		}
-
-		/**
-		 * Thin wrapper for Manager::createIfNotExists.
-		 *
-		 * This wrapper function is required because %Python does not know that
-		 * MeshWrapperT is derived from PolyConnectivity.
-		 */
-		static typename Manager::Proxy create_if_not_exists(MeshWrapperT<TriMesh> &_mesh, const char *_propname) {
-			return Manager::createIfNotExists(_mesh, _propname);
-		}
-
-		/**
-		 * Thin wrapper for Manager::createIfNotExists.
-		 *
-		 * This wrapper function is required because %Python does not know that
-		 * MeshWrapperT is derived from PolyConnectivity.
-		 */
-		static typename Manager::Proxy create_if_not_exists(MeshWrapperT<PolyMesh> &_mesh, const char *_propname) {
-			return Manager::createIfNotExists(_mesh, _propname);
+		template <class Iterator>
+		void set_range(Iterator _it, object _value) {
+			try {
+				while (true) {
+					(*this)[_it.next()] = _value;
+				}
+			}
+			catch (error_already_set exception) {
+				// This is expected behavior
+				PyErr_Clear();
+			}
 		}
 };
 
@@ -133,19 +115,14 @@ class PropertyManagerWrapperT : public Manager {
  * @note Property managers are wrapped by PropertyManagerWrapperT before they
  * are exposed to %Python, i.e. they are not exposed directly.
  */
-template<class PropHandle, class IndexHandle>
+template <class PropHandle, class IndexHandle, class Iterator>
 void expose_property_manager(const char *_name) {
 	// Convenience typedefs
-	typedef OpenMesh::PropertyManager<PropHandle, OpenMesh::PolyConnectivity> PropertyManager;
+	typedef PropertyManager<PropHandle, PolyConnectivity> PropertyManager;
 	typedef PropertyManagerWrapperT<PropertyManager, IndexHandle> PropertyManagerWrapper;
 
-	// Member function pointers (property_exists)
-	bool (*property_exists_tri )(MeshWrapperT<TriMesh>&,  const char*) = &PropertyManagerWrapper::property_exists;
-	bool (*property_exists_poly)(MeshWrapperT<PolyMesh>&, const char*) = &PropertyManagerWrapper::property_exists;
-
-	// Member function pointers (create_if_not_exists)
-	typename PropertyManager::Proxy (*create_if_not_exists_tri )(MeshWrapperT<TriMesh>&,  const char*) = &PropertyManagerWrapper::create_if_not_exists;
-	typename PropertyManager::Proxy (*create_if_not_exists_poly)(MeshWrapperT<PolyMesh>&, const char*) = &PropertyManagerWrapper::create_if_not_exists;
+	// Member function pointer
+	void (PropertyManagerWrapper::*set_range)(Iterator, object) = &PropertyManagerWrapper::set_range;
 
 	// Expose Proxy type
 	class_<typename PropertyManager::Proxy>("Proxy", no_init);
@@ -169,12 +146,12 @@ void expose_property_manager(const char *_name) {
 		.def("__getitem__", &PropertyManagerWrapper::getitem)
 		.def("__setitem__", &PropertyManagerWrapper::setitem)
 
-		.def("property_exists", property_exists_tri)
-		.def("property_exists", property_exists_poly)
+		.def("set_range", set_range)
+
+		.def("property_exists", &PropertyManagerWrapper::propertyExists)
 		.staticmethod("property_exists")
 
-		.def("create_if_not_exists", create_if_not_exists_tri)
-		.def("create_if_not_exists", create_if_not_exists_poly)
+		.def("create_if_not_exists", &PropertyManagerWrapper::createIfNotExists)
 		.staticmethod("create_if_not_exists")
 		;
 }
