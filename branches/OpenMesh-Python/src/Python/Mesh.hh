@@ -5,16 +5,10 @@
 #include "Python/Iterator.hh"
 #include "Python/Circulator.hh"
 
-#include <boost/python/stl_iterator.hpp>
-
 namespace OpenMesh {
 namespace Python {
 
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(add_face_overloads, add_face, 3, 4)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_vertex_overloads, delete_vertex, 1, 2)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_edge_overloads, delete_edge, 1, 2)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_face_overloads, delete_face, 1, 2)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(is_boundary_overloads, is_boundary, 1, 2)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(garbage_collection_overloads, garbage_collection, 0, 3)
 
 /**
  * Wrapper for meshes.
@@ -25,62 +19,20 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(is_boundary_overloads, is_boundary, 1, 2)
  *
  * @tparam Mesh A mesh type.
  */
-template<class Mesh>
+template <class Mesh>
 class MeshWrapperT : public Mesh {
 	public:
 
 		/**
-		 * Thin wrapper for Mesh::garbage_collection.
-		 *
-		 * This wrapper function is required because Mesh::garbage_collection
-		 * has default arguments and therefore cannot be exposed directly.
-		 */
-		void garbage_collection() {
-			Mesh::garbage_collection();
-		}
-
-		/**
-		 * Set the status of a vertex.
+		 * Set the status of an item.
 		 *
 		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
 		 * return by value instead of reference. This function ensures that the
 		 * status of an item can be changed nonetheless.
 		 */
-		void set_status(VertexHandle _vh, const OpenMesh::Attributes::StatusInfo &_info) {
-			Mesh::status(_vh) = _info;
-		}
-
-		/**
-		 * Set the status of a halfedge.
-		 *
-		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
-		 * return by value instead of reference. This function ensures that the
-		 * status of an item can be changed nonetheless.
-		 */
-		void set_status(HalfedgeHandle _heh, const OpenMesh::Attributes::StatusInfo &_info) {
-			Mesh::status(_heh) = _info;
-		}
-
-		/**
-		 * Set the status of an edge.
-		 *
-		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
-		 * return by value instead of reference. This function ensures that the
-		 * status of an item can be changed nonetheless.
-		 */
-		void set_status(EdgeHandle _eh, const OpenMesh::Attributes::StatusInfo &_info) {
-			Mesh::status(_eh) = _info;
-		}
-
-		/**
-		 * Set the status of a face.
-		 *
-		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
-		 * return by value instead of reference. This function ensures that the
-		 * status of an item can be changed nonetheless.
-		 */
-		void set_status(FaceHandle _fh, const OpenMesh::Attributes::StatusInfo &_info) {
-			Mesh::status(_fh) = _info;
+		template <class IndexHandle>
+		void set_status(IndexHandle _h, const OpenMesh::Attributes::StatusInfo& _info) {
+			Mesh::status(_h) = _info;
 		}
 
 		/**
@@ -243,149 +195,6 @@ class MeshWrapperT : public Mesh {
 };
 
 /**
- * Create a new face from a %Python list of vertex handles.
- *
- * This function template is used to generate %Python member functions for the
- * connectivity classes.
- *
- * @tparam Connectivity A connectivity type (e.g. PolyConnectivity).
- *
- * @param _self The instance for which the function should be called.
- * @param _vhandles The list of vertex handles.
- */
-template<class Connectivity>
-FaceHandle add_face(Connectivity & _self, const list & _vhandles) {
-	stl_input_iterator<VertexHandle> begin(_vhandles);
-	stl_input_iterator<VertexHandle> end;
-
-	std::vector<VertexHandle> vector;
-	vector.insert(vector.end(), begin, end);
-
-	return _self.add_face(vector);
-}
-
-/**
- * Exposes the PolyConnectivity type to %Python.
- */
-void expose_poly_connectivity() {
-	// Vertex and face valence
-	unsigned int (PolyConnectivity::*valence_vh)(VertexHandle) const = &PolyConnectivity::valence;
-	unsigned int (PolyConnectivity::*valence_fh)(FaceHandle  ) const = &PolyConnectivity::valence;
-
-	// Triangulate face or mesh
-	void (PolyConnectivity::*triangulate_fh  )(FaceHandle) = &PolyConnectivity::triangulate;
-	void (PolyConnectivity::*triangulate_void)(          ) = &PolyConnectivity::triangulate;
-
-	// Adding items to a mesh
-	FaceHandle (PolyConnectivity::*add_face_3_vh)(VertexHandle, VertexHandle, VertexHandle) = &PolyConnectivity::add_face;
-	FaceHandle (PolyConnectivity::*add_face_4_vh)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &PolyConnectivity::add_face;
-	FaceHandle (*add_face_list)(PolyConnectivity&, const list&) = &add_face;
-
-	// Boundary and manifold tests
-	bool (PolyConnectivity::*is_boundary_hh)(HalfedgeHandle  ) const = &PolyConnectivity::is_boundary;
-	bool (PolyConnectivity::*is_boundary_eh)(EdgeHandle      ) const = &PolyConnectivity::is_boundary;
-	bool (PolyConnectivity::*is_boundary_vh)(VertexHandle    ) const = &PolyConnectivity::is_boundary;
-	bool (PolyConnectivity::*is_boundary_fh)(FaceHandle, bool) const = &PolyConnectivity::is_boundary;
-
-	// Generic handle derefertiation
-	const PolyConnectivity::Vertex&   (PolyConnectivity::*deref_vh)(VertexHandle  ) const = &PolyConnectivity::deref;
-	const PolyConnectivity::Halfedge& (PolyConnectivity::*deref_hh)(HalfedgeHandle) const = &PolyConnectivity::deref;
-	const PolyConnectivity::Edge&     (PolyConnectivity::*deref_eh)(EdgeHandle    ) const = &PolyConnectivity::deref;
-	const PolyConnectivity::Face&     (PolyConnectivity::*deref_fh)(FaceHandle    ) const = &PolyConnectivity::deref;
-
-	class_<PolyConnectivity>("PolyConnectivity")
-		.def("assign_connectivity", &PolyConnectivity::assign_connectivity)
-		.def("opposite_face_handle", &PolyConnectivity::opposite_face_handle)
-		.def("adjust_outgoing_halfedge", &PolyConnectivity::adjust_outgoing_halfedge)
-		.def("find_halfedge", &PolyConnectivity::find_halfedge)
-		.def("valence", valence_vh)
-		.def("valence", valence_fh)
-		.def("collapse", &PolyConnectivity::collapse)
-		.def("is_simple_link", &PolyConnectivity::is_simple_link)
-		.def("is_simply_connected", &PolyConnectivity::is_simply_connected)
-		.def("remove_edge", &PolyConnectivity::remove_edge)
-		.def("reinsert_edge", &PolyConnectivity::reinsert_edge)
-//		.def("insert_edge", &PolyConnectivity::insert_edge)
-//		.def("split", &PolyConnectivity::split)
-//		.def("split_copy", &PolyConnectivity::split_copy)
-		.def("triangulate", triangulate_fh)
-		.def("triangulate", triangulate_void)
-		.def("split_edge", &PolyConnectivity::split_edge)
-		.def("split_edge_copy", &PolyConnectivity::split_edge_copy)
-
-		.def("add_vertex", &PolyConnectivity::add_vertex)
-		.def("add_face", add_face_3_vh)
-		.def("add_face", add_face_4_vh)
-		.def("add_face", add_face_list)
-
-		.def("is_collapse_ok",  &PolyConnectivity::is_collapse_ok)
-		.def("delete_vertex", &PolyConnectivity::delete_vertex, delete_vertex_overloads())
-		.def("delete_edge", &PolyConnectivity::delete_edge, delete_edge_overloads())
-		.def("delete_face", &PolyConnectivity::delete_face, delete_face_overloads())
-
-		.def("is_boundary", is_boundary_hh)
-		.def("is_boundary", is_boundary_eh)
-		.def("is_boundary", is_boundary_vh)
-		.def("is_boundary", is_boundary_fh, is_boundary_overloads())
-		.def("is_manifold", &PolyConnectivity::is_manifold)
-
-		.def("deref", deref_vh, return_value_policy<reference_existing_object>())
-		.def("deref", deref_hh, return_value_policy<reference_existing_object>())
-		.def("deref", deref_eh, return_value_policy<reference_existing_object>())
-		.def("deref", deref_fh, return_value_policy<reference_existing_object>())
-
-		.def("is_triangles", &PolyConnectivity::is_triangles)
-		.staticmethod("is_triangles")
-
-		.def_readonly("InvalidVertexHandle", &PolyConnectivity::InvalidVertexHandle)
-		.def_readonly("InvalidHalfedgeHandle", &PolyConnectivity::InvalidHalfedgeHandle)
-		.def_readonly("InvalidEdgeHandle", &PolyConnectivity::InvalidEdgeHandle)
-		.def_readonly("InvalidFaceHandle", &PolyConnectivity::InvalidFaceHandle)
-		;
-}
-
-/**
- * Exposes the TriConnectivity type to %Python.
- */
-void expose_tri_connectivity() {
-	// Assign connectivity
-	void (TriConnectivity::*assign_connectivity_tri )(const TriConnectivity& ) = &TriConnectivity::assign_connectivity;
-	void (TriConnectivity::*assign_connectivity_poly)(const PolyConnectivity&) = &TriConnectivity::assign_connectivity;
-
-	// Adding items to a mesh
-	FaceHandle (TriConnectivity::*add_face_3_vh)(VertexHandle, VertexHandle, VertexHandle) = &TriConnectivity::add_face;
-	FaceHandle (*add_face_list)(TriConnectivity&, const list&) = &add_face;
-
-	// Topology modifying operators
-	void (TriConnectivity::*split_eh_vh)(EdgeHandle, VertexHandle) = &TriConnectivity::split;
-	void (TriConnectivity::*split_fh_vh)(FaceHandle, VertexHandle) = &TriConnectivity::split;
-	void (TriConnectivity::*split_copy_eh_vh)(EdgeHandle, VertexHandle) = &TriConnectivity::split_copy;
-	void (TriConnectivity::*split_copy_fh_vh)(FaceHandle, VertexHandle) = &TriConnectivity::split_copy;
-
-	class_<TriConnectivity, bases<PolyConnectivity> >("TriConnectivity")
-		.def("assign_connectivity", assign_connectivity_tri)
-		.def("assign_connectivity", assign_connectivity_poly)
-		.def("opposite_vh", &TriConnectivity::opposite_vh)
-		.def("opposite_he_opposite_vh", &TriConnectivity::opposite_he_opposite_vh)
-
-		.def("add_face", add_face_3_vh)
-		.def("add_face", add_face_list)
-
-		.def("is_collapse_ok", &TriConnectivity::is_collapse_ok)
-		.def("vertex_split", &TriConnectivity::vertex_split)
-		.def("is_flip_ok", &TriConnectivity::is_flip_ok)
-		.def("flip", &TriConnectivity::flip)
-		.def("split", split_eh_vh)
-		.def("split_copy", split_copy_eh_vh)
-		.def("split", split_fh_vh)
-		.def("split_copy", split_copy_fh_vh)
-
-		.def("is_triangles", &TriConnectivity::is_triangles)
-		.staticmethod("is_triangles")
-		;
-}
-
-/**
  * Expose a mesh type to %Python.
  *
  * @tparam Mesh A mesh type.
@@ -397,7 +206,7 @@ void expose_tri_connectivity() {
  * @note Meshes are wrapped by MeshWrapperT before they are exposed to %Python,
  * i.e. they are not exposed directly.
  */
-template<class Mesh, class Connectivity>
+template <class Mesh, class Connectivity>
 void expose_mesh(const char *_name) {
 	using OpenMesh::Attributes::StatusInfo;
 
@@ -407,21 +216,24 @@ void expose_mesh(const char *_name) {
 	EdgeHandle     (Mesh::*edge_handle_uint    )(unsigned int) const = &Mesh::edge_handle;
 	FaceHandle     (Mesh::*face_handle_uint    )(unsigned int) const = &Mesh::face_handle;
 
+	// Delete items
+	void (Mesh::*garbage_collection)(bool, bool, bool) = &Mesh::garbage_collection;
+
 	// Vertex connectivity
 	HalfedgeHandle (Mesh::*halfedge_handle_vh)(VertexHandle) const = &Mesh::halfedge_handle;
 	HalfedgeHandle (Mesh::*halfedge_handle_fh)(FaceHandle  ) const = &Mesh::halfedge_handle;
 
 	// Halfedge connectivity
-	FaceHandle     (Mesh::*face_handle_heh         )(HalfedgeHandle) const = &Mesh::face_handle;
-	HalfedgeHandle (Mesh::*prev_halfedge_handle_heh)(HalfedgeHandle) const = &Mesh::prev_halfedge_handle;
-	EdgeHandle     (Mesh::*edge_handle_heh         )(HalfedgeHandle) const = &Mesh::edge_handle;
+	FaceHandle     (Mesh::*face_handle_hh         )(HalfedgeHandle) const = &Mesh::face_handle;
+	HalfedgeHandle (Mesh::*prev_halfedge_handle_hh)(HalfedgeHandle) const = &Mesh::prev_halfedge_handle;
+	EdgeHandle     (Mesh::*edge_handle_hh         )(HalfedgeHandle) const = &Mesh::edge_handle;
 
 	// Edge connectivity
 	HalfedgeHandle (Mesh::*halfedge_handle_eh_uint)(EdgeHandle, unsigned int) const = &Mesh::halfedge_handle;
 
 	// Set halfedge
-	void (Mesh::*set_halfedge_handle_vh_heh)(VertexHandle, HalfedgeHandle) = &Mesh::set_halfedge_handle;
-	void (Mesh::*set_halfedge_handle_fh_heh)(FaceHandle, HalfedgeHandle  ) = &Mesh::set_halfedge_handle;
+	void (Mesh::*set_halfedge_handle_vh_hh)(VertexHandle, HalfedgeHandle) = &Mesh::set_halfedge_handle;
+	void (Mesh::*set_halfedge_handle_fh_hh)(FaceHandle, HalfedgeHandle  ) = &Mesh::set_halfedge_handle;
 
 	// Handle -> Item
 	const typename Mesh::Vertex&   (Mesh::*vertex  )(VertexHandle  ) const = &Mesh::vertex;
@@ -570,7 +382,7 @@ void expose_mesh(const char *_name) {
 
 		.def("clear", &Mesh::clear)
 		.def("clean", &Mesh::clean)
-		.def("garbage_collection", &Mesh::garbage_collection)
+		.def("garbage_collection", garbage_collection, garbage_collection_overloads())
 
 		.def("n_vertices", &Mesh::n_vertices)
 		.def("n_halfedges", &Mesh::n_halfedges)
@@ -582,25 +394,25 @@ void expose_mesh(const char *_name) {
 		.def("faces_empty", &Mesh::faces_empty)
 
 		.def("halfedge_handle", halfedge_handle_vh)
-		.def("set_halfedge_handle", set_halfedge_handle_vh_heh)
+		.def("set_halfedge_handle", set_halfedge_handle_vh_hh)
 
 		.def("to_vertex_handle", &Mesh::to_vertex_handle)
 		.def("from_vertex_handle", &Mesh::from_vertex_handle)
 		.def("set_vertex_handle", &Mesh::set_vertex_handle)
-		.def("face_handle", face_handle_heh)
+		.def("face_handle", face_handle_hh)
 		.def("set_face_handle", &Mesh::set_face_handle)
 		.def("next_halfedge_handle", &Mesh::next_halfedge_handle)
 		.def("set_next_halfedge_handle", &Mesh::set_next_halfedge_handle)
-		.def("prev_halfedge_handle", prev_halfedge_handle_heh)
+		.def("prev_halfedge_handle", prev_halfedge_handle_hh)
 		.def("opposite_halfedge_handle", &Mesh::opposite_halfedge_handle)
 		.def("ccw_rotated_halfedge_handle", &Mesh::ccw_rotated_halfedge_handle)
 		.def("cw_rotated_halfedge_handle", &Mesh::cw_rotated_halfedge_handle)
-		.def("edge_handle", edge_handle_heh)
+		.def("edge_handle", edge_handle_hh)
 
 		.def("halfedge_handle", halfedge_handle_eh_uint)
 
 		.def("halfedge_handle", halfedge_handle_fh)
-		.def("set_halfedge_handle", set_halfedge_handle_fh_heh)
+		.def("set_halfedge_handle", set_halfedge_handle_fh_hh)
 
 		.def("point", point_vh, OPENMESH_PYTHON_DEFAULT_POLICY)
 		.def("set_point", &Mesh::set_point)

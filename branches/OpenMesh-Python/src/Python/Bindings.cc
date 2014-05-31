@@ -1,5 +1,6 @@
 #include "Python/Bindings.hh"
 #include "Python/Vector.hh"
+#include "Python/Connectivity.hh"
 #include "Python/Mesh.hh"
 #include "Python/Iterator.hh"
 #include "Python/Circulator.hh"
