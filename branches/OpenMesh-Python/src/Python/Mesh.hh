@@ -5,6 +5,8 @@
 #include "Python/Iterator.hh"
 #include "Python/Circulator.hh"
 
+#include <boost/python/stl_iterator.hpp>
+
 namespace OpenMesh {
 namespace Python {
 
@@ -241,6 +243,28 @@ class MeshWrapperT : public Mesh {
 };
 
 /**
+ * Create a new face from a %Python list of vertex handles.
+ *
+ * This function template is used to generate %Python member functions for the
+ * connectivity classes.
+ *
+ * @tparam Connectivity A connectivity type (e.g. PolyConnectivity).
+ *
+ * @param _self The instance for which the function should be called.
+ * @param _vhandles The list of vertex handles.
+ */
+template<class Connectivity>
+FaceHandle add_face(Connectivity & _self, const list & _vhandles) {
+	stl_input_iterator<VertexHandle> begin(_vhandles);
+	stl_input_iterator<VertexHandle> end;
+
+	std::vector<VertexHandle> vector;
+	vector.insert(vector.end(), begin, end);
+
+	return _self.add_face(vector);
+}
+
+/**
  * Exposes the PolyConnectivity type to %Python.
  */
 void expose_poly_connectivity() {
@@ -253,7 +277,9 @@ void expose_poly_connectivity() {
 	void (PolyConnectivity::*triangulate_void)(          ) = &PolyConnectivity::triangulate;
 
 	// Adding items to a mesh
-	FaceHandle (PolyConnectivity::*add_face)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &PolyConnectivity::add_face;
+	FaceHandle (PolyConnectivity::*add_face_3_vh)(VertexHandle, VertexHandle, VertexHandle) = &PolyConnectivity::add_face;
+	FaceHandle (PolyConnectivity::*add_face_4_vh)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &PolyConnectivity::add_face;
+	FaceHandle (*add_face_list)(PolyConnectivity&, const list&) = &add_face;
 
 	// Boundary and manifold tests
 	bool (PolyConnectivity::*is_boundary_hh)(HalfedgeHandle  ) const = &PolyConnectivity::is_boundary;
@@ -288,7 +314,9 @@ void expose_poly_connectivity() {
 		.def("split_edge_copy", &PolyConnectivity::split_edge_copy)
 
 		.def("add_vertex", &PolyConnectivity::add_vertex)
-		.def("add_face", add_face, add_face_overloads())
+		.def("add_face", add_face_3_vh)
+		.def("add_face", add_face_4_vh)
+		.def("add_face", add_face_list)
 
 		.def("is_collapse_ok",  &PolyConnectivity::is_collapse_ok)
 		.def("delete_vertex", &PolyConnectivity::delete_vertex, delete_vertex_overloads())
@@ -325,7 +353,8 @@ void expose_tri_connectivity() {
 	void (TriConnectivity::*assign_connectivity_poly)(const PolyConnectivity&) = &TriConnectivity::assign_connectivity;
 
 	// Adding items to a mesh
-	FaceHandle (TriConnectivity::*add_face)(VertexHandle, VertexHandle, VertexHandle) = &TriConnectivity::add_face;
+	FaceHandle (TriConnectivity::*add_face_3_vh)(VertexHandle, VertexHandle, VertexHandle) = &TriConnectivity::add_face;
+	FaceHandle (*add_face_list)(TriConnectivity&, const list&) = &add_face;
 
 	// Topology modifying operators
 	void (TriConnectivity::*split_eh_vh)(EdgeHandle, VertexHandle) = &TriConnectivity::split;
@@ -339,7 +368,8 @@ void expose_tri_connectivity() {
 		.def("opposite_vh", &TriConnectivity::opposite_vh)
 		.def("opposite_he_opposite_vh", &TriConnectivity::opposite_he_opposite_vh)
 
-		.def("add_face", add_face)
+		.def("add_face", add_face_3_vh)
+		.def("add_face", add_face_list)
 
 		.def("is_collapse_ok", &TriConnectivity::is_collapse_ok)
 		.def("vertex_split", &TriConnectivity::vertex_split)
