@@ -29,8 +29,6 @@ class PropertyManagerWrapperT : public Manager {
 
 		/**
 		 * Constructor
-		 *
-		 * TODO: reference constructor
 		 */
 		PropertyManagerWrapperT(PolyConnectivity &_mesh, const char *_propname, bool _existing = false) :
 			Manager(_mesh, _propname, _existing) {
@@ -124,13 +122,9 @@ void expose_property_manager(const char *_name) {
 	// Member function pointer
 	void (PropertyManagerWrapper::*set_range)(Iterator, object) = &PropertyManagerWrapper::set_range;
 
-	// Expose Proxy type
-	class_<typename PropertyManager::Proxy>("Proxy", no_init);
-
 	// Expose PropertyManager type
 	class_<PropertyManagerWrapper, boost::noncopyable>(_name)
-		.def(init<MeshWrapperT<TriMesh>&, const char *, optional<bool> >())
-		.def(init<MeshWrapperT<PolyMesh>&, const char *, optional<bool> >())
+		.def(init<PolyConnectivity&, const char *, optional<bool> >())
 
 		.def("swap", &PropertyManagerWrapper::swap)
 		.def("is_valid", &PropertyManagerWrapper::isValid)
@@ -138,8 +132,10 @@ void expose_property_manager(const char *_name) {
 		.def("__bool__", &PropertyManagerWrapper::operator bool)
 		.def("__nonzero__", &PropertyManagerWrapper::operator bool)
 
-		.def("get_name", &PropertyManagerWrapper::getName, return_internal_reference<>())
+		.def("get_raw_property", &PropertyManagerWrapper::getRawProperty, return_value_policy<copy_const_reference>())
+		.def("get_name", &PropertyManagerWrapper::getName, return_value_policy<copy_const_reference>())
 		.def("get_mesh", &PropertyManagerWrapper::getMesh, return_value_policy<reference_existing_object>())
+
 		.def("retain", &PropertyManagerWrapper::retain_void)
 		.def("retain", &PropertyManagerWrapper::retain_bool)
 
