@@ -106,28 +106,56 @@ class MeshWrapperT : public Mesh {
 		 * Get a vertex iterator.
 		 */
 		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this);
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this, VertexHandle(0));
 		}
 
 		/**
 		 * Get a halfedge iterator.
 		 */
 		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> halfedges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this);
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this, HalfedgeHandle(0));
 		}
 
 		/**
 		 * Get an edge iterator.
 		 */
 		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> edges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this);
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this, EdgeHandle(0));
 		}
 
 		/**
 		 * Get a face iterator.
 		 */
 		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> faces() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this);
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this, FaceHandle(0));
+		}
+
+		/**
+		 * Get a skipping vertex iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> svertices() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this, VertexHandle(0), true);
+		}
+
+		/**
+		 * Get a skipping halfedge iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> shalfedges() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this, HalfedgeHandle(0), true);
+		}
+
+		/**
+		 * Get a skipping edge iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> sedges() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this, EdgeHandle(0), true);
+		}
+
+		/**
+		 * Get a skipping face iterator.
+		 */
+		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> sfaces() const {
+			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this, FaceHandle(0), true);
 		}
 
 		/**
@@ -547,6 +575,11 @@ void expose_mesh(const char *_name) {
 		.def("halfedges", &Mesh::halfedges)
 		.def("edges", &Mesh::edges)
 		.def("faces", &Mesh::faces)
+
+		.def("svertices", &Mesh::svertices)
+		.def("shalfedges", &Mesh::shalfedges)
+		.def("sedges", &Mesh::sedges)
+		.def("sfaces", &Mesh::sfaces)
 
 		.def("vv", &Mesh::vv)
 		.def("vih", &Mesh::vih)

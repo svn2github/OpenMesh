@@ -26,9 +26,9 @@ class IteratorWrapperT {
 		 *
 		 * @param _mesh The mesh that contains the items to iterate over.
 		 */
-		IteratorWrapperT(const OpenMesh::PolyConnectivity& _mesh) :
+		IteratorWrapperT(const OpenMesh::PolyConnectivity& _mesh, typename Iterator::value_type _hnd, bool _skip = false) :
 			mesh_(_mesh), n_items_(n_items),
-			iterator_(_mesh, typename Iterator::value_type(0)),
+			iterator_(_mesh, _hnd, _skip),
 			iterator_end_(_mesh, typename Iterator::value_type(int((_mesh.*n_items)()))) {
 		}
 
@@ -90,8 +90,7 @@ class IteratorWrapperT {
  */
 template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
 void expose_iterator(const char *_name) {
-	class_<IteratorWrapperT<Iterator, n_items> >(_name, init<MeshWrapperT<TriMesh>&>())
-		.def(init<MeshWrapperT<PolyMesh>&>())
+	class_<IteratorWrapperT<Iterator, n_items> >(_name, init<PolyConnectivity&, typename Iterator::value_type, optional<bool> >())
 		.def("__iter__", &IteratorWrapperT<Iterator, n_items>::iter)
 		.def("__next__", &IteratorWrapperT<Iterator, n_items>::next)
 		.def("__len__", &IteratorWrapperT<Iterator, n_items>::len)
