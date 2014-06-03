@@ -15,8 +15,17 @@ class Property(unittest.TestCase):
         self.vhandle.append(self.mesh.add_vertex(openmesh.Vec3d(1, 0, 0)))
         
         # Add two faces
-        self.mesh.add_face(self.vhandle[2], self.vhandle[1], self.vhandle[0])
-        self.mesh.add_face(self.vhandle[2], self.vhandle[0], self.vhandle[3])
+        face_vhandles = []
+        face_vhandles.append(self.vhandle[2])
+        face_vhandles.append(self.vhandle[1])
+        face_vhandles.append(self.vhandle[0])
+        self.mesh.add_face(face_vhandles)
+        
+        face_vhandles = []
+        face_vhandles.append(self.vhandle[2])
+        face_vhandles.append(self.vhandle[0])
+        face_vhandles.append(self.vhandle[3])
+        self.mesh.add_face(face_vhandles)
         
         # Test setup:
         #  1 === 2
@@ -157,8 +166,17 @@ class Property(unittest.TestCase):
         self.vhandle.append(self.mesh.add_vertex(openmesh.Vec3d(1, 0, 0)))
         
         # Add two faces
-        self.mesh.add_face(self.vhandle[2], self.vhandle[1], self.vhandle[0])
-        self.mesh.add_face(self.vhandle[2], self.vhandle[0], self.vhandle[3])
+        face_vhandles = []
+        face_vhandles.append(self.vhandle[2])
+        face_vhandles.append(self.vhandle[1])
+        face_vhandles.append(self.vhandle[0])
+        self.mesh.add_face(face_vhandles)
+        
+        face_vhandles = []
+        face_vhandles.append(self.vhandle[2])
+        face_vhandles.append(self.vhandle[0])
+        face_vhandles.append(self.vhandle[3])
+        self.mesh.add_face(face_vhandles)
         
         # Test setup:
         #  1 === 2
