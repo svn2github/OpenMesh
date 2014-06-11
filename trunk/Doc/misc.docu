@@ -57,15 +57,18 @@ Microsoft Visual Studio 2012<br>
 Microsoft Visual Studio 2013<br>
 </td></tr>
 
-<tr><td> MacOS X <br>(Panther,Tiger,Leopard,Snow Leopard)</td><td> 
+<tr><td> MacOS X <br>(Panther,Tiger,Leopard,Snow Leopard,Lion,Mountain Lion, Mavericks)</td>
+<td> 
 gcc 4.0 <br>
 gcc 4.2 <br>
 </td></tr>
 
-<tr><td> MacOS X <br>(Snow Leopard),... with clang</td><td> 
+<tr><td> Tested MacOS X Compilers</td>
+<td> 
 XCode 4.3 <br>
 XCode 4.4 <br>
 XCode 4.5 <br>
+XCode 5.1.1 <br>
 </td></tr>
 
 </table>
