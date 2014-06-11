@@ -9,6 +9,8 @@ namespace OpenMesh {
 namespace Python {
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(garbage_collection_overloads, garbage_collection, 0, 3)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(update_halfedge_normals_overloads, update_halfedge_normals, 0, 1)
+
 
 /**
  * Wrapper for meshes.
@@ -376,6 +378,9 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*copy_all_properties_hh_hh_bool)(HalfedgeHandle, HalfedgeHandle, bool) = &Mesh::copy_all_properties_ih_ih_bool;
 	void (Mesh::*copy_all_properties_fh_fh_bool)(FaceHandle,     FaceHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
 
+	typename Mesh::Scalar (Mesh::*calc_dihedral_angle_hh)(HalfedgeHandle) const = &Mesh::calc_dihedral_angle;
+	typename Mesh::Scalar (Mesh::*calc_dihedral_angle_eh)(EdgeHandle    ) const = &Mesh::calc_dihedral_angle;
+
 	class_<Mesh, bases<Connectivity> > classMesh(_name);
 
 	/*
@@ -605,6 +610,18 @@ void expose_mesh(const char *_name) {
 		.def("copy_all_properties", copy_all_properties_eh_eh_bool)
 		.def("copy_all_properties", copy_all_properties_hh_hh_bool)
 		.def("copy_all_properties", copy_all_properties_fh_fh_bool)
+
+		//======================================================================
+		//  PolyMeshT
+		//======================================================================
+
+		.def("update_normals", &Mesh::update_normals)
+		.def("update_vertex_normals", &Mesh::update_vertex_normals)
+		.def("update_halfedge_normals", &Mesh::update_halfedge_normals, update_halfedge_normals_overloads())
+		.def("update_face_normals", &Mesh::update_face_normals)
+
+		.def("calc_dihedral_angle", calc_dihedral_angle_hh)
+		.def("calc_dihedral_angle", calc_dihedral_angle_eh)
 
 
 

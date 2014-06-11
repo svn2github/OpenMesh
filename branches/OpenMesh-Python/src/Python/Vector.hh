@@ -16,7 +16,7 @@ void set_item(Vector& _vec, int _index, Scalar _value) {
 		_vec[_index] = _value;
 	}
 	else {
-		PyErr_SetString(PyExc_IndexError, "index out of range");
+		PyErr_SetString(PyExc_IndexError, "Index out of range.");
 		throw_error_already_set();
 	}
 }
@@ -31,7 +31,7 @@ Scalar get_item(Vector& _vec, int _index) {
 		return _vec[_index];
 	}
 	else {
-		PyErr_SetString(PyExc_IndexError, "index out of range");
+		PyErr_SetString(PyExc_IndexError, "Index out of range.");
 		throw_error_already_set();
 	}
 
@@ -82,7 +82,7 @@ void expose_vec(const char *_name) {
 		.def(self + self)
 		.def(self - self)
 		.def(-self)
-		.def("dot", &Vector::operator|)
+		.def(self | self)
 		.def("vectorize", &Vector::vectorize, return_internal_reference<>())
 		.def(self < self)
 
@@ -140,8 +140,6 @@ void expose_vec(const char *_name) {
 		}
 	};
 
-	Vector3 (Vector3::*cross)(const Vector3&) const = &Vector3::operator%;
-
 	if (N == 2) {
 		classVector
 			.def("__init__", make_constructor(&Factory::vec2_default))
@@ -153,8 +151,10 @@ void expose_vec(const char *_name) {
 		classVector
 			.def("__init__", make_constructor(&Factory::vec3_default))
 			.def("__init__", make_constructor(&Factory::vec3_user_defined))
-			.def("cross", cross)
+			.def("__mod__", &Vector3::operator%)
 			;
+
+		def("cross", &Vector3::operator%);
 	}
 
 	if (N == 4) {
@@ -163,6 +163,8 @@ void expose_vec(const char *_name) {
 			.def("__init__", make_constructor(&Factory::vec4_user_defined))
 			;
 	}
+
+	def("dot", &Vector::operator|);
 }
 
 } // namespace OpenMesh
