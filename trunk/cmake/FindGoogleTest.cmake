@@ -42,7 +42,8 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
   else(GTEST_PREFIX)
     find_path(_GTEST_INCLUDE_DIR "gtest/gtest.h"
       PATHS
-      ~/sw/gtest/include
+      ~/sw/gtest-1.7.0/include
+      ~/sw/gtest/include     
       /ACG/acgdev/gcc-4.7-x86_64/gtest/include
       /opt/local/include
       /usr/local/include
@@ -51,6 +52,7 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       NO_DEFAULT_PATH )
     find_library(_GTEST_LIBRARY gtest
       PATHS
+      ~/sw/gtest-1.7.0/lib
       ~/sw/gtest/lib
       /ACG/acgdev/gcc-4.7-x86_64/gtest/lib
       /opt/local/lib
@@ -60,6 +62,7 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       NO_DEFAULT_PATH )
     find_library(_GTEST_MAIN_LIBRARY gtest_main
       PATHS
+      ~/sw/gtest-1.7.0/lib
       ~/sw/gtest/lib
       /ACG/acgdev/gcc-4.7-x86_64/gtest/lib
       /opt/local/lib
@@ -89,6 +92,12 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       set(GTEST_MAIN_LIBRARIES "optimized;gtest_main;debug;gtest_maind" CACHE FILEPATH
         "Libraries to link for Google Test automatic main() definition")
 	endif()
+	
+	# Macro required to use google test with vs2012
+	if ( CMAKE_GENERATOR MATCHES "^Visual Studio 11.*"  )
+	   add_definitions(-D_VARIADIC_MAX=10)
+	endif()
+
 	
     set(GTEST_LIBRARY_DIR ${_GTEST_LIBRARY_DIR} CACHE FILEPATH
       "Library dir containing Google Test libraries")
