@@ -23,8 +23,7 @@ void expose_items() {
  * Expose item and property handles to %Python.
  */
 void expose_handles() {
-	class_<BaseHandle>("BaseHandle")
-		.def(init<optional<int> >())
+	class_<BaseHandle>("BaseHandle", init<optional<int> >())
 		.def("idx", &BaseHandle::idx)
 		.def("is_valid", &BaseHandle::is_valid)
 		.def("reset", &BaseHandle::reset)
@@ -34,20 +33,20 @@ void expose_handles() {
 		.def(self < self)
 		;
 
-	class_<VertexHandle, bases<BaseHandle> >("VertexHandle");
-	class_<HalfedgeHandle, bases<BaseHandle> >("HalfedgeHandle");
-	class_<EdgeHandle, bases<BaseHandle> >("EdgeHandle");
-	class_<FaceHandle, bases<BaseHandle> >("FaceHandle");
+	class_<VertexHandle, bases<BaseHandle> >("VertexHandle", init<optional<int> >());
+	class_<HalfedgeHandle, bases<BaseHandle> >("HalfedgeHandle", init<optional<int> >());
+	class_<EdgeHandle, bases<BaseHandle> >("EdgeHandle", init<optional<int> >());
+	class_<FaceHandle, bases<BaseHandle> >("FaceHandle", init<optional<int> >());
 
-	class_<BasePropHandleT<object>, bases<BaseHandle> >("BasePropHandle");
+	class_<BasePropHandleT<object>, bases<BaseHandle> >("BasePropHandle", init<optional<int> >());
 
-	class_<VPropHandleT<object>, bases<BasePropHandleT<object> > >("VPropHandle")
+	class_<VPropHandleT<object>, bases<BasePropHandleT<object> > >("VPropHandle", init<optional<int> >())
 		.def(init<const BasePropHandleT<object>&>());
-	class_<HPropHandleT<object>, bases<BasePropHandleT<object> > >("HPropHandle")
+	class_<HPropHandleT<object>, bases<BasePropHandleT<object> > >("HPropHandle", init<optional<int> >())
 		.def(init<const BasePropHandleT<object>&>());
-	class_<EPropHandleT<object>, bases<BasePropHandleT<object> > >("EPropHandle")
+	class_<EPropHandleT<object>, bases<BasePropHandleT<object> > >("EPropHandle", init<optional<int> >())
 		.def(init<const BasePropHandleT<object>&>());
-	class_<FPropHandleT<object>, bases<BasePropHandleT<object> > >("FPropHandle")
+	class_<FPropHandleT<object>, bases<BasePropHandleT<object> > >("FPropHandle", init<optional<int> >())
 		.def(init<const BasePropHandleT<object>&>());
 }
 
