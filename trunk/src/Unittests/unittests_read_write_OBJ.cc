@@ -214,6 +214,39 @@ TEST_F(OpenMeshReadWriteOBJ, LoadObjWithMaterial) {
   mesh_.release_face_colors();
 }
 
+TEST_F(OpenMeshReadWriteOBJ, LoadObjWithTexture) {
+
+    mesh_.clear();
+
+    mesh_.request_face_colors();
+    mesh_.request_face_texture_index();
+
+    OpenMesh::IO::Options options;
+    options += OpenMesh::IO::Options::FaceTexCoord;
+
+    std::string file_name = "square_material_texture.obj";
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, file_name, options);
+
+    EXPECT_TRUE(ok) << file_name;
+
+    //check texture mapping for the mesh
+    OpenMesh::MPropHandleT< std::map< int, std::string > > property;
+    mesh_.get_property_handle(property, "TextureMapping");
+    EXPECT_EQ(mesh_.property(property).size(), 1) << "More than one texture defined";
+    std::map< int, std::string >::iterator tex = mesh_.property(property).find(1);
+    EXPECT_TRUE(tex != mesh_.property(property).end()) << "Could not find texture with id 1";
+    EXPECT_TRUE((mesh_.property(property)[1] == std::string("square_material_texture.jpg"))) << "Wrong texture name";
+
+    //check texture mapping per face
+    OpenMesh::FaceHandle fh = mesh_.face_handle(mesh_.halfedge_handle(0));
+    EXPECT_TRUE(fh.is_valid()) << "fh should be valid";
+    EXPECT_EQ(mesh_.property(mesh_.face_texture_index_pph(),fh),1) << "Face texture index is not set correctly";
+
+    mesh_.release_face_colors();
+    mesh_.release_face_texture_index();
+}
+
 /*
  * Just load a obj file of a cube with vertex colors defined directly after the vertex definitions
  */
