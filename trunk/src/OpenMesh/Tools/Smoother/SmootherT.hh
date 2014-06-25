@@ -98,7 +98,7 @@ public:
 
   /** \brief constructor & destructor
    *
-   * @param _mesh Reference to the mesh
+   * @param _mesh Reference a triangle or poly mesh
    */
   SmootherT( Mesh& _mesh );
   virtual ~SmootherT();
