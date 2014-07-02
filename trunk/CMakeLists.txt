@@ -112,9 +112,9 @@ if(${PROJECT_NAME} MATCHES "OpenMesh")
     endif()
  
   endif()
-
-
-  if (APPLE)
+ 
+  # On apple we do a fixbundle, which is only necessary for the apps and not for the libs
+  if (APPLE AND BUILD_APPS)
     # prepare bundle generation cmake file and add a build target for it
     configure_file ("${CMAKE_SOURCE_DIR}/cmake/fixbundle.cmake.in"
        "${CMAKE_BINARY_DIR}/fixbundle.cmake" @ONLY IMMEDIATE)
@@ -125,10 +125,9 @@ if(${PROJECT_NAME} MATCHES "OpenMesh")
     # Required for Snow leopard, and the latest qt. Then the resources have to be copied
     if ( EXISTS "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" )
         add_custom_command(TARGET OpenMesh POST_BUILD
-           COMMAND ${CMAKE_COMMAND} -E copy_directory "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" "${CMAKE_BINARY_DIR}/Build/Libraries/qt_menu.nib" 
-          )
+           COMMAND ${CMAKE_COMMAND} -E copy_directory "/opt/local/libexec/qt4-mac/lib/QtGui.framework/Versions/4/Resources/qt_menu.nib" 
+                                                      "${CMAKE_BINARY_DIR}/Build/Libraries/qt_menu.nib" )
     endif ()
-  
   endif ()
 
 endif()
