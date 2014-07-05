@@ -177,7 +177,7 @@ protected:
       } else {
         const typename MeshType::Point to   = _m.point(_m.to_vertex_handle(_m.halfedge_handle(a.first,0)));
         const typename MeshType::Point from = _m.point(_m.from_vertex_handle(_m.halfedge_handle(a.first,0)));
-        const typename MeshType::Point midpoint = 0.5 * ( to + from );
+        const typename MeshType::Point midpoint = static_cast<typename MeshType::Point::value_type>(0.5) * (to + from);
 
         const typename MeshType::VertexHandle newVertex = _m.add_vertex(midpoint);
         _m.split(a.first,newVertex);
