@@ -233,7 +233,7 @@ TEST_F(OpenMeshReadWriteOBJ, LoadObjWithTexture) {
     //check texture mapping for the mesh
     OpenMesh::MPropHandleT< std::map< int, std::string > > property;
     mesh_.get_property_handle(property, "TextureMapping");
-    EXPECT_EQ(mesh_.property(property).size(), 1) << "More than one texture defined";
+    EXPECT_EQ(mesh_.property(property).size(), 1u) << "More than one texture defined";
     std::map< int, std::string >::iterator tex = mesh_.property(property).find(1);
     EXPECT_TRUE(tex != mesh_.property(property).end()) << "Could not find texture with id 1";
     EXPECT_TRUE((mesh_.property(property)[1] == std::string("square_material_texture.jpg"))) << "Wrong texture name";
