@@ -119,18 +119,18 @@ BOOST_PYTHON_MODULE(openmesh) {
 	expose_iterator<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>("EdgeIter");
 	expose_iterator<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>("FaceIter");
 
-	expose_circulator<OpenMesh::PolyConnectivity::VertexVertexIter>("VertexVertexIter");
-	expose_circulator<OpenMesh::PolyConnectivity::VertexIHalfedgeIter>("VertexIHalfedgeIter");
-	expose_circulator<OpenMesh::PolyConnectivity::VertexOHalfedgeIter>("VertexOHalfedgeIter");
-	expose_circulator<OpenMesh::PolyConnectivity::VertexEdgeIter>("VertexEdgeIter");
-	expose_circulator<OpenMesh::PolyConnectivity::VertexFaceIter>("VertexFaceIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexVertexIter, VertexHandle>("VertexVertexIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexIHalfedgeIter, VertexHandle>("VertexIHalfedgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexOHalfedgeIter, VertexHandle>("VertexOHalfedgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexEdgeIter, VertexHandle>("VertexEdgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::VertexFaceIter, VertexHandle>("VertexFaceIter");
 
-	expose_circulator<OpenMesh::PolyConnectivity::FaceVertexIter>("FaceVertexIter");
-	expose_circulator<OpenMesh::PolyConnectivity::FaceHalfedgeIter>("FaceHalfedgeIter");
-	expose_circulator<OpenMesh::PolyConnectivity::FaceEdgeIter>("FaceEdgeIter");
-	expose_circulator<OpenMesh::PolyConnectivity::FaceFaceIter>("FaceFaceIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceVertexIter, FaceHandle>("FaceVertexIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceHalfedgeIter, FaceHandle>("FaceHalfedgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceEdgeIter, FaceHandle>("FaceEdgeIter");
+	expose_circulator<OpenMesh::PolyConnectivity::FaceFaceIter, FaceHandle>("FaceFaceIter");
 
-	// TODO expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter>("HalfedgeLoopIter");
+	expose_circulator<OpenMesh::PolyConnectivity::HalfedgeLoopIter, HalfedgeHandle>("HalfedgeLoopIter");
 
 	typedef IteratorWrapperT<PolyConnectivity::VertexIter, &ArrayKernel::n_vertices> VertexIterWrapper;
 	typedef IteratorWrapperT<PolyConnectivity::HalfedgeIter, &ArrayKernel::n_halfedges> HalfedgeIterWrapper;

@@ -163,64 +163,71 @@ class MeshWrapperT : public Mesh {
 		/**
 		 * Get a vertex-vertex circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::VertexVertexIter> vv(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexVertexIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::VertexVertexIter, VertexHandle> vv(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexVertexIter, VertexHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a vertex-(incoming)halfedge circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter> vih(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter, VertexHandle> vih(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter, VertexHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a vertex-(outgoing)halfedge circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter> voh(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter, VertexHandle> voh(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter, VertexHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a vertex-edge circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::VertexEdgeIter> ve(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexEdgeIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::VertexEdgeIter, VertexHandle> ve(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexEdgeIter, VertexHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a vertex-face circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::VertexFaceIter> vf(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexFaceIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::VertexFaceIter, VertexHandle> vf(VertexHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::VertexFaceIter, VertexHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a face-vertex circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::FaceVertexIter> fv(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceVertexIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::FaceVertexIter, FaceHandle> fv(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceVertexIter, FaceHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a face-halfedge circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::FaceHalfedgeIter> fh(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceHalfedgeIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::FaceHalfedgeIter, FaceHandle> fh(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceHalfedgeIter, FaceHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a face-edge circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::FaceEdgeIter> fe(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceEdgeIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::FaceEdgeIter, FaceHandle> fe(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceEdgeIter, FaceHandle>(*this, _handle);
 		}
 
 		/**
 		 * Get a face-face circulator.
 		 */
-		CirculatorWrapperT<typename Mesh::FaceFaceIter> ff(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceFaceIter>(*this, _handle);
+		CirculatorWrapperT<typename Mesh::FaceFaceIter, FaceHandle> ff(FaceHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::FaceFaceIter, FaceHandle>(*this, _handle);
+		}
+
+		/**
+		 * Get a halfedge-loop circulator.
+		 */
+		CirculatorWrapperT<typename Mesh::HalfedgeLoopIter, HalfedgeHandle> hl(HalfedgeHandle _handle) const {
+			return CirculatorWrapperT<typename Mesh::HalfedgeLoopIter, HalfedgeHandle>(*this, _handle);
 		}
 };
 
@@ -596,6 +603,8 @@ void expose_mesh(const char *_name) {
 		.def("fh", &Mesh::fh)
 		.def("fe", &Mesh::fe)
 		.def("ff", &Mesh::ff)
+
+		.def("hl", &Mesh::hl)
 
 		//======================================================================
 		//  BaseKernel

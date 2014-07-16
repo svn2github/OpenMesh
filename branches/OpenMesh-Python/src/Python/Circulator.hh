@@ -15,7 +15,7 @@ namespace Python {
  *
  * @tparam Circulator A circulator type.
  */
-template<class Circulator>
+template<class Circulator, class CenterEntityHandle>
 class CirculatorWrapperT {
 	public:
 
@@ -25,7 +25,7 @@ class CirculatorWrapperT {
 		 * @param _mesh The mesh that contains the items to iterate over.
 		 * @param _center The handle to the center item.
 		 */
-		CirculatorWrapperT(const typename Circulator::mesh_type& _mesh, typename Circulator::center_type _center) :
+		CirculatorWrapperT(const typename Circulator::mesh_type& _mesh, CenterEntityHandle _center) :
 			circulator_(_mesh, _center) {
 		}
 
@@ -71,13 +71,13 @@ class CirculatorWrapperT {
  * @note Circulators are wrapped by CirculatorWrapperT before they are exposed
  * to %Python, i.e. they are not exposed directly.
  */
-template<class Circulator>
+template<class Circulator, class CenterEntityHandle>
 void expose_circulator(const char *_name) {
-	class_<CirculatorWrapperT<Circulator> >(_name, init<MeshWrapperT<TriMesh>&, typename Circulator::center_type>())
-		.def(init<MeshWrapperT<PolyMesh>&, typename Circulator::center_type>())
-		.def("__iter__", &CirculatorWrapperT<Circulator>::iter)
-		.def("__next__", &CirculatorWrapperT<Circulator>::next)
-		.def("next", &CirculatorWrapperT<Circulator>::next)
+	class_<CirculatorWrapperT<Circulator, CenterEntityHandle> >(_name, init<MeshWrapperT<TriMesh>&, CenterEntityHandle>())
+		.def(init<MeshWrapperT<PolyMesh>&, CenterEntityHandle>())
+		.def("__iter__", &CirculatorWrapperT<Circulator, CenterEntityHandle>::iter)
+		.def("__next__", &CirculatorWrapperT<Circulator, CenterEntityHandle>::next)
+		.def("next", &CirculatorWrapperT<Circulator, CenterEntityHandle>::next)
 		;
 }
 
