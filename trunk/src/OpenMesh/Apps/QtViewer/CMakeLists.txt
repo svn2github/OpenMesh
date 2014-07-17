@@ -23,8 +23,13 @@ acg_append_files (ui "*.ui" ${directories})
 acg_drop_templates (sources)
 
 # genereate uic and moc targets
-acg_qt4_autouic (uic_targets ${ui})
-acg_qt4_automoc (moc_targets ${headers})
+if(QT5_FOUND)
+  acg_qt5_autouic (uic_targets ${ui})
+  acg_qt5_automoc (moc_targets ${headers})
+else()
+  acg_qt4_autouic (uic_targets ${ui})
+  acg_qt4_automoc (moc_targets ${headers})
+endif()
 
 
 if (WIN32)

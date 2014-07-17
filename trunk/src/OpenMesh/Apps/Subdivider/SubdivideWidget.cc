@@ -139,7 +139,7 @@ SubdivideWidget(QWidget* _parent, const char* _name)
   
   QButtonGroup* buttonGroup = new QButtonGroup();
 
-  buttonGroup->setExclusive( TRUE );
+  buttonGroup->setExclusive( true );
 
   // insert 2 radiobuttons
   QRadioButton* radio1 = new QRadioButton( "Comp. Loop" );
@@ -149,7 +149,7 @@ SubdivideWidget(QWidget* _parent, const char* _name)
   QRadioButton* radio5 = new QRadioButton( "Interpolating Sqrt3" );
   QRadioButton* radio6 = new QRadioButton( "Modified Butterfly" );
   // QRadioButton* radio7 = new QRadioButton( "Catmull Clark" ); // Disabled, as it needs a quad mesh!
-  radio3->setChecked( TRUE );
+  radio3->setChecked( true );
   sel_topo_type = SOP_UniformLoop;
 
   buttonGroup->addButton(radio1, SOP_UniformCompositeLoop);
