@@ -213,12 +213,11 @@ macro (acg_qt5)
       endif()    
     endif(Qt5Core_FOUND AND WIN32)
     
-    find_package (Qt5Widgets QUIET)    
     find_package (Qt5Gui QUIET)
     find_package (Qt5OpenGL QUIET)
     
 
-    if (Qt5Core_FOUND AND Qt5Widgets_FOUND AND Qt5Gui_FOUND AND Qt5OpenGL_FOUND)
+    if (Qt5Core_FOUND AND Qt5Gui_FOUND AND Qt5OpenGL_FOUND)
       set (QT5_FOUND TRUE)
     endif()
     
@@ -251,11 +250,9 @@ macro (acg_qt5)
       set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
   
       include_directories(${Qt5Core_INCLUDE_DIRS})
-      include_directories(${Qt5Widgets_INCLUDE_DIRS})
       include_directories(${Qt5Gui_INCLUDE_DIRS})
       include_directories(${Qt5OpenGL_INCLUDE_DIRS})
       add_definitions(${Qt5Core_DEFINITIONS})
-      add_definitions(${Qt5Widgets_DEFINITIONS})
       add_definitions(${Qt5Gui_DEFINITIONS})
       add_definitions(${Qt5OpenGL_DEFINITIONS})
       
