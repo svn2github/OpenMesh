@@ -7,7 +7,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.2</b> (?/?/?,Rev.1070)</td><td>
+<tr valign=top><td><b>3.2</b> (2014/07/17,Rev.1104)</td><td>
 
 <b>Core</b>
 <ul>
@@ -19,11 +19,37 @@
 <li>Silence the readers/writers (Some of them always wrote output to command line).</li>
 </ul>
 
+<b>Utils</b>
+<ul>
+<li>PropertyManager: Added PropertyManager::move to C++11 .</li>
+</ul>
+
+
+<b>Subdivider</b>
+<ul>
+<li>Added CatmullClark without point updates support.</li>
+<li>Uniform, Longest Edge: fixed template deduction error with float precision meshes</li>
+</ul>
+
 <b>Documentation</b>
 <ul>
 <li>Updated doxyfile to 1.8.7</li>
 <li>Added some documentation to get the to and from vertices to the mesh navigation page</li>
 <li>Added boundary navigation info to mesh navigation page</li>
+</ul>
+
+<b>Build system</b>
+<ul>
+<li>Qt5 support for example apps</li>
+<li>Improved OpenMesh cmake gtest finder for Xcode 5.1.1 with gtest 1.7</li>
+<li>Don't copy qt4 anymore, if build_apps is diasabled, but the qmake variable still defined</li>
+<li>Add dependencies and fixbundle for apps only if we build apps</li>
+</ul>
+
+<b>Unittests</b>
+<ul>
+<li>Added unittest for textured meshes</li>
+<li>Read/Write OBJ: Fixed unsigned signed comparison</li>
 </ul>
 
 </tr>
