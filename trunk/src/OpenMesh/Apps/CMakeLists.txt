@@ -89,8 +89,8 @@ if ( BUILD_APPS )
 
     else () # QT ,Opengl or glut not found
       
-      if (NOT QT4_FOUND)
-	    message ("QT 4 not found! Skipping some apps.")
+      if (NOT QT4_FOUND AND NOT QT5_FOUND)
+	    message ("QT 4 and 5 not found! Skipping some apps.")
       endif ()
 
       if (NOT OPENGL_FOUND)
