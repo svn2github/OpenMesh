@@ -36,14 +36,11 @@ The following naming conventions are used for the %OpenMesh code:
 \section compilers Tested compilers
 
 %OpenMesh has been successfully tested for the following operating
-systems / compilers:
+systems / compilers. This is only a list of tested compilers. More might be supported but are not tested.
 
 <table>
 
 <tr><td> Linux </td><td>
-gcc 4.3.x<br>
-gcc 4.4.x<br>
-gcc 4.5.x<br>
 gcc 4.6.x<br>
 gcc 4.7.x<br>
 gcc 4.8.x<br>
@@ -57,18 +54,13 @@ Microsoft Visual Studio 2012<br>
 Microsoft Visual Studio 2013<br>
 </td></tr>
 
-<tr><td> MacOS X <br>(Panther,Tiger,Leopard,Snow Leopard,Lion,Mountain Lion, Mavericks)</td>
-<td> 
-gcc 4.0 <br>
-gcc 4.2 <br>
-</td></tr>
-
 <tr><td> Tested MacOS X Compilers</td>
 <td> 
 XCode 4.3 <br>
 XCode 4.4 <br>
 XCode 4.5 <br>
 XCode 5.1.1 <br>
+Apple LLVM version 5.1 (clang-503.0.40) (based on LLVM 3.4svn) <br>
 </td></tr>
 
 </table>
@@ -77,7 +69,7 @@ XCode 5.1.1 <br>
 
 Install the following external libraries / frameworks if you want to use the included Applications:<br><br>
 <table>
-<tr><td>Qt4</td><td><a href="http://www.qtsoftware.com/downloads" target="_blank">http://www.qtsoftware.com/downloads</a></td></tr>
+<tr><td>Qt4/Qt5</td><td><a href="http://qt-project.org/downloads" target="_blank">http://qt-project.org/downloads</a></td></tr>
 </table><br>
 
 \section build_systems Chosing build system
@@ -125,13 +117,11 @@ There are some additional targets:<br>
 If you want to use cmake to build your Visual Studio 2008 solution file,<br>
 download and install CMake from <a href="http://www.cmake.org/cmake/resources/software.html">www.cmake.org</a>.<br>
 (Note: This is not mandatory since there are already VS2008 solution files included in %OpenMesh).<br><br>
-<br>
-<br>
 <ul>
 <li> Get Visual Studio ( 2008-2013 ) </li>
 <li> Extract %OpenMesh source code. </li>
 <li> Get all required libraries and install them ( including headers! ).</li>
-<li> Get cmake for windows from http://www.cmake.org/cmake/resources/software.html <li>
+<li> Get cmake for windows from http://www.cmake.org/cmake/resources/software.html </li>
 <li> Start the cmake gui and open the %OpenMesh toplevel directory as source directory </li>
 <li> Choose a build directory (e.g. create a directory called "build" in OpenMesh's root folder) </li>
 <li> Click on configure .... If any libraries are left unconfigured, you can adjust the path manually. Rerun configure until everything is configured correctly.
