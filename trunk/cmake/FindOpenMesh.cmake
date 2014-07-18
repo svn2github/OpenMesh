@@ -56,21 +56,20 @@ IF (NOT OPENMESH_FOUND)
     "${CMAKE_SOURCE_DIR}/OpenMesh/src/OpenMesh"
     "${CMAKE_SOURCE_DIR}/libs_required/OpenMesh/src/OpenMesh"
     "${CMAKE_SOURCE_DIR}/../OpenMesh/src/OpenMesh"
+    "C:/Program Files/OpenMesh 3.3"
     "C:/Program Files/OpenMesh 3.2"
     "C:/Program Files/OpenMesh 3.1"
     "C:/Program Files/OpenMesh 3.0"
     "C:/Program Files/OpenMesh 2.4.1"
     "C:/Program Files/OpenMesh 2.4"
     "C:/Program Files/OpenMesh 2.0/include"
+    "C:/libs/OpenMesh 3.3"
     "C:/libs/OpenMesh 3.2"
     "C:/libs/OpenMesh 3.1"
     "C:/libs/OpenMesh 3.0"
     "C:/libs/OpenMesh 2.4.1"
     "C:/libs/OpenMesh 2.4"
     "${OPENMESH_LIBRARY_DIR}"
-
-    /ACG/acgdev/gcc-4.0-x86_64/OM2/OpenMesh-2.0/installed/include
-    /ACG/acgdev/gcc-4.0-x86_64/OM2/OpenMesh-2.0/installed/lib/OpenMesh/
   )
 
   FIND_PATH (OPENMESH_INCLUDE_DIR OpenMesh/Core/Mesh/PolyMeshT.hh
