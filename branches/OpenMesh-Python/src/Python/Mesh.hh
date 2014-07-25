@@ -9,7 +9,11 @@ namespace OpenMesh {
 namespace Python {
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(garbage_collection_overloads, garbage_collection, 0, 3)
+
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(find_feature_edges_overloads, find_feature_edges, 0, 1)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(update_normal_overloads, update_normal, 1, 2)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(update_halfedge_normals_overloads, update_halfedge_normals, 0, 1)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(calc_halfedge_normal_overloads, calc_halfedge_normal, 1, 2)
 
 
 /**
@@ -247,6 +251,15 @@ template <class Mesh, class Connectivity>
 void expose_mesh(const char *_name) {
 	using OpenMesh::Attributes::StatusInfo;
 
+	typedef typename Mesh::Scalar Scalar;
+	typedef typename Mesh::Point  Point;
+	typedef typename Mesh::Normal Normal;
+	typedef typename Mesh::Color  Color;
+
+	//======================================================================
+	//  KernelT Member Functions
+	//======================================================================
+
 	// Get the i'th item
 	VertexHandle   (Mesh::*vertex_handle_uint  )(unsigned int) const = &Mesh::vertex_handle;
 	HalfedgeHandle (Mesh::*halfedge_handle_uint)(unsigned int) const = &Mesh::halfedge_handle;
@@ -373,6 +386,10 @@ void expose_mesh(const char *_name) {
 	FaceHandle   (Mesh::*new_face_void   )(void                        ) = &Mesh::new_face;
 	FaceHandle   (Mesh::*new_face_face   )(const typename Mesh::Face&  ) = &Mesh::new_face;
 
+	//======================================================================
+	//  BaseKernel Member Functions
+	//======================================================================
+
 	// Copy all properties (1/2)
 	void (Mesh::*copy_all_properties_vh_vh)(VertexHandle,   VertexHandle  ) = &Mesh::copy_all_properties_ih_ih;
 	void (Mesh::*copy_all_properties_eh_eh)(EdgeHandle,     EdgeHandle    ) = &Mesh::copy_all_properties_ih_ih;
@@ -385,8 +402,43 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*copy_all_properties_hh_hh_bool)(HalfedgeHandle, HalfedgeHandle, bool) = &Mesh::copy_all_properties_ih_ih_bool;
 	void (Mesh::*copy_all_properties_fh_fh_bool)(FaceHandle,     FaceHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
 
-	typename Mesh::Scalar (Mesh::*calc_dihedral_angle_hh)(HalfedgeHandle) const = &Mesh::calc_dihedral_angle;
-	typename Mesh::Scalar (Mesh::*calc_dihedral_angle_eh)(EdgeHandle    ) const = &Mesh::calc_dihedral_angle;
+	//======================================================================
+	//  PolyMeshT Member Functions
+	//======================================================================
+
+	void (Mesh::*calc_edge_vector_eh_normal)(EdgeHandle,     Normal&) const = &Mesh::calc_edge_vector;
+	void (Mesh::*calc_edge_vector_hh_normal)(HalfedgeHandle, Normal&) const = &Mesh::calc_edge_vector;
+
+	Normal (Mesh::*calc_edge_vector_eh)(EdgeHandle    ) const = &Mesh::calc_edge_vector;
+	Normal (Mesh::*calc_edge_vector_hh)(HalfedgeHandle) const = &Mesh::calc_edge_vector;
+
+	Scalar (Mesh::*calc_edge_length_eh)(EdgeHandle    ) const = &Mesh::calc_edge_length;
+	Scalar (Mesh::*calc_edge_length_hh)(HalfedgeHandle) const = &Mesh::calc_edge_length;
+
+	Scalar (Mesh::*calc_edge_sqr_length_eh)(EdgeHandle    ) const = &Mesh::calc_edge_sqr_length;
+	Scalar (Mesh::*calc_edge_sqr_length_hh)(HalfedgeHandle) const = &Mesh::calc_edge_sqr_length;
+
+	Scalar (Mesh::*calc_dihedral_angle_fast_hh)(HalfedgeHandle) const = &Mesh::calc_dihedral_angle_fast;
+	Scalar (Mesh::*calc_dihedral_angle_fast_eh)(EdgeHandle    ) const = &Mesh::calc_dihedral_angle_fast;
+
+	Scalar (Mesh::*calc_dihedral_angle_hh)(HalfedgeHandle) const = &Mesh::calc_dihedral_angle;
+	Scalar (Mesh::*calc_dihedral_angle_eh)(EdgeHandle    ) const = &Mesh::calc_dihedral_angle;
+
+//	void (Mesh::*split_fh_point)(FaceHandle, const Point&) = &Mesh::split;
+//	void (Mesh::*split_eh_point)(EdgeHandle, const Point&) = &Mesh::split;
+
+	void (Mesh::*split_fh_vh)(FaceHandle, VertexHandle) = &Mesh::split;
+	void (Mesh::*split_eh_vh)(EdgeHandle, VertexHandle) = &Mesh::split;
+
+	void (Mesh::*update_normal_fh)(FaceHandle  ) = &Mesh::update_normal;
+	void (Mesh::*update_normal_vh)(VertexHandle) = &Mesh::update_normal;
+
+	Normal (Mesh::*calc_face_normal_fh)(FaceHandle) const = &Mesh::calc_face_normal;
+//	Normal (Mesh::*calc_face_normal_pt)(const Point&, const Point&, const Point&) const = &Mesh::calc_face_normal;
+
+	void  (Mesh::*calc_face_centroid_fh_point)(FaceHandle, Point&) const = &Mesh::calc_face_centroid;
+	Point (Mesh::*calc_face_centroid_fh      )(FaceHandle        ) const = &Mesh::calc_face_centroid;
+
 
 	class_<Mesh, bases<Connectivity> > class_mesh(_name);
 
@@ -645,17 +697,65 @@ void expose_mesh(const char *_name) {
 		//  PolyMeshT
 		//======================================================================
 
-		.def("update_normals", &Mesh::update_normals)
-		.def("update_vertex_normals", &Mesh::update_vertex_normals)
-		.def("update_halfedge_normals", &Mesh::update_halfedge_normals, update_halfedge_normals_overloads())
-		.def("update_face_normals", &Mesh::update_face_normals)
+		.def("add_vertex", &Mesh::add_vertex)
 
+		.def("calc_edge_vector", calc_edge_vector_eh_normal)
+		.def("calc_edge_vector", calc_edge_vector_eh)
+		.def("calc_edge_vector", calc_edge_vector_hh_normal)
+		.def("calc_edge_vector", calc_edge_vector_hh)
+
+		.def("calc_edge_length", calc_edge_length_eh)
+		.def("calc_edge_length", calc_edge_length_hh)
+		.def("calc_edge_sqr_length", calc_edge_sqr_length_eh)
+		.def("calc_edge_sqr_length", calc_edge_sqr_length_hh)
+
+		.def("calc_sector_vectors", &Mesh::calc_sector_vectors)
+		.def("calc_sector_angle", &Mesh::calc_sector_angle)
+		.def("calc_sector_normal", &Mesh::calc_sector_normal)
+		.def("calc_sector_area", &Mesh::calc_sector_area)
+
+		.def("calc_dihedral_angle_fast", calc_dihedral_angle_fast_hh)
+		.def("calc_dihedral_angle_fast", calc_dihedral_angle_fast_eh)
 		.def("calc_dihedral_angle", calc_dihedral_angle_hh)
 		.def("calc_dihedral_angle", calc_dihedral_angle_eh)
 
+//		.def("find_feature_edges", &Mesh::find_feature_edges, find_feature_edges_overloads())
 
+//		.def("split", split_fh_point)
+		.def("split", split_fh_vh)
+//		.def("split", split_eh_point)
+		.def("split", split_eh_vh)
 
-		.def("add_vertex", &Mesh::add_vertex)
+		.def("update_normals", &Mesh::update_normals)
+		.def("update_normal", update_normal_fh)
+		.def("update_face_normals", &Mesh::update_face_normals)
+
+		.def("calc_face_normal", calc_face_normal_fh)
+//		.def("calc_face_normal", calc_face_normal_pt)
+
+		.def("calc_face_centroid", calc_face_centroid_fh_point)
+		.def("calc_face_centroid", calc_face_centroid_fh)
+
+//		.def("update_normal", &Mesh::update_normal, update_normal_overloads())
+		.def("update_halfedge_normals", &Mesh::update_halfedge_normals, update_halfedge_normals_overloads())
+
+		.def("calc_halfedge_normal", &Mesh::calc_halfedge_normal, calc_halfedge_normal_overloads())
+
+		.def("is_estimated_feature_edge", &Mesh::is_estimated_feature_edge)
+
+		.def("update_normal", update_normal_vh)
+		.def("update_vertex_normals", &Mesh::update_vertex_normals)
+
+//		.def("calc_vertex_normal", &Mesh::calc_vertex_normal)
+//		.def("calc_vertex_normal_fast", &Mesh::calc_vertex_normal_fast)
+//		.def("calc_vertex_normal_correct", &Mesh::calc_vertex_normal_correct)
+//		.def("calc_vertex_normal_loop", &Mesh::calc_vertex_normal_loop)
+
+		.def("is_polymesh", &Mesh::is_polymesh)
+		.staticmethod("is_polymesh")
+
+		.def("is_trimesh", &Mesh::is_trimesh)
+		.staticmethod("is_trimesh")
 		;
 }
 
