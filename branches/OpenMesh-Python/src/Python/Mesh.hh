@@ -165,12 +165,26 @@ void expose_type_specific_functions(class_<TriMesh, bases<TriConnectivity> >& _c
 	typedef typename TriMesh::Normal Normal;
 	typedef typename TriMesh::Color  Color;
 
+//	HalfedgeHandle (TriMesh::*vertex_split_pt)(Point,        VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
+	HalfedgeHandle (TriMesh::*vertex_split_vh)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
+
 	VertexHandle (TriMesh::*split_fh_pt)(FaceHandle, const Point&) = &TriMesh::split;
 	VertexHandle (TriMesh::*split_eh_pt)(EdgeHandle, const Point&) = &TriMesh::split;
 
+	VertexHandle (TriMesh::*split_copy_eh_pt)(EdgeHandle, const Point&) = &TriMesh::split_copy;
+	void         (TriMesh::*split_copy_eh_vh)(EdgeHandle, VertexHandle) = &TriMesh::split_copy;
+	VertexHandle (TriMesh::*split_copy_fh_pt)(FaceHandle, const Point&) = &TriMesh::split_copy;
+	void         (TriMesh::*split_copy_fh_vh)(FaceHandle, VertexHandle) = &TriMesh::split_copy;
+
 	_class
+//		.def("vertex_split", vertex_split_pt)
+		.def("vertex_split", vertex_split_vh)
 		.def("split", split_fh_pt)
 		.def("split", split_eh_pt)
+		.def("split_copy", split_copy_eh_pt)
+		.def("split_copy", split_copy_eh_vh)
+		.def("split_copy", split_copy_fh_pt)
+		.def("split_copy", split_copy_fh_vh)
 		;
 }
 
