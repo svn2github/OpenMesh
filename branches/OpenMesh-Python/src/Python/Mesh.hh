@@ -119,6 +119,63 @@ CirculatorWrapperT<Circulator, CenterEntityHandle> get_circulator(Mesh& _mesh, C
 }
 
 /**
+ * This function template is used to expose mesh member functions that are only
+ * available for a specific type of mesh (i.e. they are available for polygon
+ * meshes or triangle meshes, but not both).
+ *
+ * @tparam Class A boost::python::class_ type.
+ *
+ * @param _class The boost::python::class_ instance for which the member
+ * functions are to be defined.
+ */
+template <class Class>
+void expose_type_specific_functions(Class& _class) {
+	// See the template specializations below
+}
+
+/**
+ * Function template specialization for polygon meshes.
+ */
+template <>
+void expose_type_specific_functions(class_<PolyMesh, bases<PolyConnectivity> >& _class) {
+	typedef typename PolyMesh::Scalar Scalar;
+	typedef typename PolyMesh::Point  Point;
+	typedef typename PolyMesh::Normal Normal;
+	typedef typename PolyMesh::Color  Color;
+
+	void (PolyMesh::*split_fh_pt)(FaceHandle, const Point&) = &PolyMesh::split;
+	void (PolyMesh::*split_eh_pt)(EdgeHandle, const Point&) = &PolyMesh::split;
+
+	Normal (PolyMesh::*calc_face_normal_pt)(const Point&, const Point&, const Point&) const = &PolyMesh::calc_face_normal;
+
+	_class
+		.def("split", split_fh_pt)
+		.def("split", split_eh_pt)
+		.def("calc_face_normal", calc_face_normal_pt)
+		;
+}
+
+/**
+ * Function template specialization for triangle meshes.
+ */
+template <>
+void expose_type_specific_functions(class_<TriMesh, bases<TriConnectivity> >& _class) {
+	typedef typename TriMesh::Scalar Scalar;
+	typedef typename TriMesh::Point  Point;
+	typedef typename TriMesh::Normal Normal;
+	typedef typename TriMesh::Color  Color;
+
+	VertexHandle (TriMesh::*split_fh_pt)(FaceHandle, const Point&) = &TriMesh::split;
+	VertexHandle (TriMesh::*split_eh_pt)(EdgeHandle, const Point&) = &TriMesh::split;
+
+	_class
+		.def("split", split_fh_pt)
+		.def("split", split_eh_pt)
+		;
+}
+
+
+/**
  * Expose a mesh type to %Python.
  *
  * @tparam Mesh A mesh type.
@@ -126,7 +183,6 @@ CirculatorWrapperT<Circulator, CenterEntityHandle> get_circulator(Mesh& _mesh, C
  * for triangle meshes).
  *
  * @param _name The name of the mesh type to be exposed.
- *
  */
 template <class Mesh, class Connectivity>
 void expose_mesh(const char *_name) {
@@ -331,17 +387,14 @@ void expose_mesh(const char *_name) {
 	Scalar (Mesh::*calc_dihedral_angle_hh)(HalfedgeHandle) const = &Mesh::calc_dihedral_angle;
 	Scalar (Mesh::*calc_dihedral_angle_eh)(EdgeHandle    ) const = &Mesh::calc_dihedral_angle;
 
-//	void (Mesh::*split_fh_point)(FaceHandle, const Point&) = &Mesh::split;
-//	void (Mesh::*split_eh_point)(EdgeHandle, const Point&) = &Mesh::split;
-
 	void (Mesh::*split_fh_vh)(FaceHandle, VertexHandle) = &Mesh::split;
 	void (Mesh::*split_eh_vh)(EdgeHandle, VertexHandle) = &Mesh::split;
 
-	void (Mesh::*update_normal_fh)(FaceHandle  ) = &Mesh::update_normal;
-	void (Mesh::*update_normal_vh)(VertexHandle) = &Mesh::update_normal;
+	void (Mesh::*update_normal_fh)(FaceHandle            ) = &Mesh::update_normal;
+	void (Mesh::*update_normal_hh)(HalfedgeHandle, double) = &Mesh::update_normal;
+	void (Mesh::*update_normal_vh)(VertexHandle          ) = &Mesh::update_normal;
 
 	Normal (Mesh::*calc_face_normal_fh)(FaceHandle) const = &Mesh::calc_face_normal;
-//	Normal (Mesh::*calc_face_normal_pt)(const Point&, const Point&, const Point&) const = &Mesh::calc_face_normal;
 
 	void  (Mesh::*calc_face_centroid_fh_point)(FaceHandle, Point&) const = &Mesh::calc_face_centroid;
 	Point (Mesh::*calc_face_centroid_fh      )(FaceHandle        ) const = &Mesh::calc_face_centroid;
@@ -607,9 +660,7 @@ void expose_mesh(const char *_name) {
 
 //		.def("find_feature_edges", &Mesh::find_feature_edges, find_feature_edges_overloads())
 
-//		.def("split", split_fh_point)
 		.def("split", split_fh_vh)
-//		.def("split", split_eh_point)
 		.def("split", split_eh_vh)
 
 		.def("update_normals", &Mesh::update_normals)
@@ -617,12 +668,11 @@ void expose_mesh(const char *_name) {
 		.def("update_face_normals", &Mesh::update_face_normals)
 
 		.def("calc_face_normal", calc_face_normal_fh)
-//		.def("calc_face_normal", calc_face_normal_pt)
 
 		.def("calc_face_centroid", calc_face_centroid_fh_point)
 		.def("calc_face_centroid", calc_face_centroid_fh)
 
-//		.def("update_normal", &Mesh::update_normal, update_normal_overloads())
+		.def("update_normal", update_normal_hh, update_normal_overloads())
 		.def("update_halfedge_normals", &Mesh::update_halfedge_normals, update_halfedge_normals_overloads())
 
 		.def("calc_halfedge_normal", &Mesh::calc_halfedge_normal, calc_halfedge_normal_overloads())
@@ -632,8 +682,8 @@ void expose_mesh(const char *_name) {
 		.def("update_normal", update_normal_vh)
 		.def("update_vertex_normals", &Mesh::update_vertex_normals)
 
-//		.def("calc_vertex_normal", &Mesh::calc_vertex_normal)
-//		.def("calc_vertex_normal_fast", &Mesh::calc_vertex_normal_fast)
+		.def("calc_vertex_normal", &Mesh::calc_vertex_normal)
+		.def("calc_vertex_normal_fast", &Mesh::calc_vertex_normal_fast)
 //		.def("calc_vertex_normal_correct", &Mesh::calc_vertex_normal_correct)
 //		.def("calc_vertex_normal_loop", &Mesh::calc_vertex_normal_loop)
 
@@ -643,6 +693,8 @@ void expose_mesh(const char *_name) {
 		.def("is_trimesh", &Mesh::is_trimesh)
 		.staticmethod("is_trimesh")
 		;
+
+	expose_type_specific_functions(class_mesh);
 
 	//======================================================================
 	//  Nested Types
