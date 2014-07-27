@@ -15,237 +15,118 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(update_normal_overloads, update_normal, 1
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(update_halfedge_normals_overloads, update_halfedge_normals, 0, 1)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(calc_halfedge_normal_overloads, calc_halfedge_normal, 1, 2)
 
+/**
+ * Set the status of an item.
+ *
+ * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
+ * return by value instead of reference. This function ensures that the
+ * status of an item can be changed nonetheless.
+ */
+template <class Mesh, class IndexHandle>
+void set_status(Mesh& _mesh, IndexHandle _h, const OpenMesh::Attributes::StatusInfo& _info) {
+	_mesh.status(_h) = _info;
+}
 
 /**
- * Wrapper for meshes.
+ * Thin wrapper for Mesh::add_property.
  *
- * This class template is used to wrap meshes for %Python. It inherits from it's
- * template parameter (a mesh type) and implements functions that are required
- * by %Python but not provided by mesh types.
+ * @tparam PropHandle A property handle type.
  *
- * @tparam Mesh A mesh type.
+ * This wrapper function is required because Mesh::add_property has
+ * default arguments and therefore cannot be exposed directly.
  */
-template <class Mesh>
-class MeshWrapperT : public Mesh {
-	public:
+template <class Mesh, class PropHandle>
+void add_property_ph(Mesh& _mesh, PropHandle& _ph) {
+	_mesh.add_property(_ph);
+}
 
-		/**
-		 * Set the status of an item.
-		 *
-		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
-		 * return by value instead of reference. This function ensures that the
-		 * status of an item can be changed nonetheless.
-		 */
-		template <class IndexHandle>
-		void set_status(IndexHandle _h, const OpenMesh::Attributes::StatusInfo& _info) {
-			Mesh::status(_h) = _info;
-		}
+/**
+ * Thin wrapper for Mesh::add_property.
+ *
+ * @tparam PropHandle A property handle type.
+ *
+ * This wrapper function is required because Mesh::add_property has
+ * default arguments and therefore cannot be exposed directly.
+ */
+template <class Mesh, class PropHandle>
+void add_property_ph_str(Mesh& _mesh, PropHandle& _ph, const std::string& _name) {
+	_mesh.add_property(_ph, _name);
+}
 
-		/**
-		 * Thin wrapper for Mesh::add_property.
-		 *
-		 * @tparam PropHandle A property handle type.
-		 *
-		 * This wrapper function is required because Mesh::add_property has
-		 * default arguments and therefore cannot be exposed directly.
-		 */
-		template <class PropHandle>
-		void add_property_ph(PropHandle& _ph) {
-			Mesh::add_property(_ph);
-		}
+/**
+ * Set the property value for the item represented by the handle.
+ *
+ * @tparam PropHandle A property handle type.
+ * @tparam IndexHandle The appropriate index handle type.
+ *
+ * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::property may
+ * return by value instead of reference. This function ensures that the
+ * property value of an item can be changed nonetheless.
+ */
+template <class Mesh, class PropHandle, class IndexHandle>
+void set_property(Mesh& _mesh, PropHandle _ph, IndexHandle _h, const object& _value) {
+	_mesh.property(_ph, _h) = _value;
+}
 
-		/**
-		 * Thin wrapper for Mesh::add_property.
-		 *
-		 * @tparam PropHandle A property handle type.
-		 *
-		 * This wrapper function is required because Mesh::add_property has
-		 * default arguments and therefore cannot be exposed directly.
-		 */
-		template <class PropHandle>
-		void add_property_ph_str(PropHandle& _ph, const std::string& _name) {
-			Mesh::add_property(_ph, _name);
-		}
+/**
+ * Thin wrapper for Mesh::copy_all_properties.
+ *
+ * @tparam IndexHandle A mesh item handle type.
+ *
+ * This wrapper function is required because Mesh::copy_all_properties
+ * has default arguments and therefore cannot be exposed directly.
+ */
+template <class Mesh, class IndexHandle>
+void copy_all_properties_ih_ih(Mesh& _mesh, IndexHandle _from, IndexHandle _to) {
+	_mesh.copy_all_properties(_from, _to);
+}
 
-		/**
-		 * Set the property value for the item represented by the handle.
-		 *
-		 * @tparam PropHandle A property handle type.
-		 * @tparam IndexHandle The appropriate index handle type.
-		 *
-		 * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::property may
-		 * return by value instead of reference. This function ensures that the
-		 * property value of an item can be changed nonetheless.
-		 */
-		template <class PropHandle, class IndexHandle>
-		void set_property(PropHandle _ph, IndexHandle _h, const object& _value) {
-			Mesh::property(_ph, _h) = _value;
-		}
+/**
+ * Thin wrapper for Mesh::copy_all_properties.
+ *
+ * @tparam IndexHandle A mesh item handle type.
+ *
+ * This wrapper function is required because Mesh::copy_all_properties
+ * has default arguments and therefore cannot be exposed directly.
+ */
+template <class Mesh, class IndexHandle>
+void copy_all_properties_ih_ih_bool(Mesh& _mesh, IndexHandle _from, IndexHandle _to, bool _copyBuildIn) {
+	_mesh.copy_all_properties(_from, _to, _copyBuildIn);
+}
 
-		/**
-		 * Thin wrapper for Mesh::copy_all_properties.
-		 *
-		 * @tparam IndexHandle A mesh item handle type.
-		 *
-		 * This wrapper function is required because Mesh::copy_all_properties
-		 * has default arguments and therefore cannot be exposed directly.
-		 */
-		template <class IndexHandle>
-		void copy_all_properties_ih_ih(IndexHandle _from, IndexHandle _to) {
-			Mesh::copy_all_properties(_from, _to);
-		}
+/**
+ * Get an iterator.
+ */
+template <class Mesh, class Iterator, size_t (ArrayKernel::*n_items)() const>
+IteratorWrapperT<Iterator, n_items> get_iterator(Mesh& _mesh) {
+	return IteratorWrapperT<Iterator, n_items>(_mesh, typename Iterator::value_type(0));
+}
 
-		/**
-		 * Thin wrapper for Mesh::copy_all_properties.
-		 *
-		 * @tparam IndexHandle A mesh item handle type.
-		 *
-		 * This wrapper function is required because Mesh::copy_all_properties
-		 * has default arguments and therefore cannot be exposed directly.
-		 */
-		template <class IndexHandle>
-		void copy_all_properties_ih_ih_bool(IndexHandle _from, IndexHandle _to, bool _copyBuildIn) {
-			Mesh::copy_all_properties(_from, _to, _copyBuildIn);
-		}
+/**
+ * Get a skipping iterator.
+ */
+template <class Mesh, class Iterator, size_t (ArrayKernel::*n_items)() const>
+IteratorWrapperT<Iterator, n_items> get_skipping_iterator(Mesh& _mesh) {
+	return IteratorWrapperT<Iterator, n_items>(_mesh, typename Iterator::value_type(0), true);
+}
 
-		/**
-		 * Get a vertex iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> vertices() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this, VertexHandle(0));
-		}
-
-		/**
-		 * Get a halfedge iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> halfedges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this, HalfedgeHandle(0));
-		}
-
-		/**
-		 * Get an edge iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> edges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this, EdgeHandle(0));
-		}
-
-		/**
-		 * Get a face iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> faces() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this, FaceHandle(0));
-		}
-
-		/**
-		 * Get a skipping vertex iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices> svertices() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>(*this, VertexHandle(0), true);
-		}
-
-		/**
-		 * Get a skipping halfedge iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges> shalfedges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>(*this, HalfedgeHandle(0), true);
-		}
-
-		/**
-		 * Get a skipping edge iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges> sedges() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::EdgeIter, &OpenMesh::ArrayKernel::n_edges>(*this, EdgeHandle(0), true);
-		}
-
-		/**
-		 * Get a skipping face iterator.
-		 */
-		IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces> sfaces() const {
-			return IteratorWrapperT<OpenMesh::PolyConnectivity::FaceIter, &OpenMesh::ArrayKernel::n_faces>(*this, FaceHandle(0), true);
-		}
-
-		/**
-		 * Get a vertex-vertex circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::VertexVertexIter, VertexHandle> vv(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexVertexIter, VertexHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a vertex-(incoming)halfedge circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter, VertexHandle> vih(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter, VertexHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a vertex-(outgoing)halfedge circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter, VertexHandle> voh(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter, VertexHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a vertex-edge circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::VertexEdgeIter, VertexHandle> ve(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexEdgeIter, VertexHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a vertex-face circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::VertexFaceIter, VertexHandle> vf(VertexHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::VertexFaceIter, VertexHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a face-vertex circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::FaceVertexIter, FaceHandle> fv(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceVertexIter, FaceHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a face-halfedge circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::FaceHalfedgeIter, FaceHandle> fh(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceHalfedgeIter, FaceHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a face-edge circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::FaceEdgeIter, FaceHandle> fe(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceEdgeIter, FaceHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a face-face circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::FaceFaceIter, FaceHandle> ff(FaceHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::FaceFaceIter, FaceHandle>(*this, _handle);
-		}
-
-		/**
-		 * Get a halfedge-loop circulator.
-		 */
-		CirculatorWrapperT<typename Mesh::HalfedgeLoopIter, HalfedgeHandle> hl(HalfedgeHandle _handle) const {
-			return CirculatorWrapperT<typename Mesh::HalfedgeLoopIter, HalfedgeHandle>(*this, _handle);
-		}
-};
+/**
+ * Get a circulator.
+ */
+template <class Mesh, class Circulator, class CenterEntityHandle>
+CirculatorWrapperT<Circulator, CenterEntityHandle> get_circulator(Mesh& _mesh, CenterEntityHandle _handle) {
+	return CirculatorWrapperT<Circulator, CenterEntityHandle>(_mesh, _handle);
+}
 
 /**
  * Expose a mesh type to %Python.
  *
  * @tparam Mesh A mesh type.
  * @tparam Connectivity The appropriate connectivity type (e.g. TriConnectivity
- * for triangle mesh types).
+ * for triangle meshes).
  *
  * @param _name The name of the mesh type to be exposed.
  *
- * @note Meshes are wrapped by MeshWrapperT before they are exposed to %Python,
- * i.e. they are not exposed directly.
  */
 template <class Mesh, class Connectivity>
 void expose_mesh(const char *_name) {
@@ -257,7 +138,7 @@ void expose_mesh(const char *_name) {
 	typedef typename Mesh::Color  Color;
 
 	//======================================================================
-	//  KernelT Member Functions
+	//  KernelT Function Pointers
 	//======================================================================
 
 	// Get the i'th item
@@ -339,22 +220,22 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*set_texcoord3D_hh)(HalfedgeHandle, const typename Mesh::TexCoord3D&) = &Mesh::set_texcoord3D;
 
 	// Set value of a standard property (status)
-	void (Mesh::*set_status_vh)(VertexHandle,   const StatusInfo&) = &Mesh::set_status;
-	void (Mesh::*set_status_hh)(HalfedgeHandle, const StatusInfo&) = &Mesh::set_status;
-	void (Mesh::*set_status_eh)(EdgeHandle,     const StatusInfo&) = &Mesh::set_status;
-	void (Mesh::*set_status_fh)(FaceHandle,     const StatusInfo&) = &Mesh::set_status;
+	void (*set_status_vh)(Mesh&, VertexHandle,   const StatusInfo&) = &set_status;
+	void (*set_status_hh)(Mesh&, HalfedgeHandle, const StatusInfo&) = &set_status;
+	void (*set_status_eh)(Mesh&, EdgeHandle,     const StatusInfo&) = &set_status;
+	void (*set_status_fh)(Mesh&, FaceHandle,     const StatusInfo&) = &set_status;
 
 	// Property management - add property (1/2)
-	void (Mesh::*add_property_vph)(VPropHandleT<object>&) = &Mesh::add_property_ph;
-	void (Mesh::*add_property_eph)(EPropHandleT<object>&) = &Mesh::add_property_ph;
-	void (Mesh::*add_property_hph)(HPropHandleT<object>&) = &Mesh::add_property_ph;
-	void (Mesh::*add_property_fph)(FPropHandleT<object>&) = &Mesh::add_property_ph;
+	void (*add_property_vph)(Mesh&, VPropHandleT<object>&) = &add_property_ph;
+	void (*add_property_eph)(Mesh&, EPropHandleT<object>&) = &add_property_ph;
+	void (*add_property_hph)(Mesh&, HPropHandleT<object>&) = &add_property_ph;
+	void (*add_property_fph)(Mesh&, FPropHandleT<object>&) = &add_property_ph;
 
 	// Property management - add property (2/2)
-	void (Mesh::*add_property_vph_str)(VPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
-	void (Mesh::*add_property_eph_str)(EPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
-	void (Mesh::*add_property_hph_str)(HPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
-	void (Mesh::*add_property_fph_str)(FPropHandleT<object>&, const std::string&) = &Mesh::add_property_ph_str;
+	void (*add_property_vph_str)(Mesh&, VPropHandleT<object>&, const std::string&) = &add_property_ph_str;
+	void (*add_property_eph_str)(Mesh&, EPropHandleT<object>&, const std::string&) = &add_property_ph_str;
+	void (*add_property_hph_str)(Mesh&, HPropHandleT<object>&, const std::string&) = &add_property_ph_str;
+	void (*add_property_fph_str)(Mesh&, FPropHandleT<object>&, const std::string&) = &add_property_ph_str;
 
 	// Property management - remove property
 	void (Mesh::*remove_property_vph)(VPropHandleT<object>&) = &Mesh::remove_property;
@@ -375,10 +256,10 @@ void expose_mesh(const char *_name) {
 	const object& (Mesh::*property_face    )(FPropHandleT<object>, FaceHandle    ) const = &Mesh::property;
 
 	// Property management - set property value for an item
-	void (Mesh::*set_property_vertex  )(VPropHandleT<object>, VertexHandle,   const object&) = &Mesh::set_property;
-	void (Mesh::*set_property_edge    )(EPropHandleT<object>, EdgeHandle,     const object&) = &Mesh::set_property;
-	void (Mesh::*set_property_halfedge)(HPropHandleT<object>, HalfedgeHandle, const object&) = &Mesh::set_property;
-	void (Mesh::*set_property_face    )(FPropHandleT<object>, FaceHandle,     const object&) = &Mesh::set_property;
+	void (*set_property_vertex  )(Mesh&, VPropHandleT<object>, VertexHandle,   const object&) = &set_property;
+	void (*set_property_edge    )(Mesh&, EPropHandleT<object>, EdgeHandle,     const object&) = &set_property;
+	void (*set_property_halfedge)(Mesh&, HPropHandleT<object>, HalfedgeHandle, const object&) = &set_property;
+	void (*set_property_face    )(Mesh&, FPropHandleT<object>, FaceHandle,     const object&) = &set_property;
 
 	// Low-level adding new items
 	VertexHandle (Mesh::*new_vertex_void )(void                        ) = &Mesh::new_vertex;
@@ -386,24 +267,50 @@ void expose_mesh(const char *_name) {
 	FaceHandle   (Mesh::*new_face_void   )(void                        ) = &Mesh::new_face;
 	FaceHandle   (Mesh::*new_face_face   )(const typename Mesh::Face&  ) = &Mesh::new_face;
 
+	// Kernel item iterators
+	IteratorWrapperT<typename Mesh::VertexIter,   &Mesh::n_vertices > (*vertices )(Mesh&) = &get_iterator;
+	IteratorWrapperT<typename Mesh::HalfedgeIter, &Mesh::n_halfedges> (*halfedges)(Mesh&) = &get_iterator;
+	IteratorWrapperT<typename Mesh::EdgeIter,     &Mesh::n_edges    > (*edges    )(Mesh&) = &get_iterator;
+	IteratorWrapperT<typename Mesh::FaceIter,     &Mesh::n_faces    > (*faces    )(Mesh&) = &get_iterator;
+
+	IteratorWrapperT<typename Mesh::VertexIter,   &Mesh::n_vertices > (*svertices )(Mesh&) = &get_skipping_iterator;
+	IteratorWrapperT<typename Mesh::HalfedgeIter, &Mesh::n_halfedges> (*shalfedges)(Mesh&) = &get_skipping_iterator;
+	IteratorWrapperT<typename Mesh::EdgeIter,     &Mesh::n_edges    > (*sedges    )(Mesh&) = &get_skipping_iterator;
+	IteratorWrapperT<typename Mesh::FaceIter,     &Mesh::n_faces    > (*sfaces    )(Mesh&) = &get_skipping_iterator;
+
 	//======================================================================
-	//  BaseKernel Member Functions
+	//  BaseKernel Function Pointers
 	//======================================================================
 
 	// Copy all properties (1/2)
-	void (Mesh::*copy_all_properties_vh_vh)(VertexHandle,   VertexHandle  ) = &Mesh::copy_all_properties_ih_ih;
-	void (Mesh::*copy_all_properties_eh_eh)(EdgeHandle,     EdgeHandle    ) = &Mesh::copy_all_properties_ih_ih;
-	void (Mesh::*copy_all_properties_hh_hh)(HalfedgeHandle, HalfedgeHandle) = &Mesh::copy_all_properties_ih_ih;
-	void (Mesh::*copy_all_properties_fh_fh)(FaceHandle,     FaceHandle    ) = &Mesh::copy_all_properties_ih_ih;
+	void (*copy_all_properties_vh_vh)(Mesh&, VertexHandle,   VertexHandle  ) = &copy_all_properties_ih_ih;
+	void (*copy_all_properties_eh_eh)(Mesh&, EdgeHandle,     EdgeHandle    ) = &copy_all_properties_ih_ih;
+	void (*copy_all_properties_hh_hh)(Mesh&, HalfedgeHandle, HalfedgeHandle) = &copy_all_properties_ih_ih;
+	void (*copy_all_properties_fh_fh)(Mesh&, FaceHandle,     FaceHandle    ) = &copy_all_properties_ih_ih;
 
 	// Copy all properties (2/2)
-	void (Mesh::*copy_all_properties_vh_vh_bool)(VertexHandle,   VertexHandle,   bool) = &Mesh::copy_all_properties_ih_ih_bool;
-	void (Mesh::*copy_all_properties_eh_eh_bool)(EdgeHandle,     EdgeHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
-	void (Mesh::*copy_all_properties_hh_hh_bool)(HalfedgeHandle, HalfedgeHandle, bool) = &Mesh::copy_all_properties_ih_ih_bool;
-	void (Mesh::*copy_all_properties_fh_fh_bool)(FaceHandle,     FaceHandle,     bool) = &Mesh::copy_all_properties_ih_ih_bool;
+	void (*copy_all_properties_vh_vh_bool)(Mesh&, VertexHandle,   VertexHandle,   bool) = &copy_all_properties_ih_ih_bool;
+	void (*copy_all_properties_eh_eh_bool)(Mesh&, EdgeHandle,     EdgeHandle,     bool) = &copy_all_properties_ih_ih_bool;
+	void (*copy_all_properties_hh_hh_bool)(Mesh&, HalfedgeHandle, HalfedgeHandle, bool) = &copy_all_properties_ih_ih_bool;
+	void (*copy_all_properties_fh_fh_bool)(Mesh&, FaceHandle,     FaceHandle,     bool) = &copy_all_properties_ih_ih_bool;
 
 	//======================================================================
-	//  PolyMeshT Member Functions
+	//  PolyConnectivity Function Pointers
+	//======================================================================
+
+	CirculatorWrapperT<typename Mesh::VertexVertexIter,    VertexHandle  > (*vv )(Mesh&, VertexHandle  ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter, VertexHandle  > (*vih)(Mesh&, VertexHandle  ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter, VertexHandle  > (*voh)(Mesh&, VertexHandle  ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::VertexEdgeIter,      VertexHandle  > (*ve )(Mesh&, VertexHandle  ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::VertexFaceIter,      VertexHandle  > (*vf )(Mesh&, VertexHandle  ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::FaceVertexIter,      FaceHandle    > (*fv )(Mesh&, FaceHandle    ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::FaceHalfedgeIter,    FaceHandle    > (*fh )(Mesh&, FaceHandle    ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::FaceEdgeIter,        FaceHandle    > (*fe )(Mesh&, FaceHandle    ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::FaceFaceIter,        FaceHandle    > (*ff )(Mesh&, FaceHandle    ) = &get_circulator;
+	CirculatorWrapperT<typename Mesh::HalfedgeLoopIter,    HalfedgeHandle> (*hl )(Mesh&, HalfedgeHandle) = &get_circulator;
+
+	//======================================================================
+	//  PolyMeshT Function Pointers
 	//======================================================================
 
 	void (Mesh::*calc_edge_vector_eh_normal)(EdgeHandle,     Normal&) const = &Mesh::calc_edge_vector;
@@ -439,36 +346,11 @@ void expose_mesh(const char *_name) {
 	void  (Mesh::*calc_face_centroid_fh_point)(FaceHandle, Point&) const = &Mesh::calc_face_centroid;
 	Point (Mesh::*calc_face_centroid_fh      )(FaceHandle        ) const = &Mesh::calc_face_centroid;
 
+	//======================================================================
+	//  Mesh Type
+	//======================================================================
 
 	class_<Mesh, bases<Connectivity> > class_mesh(_name);
-
-	// Enter mesh scope
-	scope scope_mesh = class_mesh;
-
-	// Expose nested type: Mesh::Point
-	const type_info point_info = type_id<typename Mesh::Point>();
-	const converter::registration * point_registration = converter::registry::query(point_info);
-	scope_mesh.attr("Point") = handle<>(point_registration->m_class_object);
-
-	// Expose nested type: Mesh::Normal
-	const type_info normal_info = type_id<typename Mesh::Normal>();
-	const converter::registration * normal_registration = converter::registry::query(normal_info);
-	scope_mesh.attr("Normal") = handle<>(normal_registration->m_class_object);
-
-	// Expose nested type: Mesh::TexCoord2D
-	const type_info texcoord2d_info = type_id<typename Mesh::TexCoord2D>();
-	const converter::registration * texcoord2d_registration = converter::registry::query(texcoord2d_info);
-	scope_mesh.attr("TexCoord2D") = handle<>(texcoord2d_registration->m_class_object);
-
-	// Expose nested type: Mesh::TexCoord3D
-	const type_info texcoord3d_info = type_id<typename Mesh::TexCoord3D>();
-	const converter::registration * texcoord3d_registration = converter::registry::query(texcoord3d_info);
-	scope_mesh.attr("TexCoord3D") = handle<>(texcoord3d_registration->m_class_object);
-
-	// Expose nested type: Mesh::Color
-	const type_info color_info = type_id<typename Mesh::Color>();
-	const converter::registration * color_registration = converter::registry::query(color_info);
-	scope_mesh.attr("Color") = handle<>(color_registration->m_class_object);
 
 	class_mesh
 
@@ -656,28 +538,15 @@ void expose_mesh(const char *_name) {
 		.def("new_face", new_face_void)
 		.def("new_face", new_face_face)
 
-		.def("vertices", &Mesh::vertices)
-		.def("halfedges", &Mesh::halfedges)
-		.def("edges", &Mesh::edges)
-		.def("faces", &Mesh::faces)
+		.def("vertices", vertices)
+		.def("halfedges", halfedges)
+		.def("edges", edges)
+		.def("faces", faces)
 
-		.def("svertices", &Mesh::svertices)
-		.def("shalfedges", &Mesh::shalfedges)
-		.def("sedges", &Mesh::sedges)
-		.def("sfaces", &Mesh::sfaces)
-
-		.def("vv", &Mesh::vv)
-		.def("vih", &Mesh::vih)
-		.def("voh", &Mesh::voh)
-		.def("ve", &Mesh::ve)
-		.def("vf", &Mesh::vf)
-
-		.def("fv", &Mesh::fv)
-		.def("fh", &Mesh::fh)
-		.def("fe", &Mesh::fe)
-		.def("ff", &Mesh::ff)
-
-		.def("hl", &Mesh::hl)
+		.def("svertices", svertices)
+		.def("shalfedges", shalfedges)
+		.def("sedges", sedges)
+		.def("sfaces", sfaces)
 
 		//======================================================================
 		//  BaseKernel
@@ -692,6 +561,23 @@ void expose_mesh(const char *_name) {
 		.def("copy_all_properties", copy_all_properties_eh_eh_bool)
 		.def("copy_all_properties", copy_all_properties_hh_hh_bool)
 		.def("copy_all_properties", copy_all_properties_fh_fh_bool)
+
+		//======================================================================
+		//  PolyConnectivity
+		//======================================================================
+
+		.def("vv", vv)
+		.def("vih", vih)
+		.def("voh", voh)
+		.def("ve", ve)
+		.def("vf", vf)
+
+		.def("fv", fv)
+		.def("fh", fh)
+		.def("fe", fe)
+		.def("ff", ff)
+
+		.def("hl", hl)
 
 		//======================================================================
 		//  PolyMeshT
@@ -757,6 +643,38 @@ void expose_mesh(const char *_name) {
 		.def("is_trimesh", &Mesh::is_trimesh)
 		.staticmethod("is_trimesh")
 		;
+
+	//======================================================================
+	//  Nested Types
+	//======================================================================
+
+	// Enter mesh scope
+	scope scope_mesh = class_mesh;
+
+	// Point
+	const type_info point_info = type_id<typename Mesh::Point>();
+	const converter::registration * point_registration = converter::registry::query(point_info);
+	scope_mesh.attr("Point") = handle<>(point_registration->m_class_object);
+
+	// Normal
+	const type_info normal_info = type_id<typename Mesh::Normal>();
+	const converter::registration * normal_registration = converter::registry::query(normal_info);
+	scope_mesh.attr("Normal") = handle<>(normal_registration->m_class_object);
+
+	// Color
+	const type_info color_info = type_id<typename Mesh::Color>();
+	const converter::registration * color_registration = converter::registry::query(color_info);
+	scope_mesh.attr("Color") = handle<>(color_registration->m_class_object);
+
+	// TexCoord2D
+	const type_info texcoord2d_info = type_id<typename Mesh::TexCoord2D>();
+	const converter::registration * texcoord2d_registration = converter::registry::query(texcoord2d_info);
+	scope_mesh.attr("TexCoord2D") = handle<>(texcoord2d_registration->m_class_object);
+
+	// TexCoord3D
+	const type_info texcoord3d_info = type_id<typename Mesh::TexCoord3D>();
+	const converter::registration * texcoord3d_registration = converter::registry::query(texcoord3d_info);
+	scope_mesh.attr("TexCoord3D") = handle<>(texcoord3d_registration->m_class_object);
 }
 
 } // namespace OpenMesh

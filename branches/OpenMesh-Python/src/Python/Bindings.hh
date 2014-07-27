@@ -35,8 +35,6 @@ struct MeshTraits : public OpenMesh::DefaultTraits {
 typedef OpenMesh::TriMesh_ArrayKernelT<MeshTraits> TriMesh;
 typedef OpenMesh::PolyMesh_ArrayKernelT<MeshTraits> PolyMesh;
 
-template<class Mesh> class MeshWrapperT;
-
 } // namespace OpenMesh
 } // namespace Python
 

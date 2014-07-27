@@ -73,8 +73,8 @@ class CirculatorWrapperT {
  */
 template<class Circulator, class CenterEntityHandle>
 void expose_circulator(const char *_name) {
-	class_<CirculatorWrapperT<Circulator, CenterEntityHandle> >(_name, init<MeshWrapperT<TriMesh>&, CenterEntityHandle>())
-		.def(init<MeshWrapperT<PolyMesh>&, CenterEntityHandle>())
+	class_<CirculatorWrapperT<Circulator, CenterEntityHandle> >(_name, init<TriMesh&, CenterEntityHandle>())
+		.def(init<PolyMesh&, CenterEntityHandle>())
 		.def("__iter__", &CirculatorWrapperT<Circulator, CenterEntityHandle>::iter)
 		.def("__next__", &CirculatorWrapperT<Circulator, CenterEntityHandle>::next)
 		.def("next", &CirculatorWrapperT<Circulator, CenterEntityHandle>::next)
