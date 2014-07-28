@@ -119,6 +119,43 @@ CirculatorWrapperT<Circulator, CenterEntityHandle> get_circulator(Mesh& _mesh, C
 }
 
 /**
+ * Garbage collection using lists instead of vectors to keep track of a set of
+ * handles.
+ *
+ * @param _vh_to_update The list of vertex handles to be updated.
+ * @param _hh_to_update The list of halfedge handles to be updated.
+ * @param _fh_to_update The list of face handles to be updated.
+ * @param _v Remove deleted vertices?
+ * @param _e Remove deleted edges?
+ * @param _f Remove deleted faces?
+ */
+template <class Mesh>
+void garbage_collection(Mesh& _mesh, list& _vh_to_update, list& _hh_to_update, list& _fh_to_update, bool _v = true, bool _e = true, bool _f = true) {
+	// Convert list of handles to vector of pointers
+	stl_input_iterator<VertexHandle*> vh_begin(_vh_to_update);
+	stl_input_iterator<VertexHandle*> vh_end;
+	std::vector<VertexHandle*> vh_vector;
+	vh_vector.insert(vh_vector.end(), vh_begin, vh_end);
+
+	// Convert list of handles to vector of pointers
+	stl_input_iterator<HalfedgeHandle*> hh_begin(_hh_to_update);
+	stl_input_iterator<HalfedgeHandle*> hh_end;
+	std::vector<HalfedgeHandle*> hh_vector;
+	hh_vector.insert(hh_vector.end(), hh_begin, hh_end);
+
+	// Convert list of handles to vector of pointers
+	stl_input_iterator<FaceHandle*> fh_begin(_fh_to_update);
+	stl_input_iterator<FaceHandle*> fh_end;
+	std::vector<FaceHandle*> fh_vector;
+	fh_vector.insert(fh_vector.end(), fh_begin, fh_end);
+
+	// Call garbage collection
+	_mesh.garbage_collection(vh_vector, hh_vector, fh_vector, _v, _e, _f);
+}
+
+
+
+/**
  * This function template is used to expose mesh member functions that are only
  * available for a specific type of mesh (i.e. they are available for polygon
  * meshes or triangle meshes, but not both).
@@ -218,7 +255,8 @@ void expose_mesh(const char *_name) {
 	FaceHandle     (Mesh::*face_handle_uint    )(unsigned int) const = &Mesh::face_handle;
 
 	// Delete items
-	void (Mesh::*garbage_collection)(bool, bool, bool) = &Mesh::garbage_collection;
+	void (Mesh::*garbage_collection_bools)(bool, bool, bool) = &Mesh::garbage_collection;
+	void (*garbage_collection_lists_bools)(Mesh&, list&, list&, list&, bool, bool, bool) = &garbage_collection;
 
 	// Vertex connectivity
 	HalfedgeHandle (Mesh::*halfedge_handle_vh)(VertexHandle) const = &Mesh::halfedge_handle;
@@ -444,7 +482,8 @@ void expose_mesh(const char *_name) {
 
 		.def("clear", &Mesh::clear)
 		.def("clean", &Mesh::clean)
-		.def("garbage_collection", garbage_collection, garbage_collection_overloads())
+		.def("garbage_collection", garbage_collection_bools, garbage_collection_overloads())
+		.def("garbage_collection", garbage_collection_lists_bools)
 
 		.def("n_vertices", &Mesh::n_vertices)
 		.def("n_halfedges", &Mesh::n_halfedges)
