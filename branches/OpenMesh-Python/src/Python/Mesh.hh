@@ -138,10 +138,10 @@ void expose_type_specific_functions(Class& _class) {
  */
 template <>
 void expose_type_specific_functions(class_<PolyMesh, bases<PolyConnectivity> >& _class) {
-	typedef typename PolyMesh::Scalar Scalar;
-	typedef typename PolyMesh::Point  Point;
-	typedef typename PolyMesh::Normal Normal;
-	typedef typename PolyMesh::Color  Color;
+	typedef PolyMesh::Scalar Scalar;
+	typedef PolyMesh::Point  Point;
+	typedef PolyMesh::Normal Normal;
+	typedef PolyMesh::Color  Color;
 
 	void (PolyMesh::*split_fh_pt)(FaceHandle, const Point&) = &PolyMesh::split;
 	void (PolyMesh::*split_eh_pt)(EdgeHandle, const Point&) = &PolyMesh::split;
@@ -160,10 +160,10 @@ void expose_type_specific_functions(class_<PolyMesh, bases<PolyConnectivity> >& 
  */
 template <>
 void expose_type_specific_functions(class_<TriMesh, bases<TriConnectivity> >& _class) {
-	typedef typename TriMesh::Scalar Scalar;
-	typedef typename TriMesh::Point  Point;
-	typedef typename TriMesh::Normal Normal;
-	typedef typename TriMesh::Color  Color;
+	typedef TriMesh::Scalar Scalar;
+	typedef TriMesh::Point  Point;
+	typedef TriMesh::Normal Normal;
+	typedef TriMesh::Color  Color;
 
 //	HalfedgeHandle (TriMesh::*vertex_split_pt)(Point,        VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
 	HalfedgeHandle (TriMesh::*vertex_split_vh)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
