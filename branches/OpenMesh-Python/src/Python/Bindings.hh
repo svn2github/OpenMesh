@@ -7,6 +7,7 @@
 #include <boost/python/reference_existing_object.hpp>
 #include <boost/python/copy_const_reference.hpp>
 
+#include "OpenMesh/Core/IO/MeshIO.hh"
 #include "OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh"
 #include "OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh"
 

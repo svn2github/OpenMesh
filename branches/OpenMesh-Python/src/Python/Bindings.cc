@@ -5,6 +5,7 @@
 #include "Python/Iterator.hh"
 #include "Python/Circulator.hh"
 #include "Python/PropertyManager.hh"
+#include "Python/InputOutput.hh"
 
 namespace OpenMesh {
 namespace Python {
@@ -141,6 +142,8 @@ BOOST_PYTHON_MODULE(openmesh) {
 	expose_property_manager<HPropHandleT<object>, HalfedgeHandle, HalfedgeIterWrapper>("HPropertyManager");
 	expose_property_manager<EPropHandleT<object>, EdgeHandle, EdgeIterWrapper>("EPropertyManager");
 	expose_property_manager<FPropHandleT<object>, FaceHandle, FaceIterWrapper>("FPropertyManager");
+
+	expose_io();
 }
 
 } // namespace Python
