@@ -439,6 +439,8 @@ void expose_mesh(const char *_name) {
 	Scalar (Mesh::*calc_dihedral_angle_hh)(HalfedgeHandle) const = &Mesh::calc_dihedral_angle;
 	Scalar (Mesh::*calc_dihedral_angle_eh)(EdgeHandle    ) const = &Mesh::calc_dihedral_angle;
 
+	unsigned int (Mesh::*find_feature_edges)(Scalar) = &Mesh::find_feature_edges;
+
 	void (Mesh::*split_fh_vh)(FaceHandle, VertexHandle) = &Mesh::split;
 	void (Mesh::*split_eh_vh)(EdgeHandle, VertexHandle) = &Mesh::split;
 
@@ -446,7 +448,10 @@ void expose_mesh(const char *_name) {
 	void (Mesh::*update_normal_hh)(HalfedgeHandle, double) = &Mesh::update_normal;
 	void (Mesh::*update_normal_vh)(VertexHandle          ) = &Mesh::update_normal;
 
-	Normal (Mesh::*calc_face_normal_fh)(FaceHandle) const = &Mesh::calc_face_normal;
+	void (Mesh::*update_halfedge_normals)(double) = &Mesh::update_halfedge_normals;
+
+	Normal (Mesh::*calc_face_normal    )(FaceHandle            ) const = &Mesh::calc_face_normal;
+	Normal (Mesh::*calc_halfedge_normal)(HalfedgeHandle, double) const = &Mesh::calc_halfedge_normal;
 
 	void  (Mesh::*calc_face_centroid_fh_point)(FaceHandle, Point&) const = &Mesh::calc_face_centroid;
 	Point (Mesh::*calc_face_centroid_fh      )(FaceHandle        ) const = &Mesh::calc_face_centroid;
@@ -711,7 +716,7 @@ void expose_mesh(const char *_name) {
 		.def("calc_dihedral_angle", calc_dihedral_angle_hh)
 		.def("calc_dihedral_angle", calc_dihedral_angle_eh)
 
-//		.def("find_feature_edges", &Mesh::find_feature_edges, find_feature_edges_overloads())
+		.def("find_feature_edges", find_feature_edges, find_feature_edges_overloads())
 
 		.def("split", split_fh_vh)
 		.def("split", split_eh_vh)
@@ -720,15 +725,15 @@ void expose_mesh(const char *_name) {
 		.def("update_normal", update_normal_fh)
 		.def("update_face_normals", &Mesh::update_face_normals)
 
-		.def("calc_face_normal", calc_face_normal_fh)
+		.def("calc_face_normal", calc_face_normal)
 
 		.def("calc_face_centroid", calc_face_centroid_fh_point)
 		.def("calc_face_centroid", calc_face_centroid_fh)
 
 		.def("update_normal", update_normal_hh, update_normal_overloads())
-		.def("update_halfedge_normals", &Mesh::update_halfedge_normals, update_halfedge_normals_overloads())
+		.def("update_halfedge_normals", update_halfedge_normals, update_halfedge_normals_overloads())
 
-		.def("calc_halfedge_normal", &Mesh::calc_halfedge_normal, calc_halfedge_normal_overloads())
+		.def("calc_halfedge_normal", calc_halfedge_normal, calc_halfedge_normal_overloads())
 
 		.def("is_estimated_feature_edge", &Mesh::is_estimated_feature_edge)
 
@@ -737,8 +742,8 @@ void expose_mesh(const char *_name) {
 
 		.def("calc_vertex_normal", &Mesh::calc_vertex_normal)
 		.def("calc_vertex_normal_fast", &Mesh::calc_vertex_normal_fast)
-//		.def("calc_vertex_normal_correct", &Mesh::calc_vertex_normal_correct)
-//		.def("calc_vertex_normal_loop", &Mesh::calc_vertex_normal_loop)
+		.def("calc_vertex_normal_correct", &Mesh::calc_vertex_normal_correct)
+		.def("calc_vertex_normal_loop", &Mesh::calc_vertex_normal_loop)
 
 		.def("is_polymesh", &Mesh::is_polymesh)
 		.staticmethod("is_polymesh")
