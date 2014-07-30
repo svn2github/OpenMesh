@@ -25,27 +25,35 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(read_mesh_overloads, IO::read_mesh, 3, 4)
 BOOST_PYTHON_FUNCTION_OVERLOADS(write_mesh_overloads, IO::write_mesh, 2, 4)
 
 /**
- * Expose the input/output functions to Python.
+ * Expose the input/output functions and options to Python.
  */
 void expose_io() {
-	enum_<IO::Options::Flag>("Flag")
-		.value("Default", IO::Options::Default)
-		.value("Binary", IO::Options::Binary)
-		.value("MSB", IO::Options::MSB)
-		.value("LSB", IO::Options::LSB)
-		.value("Swap", IO::Options::Swap)
-		.value("VertexNormal", IO::Options::VertexNormal)
-		.value("VertexColor", IO::Options::VertexColor)
-		.value("VertexTexCoord", IO::Options::VertexTexCoord)
-		.value("EdgeColor", IO::Options::EdgeColor)
-		.value("FaceNormal", IO::Options::FaceNormal)
-		.value("FaceColor", IO::Options::FaceColor)
-		.value("FaceTexCoord", IO::Options::FaceTexCoord)
-		.value("ColorAlpha", IO::Options::ColorAlpha)
-		.value("ColorFloat", IO::Options::ColorFloat)
-		;
 
-	class_<IO::Options>("Options")
+	//======================================================================
+	//  Functions
+	//======================================================================
+
+	bool (*read_mesh_poly        )(PolyMesh&, const std::string&                    ) = &IO::read_mesh;
+	bool (*read_mesh_poly_options)(PolyMesh&, const std::string&, IO::Options&, bool) = &IO::read_mesh;
+	bool (*read_mesh_tri         )(TriMesh&,  const std::string&                    ) = &IO::read_mesh;
+	bool (*read_mesh_tri_options )(TriMesh&,  const std::string&, IO::Options&, bool) = &IO::read_mesh;
+
+	bool (*write_mesh_poly)(const PolyMesh&, const std::string&, IO::Options, std::streamsize) = &IO::write_mesh;
+	bool (*write_mesh_tri )(const TriMesh&,  const std::string&, IO::Options, std::streamsize) = &IO::write_mesh;
+
+	def("read_mesh", read_mesh_poly);
+	def("read_mesh", read_mesh_poly_options, read_mesh_overloads());
+	def("read_mesh", read_mesh_tri);
+	def("read_mesh", read_mesh_tri_options, read_mesh_overloads());
+
+	def("write_mesh", write_mesh_poly, write_mesh_overloads());
+	def("write_mesh", write_mesh_tri, write_mesh_overloads());
+
+	//======================================================================
+	//  Options
+	//======================================================================
+
+	scope scope_options = class_<IO::Options>("Options")
 		.def(init<IO::Options::Flag>())
 		.def("cleanup", &IO::Options::cleanup)
 		.def("clear", &IO::Options::clear)
@@ -83,21 +91,22 @@ void expose_io() {
 		.def_readonly("ColorFloat", &FLAG_COLORFLOAT)
 		;
 
-	bool (*read_mesh_poly        )(PolyMesh&, const std::string&                    ) = &IO::read_mesh;
-	bool (*read_mesh_poly_options)(PolyMesh&, const std::string&, IO::Options&, bool) = &IO::read_mesh;
-	bool (*read_mesh_tri         )(TriMesh&,  const std::string&                    ) = &IO::read_mesh;
-	bool (*read_mesh_tri_options )(TriMesh&,  const std::string&, IO::Options&, bool) = &IO::read_mesh;
-
-	bool (*write_mesh_poly)(const PolyMesh&, const std::string&, IO::Options, std::streamsize) = &IO::write_mesh;
-	bool (*write_mesh_tri )(const TriMesh&,  const std::string&, IO::Options, std::streamsize) = &IO::write_mesh;
-
-	def("read_mesh", read_mesh_poly);
-	def("read_mesh", read_mesh_poly_options, read_mesh_overloads());
-	def("read_mesh", read_mesh_tri);
-	def("read_mesh", read_mesh_tri_options, read_mesh_overloads());
-
-	def("write_mesh", write_mesh_poly, write_mesh_overloads());
-	def("write_mesh", write_mesh_tri, write_mesh_overloads());
+	enum_<IO::Options::Flag>("Flag")
+		.value("Default", IO::Options::Default)
+		.value("Binary", IO::Options::Binary)
+		.value("MSB", IO::Options::MSB)
+		.value("LSB", IO::Options::LSB)
+		.value("Swap", IO::Options::Swap)
+		.value("VertexNormal", IO::Options::VertexNormal)
+		.value("VertexColor", IO::Options::VertexColor)
+		.value("VertexTexCoord", IO::Options::VertexTexCoord)
+		.value("EdgeColor", IO::Options::EdgeColor)
+		.value("FaceNormal", IO::Options::FaceNormal)
+		.value("FaceColor", IO::Options::FaceColor)
+		.value("FaceTexCoord", IO::Options::FaceTexCoord)
+		.value("ColorAlpha", IO::Options::ColorAlpha)
+		.value("ColorFloat", IO::Options::ColorFloat)
+		;
 }
 
 } // namespace OpenMesh
