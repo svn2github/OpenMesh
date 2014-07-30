@@ -78,7 +78,7 @@ template<class MeshT>
 class ModHausdorffT: public ModBaseT<MeshT> {
   public:
 
-    DECIMATING_MODULE( ModHausdorffT, MeshT, Roundness );
+    DECIMATING_MODULE( ModHausdorffT, MeshT, Hausdorff );
 
     typedef typename Mesh::Scalar Scalar;
     typedef typename Mesh::Point Point;

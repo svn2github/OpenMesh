@@ -144,7 +144,7 @@ private:
 
   void split_face( MeshType& _m, const FaceHandle& _fh);
 
-  void compute_midpoint( MeshType& _m, const EdgeHandle& _eh);
+  void compute_midpoint( MeshType& _m, const EdgeHandle& _eh, const bool _update_points);
 
   void update_vertex(MeshType& _m, const  VertexHandle& _vh);
 

@@ -267,4 +267,5 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterBoundaryIncrement) {
   EXPECT_FALSE(vf_it.is_valid()) << "Iterator invalid in VertexFaceIter at step 2";
   EXPECT_TRUE( vf_it == vf_end )  << "End iterator for VertexFaceIter not matching";
 }
+
 }

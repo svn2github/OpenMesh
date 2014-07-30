@@ -258,7 +258,6 @@ TEST_F(OpenMeshTrimeshCirculatorFaceFace, FaceFaceIteratorHandleConversion) {
 
   // Get the face via the handle
   Mesh::FaceHandle faceHandle1 = *face_iter;
-  const Mesh::Face& face1 = mesh_.face(faceHandle1);
 
   EXPECT_EQ(1, faceHandle1.idx() ) << "Wrong face handle index when getting from iterator via handle";
 }

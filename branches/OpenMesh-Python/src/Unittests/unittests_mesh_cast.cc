@@ -21,6 +21,7 @@ TEST_F(OpenMeshMeshCastTest, PerformCast) {
     OpenMesh::TriMesh_ArrayKernelT<TriTraits1> a;
     OpenMesh::TriMesh_ArrayKernelT<TriTraits2> &b =
             OpenMesh::mesh_cast<OpenMesh::TriMesh_ArrayKernelT<TriTraits2>&>(a);
+    b.reserve(10,10,10);
     /*
     OpenMesh::TriMesh_ArrayKernelT < TriTraits2 > &b =
             OpenMesh::MeshCast<

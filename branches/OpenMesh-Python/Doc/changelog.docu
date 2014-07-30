@@ -4,10 +4,76 @@
 
 <table border=1 cellpadding=4 cellspacing=2>
 
-
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.1</b> (?/?/?,Rev.1001)</td><td>
+<tr valign=top><td><b>3.3</b> (?/?/?,Rev.1107)</td><td>
+
+</tr>
+
+
+<tr valign=top><td><b>3.2</b> (2014/07/18,Rev.1107)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Fixed copy paste typos in the vertex face and face face range code</li>
+</ul>
+
+<b>IO</b>
+<ul>
+<li>Silence the readers/writers (Some of them always wrote output to command line).</li>
+</ul>
+
+<b>Utils</b>
+<ul>
+<li>PropertyManager: Added PropertyManager::move to C++11 .</li>
+</ul>
+
+
+<b>Subdivider</b>
+<ul>
+<li>Added CatmullClark without point updates support.</li>
+<li>Uniform, Longest Edge: fixed template deduction error with float precision meshes</li>
+</ul>
+
+<b>Documentation</b>
+<ul>
+<li>Updated doxyfile to 1.8.7</li>
+<li>Added some documentation to get the to and from vertices to the mesh navigation page</li>
+<li>Added boundary navigation info to mesh navigation page</li>
+</ul>
+
+<b>Build system</b>
+<ul>
+<li>Qt5 support for example apps</li>
+<li>Improved OpenMesh cmake gtest finder for Xcode 5.1.1 with gtest 1.7</li>
+<li>Don't copy qt4 anymore, if build_apps is disabled, but the qmake variable still defined</li>
+<li>Add dependencies and fixbundle for apps only if we build apps</li>
+</ul>
+
+<b>Unittests</b>
+<ul>
+<li>Added unittest for textured meshes</li>
+<li>Read/Write OBJ: Fixed unsigned signed comparison</li>
+</ul>
+
+</tr>
+
+<tr valign=top><td><b>3.1</b> (2014/05/09,Rev.1050)</td><td>
+
+<b>Core</b>
+<ul>
+<li>Fix for c++11 call to pointer to member function of type 'VertexIter ()' drops 'const' qualifier (Thanks to Ronald Richter and Kenshi Takayama for the fix)</li>
+<li>PolyConnectivity: Added range based circulators courtesy of Kenshi Takayama. (Thanks!)</li>
+<li>Rearranged the code a bit in order to have all range based stuff in one place.</li>
+<li>Fixed calc_normals_... functions (Missing this pointer) Thanks to Martin Schmidt for the report</li>
+</ul>
+
+<b>Decimater</b>
+<ul>
+<li>Fixed Destructor of ModNormaldeviation: Requested normals on destruction</li>
+<li>Decimater doesn't need normals anymore, if no module requires normals</li>
+</ul>
+
 
 <b>Utils</b>
 <ul>
@@ -24,6 +90,18 @@
 <ul>
 <li>OBJ Writer: Fixed material writer using wrong stream (Thanks to  Vladimir Chalupecky for the fix). closes 2037</li> 
 <li>VTK Writer: Added simple VTK writer writing only vertices and faces (Thanks to Vladimir Chalupecky for the code). closes 2039</li>
+<li>PLY Reader: Fix locking up when loading some binary files ( Thanks to  Peter Newman for the patch). closes 2141</li>
+</ul>
+
+
+<b>Unittests</b>
+<ul>
+<li>Added unittests for the normal calculation functions </li>
+</ul>
+
+<b>Build system</b>
+<ul>
+<li>Added OpenMesh finder. Closes 959</li>
 </ul>
 
 </tr>

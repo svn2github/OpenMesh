@@ -350,10 +350,6 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkipping) {
   EXPECT_EQ(8u, mesh_.n_vertices() )   << "Wrong number of vertices";
   EXPECT_EQ(12u, mesh_.n_faces() )     << "Wrong number of faces";
 
-
-  // Run over all halfedges
-  unsigned int heCounter = 0;
-
   mesh_.request_face_status();
   mesh_.request_vertex_status();
   mesh_.request_halfedge_status();
@@ -549,10 +545,6 @@ TEST_F(OpenMeshIterators, HalfedgeIterSkippingLowLevel) {
   EXPECT_EQ(36u, mesh_.n_halfedges() ) << "Wrong number of HalfEdges";
   EXPECT_EQ(8u, mesh_.n_vertices() )   << "Wrong number of vertices";
   EXPECT_EQ(12u, mesh_.n_faces() )     << "Wrong number of faces";
-
-
-  // Run over all halfedges
-  unsigned int heCounter = 0;
 
   mesh_.request_face_status();
   mesh_.request_vertex_status();

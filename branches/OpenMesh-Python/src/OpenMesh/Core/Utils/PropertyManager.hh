@@ -184,6 +184,13 @@ class PropertyManager {
             return std::move(pm);
         }
 
+        /**
+         * Included for backwards compatibility with non-C++11 version.
+         */
+        PropertyManager move() {
+            return std::move(*this);
+        }
+
 #else
         class Proxy {
             private:
@@ -202,6 +209,10 @@ class PropertyManager {
             mesh_ = 0;
             retain_ = true;
             return p;
+        }
+
+        Proxy move() {
+            return (Proxy)*this;
         }
 
         PropertyManager(Proxy p) : mesh_(p.mesh_), prop_(p.prop_), retain_(p.retain_), name_(p.name_) {}

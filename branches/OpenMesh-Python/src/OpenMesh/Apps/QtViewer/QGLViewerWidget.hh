@@ -48,7 +48,7 @@
 
 
 #include <OpenMesh/Core/Geometry/VectorT.hh>
-#include <QtOpenGL/qgl.h>
+#include <QGLWidget>
 #include <string>
 #include <vector>
 #include <map>

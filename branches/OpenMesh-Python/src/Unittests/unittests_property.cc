@@ -299,7 +299,6 @@ TEST_F(OpenMeshProperties, VertexPropertyCopypropertiesInt) {
   EXPECT_EQ( 1, mesh_.point(*v_it)[0] ) << "Invalid x position for vertex 3";
   EXPECT_EQ( 0, mesh_.point(*v_it)[1] ) << "Invalid y position for vertex 3";
   EXPECT_EQ( 0, mesh_.point(*v_it)[2] ) << "Invalid z position for vertex 3";
-  ++v_it;
 
   //===========================================================
   // Copy from vertex 1 to 0, with skipping build in properties
@@ -327,7 +326,6 @@ TEST_F(OpenMeshProperties, VertexPropertyCopypropertiesInt) {
   EXPECT_EQ( 1, mesh_.point(*v_it)[0] ) << "Invalid x position for vertex 3 after copy";
   EXPECT_EQ( 0, mesh_.point(*v_it)[1] ) << "Invalid y position for vertex 3 after copy";
   EXPECT_EQ( 0, mesh_.point(*v_it)[2] ) << "Invalid z position for vertex 3 after copy";
-  ++v_it;
 
   v_it = mesh_.vertices_begin();
   EXPECT_EQ( 1, mesh_.property(intHandle,*v_it) ) << "Invalid int value for vertex 0 after copy"; ++v_it;
@@ -361,7 +359,6 @@ TEST_F(OpenMeshProperties, VertexPropertyCopypropertiesInt) {
   EXPECT_EQ( 1, mesh_.point(*v_it)[0] ) << "Invalid x position for vertex 3 after copy";
   EXPECT_EQ( 1, mesh_.point(*v_it)[1] ) << "Invalid y position for vertex 3 after copy";
   EXPECT_EQ( 0, mesh_.point(*v_it)[2] ) << "Invalid z position for vertex 3 after copy";
-  ++v_it;
 
   v_it = mesh_.vertices_begin();
   EXPECT_EQ( 1, mesh_.property(intHandle,*v_it) ) << "Invalid int value for vertex 0 after copy"; ++v_it;
@@ -520,7 +517,6 @@ TEST_F(OpenMeshProperties, CopyAllPropertiesVertexAfterRemoveOfProperty) {
    EXPECT_EQ( 1, mesh_.point(*v_it)[0] ) << "Invalid x position for vertex 3";
    EXPECT_EQ( 0, mesh_.point(*v_it)[1] ) << "Invalid y position for vertex 3";
    EXPECT_EQ( 0, mesh_.point(*v_it)[2] ) << "Invalid z position for vertex 3";
-   ++v_it;
 
    //===========================================================
    // Copy from vertex 1 to 0, with skipping build in properties
@@ -548,7 +544,6 @@ TEST_F(OpenMeshProperties, CopyAllPropertiesVertexAfterRemoveOfProperty) {
    EXPECT_EQ( 1, mesh_.point(*v_it)[0] ) << "Invalid x position for vertex 3 after copy";
    EXPECT_EQ( 0, mesh_.point(*v_it)[1] ) << "Invalid y position for vertex 3 after copy";
    EXPECT_EQ( 0, mesh_.point(*v_it)[2] ) << "Invalid z position for vertex 3 after copy";
-   ++v_it;
 
    v_it = mesh_.vertices_begin();
    EXPECT_EQ( 1, mesh_.property(intHandle,*v_it) ) << "Invalid int value for vertex 0 after copy"; ++v_it;
@@ -582,7 +577,6 @@ TEST_F(OpenMeshProperties, CopyAllPropertiesVertexAfterRemoveOfProperty) {
    EXPECT_EQ( 1, mesh_.point(*v_it)[0] ) << "Invalid x position for vertex 3 after copy";
    EXPECT_EQ( 1, mesh_.point(*v_it)[1] ) << "Invalid y position for vertex 3 after copy";
    EXPECT_EQ( 0, mesh_.point(*v_it)[2] ) << "Invalid z position for vertex 3 after copy";
-   ++v_it;
 
    v_it = mesh_.vertices_begin();
    EXPECT_EQ( 1, mesh_.property(intHandle,*v_it) ) << "Invalid int value for vertex 0 after copy"; ++v_it;

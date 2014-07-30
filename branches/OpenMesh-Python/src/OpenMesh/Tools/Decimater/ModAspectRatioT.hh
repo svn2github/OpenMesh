@@ -80,7 +80,7 @@ template<class MeshT>
 class ModAspectRatioT: public ModBaseT<MeshT> {
   public:
 
-    DECIMATING_MODULE( ModAspectRatioT, MeshT, Roundness )
+    DECIMATING_MODULE( ModAspectRatioT, MeshT, AspectRatio )
     ;
 
     typedef typename Mesh::Scalar Scalar;

@@ -87,8 +87,8 @@ if (WIN32)
   # TODO: fillme
   # set (CPACK_NSIS_CONTACT "")
 
-  # Copy all shared Qt files to build binary dir
-  if ( NOT Q_WS_MAC)
+  # Copy all shared Qt files to build binary dir if we build openmesh with the apps
+  if ( NOT Q_WS_MAC AND BUILD_APPS)
       if (DEFINED QT_QMAKE_EXECUTABLE)
           SET (QTLIBLIST QtCore QtGui)
 

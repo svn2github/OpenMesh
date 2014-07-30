@@ -2,7 +2,7 @@
 
 /** \page subdivider_docu Sudivision Tools
 
-\section Overview
+\section OM_Subdivider_Overview Overview
 
 The %OpenMesh library provides a few tools for uniform and adaptive
 subdivision:
@@ -19,7 +19,7 @@ subdivision:
 -# Simple subdivision
   -# OpenMesh::Subdivider::Uniform::LongestEdgeT
 
-\section Usage
+\section OM_Subdivider_Usage Usage
 The subdividers directly work on an OpenMesh. The following example shows how to use them:
 
 \code

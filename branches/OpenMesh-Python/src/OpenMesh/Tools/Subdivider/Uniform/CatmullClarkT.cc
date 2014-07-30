@@ -113,18 +113,22 @@ CatmullClarkT<MeshType,RealType>::subdivide( MeshType& _m , size_t _n , const bo
     EdgeIter e_itr   = _m.edges_begin();
     EdgeIter e_end   = _m.edges_end();
     for ( ; e_itr != e_end; ++e_itr)
-      compute_midpoint( _m, *e_itr );
+      compute_midpoint( _m, *e_itr, _update_points );
 
-    // compute new positions for old vertices
-    VertexIter v_itr = _m.vertices_begin();
-    VertexIter v_end = _m.vertices_end();
-    for ( ; v_itr != v_end; ++v_itr)
-      update_vertex( _m, *v_itr );
+    // position updates activated?
+    if(_update_points)
+    {
+      // compute new positions for old vertices
+      VertexIter v_itr = _m.vertices_begin();
+      VertexIter v_end = _m.vertices_end();
+      for ( ; v_itr != v_end; ++v_itr)
+        update_vertex( _m, *v_itr );
 
-    // Commit changes in geometry
-    v_itr  = _m.vertices_begin();
-    for ( ; v_itr != v_end; ++v_itr)
-      _m.set_point(*v_itr, _m.property( vp_pos_, *v_itr ) );
+      // Commit changes in geometry
+      v_itr  = _m.vertices_begin();
+      for ( ; v_itr != v_end; ++v_itr)
+        _m.set_point(*v_itr, _m.property( vp_pos_, *v_itr ) );
+    }
 
     // Split each edge at midpoint stored in edge property ep_pos_;
     // Attention! Creating new edges, hence make sure the loop ends correctly.
@@ -283,7 +287,7 @@ CatmullClarkT<MeshType,RealType>::split_edge( MeshType& _m, const EdgeHandle& _e
 
 template <typename MeshType, typename RealType>
 void
-CatmullClarkT<MeshType,RealType>::compute_midpoint( MeshType& _m, const EdgeHandle& _eh)
+CatmullClarkT<MeshType,RealType>::compute_midpoint( MeshType& _m, const EdgeHandle& _eh, const bool _update_points)
 {
   HalfedgeHandle heh, opp_heh;
 
@@ -296,7 +300,7 @@ CatmullClarkT<MeshType,RealType>::compute_midpoint( MeshType& _m, const EdgeHand
 
   // boundary edge: just average vertex positions
   // this yields the [1/2 1/2] mask
-  if (_m.is_boundary(_eh) )
+  if (_m.is_boundary(_eh) || !_update_points)
   {
     pos *= 0.5;
   }

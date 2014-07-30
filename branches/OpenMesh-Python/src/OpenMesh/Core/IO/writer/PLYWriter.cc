@@ -231,8 +231,7 @@ bool
 _PLYWriter_::
 write_ascii(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
-  omlog() << "[PLYWriter] : write ascii file\n";
-
+  
   unsigned int i, nV, nF;
   Vec3f v, n;
   OpenMesh::Vec3ui c;
@@ -418,8 +417,7 @@ bool
 _PLYWriter_::
 write_binary(std::ostream& _out, BaseExporter& _be, Options _opt) const
 {
-  omlog() << "[PLYWriter] : write binary file\n";
-
+  
   unsigned int i, nV, nF;
   Vec3f v, n;
   Vec2f t;
@@ -537,7 +535,6 @@ binary_size(BaseExporter& _be, Options _opt) const
 {
   size_t header(0);
   size_t data(0);
-  size_t _3longs(3*sizeof(long));
   size_t _3floats(3*sizeof(float));
   size_t _3ui(3*sizeof(unsigned int));
   size_t _4ui(4*sizeof(unsigned int));
@@ -546,6 +543,9 @@ binary_size(BaseExporter& _be, Options _opt) const
     return 0;
   else
   {
+
+    size_t _3longs(3*sizeof(long));
+
     header += 11;                             // 'OFF BINARY\n'
     header += _3longs;                        // #V #F #E
     data   += _be.n_vertices() * _3floats;    // vertex data

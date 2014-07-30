@@ -81,7 +81,6 @@ McDecimaterT<Mesh>::McDecimaterT(Mesh& _mesh) :
   mesh_.request_halfedge_status();
   mesh_.request_edge_status();
   mesh_.request_face_status();
-  mesh_.request_face_normals();
 
 }
 
@@ -94,7 +93,6 @@ McDecimaterT<Mesh>::~McDecimaterT() {
   mesh_.release_edge_status();
   mesh_.release_halfedge_status();
   mesh_.release_face_status();
-  mesh_.release_face_normals();
 
 }
 
@@ -117,6 +115,8 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
 #ifdef WIN32
   RandomNumberGenerator randGen(mesh_.n_halfedges());
 #endif
+
+  const bool update_normals = mesh_.has_face_normals();
 
   while ( n_collapses <  _n_collapses) {
 
@@ -187,10 +187,13 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
       collapsesUnchanged = false;
 
       // update triangle normals
-      typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
-      for (; vf_it.is_valid(); ++vf_it)
-        if (!mesh_.status(*vf_it).deleted())
-          mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+      if (update_normals)
+      {
+        typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
+        for (; vf_it.is_valid(); ++vf_it)
+          if (!mesh_.status(*vf_it).deleted())
+            mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+      }
 
       // post-process collapse
       this->postprocess_collapse(ci);
@@ -239,6 +242,8 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 #ifdef WIN32
   RandomNumberGenerator randGen(mesh_.n_halfedges());
 #endif
+
+  const bool update_normals = mesh_.has_face_normals();
 
   while ((_nv < nv) && (_nf < nf)) {
 
@@ -320,11 +325,14 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
       noCollapses = 0;
       collapsesUnchanged = false;
 
-      // update triangle normals
-      typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
-      for (; vf_it.is_valid(); ++vf_it)
-        if (!mesh_.status(*vf_it).deleted())
-          mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+      if (update_normals)
+      {
+        // update triangle normals
+        typename Mesh::VertexFaceIter vf_it = mesh_.vf_iter(ci.v1);
+        for (; vf_it.is_valid(); ++vf_it)
+          if (!mesh_.status(*vf_it).deleted())
+            mesh_.set_normal(*vf_it, mesh_.calc_face_normal(*vf_it));
+      }
 
       // post-process collapse
       this->postprocess_collapse(ci);
