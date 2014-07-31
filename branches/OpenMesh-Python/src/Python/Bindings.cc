@@ -48,6 +48,8 @@ void expose_handles() {
 		.def(init<const BasePropHandleT<object>&>());
 	class_<FPropHandleT<object>, bases<BasePropHandleT<object> > >("FPropHandle", init<optional<int> >())
 		.def(init<const BasePropHandleT<object>&>());
+	class_<MPropHandleT<object>, bases<BasePropHandleT<object> > >("MPropHandle", init<optional<int> >())
+		.def(init<const BasePropHandleT<object>&>());
 }
 
 
