@@ -5,10 +5,17 @@
 #include "Python/Iterator.hh"
 #include "Python/Circulator.hh"
 
+#include <boost/python/stl_iterator.hpp>
+
 namespace OpenMesh {
 namespace Python {
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(garbage_collection_overloads, garbage_collection, 0, 3)
+
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_vertex_overloads, delete_vertex, 1, 2)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_edge_overloads, delete_edge, 1, 2)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_face_overloads, delete_face, 1, 2)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(is_boundary_overloads, is_boundary, 1, 2)
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(find_feature_edges_overloads, find_feature_edges, 0, 1)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(update_normal_overloads, update_normal, 1, 2)
@@ -153,7 +160,23 @@ void garbage_collection(Mesh& _mesh, list& _vh_to_update, list& _hh_to_update, l
 	_mesh.garbage_collection(vh_vector, hh_vector, fh_vector, _v, _e, _f);
 }
 
+/**
+ * Add a new face from a %Python list of vertex handles.
+ *
+ * @tparam Mesh A Mesh type.
+ *
+ * @param _vhandles The list of vertex handles.
+ */
+template<class Mesh>
+FaceHandle add_face(Mesh& _self, const list& _vhandles) {
+	stl_input_iterator<VertexHandle> begin(_vhandles);
+	stl_input_iterator<VertexHandle> end;
 
+	std::vector<VertexHandle> vector;
+	vector.insert(vector.end(), begin, end);
+
+	return _self.add_face(vector);
+}
 
 /**
  * This function template is used to expose mesh member functions that are only
@@ -174,21 +197,38 @@ void expose_type_specific_functions(Class& _class) {
  * Function template specialization for polygon meshes.
  */
 template <>
-void expose_type_specific_functions(class_<PolyMesh, bases<PolyConnectivity> >& _class) {
+void expose_type_specific_functions(class_<PolyMesh>& _class) {
 	typedef PolyMesh::Scalar Scalar;
 	typedef PolyMesh::Point  Point;
 	typedef PolyMesh::Normal Normal;
 	typedef PolyMesh::Color  Color;
 
-	void (PolyMesh::*split_fh_pt)(FaceHandle, const Point&) = &PolyMesh::split;
+	FaceHandle (PolyMesh::*add_face_3_vh)(VertexHandle, VertexHandle, VertexHandle              ) = &PolyMesh::add_face;
+	FaceHandle (PolyMesh::*add_face_4_vh)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &PolyMesh::add_face;
+	FaceHandle (*add_face_list)(PolyMesh&, const list&) = &add_face;
+
 	void (PolyMesh::*split_eh_pt)(EdgeHandle, const Point&) = &PolyMesh::split;
+	void (PolyMesh::*split_eh_vh)(EdgeHandle, VertexHandle) = &PolyMesh::split;
+	void (PolyMesh::*split_fh_pt)(FaceHandle, const Point&) = &PolyMesh::split;
+	void (PolyMesh::*split_fh_vh)(FaceHandle, VertexHandle) = &PolyMesh::split;
 
 	Normal (PolyMesh::*calc_face_normal_pt)(const Point&, const Point&, const Point&) const = &PolyMesh::calc_face_normal;
 
 	_class
-		.def("split", split_fh_pt)
+		.def("add_face", add_face_3_vh)
+		.def("add_face", add_face_4_vh)
+		.def("add_face", add_face_list)
+
 		.def("split", split_eh_pt)
+		.def("split", split_eh_vh)
+		.def("split", split_fh_pt)
+		.def("split", split_fh_vh)
+
+		.def("split_copy", &PolyMesh::split_copy)
+
 		.def("calc_face_normal", calc_face_normal_pt)
+
+		.def("insert_edge", &PolyMesh::insert_edge)
 		;
 }
 
@@ -196,32 +236,50 @@ void expose_type_specific_functions(class_<PolyMesh, bases<PolyConnectivity> >& 
  * Function template specialization for triangle meshes.
  */
 template <>
-void expose_type_specific_functions(class_<TriMesh, bases<TriConnectivity> >& _class) {
+void expose_type_specific_functions(class_<TriMesh>& _class) {
 	typedef TriMesh::Scalar Scalar;
 	typedef TriMesh::Point  Point;
 	typedef TriMesh::Normal Normal;
 	typedef TriMesh::Color  Color;
 
-//	HalfedgeHandle (TriMesh::*vertex_split_pt)(Point,        VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
-	HalfedgeHandle (TriMesh::*vertex_split_vh)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
+	FaceHandle (TriMesh::*add_face_3_vh)(VertexHandle, VertexHandle, VertexHandle) = &TriMesh::add_face;
+	FaceHandle (*add_face_list)(TriMesh&, const list&) = &add_face;
 
-	VertexHandle (TriMesh::*split_fh_pt)(FaceHandle, const Point&) = &TriMesh::split;
 	VertexHandle (TriMesh::*split_eh_pt)(EdgeHandle, const Point&) = &TriMesh::split;
+	void         (TriMesh::*split_eh_vh)(EdgeHandle, VertexHandle) = &TriMesh::split;
+	VertexHandle (TriMesh::*split_fh_pt)(FaceHandle, const Point&) = &TriMesh::split;
+	void         (TriMesh::*split_fh_vh)(FaceHandle, VertexHandle) = &TriMesh::split;
 
 	VertexHandle (TriMesh::*split_copy_eh_pt)(EdgeHandle, const Point&) = &TriMesh::split_copy;
 	void         (TriMesh::*split_copy_eh_vh)(EdgeHandle, VertexHandle) = &TriMesh::split_copy;
 	VertexHandle (TriMesh::*split_copy_fh_pt)(FaceHandle, const Point&) = &TriMesh::split_copy;
 	void         (TriMesh::*split_copy_fh_vh)(FaceHandle, VertexHandle) = &TriMesh::split_copy;
 
+	HalfedgeHandle (TriMesh::*vertex_split_pt)(Point,        VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
+	HalfedgeHandle (TriMesh::*vertex_split_vh)(VertexHandle, VertexHandle, VertexHandle, VertexHandle) = &TriMesh::vertex_split;
+
 	_class
-//		.def("vertex_split", vertex_split_pt)
-		.def("vertex_split", vertex_split_vh)
-		.def("split", split_fh_pt)
+		.def("add_face", add_face_3_vh)
+		.def("add_face", add_face_list)
+
 		.def("split", split_eh_pt)
+		.def("split", split_eh_vh)
+		.def("split", split_fh_pt)
+		.def("split", split_fh_vh)
+
 		.def("split_copy", split_copy_eh_pt)
 		.def("split_copy", split_copy_eh_vh)
 		.def("split_copy", split_copy_fh_pt)
 		.def("split_copy", split_copy_fh_vh)
+
+		.def("opposite_vh", &TriMesh::opposite_vh)
+		.def("opposite_he_opposite_vh", &TriMesh::opposite_he_opposite_vh)
+
+		.def("vertex_split", vertex_split_pt)
+		.def("vertex_split", vertex_split_vh)
+
+		.def("is_flip_ok", &TriMesh::is_flip_ok)
+		.def("flip", &TriMesh::flip)
 		;
 }
 
@@ -230,12 +288,10 @@ void expose_type_specific_functions(class_<TriMesh, bases<TriConnectivity> >& _c
  * Expose a mesh type to %Python.
  *
  * @tparam Mesh A mesh type.
- * @tparam Connectivity The appropriate connectivity type (e.g. TriConnectivity
- * for triangle meshes).
  *
  * @param _name The name of the mesh type to be exposed.
  */
-template <class Mesh, class Connectivity>
+template <class Mesh>
 void expose_mesh(const char *_name) {
 	using OpenMesh::Attributes::StatusInfo;
 
@@ -406,6 +462,20 @@ void expose_mesh(const char *_name) {
 	//  PolyConnectivity Function Pointers
 	//======================================================================
 
+	// Vertex and face valence
+	unsigned int (Mesh::*valence_vh)(VertexHandle) const = &Mesh::valence;
+	unsigned int (Mesh::*valence_fh)(FaceHandle  ) const = &Mesh::valence;
+
+	// Triangulate face or mesh
+	void (Mesh::*triangulate_fh  )(FaceHandle) = &Mesh::triangulate;
+	void (Mesh::*triangulate_void)(          ) = &Mesh::triangulate;
+
+	// Deleting mesh items and other connectivity/topology modifications
+	void (Mesh::*delete_vertex)(VertexHandle, bool) = &Mesh::delete_vertex;
+	void (Mesh::*delete_edge  )(EdgeHandle,   bool) = &Mesh::delete_edge;
+	void (Mesh::*delete_face  )(FaceHandle,   bool) = &Mesh::delete_face;
+
+	// Vertex and Face circulators
 	CirculatorWrapperT<typename Mesh::VertexVertexIter,    VertexHandle  > (*vv )(Mesh&, VertexHandle  ) = &get_circulator;
 	CirculatorWrapperT<typename Mesh::VertexIHalfedgeIter, VertexHandle  > (*vih)(Mesh&, VertexHandle  ) = &get_circulator;
 	CirculatorWrapperT<typename Mesh::VertexOHalfedgeIter, VertexHandle  > (*voh)(Mesh&, VertexHandle  ) = &get_circulator;
@@ -416,6 +486,18 @@ void expose_mesh(const char *_name) {
 	CirculatorWrapperT<typename Mesh::FaceEdgeIter,        FaceHandle    > (*fe )(Mesh&, FaceHandle    ) = &get_circulator;
 	CirculatorWrapperT<typename Mesh::FaceFaceIter,        FaceHandle    > (*ff )(Mesh&, FaceHandle    ) = &get_circulator;
 	CirculatorWrapperT<typename Mesh::HalfedgeLoopIter,    HalfedgeHandle> (*hl )(Mesh&, HalfedgeHandle) = &get_circulator;
+
+	// Boundary and manifold tests
+	bool (Mesh::*is_boundary_hh)(HalfedgeHandle  ) const = &Mesh::is_boundary;
+	bool (Mesh::*is_boundary_eh)(EdgeHandle      ) const = &Mesh::is_boundary;
+	bool (Mesh::*is_boundary_vh)(VertexHandle    ) const = &Mesh::is_boundary;
+	bool (Mesh::*is_boundary_fh)(FaceHandle, bool) const = &Mesh::is_boundary;
+
+	// Generic handle derefertiation
+	const typename Mesh::Vertex&   (Mesh::*deref_vh)(VertexHandle  ) const = &Mesh::deref;
+	const typename Mesh::Halfedge& (Mesh::*deref_hh)(HalfedgeHandle) const = &Mesh::deref;
+	const typename Mesh::Edge&     (Mesh::*deref_eh)(EdgeHandle    ) const = &Mesh::deref;
+	const typename Mesh::Face&     (Mesh::*deref_fh)(FaceHandle    ) const = &Mesh::deref;
 
 	//======================================================================
 	//  PolyMeshT Function Pointers
@@ -460,7 +542,7 @@ void expose_mesh(const char *_name) {
 	//  Mesh Type
 	//======================================================================
 
-	class_<Mesh, bases<Connectivity> > class_mesh(_name);
+	class_<Mesh> class_mesh(_name);
 
 	class_mesh
 
@@ -677,6 +759,28 @@ void expose_mesh(const char *_name) {
 		//  PolyConnectivity
 		//======================================================================
 
+		.def("opposite_face_handle", &Mesh::opposite_face_handle)
+		.def("adjust_outgoing_halfedge", &Mesh::adjust_outgoing_halfedge)
+		.def("find_halfedge", &Mesh::find_halfedge)
+		.def("valence", valence_vh)
+		.def("valence", valence_fh)
+		.def("collapse", &Mesh::collapse)
+		.def("is_simple_link", &Mesh::is_simple_link)
+		.def("is_simply_connected", &Mesh::is_simply_connected)
+		.def("remove_edge", &Mesh::remove_edge)
+		.def("reinsert_edge", &Mesh::reinsert_edge)
+		.def("triangulate", triangulate_fh)
+		.def("triangulate", triangulate_void)
+		.def("split_edge", &Mesh::split_edge)
+		.def("split_edge_copy", &Mesh::split_edge_copy)
+
+		.def("add_vertex", &Mesh::add_vertex)
+
+		.def("is_collapse_ok",  &Mesh::is_collapse_ok)
+		.def("delete_vertex", delete_vertex, delete_vertex_overloads())
+		.def("delete_edge", delete_edge, delete_edge_overloads())
+		.def("delete_face", delete_face, delete_face_overloads())
+
 		.def("vv", vv)
 		.def("vih", vih)
 		.def("voh", voh)
@@ -689,6 +793,25 @@ void expose_mesh(const char *_name) {
 		.def("ff", ff)
 
 		.def("hl", hl)
+
+		.def("is_boundary", is_boundary_hh)
+		.def("is_boundary", is_boundary_eh)
+		.def("is_boundary", is_boundary_vh)
+		.def("is_boundary", is_boundary_fh, is_boundary_overloads())
+		.def("is_manifold", &Mesh::is_manifold)
+
+		.def("deref", deref_vh, return_value_policy<reference_existing_object>())
+		.def("deref", deref_hh, return_value_policy<reference_existing_object>())
+		.def("deref", deref_eh, return_value_policy<reference_existing_object>())
+		.def("deref", deref_fh, return_value_policy<reference_existing_object>())
+
+		.def("is_triangles", &Mesh::is_triangles)
+		.staticmethod("is_triangles")
+
+		.def_readonly("InvalidVertexHandle", &Mesh::InvalidVertexHandle)
+		.def_readonly("InvalidHalfedgeHandle", &Mesh::InvalidHalfedgeHandle)
+		.def_readonly("InvalidEdgeHandle", &Mesh::InvalidEdgeHandle)
+		.def_readonly("InvalidFaceHandle", &Mesh::InvalidFaceHandle)
 
 		//======================================================================
 		//  PolyMeshT

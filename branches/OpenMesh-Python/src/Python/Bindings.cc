@@ -1,6 +1,5 @@
 #include "Python/Bindings.hh"
 #include "Python/Vector.hh"
-#include "Python/Connectivity.hh"
 #include "Python/Mesh.hh"
 #include "Python/Iterator.hh"
 #include "Python/Circulator.hh"
@@ -109,11 +108,8 @@ BOOST_PYTHON_MODULE(openmesh) {
 	expose_vec<double, 3>("Vec3d");
 	expose_vec<double, 4>("Vec4d");
 
-	expose_poly_connectivity();
-	expose_tri_connectivity();
-
-	expose_mesh<PolyMesh, PolyConnectivity>("PolyMesh");
-	expose_mesh<TriMesh, TriConnectivity>("TriMesh");
+	expose_mesh<PolyMesh>("PolyMesh");
+	expose_mesh<TriMesh>("TriMesh");
 
 	expose_iterator<OpenMesh::PolyConnectivity::VertexIter, &OpenMesh::ArrayKernel::n_vertices>("VertexIter");
 	expose_iterator<OpenMesh::PolyConnectivity::HalfedgeIter, &OpenMesh::ArrayKernel::n_halfedges>("HalfedgeIter");

@@ -25,7 +25,7 @@ class PropertyManagerWrapperT : public Manager {
 		/**
 		 * Constructor
 		 */
-		PropertyManagerWrapperT() : Manager() { }
+		PropertyManagerWrapperT() : Manager() {}
 
 		/**
 		 * Constructor
@@ -95,6 +95,14 @@ class PropertyManagerWrapperT : public Manager {
 				PyErr_Clear();
 			}
 		}
+
+		/**
+		 *
+		 */
+		template <class Mesh>
+		static bool property_exists(Mesh& _mesh, const char *_propname) {
+			return Manager::propertyExists(_mesh, _propname);
+		}
 };
 
 /**
@@ -122,9 +130,13 @@ void expose_property_manager(const char *_name) {
 	// Member function pointer
 	void (PropertyManagerWrapper::*set_range)(Iterator, object) = &PropertyManagerWrapper::set_range;
 
+	bool (*property_exists_poly)(PolyMesh&, const char *) = &PropertyManagerWrapper::property_exists;
+	bool (*property_exists_tri )(TriMesh&,  const char *) = &PropertyManagerWrapper::property_exists;
+
 	// Expose PropertyManager type
 	class_<PropertyManagerWrapper, boost::noncopyable>(_name)
-		.def(init<PolyConnectivity&, const char *, optional<bool> >())
+		.def(init<PolyMesh&, const char *, optional<bool> >())
+		.def(init<TriMesh&,  const char *, optional<bool> >())
 
 		.def("swap", &PropertyManagerWrapper::swap)
 		.def("is_valid", &PropertyManagerWrapper::isValid)
@@ -144,11 +156,9 @@ void expose_property_manager(const char *_name) {
 
 		.def("set_range", set_range)
 
-		.def("property_exists", &PropertyManagerWrapper::propertyExists)
+		.def("property_exists", property_exists_poly)
+		.def("property_exists", property_exists_tri)
 		.staticmethod("property_exists")
-
-		.def("create_if_not_exists", &PropertyManagerWrapper::createIfNotExists)
-		.staticmethod("create_if_not_exists")
 		;
 }
 
