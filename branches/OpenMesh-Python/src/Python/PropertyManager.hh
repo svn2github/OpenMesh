@@ -7,103 +7,76 @@
 namespace OpenMesh {
 namespace Python {
 
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(retain_overloads, retain, 0, 1)
+
 /**
- * Wrapper for property managers.
+ * Implementation of %Python's \_\_getitem\_\_ magic method.
  *
- * This class template is used to wrap property managers for %Python. It
- * inherits from it's first template parameter (a property manager) and
- * implements functions that are required by %Python but not provided by
- * property manager types.
+ * @tparam PropertyManager A property manager type.
+ * @tparam IndexHandle The appropriate handle type.
  *
- * @tparam Manager A property manager type.
- * @tparam IndexHandle The appropriate index handle type.
+ * @param _self The property manager instance that is to be used.
+ * @param _handle The index of the property value to be returned.
+ *
+ * @return The requested property value.
  */
-template <class Manager, class IndexHandle>
-class PropertyManagerWrapperT : public Manager {
-	public:
+template <class PropertyManager, class IndexHandle>
+object propman_get_item(PropertyManager& _self, IndexHandle _handle) {
+	return _self[_handle];
+}
 
-		/**
-		 * Constructor
-		 */
-		PropertyManagerWrapperT() : Manager() {}
+/**
+ * Implementation of %Python's \_\_setitem\_\_ magic method.
+ *
+ * @tparam PropertyManager A property manager type.
+ * @tparam IndexHandle The appropriate handle type.
+ *
+ * @param _self The property manager instance that is to be used.
+ * @param _handle The index of the property value to be set.
+ * @param _value The property value to be set.
+ */
+template <class PropertyManager, class IndexHandle>
+void propman_set_item(PropertyManager& _self, IndexHandle _handle, object _value) {
+	_self[_handle] = _value;
+}
 
-		/**
-		 * Constructor
-		 */
-		PropertyManagerWrapperT(PolyConnectivity &_mesh, const char *_propname, bool _existing = false) :
-			Manager(_mesh, _propname, _existing) {
+/**
+ * Conveniently set the property value for an entire range of mesh items
+ * using a %Python iterator.
+ *
+ * @tparam PropertyManager A property manager type.
+ * @tparam Iterator A %Python iterator type.
+ *
+ * @param _self The property manager instance that is to be used.
+ * @param _it An iterator that iterates over the items in the range.
+ * @param _value The value the range will be set to.
+ */
+template <class PropertyManager, class Iterator>
+void propman_set_range(PropertyManager& _self, Iterator _it, object _value) {
+	try {
+		while (true) {
+			_self[_it.next()] = _value;
 		}
+	}
+	catch (error_already_set exception) {
+		// This is expected behavior
+		PyErr_Clear();
+	}
+}
 
-		/**
-		 * Thin wrapper for Manager::retain.
-		 *
-		 * This wrapper function is required because Manager::retain has default
-		 * arguments and therefore cannot be exposed directly.
-		 */
-		void retain_void() {
-			Manager::retain();
-		}
-
-		/**
-		 * Thin wrapper for Manager::retain.
-		 *
-		 * This wrapper function is required because Manager::retain has default
-		 * arguments and therefore cannot be exposed directly.
-		 */
-		void retain_bool(bool _retain) {
-			Manager::retain(_retain);
-		}
-
-		/**
-		 * Implementation of %Python's \_\_getitem\_\_ magic method.
-		 *
-		 * @param _handle A handle of the appropriate handle type.
-		 * @return The requested property value.
-		 */
-		object getitem(IndexHandle _handle) const {
-			return (*this)[_handle];
-		}
-
-		/**
-		 * Implementation of %Python's \_\_setitem\_\_ magic method.
-		 *
-		 * @param _handle A handle of the appropriate handle type.
-		 * @param _value The property value to be set.
-		 */
-		void setitem(IndexHandle _handle, object _value) {
-			(*this)[_handle] = _value;
-		}
-
-		/**
-		 * Conveniently set the property value for an entire range of mesh items
-		 * using a %Python iterator.
-		 *
-		 * @tparam Iterator A %Python iterator.
-		 *
-		 * @param _it An iterator that iterates over the items in the range.
-		 * @param _value The value the range will be set to.
-		 */
-		template <class Iterator>
-		void set_range(Iterator _it, object _value) {
-			try {
-				while (true) {
-					(*this)[_it.next()] = _value;
-				}
-			}
-			catch (error_already_set exception) {
-				// This is expected behavior
-				PyErr_Clear();
-			}
-		}
-
-		/**
-		 *
-		 */
-		template <class Mesh>
-		static bool property_exists(Mesh& _mesh, const char *_propname) {
-			return Manager::propertyExists(_mesh, _propname);
-		}
-};
+/**
+ * Thin wrapper for propertyExists.
+ *
+ * @tparam PropertyManager A property manager type.
+ * @tparam Mesh A mesh type.
+ *
+ * @param _mesh The mesh that is used to check if the property exists.
+ * @param _propname The name of the property.
+ */
+template <class PropertyManager, class Mesh>
+bool property_exists(Mesh& _mesh, const char *_propname) {
+	return PropertyManager::propertyExists(_mesh, _propname);
+}
 
 /**
  * Expose a property manager type to %Python.
@@ -113,46 +86,48 @@ class PropertyManagerWrapperT : public Manager {
  * type.
  *
  * @tparam PropHandle A property handle type (e.g. %VPropHandle\<object\>).
- * @tparam IndexHandle The appropriate index handle type (e.g. %VertexHandle for
+ * @tparam IndexHandle The appropriate handle type (e.g. %VertexHandle for
  * %VPropHandle\<object\>).
+ * @tparam Iterator A %Python iterator type. This type is used to instantiate
+ * the propman_set_range function.
  *
  * @param _name The name of the property manager type to be exposed.
- *
- * @note Property managers are wrapped by PropertyManagerWrapperT before they
- * are exposed to %Python, i.e. they are not exposed directly.
  */
 template <class PropHandle, class IndexHandle, class Iterator>
 void expose_property_manager(const char *_name) {
-	// Convenience typedefs
+	// Convenience typedef
 	typedef PropertyManager<PropHandle, PolyConnectivity> PropertyManager;
-	typedef PropertyManagerWrapperT<PropertyManager, IndexHandle> PropertyManagerWrapper;
 
-	// Member function pointer
-	void (PropertyManagerWrapper::*set_range)(Iterator, object) = &PropertyManagerWrapper::set_range;
+	// Function pointers
+	void (PropertyManager::*retain)(bool) = &PropertyManager::retain;
 
-	bool (*property_exists_poly)(PolyMesh&, const char *) = &PropertyManagerWrapper::property_exists;
-	bool (*property_exists_tri )(TriMesh&,  const char *) = &PropertyManagerWrapper::property_exists;
+	object (*getitem)(PropertyManager&, IndexHandle        ) = &propman_get_item;
+	void   (*setitem)(PropertyManager&, IndexHandle, object) = &propman_set_item;
 
-	// Expose PropertyManager type
-	class_<PropertyManagerWrapper, boost::noncopyable>(_name)
+	void (*set_range)(PropertyManager&, Iterator, object) = &propman_set_range;
+
+	bool (*property_exists_poly)(PolyMesh&, const char *) = &property_exists<PropertyManager, PolyMesh>;
+	bool (*property_exists_tri )(TriMesh&,  const char *) = &property_exists<PropertyManager, TriMesh >;
+
+	// Expose property manager
+	class_<PropertyManager, boost::noncopyable>(_name)
 		.def(init<PolyMesh&, const char *, optional<bool> >())
 		.def(init<TriMesh&,  const char *, optional<bool> >())
 
-		.def("swap", &PropertyManagerWrapper::swap)
-		.def("is_valid", &PropertyManagerWrapper::isValid)
+		.def("swap", &PropertyManager::swap)
+		.def("is_valid", &PropertyManager::isValid)
 
-		.def("__bool__", &PropertyManagerWrapper::operator bool)
-		.def("__nonzero__", &PropertyManagerWrapper::operator bool)
+		.def("__bool__", &PropertyManager::operator bool)
+		.def("__nonzero__", &PropertyManager::operator bool)
 
-		.def("get_raw_property", &PropertyManagerWrapper::getRawProperty, return_value_policy<copy_const_reference>())
-		.def("get_name", &PropertyManagerWrapper::getName, return_value_policy<copy_const_reference>())
-		.def("get_mesh", &PropertyManagerWrapper::getMesh, return_value_policy<reference_existing_object>())
+		.def("get_raw_property", &PropertyManager::getRawProperty, return_value_policy<copy_const_reference>())
+		.def("get_name", &PropertyManager::getName, return_value_policy<copy_const_reference>())
+		.def("get_mesh", &PropertyManager::getMesh, return_value_policy<reference_existing_object>())
 
-		.def("retain", &PropertyManagerWrapper::retain_void)
-		.def("retain", &PropertyManagerWrapper::retain_bool)
+		.def("retain", retain, retain_overloads())
 
-		.def("__getitem__", &PropertyManagerWrapper::getitem)
-		.def("__setitem__", &PropertyManagerWrapper::setitem)
+		.def("__getitem__", getitem)
+		.def("__setitem__", setitem)
 
 		.def("set_range", set_range)
 
