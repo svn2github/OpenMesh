@@ -93,6 +93,20 @@ void set_property(Mesh& _mesh, PropHandle _ph, const object& _value) {
 }
 
 /**
+ * Thin wrapper for assign_connectivity.
+ *
+ * @tparam Mesh A mesh type.
+ * @tparam OtherMesh A mesh type.
+ *
+ * @param _self The mesh instance that is to be used.
+ * @param _other The mesh from which the connectivity is to be copied.
+ */
+template <class Mesh, class OtherMesh>
+void assign_connectivity(Mesh& _self, const OtherMesh& _other) {
+	_self.assign_connectivity(_other);
+}
+
+/**
  * Get an iterator.
  */
 template <class Mesh, class Iterator, size_t (ArrayKernel::*n_items)() const>
@@ -459,6 +473,10 @@ void expose_mesh(const char *_name) {
 	//  PolyConnectivity Function Pointers
 	//======================================================================
 
+	// Assign connectivity
+	void (*assign_connectivity_poly)(Mesh&, const PolyMesh&) = &assign_connectivity;
+	void (*assign_connectivity_tri )(Mesh&, const TriMesh& ) = &assign_connectivity;
+
 	// Vertex and face valence
 	unsigned int (Mesh::*valence_vh)(VertexHandle) const = &Mesh::valence;
 	unsigned int (Mesh::*valence_fh)(FaceHandle  ) const = &Mesh::valence;
@@ -761,6 +779,9 @@ void expose_mesh(const char *_name) {
 		//======================================================================
 		//  PolyConnectivity
 		//======================================================================
+
+		.def("assign_connectivity", assign_connectivity_poly)
+		.def("assign_connectivity", assign_connectivity_tri)
 
 		.def("opposite_face_handle", &Mesh::opposite_face_handle)
 		.def("adjust_outgoing_halfedge", &Mesh::adjust_outgoing_halfedge)
