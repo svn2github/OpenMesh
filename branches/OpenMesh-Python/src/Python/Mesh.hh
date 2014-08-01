@@ -11,6 +11,7 @@ namespace OpenMesh {
 namespace Python {
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(garbage_collection_overloads, garbage_collection, 0, 3)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(add_property_overloads, add_property, 1, 2)
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(copy_all_properties_overloads, copy_all_properties, 2, 3)
 
@@ -27,54 +28,41 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(calc_halfedge_normal_overloads, calc_half
 /**
  * Set the status of an item.
  *
+ * @tparam Mesh A mesh type.
+ * @tparam PropHandle A handle type.
+ *
+ * @param _self The mesh instance that is to be used.
+ * @param _h The handle of the item whose status is to be set.
+ * @param _info The status to be set.
+ *
  * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::status may
  * return by value instead of reference. This function ensures that the
  * status of an item can be changed nonetheless.
  */
 template <class Mesh, class IndexHandle>
-void set_status(Mesh& _mesh, IndexHandle _h, const OpenMesh::Attributes::StatusInfo& _info) {
-	_mesh.status(_h) = _info;
+void set_status(Mesh& _self, IndexHandle _h, const OpenMesh::Attributes::StatusInfo& _info) {
+	_self.status(_h) = _info;
 }
 
 /**
- * Thin wrapper for Mesh::add_property.
+ * Set the value of a property of an item.
  *
+ * @tparam Mesh A mesh type.
  * @tparam PropHandle A property handle type.
+ * @tparam IndexHandle The appropriate handle type.
  *
- * This wrapper function is required because Mesh::add_property has
- * default arguments and therefore cannot be exposed directly.
- */
-template <class Mesh, class PropHandle>
-void add_property_ph(Mesh& _mesh, PropHandle& _ph) {
-	_mesh.add_property(_ph);
-}
-
-/**
- * Thin wrapper for Mesh::add_property.
- *
- * @tparam PropHandle A property handle type.
- *
- * This wrapper function is required because Mesh::add_property has
- * default arguments and therefore cannot be exposed directly.
- */
-template <class Mesh, class PropHandle>
-void add_property_ph_str(Mesh& _mesh, PropHandle& _ph, const std::string& _name) {
-	_mesh.add_property(_ph, _name);
-}
-
-/**
- * Set the property value for the item represented by the handle.
- *
- * @tparam PropHandle A property handle type.
- * @tparam IndexHandle The appropriate index handle type.
+ * @param _self The mesh instance that is to be used.
+ * @param _ph The property that is to be set.
+ * @param _h The handle of the item whose property is to be set.
+ * @param _value The value to be set.
  *
  * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::property may
  * return by value instead of reference. This function ensures that the
  * property value of an item can be changed nonetheless.
  */
 template <class Mesh, class PropHandle, class IndexHandle>
-void set_property(Mesh& _mesh, PropHandle _ph, IndexHandle _h, const object& _value) {
-	_mesh.property(_ph, _h) = _value;
+void set_property(Mesh& _self, PropHandle _ph, IndexHandle _h, const object& _value) {
+	_self.property(_ph, _h) = _value;
 }
 
 /**
@@ -83,13 +71,17 @@ void set_property(Mesh& _mesh, PropHandle _ph, IndexHandle _h, const object& _va
  * @tparam Mesh A mesh type.
  * @tparam PropHandle A property handle type.
  *
+ * @param _self The mesh instance that is to be used.
+ * @param _ph The property that is to be set.
+ * @param _value The value to be set.
+ *
  * Depending on @ref OPENMESH_PYTHON_DEFAULT_POLICY, Mesh::property may
  * return by value instead of reference. This function ensures that the
  * property value of an item can be changed nonetheless.
  */
 template <class Mesh, class PropHandle>
-void set_property(Mesh& _mesh, PropHandle _ph, const object& _value) {
-	_mesh.property(_ph) = _value;
+void set_property(Mesh& _self, PropHandle _ph, const object& _value) {
+	_self.property(_ph) = _value;
 }
 
 /**
@@ -110,30 +102,40 @@ void assign_connectivity(Mesh& _self, const OtherMesh& _other) {
  * Get an iterator.
  */
 template <class Mesh, class Iterator, size_t (ArrayKernel::*n_items)() const>
-IteratorWrapperT<Iterator, n_items> get_iterator(Mesh& _mesh) {
-	return IteratorWrapperT<Iterator, n_items>(_mesh, typename Iterator::value_type(0));
+IteratorWrapperT<Iterator, n_items> get_iterator(Mesh& _self) {
+	return IteratorWrapperT<Iterator, n_items>(_self, typename Iterator::value_type(0));
 }
 
 /**
  * Get a skipping iterator.
  */
 template <class Mesh, class Iterator, size_t (ArrayKernel::*n_items)() const>
-IteratorWrapperT<Iterator, n_items> get_skipping_iterator(Mesh& _mesh) {
-	return IteratorWrapperT<Iterator, n_items>(_mesh, typename Iterator::value_type(0), true);
+IteratorWrapperT<Iterator, n_items> get_skipping_iterator(Mesh& _self) {
+	return IteratorWrapperT<Iterator, n_items>(_self, typename Iterator::value_type(0), true);
 }
 
 /**
  * Get a circulator.
+ *
+ * @tparam Mesh A Mesh type.
+ * @tparam Circulator A circulator type.
+ * @tparam CenterEntityHandle The appropriate handle type.
+ *
+ * @param _self The mesh instance that is to be used.
+ * @param _handle The handle of the item to circulate around.
  */
 template <class Mesh, class Circulator, class CenterEntityHandle>
-CirculatorWrapperT<Circulator, CenterEntityHandle> get_circulator(Mesh& _mesh, CenterEntityHandle _handle) {
-	return CirculatorWrapperT<Circulator, CenterEntityHandle>(_mesh, _handle);
+CirculatorWrapperT<Circulator, CenterEntityHandle> get_circulator(Mesh& _self, CenterEntityHandle _handle) {
+	return CirculatorWrapperT<Circulator, CenterEntityHandle>(_self, _handle);
 }
 
 /**
  * Garbage collection using lists instead of vectors to keep track of a set of
  * handles.
  *
+ * @tparam Mesh A Mesh type.
+ *
+ * @param _self The mesh instance that is to be used.
  * @param _vh_to_update The list of vertex handles to be updated.
  * @param _hh_to_update The list of halfedge handles to be updated.
  * @param _fh_to_update The list of face handles to be updated.
@@ -142,7 +144,7 @@ CirculatorWrapperT<Circulator, CenterEntityHandle> get_circulator(Mesh& _mesh, C
  * @param _f Remove deleted faces?
  */
 template <class Mesh>
-void garbage_collection(Mesh& _mesh, list& _vh_to_update, list& _hh_to_update, list& _fh_to_update, bool _v = true, bool _e = true, bool _f = true) {
+void garbage_collection(Mesh& _self, list& _vh_to_update, list& _hh_to_update, list& _fh_to_update, bool _v = true, bool _e = true, bool _f = true) {
 	// Convert list of handles to vector of pointers
 	stl_input_iterator<VertexHandle*> vh_begin(_vh_to_update);
 	stl_input_iterator<VertexHandle*> vh_end;
@@ -162,7 +164,7 @@ void garbage_collection(Mesh& _mesh, list& _vh_to_update, list& _hh_to_update, l
 	fh_vector.insert(fh_vector.end(), fh_begin, fh_end);
 
 	// Call garbage collection
-	_mesh.garbage_collection(vh_vector, hh_vector, fh_vector, _v, _e, _f);
+	_self.garbage_collection(vh_vector, hh_vector, fh_vector, _v, _e, _f);
 }
 
 /**
@@ -170,6 +172,7 @@ void garbage_collection(Mesh& _mesh, list& _vh_to_update, list& _hh_to_update, l
  *
  * @tparam Mesh A Mesh type.
  *
+ * @param _self The mesh instance that is to be used.
  * @param _vhandles The list of vertex handles.
  */
 template<class Mesh>
@@ -394,19 +397,12 @@ void expose_mesh(const char *_name) {
 	void (*set_status_eh)(Mesh&, EdgeHandle,     const StatusInfo&) = &set_status;
 	void (*set_status_fh)(Mesh&, FaceHandle,     const StatusInfo&) = &set_status;
 
-	// Property management - add property (1/2)
-	void (*add_property_vph)(Mesh&, VPropHandleT<object>&) = &add_property_ph;
-	void (*add_property_eph)(Mesh&, EPropHandleT<object>&) = &add_property_ph;
-	void (*add_property_hph)(Mesh&, HPropHandleT<object>&) = &add_property_ph;
-	void (*add_property_fph)(Mesh&, FPropHandleT<object>&) = &add_property_ph;
-	void (*add_property_mph)(Mesh&, MPropHandleT<object>&) = &add_property_ph;
-
-	// Property management - add property (2/2)
-	void (*add_property_vph_str)(Mesh&, VPropHandleT<object>&, const std::string&) = &add_property_ph_str;
-	void (*add_property_eph_str)(Mesh&, EPropHandleT<object>&, const std::string&) = &add_property_ph_str;
-	void (*add_property_hph_str)(Mesh&, HPropHandleT<object>&, const std::string&) = &add_property_ph_str;
-	void (*add_property_fph_str)(Mesh&, FPropHandleT<object>&, const std::string&) = &add_property_ph_str;
-	void (*add_property_mph_str)(Mesh&, MPropHandleT<object>&, const std::string&) = &add_property_ph_str;
+	// Property management - add property
+	void (Mesh::*add_property_vph)(VPropHandleT<object>&, const std::string&) = &Mesh::add_property;
+	void (Mesh::*add_property_eph)(EPropHandleT<object>&, const std::string&) = &Mesh::add_property;
+	void (Mesh::*add_property_hph)(HPropHandleT<object>&, const std::string&) = &Mesh::add_property;
+	void (Mesh::*add_property_fph)(FPropHandleT<object>&, const std::string&) = &Mesh::add_property;
+	void (Mesh::*add_property_mph)(MPropHandleT<object>&, const std::string&) = &Mesh::add_property;
 
 	// Property management - remove property
 	void (Mesh::*remove_property_vph)(VPropHandleT<object>&) = &Mesh::remove_property;
@@ -711,16 +707,11 @@ void expose_mesh(const char *_name) {
 		.def("has_face_status", &Mesh::has_face_status)
 		.def("has_face_texture_index", &Mesh::has_face_texture_index)
 
-		.def("add_property", add_property_vph)
-		.def("add_property", add_property_vph_str)
-		.def("add_property", add_property_eph)
-		.def("add_property", add_property_eph_str)
-		.def("add_property", add_property_hph)
-		.def("add_property", add_property_hph_str)
-		.def("add_property", add_property_fph)
-		.def("add_property", add_property_fph_str)
-		.def("add_property", add_property_mph)
-		.def("add_property", add_property_mph_str)
+		.def("add_property", add_property_vph, add_property_overloads())
+		.def("add_property", add_property_eph, add_property_overloads())
+		.def("add_property", add_property_hph, add_property_overloads())
+		.def("add_property", add_property_fph, add_property_overloads())
+		.def("add_property", add_property_mph, add_property_overloads())
 
 		.def("remove_property", remove_property_vph)
 		.def("remove_property", remove_property_eph)
