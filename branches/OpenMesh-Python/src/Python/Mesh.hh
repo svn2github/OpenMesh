@@ -12,6 +12,8 @@ namespace Python {
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(garbage_collection_overloads, garbage_collection, 0, 3)
 
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(copy_all_properties_overloads, copy_all_properties, 2, 3)
+
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_vertex_overloads, delete_vertex, 1, 2)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_edge_overloads, delete_edge, 1, 2)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(delete_face_overloads, delete_face, 1, 2)
@@ -88,32 +90,6 @@ void set_property(Mesh& _mesh, PropHandle _ph, IndexHandle _h, const object& _va
 template <class Mesh, class PropHandle>
 void set_property(Mesh& _mesh, PropHandle _ph, const object& _value) {
 	_mesh.property(_ph) = _value;
-}
-
-/**
- * Thin wrapper for Mesh::copy_all_properties.
- *
- * @tparam IndexHandle A mesh item handle type.
- *
- * This wrapper function is required because Mesh::copy_all_properties
- * has default arguments and therefore cannot be exposed directly.
- */
-template <class Mesh, class IndexHandle>
-void copy_all_properties_ih_ih(Mesh& _mesh, IndexHandle _from, IndexHandle _to) {
-	_mesh.copy_all_properties(_from, _to);
-}
-
-/**
- * Thin wrapper for Mesh::copy_all_properties.
- *
- * @tparam IndexHandle A mesh item handle type.
- *
- * This wrapper function is required because Mesh::copy_all_properties
- * has default arguments and therefore cannot be exposed directly.
- */
-template <class Mesh, class IndexHandle>
-void copy_all_properties_ih_ih_bool(Mesh& _mesh, IndexHandle _from, IndexHandle _to, bool _copyBuildIn) {
-	_mesh.copy_all_properties(_from, _to, _copyBuildIn);
 }
 
 /**
@@ -467,17 +443,17 @@ void expose_mesh(const char *_name) {
 	//  BaseKernel Function Pointers
 	//======================================================================
 
-	// Copy all properties (1/2)
-	void (*copy_all_properties_vh_vh)(Mesh&, VertexHandle,   VertexHandle  ) = &copy_all_properties_ih_ih;
-	void (*copy_all_properties_eh_eh)(Mesh&, EdgeHandle,     EdgeHandle    ) = &copy_all_properties_ih_ih;
-	void (*copy_all_properties_hh_hh)(Mesh&, HalfedgeHandle, HalfedgeHandle) = &copy_all_properties_ih_ih;
-	void (*copy_all_properties_fh_fh)(Mesh&, FaceHandle,     FaceHandle    ) = &copy_all_properties_ih_ih;
+	// Copy property
+	void (Mesh::*copy_property_vprop)(VPropHandleT<object>&, VertexHandle,   VertexHandle  ) = &Mesh::copy_property;
+	void (Mesh::*copy_property_hprop)(HPropHandleT<object>,  HalfedgeHandle, HalfedgeHandle) = &Mesh::copy_property;
+	void (Mesh::*copy_property_eprop)(EPropHandleT<object>,  EdgeHandle,     EdgeHandle    ) = &Mesh::copy_property;
+	void (Mesh::*copy_property_fprop)(FPropHandleT<object>,  FaceHandle,     FaceHandle    ) = &Mesh::copy_property;
 
-	// Copy all properties (2/2)
-	void (*copy_all_properties_vh_vh_bool)(Mesh&, VertexHandle,   VertexHandle,   bool) = &copy_all_properties_ih_ih_bool;
-	void (*copy_all_properties_eh_eh_bool)(Mesh&, EdgeHandle,     EdgeHandle,     bool) = &copy_all_properties_ih_ih_bool;
-	void (*copy_all_properties_hh_hh_bool)(Mesh&, HalfedgeHandle, HalfedgeHandle, bool) = &copy_all_properties_ih_ih_bool;
-	void (*copy_all_properties_fh_fh_bool)(Mesh&, FaceHandle,     FaceHandle,     bool) = &copy_all_properties_ih_ih_bool;
+	// Copy all properties
+	void (Mesh::*copy_all_properties_vh_vh_bool)(VertexHandle,   VertexHandle,   bool) = &Mesh::copy_all_properties;
+	void (Mesh::*copy_all_properties_hh_hh_bool)(HalfedgeHandle, HalfedgeHandle, bool) = &Mesh::copy_all_properties;
+	void (Mesh::*copy_all_properties_eh_eh_bool)(EdgeHandle,     EdgeHandle,     bool) = &Mesh::copy_all_properties;
+	void (Mesh::*copy_all_properties_fh_fh_bool)(FaceHandle,     FaceHandle,     bool) = &Mesh::copy_all_properties;
 
 	//======================================================================
 	//  PolyConnectivity Function Pointers
@@ -772,15 +748,15 @@ void expose_mesh(const char *_name) {
 		//  BaseKernel
 		//======================================================================
 
-		.def("copy_all_properties", copy_all_properties_vh_vh)
-		.def("copy_all_properties", copy_all_properties_eh_eh)
-		.def("copy_all_properties", copy_all_properties_hh_hh)
-		.def("copy_all_properties", copy_all_properties_fh_fh)
+		.def("copy_property", copy_property_vprop)
+		.def("copy_property", copy_property_hprop)
+		.def("copy_property", copy_property_eprop)
+		.def("copy_property", copy_property_fprop)
 
-		.def("copy_all_properties", copy_all_properties_vh_vh_bool)
-		.def("copy_all_properties", copy_all_properties_eh_eh_bool)
-		.def("copy_all_properties", copy_all_properties_hh_hh_bool)
-		.def("copy_all_properties", copy_all_properties_fh_fh_bool)
+		.def("copy_all_properties", copy_all_properties_vh_vh_bool, copy_all_properties_overloads())
+		.def("copy_all_properties", copy_all_properties_hh_hh_bool, copy_all_properties_overloads())
+		.def("copy_all_properties", copy_all_properties_eh_eh_bool, copy_all_properties_overloads())
+		.def("copy_all_properties", copy_all_properties_fh_fh_bool, copy_all_properties_overloads())
 
 		//======================================================================
 		//  PolyConnectivity
