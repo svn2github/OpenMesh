@@ -377,20 +377,20 @@ public:
   }
 
   void set_prev_halfedge_handle(HalfedgeHandle _heh, HalfedgeHandle _pheh,
-                                GenProg::True)
+                                GenProg::TrueType)
   { halfedge(_heh).prev_halfedge_handle_ = _pheh; }
 
   void set_prev_halfedge_handle(HalfedgeHandle /* _heh */, HalfedgeHandle /* _pheh */,
-                                GenProg::False)
+                                GenProg::FalseType)
   {}
 
   HalfedgeHandle prev_halfedge_handle(HalfedgeHandle _heh) const
   { return prev_halfedge_handle(_heh, HasPrevHalfedge() ); }
 
-  HalfedgeHandle prev_halfedge_handle(HalfedgeHandle _heh, GenProg::True) const
+  HalfedgeHandle prev_halfedge_handle(HalfedgeHandle _heh, GenProg::TrueType) const
   { return halfedge(_heh).prev_halfedge_handle_; }
 
-  HalfedgeHandle prev_halfedge_handle(HalfedgeHandle _heh, GenProg::False) const
+  HalfedgeHandle prev_halfedge_handle(HalfedgeHandle _heh, GenProg::FalseType) const
   {
     if (is_boundary(_heh))
     {//iterating around the vertex should be faster than iterating the boundary
