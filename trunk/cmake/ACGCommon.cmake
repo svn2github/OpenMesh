@@ -115,13 +115,24 @@ macro (acg_set_target_props target)
       SKIP_BUILD_RPATH 0
     )
   elseif (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE)
-    set_target_properties (
-      ${target} PROPERTIES
-      #INSTALL_NAME_DIR "@executable_path/../lib/${CMAKE_PROJECT_NAME}"
-      INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/${ACG_PROJECT_LIBDIR}"
-#      BUILD_WITH_INSTALL_RPATH 1
-      SKIP_BUILD_RPATH 0
-    )
+  if (NOT (CMAKE_MAJOR_VERSION  LESS 3) )
+      # save rpath
+      set_target_properties (
+        ${target} PROPERTIES
+        INSTALL_RPATH "@executable_path/../${ACG_PROJECT_LIBDIR}"
+        MACOSX_RPATH 1
+        #BUILD_WITH_INSTALL_RPATH 1
+        SKIP_BUILD_RPATH 0
+      )  
+    else()
+      # save rpath via install name dir
+      set_target_properties (
+        ${target} PROPERTIES
+        INSTALL_NAME_DIR "@executable_path/../${ACG_PROJECT_LIBDIR}"
+        #BUILD_WITH_INSTALL_RPATH 1
+        SKIP_BUILD_RPATH 0
+      ) 
+    endif(NOT (CMAKE_MAJOR_VERSION  LESS 3))
   elseif (NOT APPLE)
 
     set_target_properties (
