@@ -130,7 +130,7 @@ class DeleteFaceTriangleMesh(unittest.TestCase):
         # Check the variable
         self.assertEqual(n_face_to_delete, 6)
         
-        for i in range(n_face_to_delete):
+        for i in range(int(n_face_to_delete)):
             self.mesh.delete_face(self.mesh.face_handle(i))
             
         # =====================================================
@@ -281,7 +281,7 @@ class DeleteFaceTriangleMesh(unittest.TestCase):
         # Check the variable
         self.assertEqual(n_face_to_delete, 6)
         
-        for i in range(n_face_to_delete):
+        for i in range(int(n_face_to_delete)):
             self.mesh.delete_face(self.mesh.face_handle(i))
             
         # =====================================================
@@ -390,7 +390,7 @@ class DeleteFaceTriangleMesh(unittest.TestCase):
         # Check the variable
         self.assertEqual(n_face_to_delete, 3)
         
-        for i in range(n_face_to_delete):
+        for i in range(int(n_face_to_delete)):
             self.mesh.delete_face(self.mesh.face_handle(i))
             
         # =====================================================
@@ -501,7 +501,7 @@ class DeleteFaceTriangleMesh(unittest.TestCase):
         # Check the variable
         self.assertEqual(n_face_to_delete, 3)
         
-        for i in range(n_face_to_delete):
+        for i in range(int(n_face_to_delete)):
             self.mesh.delete_face(self.mesh.face_handle(i))
             
         # =====================================================
