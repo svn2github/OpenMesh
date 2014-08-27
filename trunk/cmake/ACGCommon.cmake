@@ -628,6 +628,8 @@ function (acg_add_library _target _libtype)
 
     # set common target properties defined in common.cmake
     acg_set_target_props (${_target}Static)
+
+    set_target_properties(${_target}Static PROPERTIES OUTPUT_NAME ${_target})
     
     if (NOT APPLE)
       set_target_properties (${_target}Static PROPERTIES 
@@ -678,18 +680,11 @@ function (acg_add_library _target _libtype)
   endif(WIN32 OR (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE))
   
   if (_and_static)
-    if( ${CMAKE_BUILD_TYPE} STREQUAL Debug )
-      set ( postfix ${CMAKE_DEBUG_POSTFIX} )
-    else ()
-      set ( postfix "" )
-    endif ()
-
-    set( fullname ${_target}${postfix} )
     add_custom_command (TARGET ${_target}Static POST_BUILD
                         COMMAND ${CMAKE_COMMAND} -E
                         copy_if_different
                           $<TARGET_FILE:${_target}Static>
-                          ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${fullname}.a)
+                          ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/$<TARGET_FILE_NAME:${_target}Static>)
 
   endif ()
  
@@ -703,10 +698,8 @@ function (acg_add_library _target _libtype)
                  LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
                  ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR})
         if (_and_static)
-          install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static${postfix}.a
-                   DESTINATION ${ACG_PROJECT_LIBDIR}
-                   RENAME lib${fullname}.a
-                   PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+          install (TARGETS ${_target}Static
+                   DESTINATION ${ACG_PROJECT_LIBDIR})
         endif ()
       elseif (${_type} STREQUAL MODULE)
         install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_PLUGINDIR})
