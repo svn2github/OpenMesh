@@ -1,5 +1,5 @@
 IF(NOT DEFINED OPENMESH_BUILD_PYTHON_BINDINGS)
-	SET(OPENMESH_BUILD_PYTHON_BINDINGS FALSE CACHE BOOL "Enable or disable building the Python Bindings.")
+	SET(OPENMESH_BUILD_PYTHON_BINDINGS TRUE CACHE BOOL "Enable or disable building the Python Bindings.")
 ENDIF()
 
 IF(NOT DEFINED OPENMESH_PYTHON_VERSION)
@@ -9,57 +9,61 @@ ENDIF()
 IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 	# Find python lib
 	FIND_PACKAGE(PythonLibs ${OPENMESH_PYTHON_VERSION} REQUIRED)
-
-	# Determine the name of the python component
-	STRING(REGEX MATCH "^[0-9]+\\.[0-9]+" PYTHON_VERSION ${PYTHONLIBS_VERSION_STRING})
-	STRING(REGEX REPLACE "\\." "" PYTHON_VERSION ${PYTHON_VERSION})
-
-	SET(BOOST_PYTHON_COMPONENT "python-py${PYTHON_VERSION}")
-
-	# Check known boost versions for the python component
-	SET(BOOST_KNOWN_VERSIONS
-		"1.56.0" "1.56" "1.55.0" "1.55" "1.54.0" "1.54"
-		"1.53.0" "1.53" "1.52.0" "1.52" "1.51.0" "1.51"
-		"1.50.0" "1.50" "1.49.0" "1.49" "1.48.0" "1.48" "1.47.0" "1.47" "1.46.1"
-		"1.46.0" "1.46" "1.45.0" "1.45" "1.44.0" "1.44" "1.43.0" "1.43" "1.42.0" "1.42"
-		"1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37"
-		"1.36.1" "1.36.0" "1.36" "1.35.1" "1.35.0" "1.35" "1.34.1" "1.34.0"
-		"1.34" "1.33.1" "1.33.0" "1.33"
-	)
 	
-	SET(Boost_FIND_QUIETLY TRUE)
+	IF(PYTHONLIBS_FOUND)
+		# Determine the name of the python component
+		STRING(REGEX MATCH "^[0-9]+\\.[0-9]+" PYTHON_VERSION ${PYTHONLIBS_VERSION_STRING})
+		STRING(REGEX REPLACE "\\." "" PYTHON_VERSION ${PYTHON_VERSION})
+
+		SET(BOOST_PYTHON_COMPONENT "python-py${PYTHON_VERSION}")
+
+		# Check known boost versions for the python component
+		SET(BOOST_KNOWN_VERSIONS
+			"1.56.0" "1.56" "1.55.0" "1.55" "1.54.0" "1.54"
+			"1.53.0" "1.53" "1.52.0" "1.52" "1.51.0" "1.51"
+			"1.50.0" "1.50" "1.49.0" "1.49" "1.48.0" "1.48" "1.47.0" "1.47" "1.46.1"
+			"1.46.0" "1.46" "1.45.0" "1.45" "1.44.0" "1.44" "1.43.0" "1.43" "1.42.0" "1.42"
+			"1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37"
+			"1.36.1" "1.36.0" "1.36" "1.35.1" "1.35.0" "1.35" "1.34.1" "1.34.0"
+			"1.34" "1.33.1" "1.33.0" "1.33"
+		)
 	
-	MESSAGE(STATUS "Looking for Boost Python...")
+		SET(Boost_FIND_QUIETLY TRUE)
 	
-	FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
-		FIND_PACKAGE(Boost ${VERSION} EXACT COMPONENTS ${BOOST_PYTHON_COMPONENT})
+		MESSAGE(STATUS "Looking for Boost Python...")
+	
+		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
+			FIND_PACKAGE(Boost ${VERSION} EXACT COMPONENTS ${BOOST_PYTHON_COMPONENT})
+			IF(Boost_FOUND)
+				BREAK()
+			ENDIF()
+		ENDFOREACH()
+
 		IF(Boost_FOUND)
-			BREAK()
-		ENDIF()
-	ENDFOREACH()
+			FILE(GLOB SOURCES *.cc *hh)
+			ADD_LIBRARY(openmesh SHARED ${SOURCES})
 
-	# Check if boost was found
-	IF(NOT Boost_FOUND)
-		MESSAGE(FATAL_ERROR "Could not find Boost Python.")
-	ENDIF()
+			INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
 
-
-	FILE(GLOB SOURCES *.cc *hh)
-	ADD_LIBRARY(openmesh SHARED ${SOURCES})
-
-	INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
-
-	TARGET_LINK_LIBRARIES(openmesh
-		OpenMeshCore
-		OpenMeshTools
-		${Boost_LIBRARIES}
-		${PYTHON_LIBRARIES}
-	)
-	SET_TARGET_PROPERTIES(openmesh
-		PROPERTIES
-		PREFIX ""
-		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Build/lib/Python/"
-	)
+			TARGET_LINK_LIBRARIES(openmesh
+				OpenMeshCore
+				OpenMeshTools
+				${Boost_LIBRARIES}
+				${PYTHON_LIBRARIES}
+			)
+			SET_TARGET_PROPERTIES(openmesh
+				PROPERTIES
+				PREFIX ""
+				LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Build/lib/Python/"
+			)
 		
-	FILE(COPY __init__.py DESTINATION "${CMAKE_BINARY_DIR}/Build/lib/Python/")
+			FILE(COPY __init__.py DESTINATION "${CMAKE_BINARY_DIR}/Build/lib/Python/")
+		ELSE()
+			MESSAGE(WARNING "Could not find Boost Python.")
+		ENDIF()
+	ENDIF()
+	
+	IF(NOT (PYTHONLIBS_FOUND AND Boost_FOUND))
+		MESSAGE(WARNING "Building the Python Bindings is disabled.")
+	ENDIF()
 ENDIF()
