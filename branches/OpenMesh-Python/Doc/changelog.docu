@@ -6,7 +6,34 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.3</b> (?/?/?,Rev.1107)</td><td>
+<tr valign=top><td><b>3.3</b> (?/?/?,Rev.1140)</td><td>
+
+<b>Core</b>
+<ul>
+<li>change name of the types "True" and "False" to "TrueType" and "FalseType" to clarify, that these are types and avoid conflicts</li>
+</ul>
+
+<b>IO</b>
+<ul>
+<li>OBJ writer: remove excluding condition for face color (Thanks to Javier Granado for the hint). closes #2247 </li>
+</ul>
+
+<b>Documentation</b>
+<ul>
+<li>New acg logo for OpenMesh</li>
+<li>Fixed compilation documentation to include Qt5 and latest compilers</li>
+</ul>
+
+
+<b>Build system</b>
+<ul>
+<li>Apple/Unix: Don't install into libs/OpenMesh subdir but directly into libs. closes #2257</li>
+<li>Apple/Unix: Install to lib64 on 64-bit. closes #2257</li>
+<li>fix wrong name for static lib on unix based os with multi generator compilers</li>
+<li>fix permissions for static lib (they have the same as all other libs now)</li>
+<li>fix cmake (>=3.0) warning on MacOS idue to missing rpath. closes #2251</li>
+</ul>
+
 
 </tr>
 

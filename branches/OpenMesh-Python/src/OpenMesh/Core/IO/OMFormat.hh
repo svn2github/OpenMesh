@@ -504,8 +504,8 @@ namespace OMFormat {
 
   // -------------------- (re-)store integer with wanted number of bits (bytes)
 
-  typedef GenProg::True  t_signed;
-  typedef GenProg::False t_unsigned;
+  typedef GenProg::TrueType  t_signed;
+  typedef GenProg::FalseType t_unsigned;
 
   // helper to store a an integer
   template< typename T >

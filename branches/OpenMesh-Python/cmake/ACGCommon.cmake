@@ -76,14 +76,14 @@ if (WIN32)
   endif ()
 elseif (APPLE)
   set (ACG_PROJECT_DATADIR "share/${CMAKE_PROJECT_NAME}")
-  set (ACG_PROJECT_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
+  set (ACG_PROJECT_LIBDIR "lib${LIB_SUFFIX}")
   set (CMAKE_LIBRARY_OUTPUT_DIR "${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}")
-  set (ACG_PROJECT_PLUGINDIR "lib/${CMAKE_PROJECT_NAME}/plugins")
+  set (ACG_PROJECT_PLUGINDIR "${ACG_PROJECT_LIBDIR}/plugins")
   set (ACG_PROJECT_BINDIR "bin")
 else ()
   set (ACG_PROJECT_DATADIR "share/${CMAKE_PROJECT_NAME}")
-  set (ACG_PROJECT_LIBDIR "lib/${CMAKE_PROJECT_NAME}")
-  set (ACG_PROJECT_PLUGINDIR "lib/${CMAKE_PROJECT_NAME}/plugins")
+  set (ACG_PROJECT_LIBDIR "lib${LIB_SUFFIX}")
+  set (ACG_PROJECT_PLUGINDIR "${ACG_PROJECT_LIBDIR}/plugins")
   set (ACG_PROJECT_BINDIR "bin")
 endif ()
 
@@ -115,18 +115,29 @@ macro (acg_set_target_props target)
       SKIP_BUILD_RPATH 0
     )
   elseif (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE)
-    set_target_properties (
-      ${target} PROPERTIES
-      #INSTALL_NAME_DIR "@executable_path/../lib/${CMAKE_PROJECT_NAME}"
-      INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_PROJECT_NAME}"
-#      BUILD_WITH_INSTALL_RPATH 1
-      SKIP_BUILD_RPATH 0
-    )
+  if (NOT (CMAKE_MAJOR_VERSION  LESS 3) )
+      # save rpath
+      set_target_properties (
+        ${target} PROPERTIES
+        INSTALL_RPATH "@executable_path/../${ACG_PROJECT_LIBDIR}"
+        MACOSX_RPATH 1
+        #BUILD_WITH_INSTALL_RPATH 1
+        SKIP_BUILD_RPATH 0
+      )  
+    else()
+      # save rpath via install name dir
+      set_target_properties (
+        ${target} PROPERTIES
+        INSTALL_NAME_DIR "@executable_path/../${ACG_PROJECT_LIBDIR}"
+        #BUILD_WITH_INSTALL_RPATH 1
+        SKIP_BUILD_RPATH 0
+      ) 
+    endif(NOT (CMAKE_MAJOR_VERSION  LESS 3))
   elseif (NOT APPLE)
 
     set_target_properties (
       ${target} PROPERTIES
-      INSTALL_RPATH "$ORIGIN/../lib/${CMAKE_PROJECT_NAME}"
+      INSTALL_RPATH "$ORIGIN/../${ACG_PROJECT_LIBDIR}"
       BUILD_WITH_INSTALL_RPATH 1
       SKIP_BUILD_RPATH 0
       RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_BINDIR}"
@@ -628,6 +639,8 @@ function (acg_add_library _target _libtype)
 
     # set common target properties defined in common.cmake
     acg_set_target_props (${_target}Static)
+
+    set_target_properties(${_target}Static PROPERTIES OUTPUT_NAME ${_target})
     
     if (NOT APPLE)
       set_target_properties (${_target}Static PROPERTIES 
@@ -678,18 +691,11 @@ function (acg_add_library _target _libtype)
   endif(WIN32 OR (APPLE AND NOT ACG_PROJECT_MACOS_BUNDLE))
   
   if (_and_static)
-    if( ${CMAKE_BUILD_TYPE} STREQUAL Debug )
-      set ( postfix ${CMAKE_DEBUG_POSTFIX} )
-    else ()
-      set ( postfix "" )
-    endif ()
-
-    set( fullname ${_target}${postfix} )
     add_custom_command (TARGET ${_target}Static POST_BUILD
                         COMMAND ${CMAKE_COMMAND} -E
                         copy_if_different
                           $<TARGET_FILE:${_target}Static>
-                          ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/lib${fullname}.a)
+                          ${CMAKE_BINARY_DIR}/Build/${ACG_PROJECT_LIBDIR}/$<TARGET_FILE_NAME:${_target}Static>)
 
   endif ()
  
@@ -703,10 +709,8 @@ function (acg_add_library _target _libtype)
                  LIBRARY DESTINATION ${ACG_PROJECT_LIBDIR}
                  ARCHIVE DESTINATION ${ACG_PROJECT_LIBDIR})
         if (_and_static)
-          install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${_target}Static${postfix}.a
-                   DESTINATION ${ACG_PROJECT_LIBDIR}
-                   RENAME lib${fullname}.a
-                   PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+          install (TARGETS ${_target}Static
+                   DESTINATION ${ACG_PROJECT_LIBDIR})
         endif ()
       elseif (${_type} STREQUAL MODULE)
         install (TARGETS ${_target} DESTINATION ${ACG_PROJECT_PLUGINDIR})

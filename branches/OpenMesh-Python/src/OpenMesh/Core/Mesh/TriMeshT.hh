@@ -205,7 +205,7 @@ public:
    */
   inline HalfedgeHandle vertex_split(Point _v0_point,  VertexHandle _v1,
                                      VertexHandle _vl, VertexHandle _vr)
-  { return PolyMesh::vertex_split(add_vertex(_v0_point), _v1, _vl, _vr); }
+  { return PolyMesh::vertex_split(this->add_vertex(_v0_point), _v1, _vl, _vr); }
 
   /** \brief Vertex Split: inverse operation to collapse().
    *

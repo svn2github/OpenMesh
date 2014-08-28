@@ -72,10 +72,10 @@ template <bool b> struct Bool2Type { enum { my_bool = b }; };
 template <int i>  struct Int2Type  { enum { my_int = i }; };
 
 /// Handy typedef for Bool2Type<true> classes
-typedef Bool2Type<true> True;
+typedef Bool2Type<true> TrueType;
 
 /// Handy typedef for Bool2Type<false> classes
-typedef Bool2Type<false> False;
+typedef Bool2Type<false> FalseType;
 
 //-----------------------------------------------------------------------------
 /// compile time assertions 
