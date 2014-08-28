@@ -1,12 +1,12 @@
-IF(NOT DEFINED OPENMESH_BUILD_PYTHON_INTEGRATION)
-	SET(OPENMESH_BUILD_PYTHON_INTEGRATION FALSE CACHE BOOL "Enable or disable building OpenMesh for Python.")
+IF(NOT DEFINED OPENMESH_BUILD_PYTHON_BINDINGS)
+	SET(OPENMESH_BUILD_PYTHON_BINDINGS FALSE CACHE BOOL "Enable or disable building the Python Bindings.")
 ENDIF()
 
 IF(NOT DEFINED OPENMESH_PYTHON_VERSION)
-	SET(OPENMESH_PYTHON_VERSION "2.7" CACHE STRING "Choose the Python version that is used to build OpenMesh for Python.")
+	SET(OPENMESH_PYTHON_VERSION "2.7" CACHE STRING "Choose the Python version that is used to build the Python Bindings.")
 ENDIF()
 
-IF(OPENMESH_BUILD_PYTHON_INTEGRATION)
+IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 	# Find python lib
 	FIND_PACKAGE(PythonLibs ${OPENMESH_PYTHON_VERSION} REQUIRED)
 
@@ -35,28 +35,31 @@ IF(OPENMESH_BUILD_PYTHON_INTEGRATION)
 		FIND_PACKAGE(Boost ${VERSION} EXACT COMPONENTS ${BOOST_PYTHON_COMPONENT})
 		IF(Boost_FOUND)
 			BREAK()
-		ENDIF(Boost_FOUND)
+		ENDIF()
 	ENDFOREACH()
 
 	# Check if boost was found
 	IF(NOT Boost_FOUND)
 		MESSAGE(FATAL_ERROR "Could not find Boost Python.")
-	ENDIF(NOT Boost_FOUND)
+	ENDIF()
 
 
-	include_directories(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
-	
-	file(GLOB SOURCES *.cc *hh)
-	add_library(openmesh SHARED ${SOURCES})
-	
-	target_link_libraries(openmesh OpenMeshCore OpenMeshTools ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
-	set_target_properties(openmesh PROPERTIES
+	FILE(GLOB SOURCES *.cc *hh)
+	ADD_LIBRARY(openmesh SHARED ${SOURCES})
+
+	INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
+
+	TARGET_LINK_LIBRARIES(openmesh
+		OpenMeshCore
+		OpenMeshTools
+		${Boost_LIBRARIES}
+		${PYTHON_LIBRARIES}
+	)
+	SET_TARGET_PROPERTIES(openmesh
+		PROPERTIES
 		PREFIX ""
-		LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib/python/acg")
-	FILE(INSTALL acg DESTINATION "${PROJECT_BINARY_DIR}/lib/python")
-
-	FILE(GLOB UNITTESTS UnitTests/*.py)
-	FOREACH(TEST ${UNITTESTS})
-		FILE(COPY ${TEST} DESTINATION "${PROJECT_BINARY_DIR}/lib/python/acg")
-	ENDFOREACH()
-endif()
+		LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Build/lib/Python/"
+	)
+		
+	FILE(COPY __init__.py DESTINATION "${CMAKE_BINARY_DIR}/Build/lib/Python/")
+ENDIF()
