@@ -25,7 +25,17 @@ class CirculatorWrapperT {
 		 * @param _mesh The mesh that contains the items to iterate over.
 		 * @param _center The handle to the center item.
 		 */
-		CirculatorWrapperT(const typename Circulator::mesh_type& _mesh, CenterEntityHandle _center) :
+		CirculatorWrapperT(PolyMesh& _mesh, CenterEntityHandle _center) :
+			circulator_(_mesh, _center) {
+		}
+
+		/**
+		 * Constructor
+		 *
+		 * @param _mesh The mesh that contains the items to iterate over.
+		 * @param _center The handle to the center item.
+		 */
+		CirculatorWrapperT(TriMesh& _mesh, CenterEntityHandle _center) :
 			circulator_(_mesh, _center) {
 		}
 
