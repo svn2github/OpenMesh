@@ -579,7 +579,7 @@ TEST_F(OpenMeshReadWriteOM, WriteTriangleFaceFloatProperty) {
 
     Mesh::FaceHandle f1 = Mesh::FaceHandle(0);
 
-    double va1ue1 = 3.1f;
+    float va1ue1 = 3.1f;
 
     mesh.property(prop,f1) = va1ue1;
 
