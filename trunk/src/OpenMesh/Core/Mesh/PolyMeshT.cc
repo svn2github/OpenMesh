@@ -75,12 +75,12 @@ uint PolyMeshT<Kernel>::find_feature_edges(Scalar _angle_tresh)
   {
     if (fabs(calc_dihedral_angle(*e_it)) > _angle_tresh)
     {//note: could be optimized by comparing cos(dih_angle) vs. cos(_angle_tresh)
-      status(*e_it).set_feature(true);
+      this->status(*e_it).set_feature(true);
       n_feature_edges++;
     }
     else
     {
-      status(*e_it).set_feature(false);
+      this->status(*e_it).set_feature(false);
     }
   }
   return n_feature_edges;
