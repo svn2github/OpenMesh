@@ -63,7 +63,7 @@ namespace VDPM {
 
 #define VDPM_STREAMING_PORT 4096
 
-#define DEBUG_COUT
+//#define DEBUG_COUT
 //#define QDATASTREAM
 
 #ifdef DEBUG_COUT
