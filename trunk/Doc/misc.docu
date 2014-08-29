@@ -45,6 +45,8 @@ gcc 4.6.x<br>
 gcc 4.7.x<br>
 gcc 4.8.x<br>
 gcc 4.9.x<br>
+clang 3.3<br>
+clang 3.4<br>
 </td></tr>
 
 <tr><td> Windows </td><td> 
