@@ -2,6 +2,10 @@ IF(NOT DEFINED OPENMESH_BUILD_PYTHON_BINDINGS)
 	SET(OPENMESH_BUILD_PYTHON_BINDINGS TRUE CACHE BOOL "Enable or disable building the Python Bindings.")
 ENDIF()
 
+IF(NOT DEFINED OPENMESH_BUILD_PYTHON_UNIT_TESTS)
+	SET(OPENMESH_BUILD_PYTHON_UNIT_TESTS FALSE CACHE BOOL "Enable or disable building the Python unit tests.")
+ENDIF()
+
 IF(NOT DEFINED OPENMESH_PYTHON_VERSION)
 	SET(OPENMESH_PYTHON_VERSION "2.7" CACHE STRING "Choose the Python version that is used to build the Python Bindings.")
 ENDIF()
@@ -31,7 +35,7 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 		SET(Boost_FIND_QUIETLY TRUE)
 	
 		MESSAGE(STATUS "Looking for Boost Python...")
-	
+		
 		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
 			FIND_PACKAGE(Boost ${VERSION} EXACT COMPONENTS ${BOOST_PYTHON_COMPONENT})
 			IF(Boost_FOUND)
@@ -40,30 +44,66 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 		ENDFOREACH()
 
 		IF(Boost_FOUND)
+			MESSAGE(STATUS "Found Boost Python:")
+			
+			SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Build/python/)
+		
 			FILE(GLOB SOURCES *.cc *hh)
 			ADD_LIBRARY(openmesh SHARED ${SOURCES})
-
+			
 			INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
 
-			TARGET_LINK_LIBRARIES(openmesh
+			TARGET_LINK_LIBRARIES(
+				openmesh
 				OpenMeshCore
 				OpenMeshTools
 				${Boost_LIBRARIES}
 				${PYTHON_LIBRARIES}
 			)
-			SET_TARGET_PROPERTIES(openmesh
+			
+			SET_TARGET_PROPERTIES(
+				openmesh
 				PROPERTIES
 				PREFIX ""
-				LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Build/lib/Python/"
+				DEBUG_POSTFIX ""
+				RELEASE_POSTFIX ""
 			)
-		
-			FILE(COPY __init__.py DESTINATION "${CMAKE_BINARY_DIR}/Build/lib/Python/")
+			
+			IF(APPLE)
+				SET_TARGET_PROPERTIES(openmesh SUFFIX ".so")
+			ENDIF()
+			
+			FILE(COPY __init__.py DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 		ELSE()
-			MESSAGE(WARNING "Could not find Boost Python.")
+			MESSAGE("Boost Python not found! Skipping Python Bindings.")
 		ENDIF()
-	ENDIF()
-	
-	IF(NOT (PYTHONLIBS_FOUND AND Boost_FOUND))
-		MESSAGE(WARNING "Building the Python Bindings is disabled.")
+		
+		IF(OPENMESH_BUILD_PYTHON_UNIT_TESTS)
+			SET(UNITTEST_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Python-Unittests/)
+			
+			# Copy unit tests
+			FILE(GLOB UNITTESTS Unittests/*.py)
+			FOREACH(TEST ${UNITTESTS})
+				FILE(COPY ${TEST} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
+			ENDFOREACH()
+			
+			# Copy test files
+			FILE(GLOB TESTFILES Unittests/TestFiles/*)
+			FOREACH(FILE ${TESTFILES})
+				FILE(COPY ${FILE} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
+			ENDFOREACH()
+			
+			# Copy init file
+			FILE(COPY __init__.py DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
+			
+			# Copy library
+			ADD_CUSTOM_COMMAND(
+				TARGET openmesh
+				POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/Build/python/openmesh.so ${UNITTEST_OUTPUT_DIRECTORY}
+			)
+		ENDIF()
+	ELSE()
+		MESSAGE("Python not found! Skipping Python Bindings.")
 	ENDIF()
 ENDIF()
