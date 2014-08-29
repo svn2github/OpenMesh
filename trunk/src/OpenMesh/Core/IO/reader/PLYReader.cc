@@ -308,7 +308,7 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options
             }
         }
 
-        FaceHandle fh = _bi.add_face(vhandles);
+        _bi.add_face(vhandles);
 
     }
 
@@ -456,7 +456,7 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
             }
         }
 
-        FaceHandle fh = _bi.add_face(vhandles);
+        _bi.add_face(vhandles);
     }
 
     return true;

@@ -158,7 +158,7 @@ TEST_F(OpenMeshTrimeshCirculatorVertexFace, VertexFaceIterWithoutHolesIncrement)
       |/  1 \|
       3 ==== 4 */
 
-  Mesh::VertexFaceIter vfa_it  = mesh_.vf_begin(vhandle[1]);
+  mesh_.vf_begin(vhandle[1]);
 
   // Iterate around vertex 1 at the middle (with holes in between)
   Mesh::VertexFaceIter vf_it  = mesh_.vf_begin(vhandle[1]);

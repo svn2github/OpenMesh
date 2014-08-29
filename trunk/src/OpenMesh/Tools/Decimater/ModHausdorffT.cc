@@ -129,7 +129,7 @@ distPointTriangleSquared( const Point& _p,
     s01 = ( v0v1 | v0p ) * inv_v0v1_2;
     if (s01 < 0.0)
     {
-  const Point n = v0v1 % v0v2; // not normalized !
+  // const Point n = v0v1 % v0v2; // not normalized !
       s02 = ( v0v2 |  v0p ) * inv_v0v2_2;
       if (s02 <= 0.0) {
         v0p = _v0;

@@ -340,10 +340,10 @@ bool PolyConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
     v1v0_triangle = valence(face_handle(v1v0)) == 3;
 
   //in a quadmesh we dont have the "next" or "previous" vhandle, so we need to look at previous and next on both sides
-  VertexHandle v_01_p = from_vertex_handle(prev_halfedge_handle(v0v1));
+  //VertexHandle v_01_p = from_vertex_handle(prev_halfedge_handle(v0v1));
   VertexHandle v_01_n = to_vertex_handle(next_halfedge_handle(v0v1));  
 
-  VertexHandle v_10_p = from_vertex_handle(prev_halfedge_handle(v1v0));
+  //VertexHandle v_10_p = from_vertex_handle(prev_halfedge_handle(v1v0));
   VertexHandle v_10_n = to_vertex_handle(next_halfedge_handle(v1v0));
 
   //are the vertices already deleted ?
@@ -358,12 +358,12 @@ bool PolyConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
   {
     if (v0v1_triangle)
     {
-      VertexHandle vl = to_vertex_handle(next_halfedge_handle(v0v1));
+      //VertexHandle vl = to_vertex_handle(next_halfedge_handle(v0v1));
 
       HalfedgeHandle h1 = next_halfedge_handle(v0v1);
       HalfedgeHandle h2 = next_halfedge_handle(h1);
       if (is_boundary(opposite_halfedge_handle(h1)) && is_boundary(opposite_halfedge_handle(h2)))
-	return false;
+        return false;
     }
   }
 
@@ -373,12 +373,12 @@ bool PolyConnectivity::is_collapse_ok(HalfedgeHandle v0v1)
   {
     if (v1v0_triangle)
     {
-      VertexHandle vr = to_vertex_handle(next_halfedge_handle(v1v0));
+      //VertexHandle vr = to_vertex_handle(next_halfedge_handle(v1v0));
 
       HalfedgeHandle h1 = next_halfedge_handle(v1v0);
       HalfedgeHandle h2 = next_halfedge_handle(h1);
       if (is_boundary(opposite_halfedge_handle(h1)) && is_boundary(opposite_halfedge_handle(h2)))
-	return false;
+        return false;
     }
   }
 
@@ -825,7 +825,7 @@ bool PolyConnectivity::is_simple_link(EdgeHandle _eh) const
   HalfedgeHandle heh0 = halfedge_handle(_eh, 0);
   HalfedgeHandle heh1 = halfedge_handle(_eh, 1);
   
-  FaceHandle fh0 = face_handle(heh0);//fh0 or fh1 might be a invalid,
+  //FaceHandle fh0 = face_handle(heh0);//fh0 or fh1 might be a invalid,
   FaceHandle fh1 = face_handle(heh1);//i.e., representing the boundary
   
   HalfedgeHandle next_heh = next_halfedge_handle(heh0);
@@ -1145,9 +1145,9 @@ void PolyConnectivity::split_edge(EdgeHandle _eh, VertexHandle _vh)
   VertexHandle vfrom = from_vertex_handle(h0);
 
   HalfedgeHandle ph0 = prev_halfedge_handle(h0);
-  HalfedgeHandle ph1 = prev_halfedge_handle(h1);
+  //HalfedgeHandle ph1 = prev_halfedge_handle(h1);
   
-  HalfedgeHandle nh0 = next_halfedge_handle(h0);
+  //HalfedgeHandle nh0 = next_halfedge_handle(h0);
   HalfedgeHandle nh1 = next_halfedge_handle(h1);
   
   bool boundary0 = is_boundary(h0);

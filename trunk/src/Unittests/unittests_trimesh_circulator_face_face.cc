@@ -236,7 +236,7 @@ TEST_F(OpenMeshTrimeshCirculatorFaceFace, FaceFaceIteratorHandleConversion) {
   face_vhandles.push_back(vhandle[0]);
   face_vhandles.push_back(vhandle[3]);
   face_vhandles.push_back(vhandle[2]);
-  Mesh::FaceHandle fh2 = mesh_.add_face(face_vhandles);
+  mesh_.add_face(face_vhandles);
 
   face_vhandles.clear();
 
