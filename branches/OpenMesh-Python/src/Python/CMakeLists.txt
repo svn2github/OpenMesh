@@ -37,7 +37,14 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 		MESSAGE(STATUS "Looking for Boost Python...")
 		
 		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
+			# Look for version specific python component
 			FIND_PACKAGE(Boost ${VERSION} EXACT COMPONENTS ${BOOST_PYTHON_COMPONENT})
+			IF(Boost_FOUND)
+				BREAK()
+			ENDIF()
+			
+			# Look for any other python component
+			FIND_PACKAGE(Boost ${VERSION} EXACT COMPONENTS python)
 			IF(Boost_FOUND)
 				BREAK()
 			ENDIF()
@@ -70,7 +77,12 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 			)
 			
 			IF(APPLE)
-				SET_TARGET_PROPERTIES(openmesh SUFFIX ".so")
+				SET_TARGET_PROPERTIES(openmesh PROPERTIES SUFFIX ".so")
+			ENDIF()
+			
+			IF(WIN32)
+				SET_TARGET_PROPERTIES(openmesh PROPERTIES SUFFIX ".pyd")
+				SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 			ENDIF()
 			
 			FILE(COPY __init__.py DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
