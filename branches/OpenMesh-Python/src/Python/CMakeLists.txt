@@ -33,7 +33,7 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 		)
 	
 		SET(Boost_FIND_QUIETLY TRUE)
-	
+		
 		MESSAGE(STATUS "Looking for Boost Python...")
 		
 		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
@@ -83,37 +83,60 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 			IF(WIN32)
 				SET_TARGET_PROPERTIES(openmesh PROPERTIES SUFFIX ".pyd")
 				SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+				
+				SET(OUTPUTS openmesh.exp openmesh.lib openmesh.pyd)
+				
+				FOREACH(FILE ${OUTPUTS})
+					ADD_CUSTOM_COMMAND(
+						TARGET openmesh POST_BUILD
+						COMMAND ${CMAKE_COMMAND} -E copy
+							${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${FILE}
+							${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+					)
+				ENDFOREACH()
 			ENDIF()
 			
 			FILE(COPY __init__.py DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+			
+			IF(OPENMESH_BUILD_PYTHON_UNIT_TESTS)
+				SET(UNITTEST_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Python-Unittests/)
+				
+				# Copy unit tests
+				FILE(GLOB UNITTESTS Unittests/*.py)
+				FOREACH(TEST ${UNITTESTS})
+					FILE(COPY ${TEST} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
+				ENDFOREACH()
+				
+				# Copy test files
+				FILE(GLOB TESTFILES Unittests/TestFiles/*)
+				FOREACH(FILE ${TESTFILES})
+					FILE(COPY ${FILE} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
+				ENDFOREACH()
+				
+				# Copy init file
+				FILE(COPY __init__.py DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
+				
+				# Copy library
+				IF(WIN32)
+					FOREACH(FILE ${OUTPUTS})
+						ADD_CUSTOM_COMMAND(
+							TARGET openmesh POST_BUILD
+							COMMAND ${CMAKE_COMMAND} -E copy
+								${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${FILE}
+								${UNITTEST_OUTPUT_DIRECTORY}
+						)
+					ENDFOREACH()
+				ELSE()
+					ADD_CUSTOM_COMMAND(
+						TARGET openmesh POST_BUILD
+						COMMAND ${CMAKE_COMMAND} -E copy 
+							${CMAKE_BINARY_DIR}/Build/python/openmesh.so
+							${UNITTEST_OUTPUT_DIRECTORY}
+					)
+				ENDIF()
+			ENDIF()
 		ELSE()
 			MESSAGE("Boost Python not found! Skipping Python Bindings.")
-		ENDIF()
-		
-		IF(OPENMESH_BUILD_PYTHON_UNIT_TESTS)
-			SET(UNITTEST_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Python-Unittests/)
-			
-			# Copy unit tests
-			FILE(GLOB UNITTESTS Unittests/*.py)
-			FOREACH(TEST ${UNITTESTS})
-				FILE(COPY ${TEST} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
-			ENDFOREACH()
-			
-			# Copy test files
-			FILE(GLOB TESTFILES Unittests/TestFiles/*)
-			FOREACH(FILE ${TESTFILES})
-				FILE(COPY ${FILE} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
-			ENDFOREACH()
-			
-			# Copy init file
-			FILE(COPY __init__.py DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
-			
-			# Copy library
-			ADD_CUSTOM_COMMAND(
-				TARGET openmesh
-				POST_BUILD
-				COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/Build/python/openmesh.so ${UNITTEST_OUTPUT_DIRECTORY}
-			)
 		ENDIF()
 	ELSE()
 		MESSAGE("Python not found! Skipping Python Bindings.")
