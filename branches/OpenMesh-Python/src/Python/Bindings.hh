@@ -1,7 +1,6 @@
 #ifndef OPENMESH_PYTHON_BINDINGS_HH
 #define OPENMESH_PYTHON_BINDINGS_HH
 
-#include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/return_internal_reference.hpp>
 #include <boost/python/reference_existing_object.hpp>
