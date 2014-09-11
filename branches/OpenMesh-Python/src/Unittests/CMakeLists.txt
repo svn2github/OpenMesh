@@ -15,8 +15,6 @@ if ( OPENMESH_BUILD_UNIT_TESTS )
 
   if(GTEST_FOUND)
 
-    enable_testing()
-   
     # Set correct include paths so that the compiler can find the headers
     include_directories(${GTEST_INCLUDE_DIRS})
     # set additional link directories

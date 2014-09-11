@@ -168,6 +168,12 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 										${UNITTEST_OUTPUT_DIRECTORY}
 								)
 							ENDIF()
+							
+							ADD_TEST(
+								NAME Python_tests
+								WORKING_DIRECTORY ${UNITTEST_OUTPUT_DIRECTORY}
+								COMMAND ${PYTHON_EXECUTABLE} -m unittest discover
+							)
 						ENDIF()
 						
 					ELSE()
