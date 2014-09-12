@@ -13,6 +13,11 @@
 using namespace boost::python;
 
 namespace OpenMesh {
+
+/**
+ * This namespace contains classes and functions that are used to expose
+ * %OpenMesh to %Python.
+ */
 namespace Python {
 
 /**

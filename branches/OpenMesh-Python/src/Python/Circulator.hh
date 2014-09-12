@@ -79,7 +79,8 @@ class CirculatorWrapperT {
  * @param _name The name of the circulator type to be exposed.
  *
  * @note Circulators are wrapped by CirculatorWrapperT before they are exposed
- * to %Python, i.e. they are not exposed directly.
+ * to %Python, i.e. they are not exposed directly. This means that circulators
+ * that are passed from %Python to C++ are instances of CirculatorWrapperT.
  */
 template<class Circulator, class CenterEntityHandle>
 void expose_circulator(const char *_name) {

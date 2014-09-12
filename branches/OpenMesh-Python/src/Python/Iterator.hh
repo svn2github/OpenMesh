@@ -25,6 +25,8 @@ class IteratorWrapperT {
 		 * Constructor
 		 *
 		 * @param _mesh The mesh that contains the items to iterate over.
+		 * @param _hnd The handle of the first item to iterate over.
+		 * @param _skip Specifies if deleted/hidden elements are skipped.
 		 */
 		IteratorWrapperT(const PolyMesh& _mesh, typename Iterator::value_type _hnd, bool _skip = false) :
 			mesh_(_mesh), n_items_(n_items),
@@ -36,6 +38,8 @@ class IteratorWrapperT {
 		 * Constructor
 		 *
 		 * @param _mesh The mesh that contains the items to iterate over.
+		 * @param _hnd The handle of the first item to iterate over.
+		 * @param _skip Specifies if deleted/hidden elements are skipped.
 		 */
 		IteratorWrapperT(const TriMesh& _mesh, typename Iterator::value_type _hnd, bool _skip = false) :
 			mesh_(_mesh), n_items_(n_items),
@@ -97,7 +101,8 @@ class IteratorWrapperT {
  * @param _name The name of the iterator type to be exposed.
  *
  * @note %Iterators are wrapped by IteratorWrapperT before they are exposed to
- * %Python, i.e. they are not exposed directly.
+ * %Python, i.e. they are not exposed directly. This means that iterators
+ * that are passed from %Python to C++ are instances of IteratorWrapperT.
  */
 template<class Iterator, size_t (OpenMesh::ArrayKernel::*n_items)() const>
 void expose_iterator(const char *_name) {
