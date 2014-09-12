@@ -14,10 +14,10 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 	# Look for the python libs
 	MESSAGE(STATUS "Looking for Python")
 	FIND_PACKAGE(PythonLibs ${OPENMESH_PYTHON_VERSION} QUIET)
-	
+
 	IF(PYTHONLIBS_FOUND)
 		MESSAGE(STATUS "Looking for Python -- found")
-		
+
 		# Determine the name of the python component
 		STRING(REGEX MATCH "^[0-9]+\\.[0-9]+" PYTHON_VERSION ${PYTHONLIBS_VERSION_STRING})
 		STRING(REGEX REPLACE "\\." "" PYTHON_VERSION ${PYTHON_VERSION})
@@ -34,9 +34,9 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 			"1.36.1" "1.36.0" "1.36" "1.35.1" "1.35.0" "1.35" "1.34.1" "1.34.0"
 			"1.34" "1.33.1" "1.33.0" "1.33"
 		)
-		
+
 		MESSAGE(STATUS "Looking for Boost Python")
-		
+
 		# Look for version specific python component
 		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
 			IF(Boost_FOUND)
@@ -44,7 +44,7 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 			ENDIF()
 			FIND_PACKAGE(Boost ${VERSION} EXACT QUIET COMPONENTS ${BOOST_PYTHON_COMPONENT})
 		ENDFOREACH()
-		
+
 		# Look for any other python component
 		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
 			IF(Boost_FOUND)
@@ -55,9 +55,9 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 
 		IF(Boost_FOUND)
 			MESSAGE(STATUS "Looking for Boost Python -- found")
-			
-			MESSAGE(STATUS "Building a Boost Python example")
-			
+
+			MESSAGE(STATUS "Checking the Boost Python configuration")
+
 			TRY_COMPILE(
 				COMPILE_WORKS
 				${CMAKE_CURRENT_BINARY_DIR}
@@ -67,11 +67,11 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 					"-DINCLUDE_DIRECTORIES:STRING=${PYTHON_INCLUDE_DIRS};${Boost_INCLUDE_DIRS}"
 					"-DLINK_LIBRARIES:STRING=${PYTHON_LIBRARIES};${Boost_LIBRARIES}"
 			)
-			
+
 			IF(COMPILE_WORKS)
 				# Look for the python interpreter to check if the example works
 				FIND_PACKAGE(PythonInterp ${PYTHONLIBS_VERSION_STRING} QUIET)
-				
+
 				IF(PYTHONINTERP_FOUND)
 					EXECUTE_PROCESS(
 						COMMAND ${PYTHON_EXECUTABLE} -c "from example import *; greet(); planet = World()"
@@ -80,18 +80,18 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 						OUTPUT_QUIET
 						ERROR_QUIET
 					)
-					
+
 					IF(PYTHON_WORKS EQUAL 0)
-					
+
 						### EVERYTHING WORKS ###
-						
-						MESSAGE(STATUS "Building a Boost Python example -- done")
-						
+
+						MESSAGE(STATUS "Checking the Boost Python configuration -- done")
+
 						SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Build/python/)
-		
+
 						FILE(GLOB SOURCES *.cc *hh)
 						ADD_LIBRARY(openmesh SHARED ${SOURCES})
-			
+
 						INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ../)
 
 						TARGET_LINK_LIBRARIES(
@@ -101,7 +101,7 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 							${Boost_LIBRARIES}
 							${PYTHON_LIBRARIES}
 						)
-			
+
 						SET_TARGET_PROPERTIES(
 							openmesh
 							PROPERTIES
@@ -109,17 +109,17 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 							DEBUG_POSTFIX ""
 							RELEASE_POSTFIX ""
 						)
-			
+
 						IF(APPLE)
 							SET_TARGET_PROPERTIES(openmesh PROPERTIES SUFFIX ".so")
 						ENDIF()
-			
+
 						IF(WIN32)
 							SET_TARGET_PROPERTIES(openmesh PROPERTIES SUFFIX ".pyd")
 							SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
-				
+
 							SET(OUTPUTS openmesh.exp openmesh.lib openmesh.pyd)
-				
+
 							FOREACH(FILE ${OUTPUTS})
 								ADD_CUSTOM_COMMAND(
 									TARGET openmesh POST_BUILD
@@ -129,22 +129,22 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 								)
 							ENDFOREACH()
 						ENDIF()
-			
+
 						IF(OPENMESH_BUILD_PYTHON_UNIT_TESTS)
 							SET(UNITTEST_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Python-Unittests/)
-				
+
 							# Copy unit tests
 							FILE(GLOB UNITTESTS Unittests/*)
 							FOREACH(TEST ${UNITTESTS})
 								FILE(COPY ${TEST} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
 							ENDFOREACH()
-				
+
 							# Copy test files
 							FILE(GLOB TESTFILES ${PROJECT_SOURCE_DIR}/src/Unittests/TestFiles/*)
 							FOREACH(FILE ${TESTFILES})
 								FILE(COPY ${FILE} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
 							ENDFOREACH()
-				
+
 							# Copy library
 							IF(WIN32)
 								FOREACH(FILE ${OUTPUTS})
@@ -158,27 +158,35 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 							ELSE()
 								ADD_CUSTOM_COMMAND(
 									TARGET openmesh POST_BUILD
-									COMMAND ${CMAKE_COMMAND} -E copy 
+									COMMAND ${CMAKE_COMMAND} -E copy
 										${CMAKE_BINARY_DIR}/Build/python/openmesh.so
 										${UNITTEST_OUTPUT_DIRECTORY}
 								)
 							ENDIF()
-							
+
 							ADD_TEST(
 								NAME Python_tests
 								WORKING_DIRECTORY ${UNITTEST_OUTPUT_DIRECTORY}
 								COMMAND ${PYTHON_EXECUTABLE} -m unittest discover --verbose
 							)
 						ENDIF()
-						
+
 					ELSE()
-						MESSAGE("Building a Boost Python example failed! Skipping Python Bindings.")
+						MESSAGE("Checking the Boost Python configuration failed!")
+						MESSAGE("Building a small Boost Python test project failed!")
+						MESSAGE("Make sure that your Python and Boost Python libraries match.")
+						MESSAGE("Skipping Python Bindings.")
 					ENDIF()
 				ELSE()
-					MESSAGE("Building a Boost Python example failed! Skipping Python Bindings.")
+					MESSAGE("Checking the Boost Python configuration failed!")
+					MESSAGE("Python Interpreter not found!")
+					MESSAGE("Skipping Python Bindings.")
 				ENDIF()
 			ELSE()
-				MESSAGE("Building a Boost Python example failed! Skipping Python Bindings.")
+				MESSAGE("Checking the Boost Python configuration failed!")
+				MESSAGE("An error occurred while running a small Boost Python test project!")
+				MESSAGE("Make sure that your Python and Boost Python libraries match.")
+				MESSAGE("Skipping Python Bindings.")
 			ENDIF()
 		ELSE()
 			MESSAGE("Boost Python not found! Skipping Python Bindings.")
