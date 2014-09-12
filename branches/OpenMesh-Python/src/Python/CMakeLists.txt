@@ -134,13 +134,13 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 							SET(UNITTEST_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Python-Unittests/)
 
 							# Copy unit tests
-							FILE(GLOB UNITTESTS Unittests/*)
+							FILE(GLOB UNITTESTS Unittests/*.py)
 							FOREACH(TEST ${UNITTESTS})
 								FILE(COPY ${TEST} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
 							ENDFOREACH()
 
 							# Copy test files
-							FILE(GLOB TESTFILES ${PROJECT_SOURCE_DIR}/src/Unittests/TestFiles/*)
+							FILE(GLOB TESTFILES ${PROJECT_SOURCE_DIR}/src/Unittests/TestFiles/*(.off|.obj|.mtl|.stl|.ply|.om))
 							FOREACH(FILE ${TESTFILES})
 								FILE(COPY ${FILE} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
 							ENDFOREACH()
