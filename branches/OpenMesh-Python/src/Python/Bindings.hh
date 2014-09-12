@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef OPENMESH_PYTHON_BINDINGS_HH
 #define OPENMESH_PYTHON_BINDINGS_HH
 

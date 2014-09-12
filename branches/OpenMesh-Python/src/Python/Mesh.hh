@@ -191,9 +191,9 @@ FaceHandle add_face(Mesh& _self, const list& _vhandles) {
  * available for a specific type of mesh (i.e. they are available for polygon
  * meshes or triangle meshes, but not both).
  *
- * @tparam Class A boost::python::class_ type.
+ * @tparam Class A boost::python::class type.
  *
- * @param _class The boost::python::class_ instance for which the member
+ * @param _class The boost::python::class instance for which the member
  * functions are to be defined.
  */
 template <class Class>
