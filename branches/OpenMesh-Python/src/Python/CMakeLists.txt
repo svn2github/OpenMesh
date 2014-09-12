@@ -130,25 +130,20 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 							ENDFOREACH()
 						ENDIF()
 			
-						FILE(COPY __init__.py DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-			
 						IF(OPENMESH_BUILD_PYTHON_UNIT_TESTS)
 							SET(UNITTEST_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Python-Unittests/)
 				
 							# Copy unit tests
-							FILE(GLOB UNITTESTS Unittests/*.py)
+							FILE(GLOB UNITTESTS Unittests/*)
 							FOREACH(TEST ${UNITTESTS})
 								FILE(COPY ${TEST} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
 							ENDFOREACH()
 				
 							# Copy test files
-							FILE(GLOB TESTFILES Unittests/TestFiles/*)
+							FILE(GLOB TESTFILES ${PROJECT_SOURCE_DIR}/src/Unittests/TestFiles/*)
 							FOREACH(FILE ${TESTFILES})
 								FILE(COPY ${FILE} DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
 							ENDFOREACH()
-				
-							# Copy init file
-							FILE(COPY __init__.py DESTINATION ${UNITTEST_OUTPUT_DIRECTORY})
 				
 							# Copy library
 							IF(WIN32)
@@ -172,7 +167,7 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 							ADD_TEST(
 								NAME Python_tests
 								WORKING_DIRECTORY ${UNITTEST_OUTPUT_DIRECTORY}
-								COMMAND ${PYTHON_EXECUTABLE} -m unittest discover
+								COMMAND ${PYTHON_EXECUTABLE} -m unittest discover --verbose
 							)
 						ENDIF()
 						
