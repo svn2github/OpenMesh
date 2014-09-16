@@ -86,6 +86,11 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 						### EVERYTHING WORKS ###
 
 						MESSAGE(STATUS "Checking the Boost Python configuration -- done")
+						
+						IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND ${Boost_VERSION} VERSION_LESS 105600)
+							MESSAGE("There are known issues with Clang and Boost Python 1.55 and below.")
+							MESSAGE("Please consider updating Boost Python.")
+						ENDIF()
 
 						SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Build/python/)
 

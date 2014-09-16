@@ -3,6 +3,7 @@
 This tutorial will introduce the basic concepts behind the %OpenMesh Python
 Bindings. We will cover the following topics:
 
+\li How to build the Python Bindings
 \li How to create an empty mesh
 \li How to add vertices and faces to a mesh
 \li How to navigate on a mesh using iterators and circulators
@@ -10,6 +11,20 @@ Bindings. We will cover the following topics:
 
 In addition, we will briefly discuss some of the differences between the Python
 Bindings and the original C++ implementation of %OpenMesh.
+
+
+
+\section python_build Building the Python Bindings
+
+The Python Bindings depend on the following libraries:
+
+\li Python (2.7 or later)
+\li Boost Python (1.54.0 or later)
+
+\note Make sure that your Python and Boost Python versions match.
+
+The Python Bindings are automatically build with %OpenMesh. For more information
+on how to build %OpenMesh see \ref compiling.
 
 
 
