@@ -1,5 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 
+enable_testing()
+
 # Only set project name if OpenMesh is built as stand-alone library
 if("${PROJECT_NAME}" STREQUAL "")
     project (OpenMesh)
@@ -93,6 +95,12 @@ else()
 endif()
 
 add_subdirectory (Doc)
+
+# ========================================================================
+# Include Python interface
+# ========================================================================
+
+add_subdirectory (src/Python)
 
 # ========================================================================
 # Bundle generation (Targets exist, now configure them)
