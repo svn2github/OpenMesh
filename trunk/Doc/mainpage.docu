@@ -86,6 +86,15 @@ repeatedly replacing each vertex' position by the center of gravity
 \li \ref tutorial_09
 
 <br /><br />
+
+\section python_and_om OpenMesh Python interface
+OpenMesh itself is written in C++. We also provide a python interface 
+to use OpenMesh. A detailed description of the interface can be found
+in the following tutorial:
+\li \subpage python_tutorial
+
+<br /><br />
+
 \subpage additional_information
 
 \li \ref mesh_first_to_read
@@ -103,6 +112,7 @@ repeatedly replacing each vertex' position by the center of gravity
 \li \subpage mesh_operations
 \li \subpage mesh_hierarchy
 \li \subpage mesh_type
+
 
 \page additional_information Additional Information on OpenMesh
 \li \subpage mesh_first_to_read
