@@ -37,15 +37,7 @@ IF(OPENMESH_BUILD_PYTHON_BINDINGS)
 
 		MESSAGE(STATUS "Looking for Boost Python")
 
-		# Look for version specific python component
-		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
-			IF(Boost_FOUND)
-				BREAK()
-			ENDIF()
-			FIND_PACKAGE(Boost ${VERSION} EXACT QUIET COMPONENTS ${BOOST_PYTHON_COMPONENT})
-		ENDFOREACH()
-
-		# Look for any other python component
+		# Look for python component
 		FOREACH(VERSION ${BOOST_KNOWN_VERSIONS})
 			IF(Boost_FOUND)
 				BREAK()
