@@ -253,8 +253,7 @@ TEST_F(OpenMeshVDPM, WriteReadPM)
     decimater.add(hModQuadric);
     decimater.add(hModProg);
     decimater.initialize();
-    size_t removedVertices = 0;
-    removedVertices = decimater.decimate(0);
+    decimater.decimate(0);
 
     std::string filename = "vdpm_test_file.pm";
 
