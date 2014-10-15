@@ -130,9 +130,9 @@ write( const std::string& _ofname )
 
   // write header
   out << "ProgMesh";
-  IO::store( out, n_base_vertices, swap );
-  IO::store( out, n_base_faces   , swap );
-  IO::store( out, pmi_.size()    , swap );
+  IO::store( out, static_cast<unsigned int>(n_base_vertices), swap );//store in 32-bit
+  IO::store( out, static_cast<unsigned int>(n_base_faces)   , swap );
+  IO::store( out, static_cast<unsigned int>(pmi_.size())    , swap );
 
   Vec3f p;
 
