@@ -76,10 +76,11 @@ VFront::
 remove(VHierarchyNodeHandle _node_handle)
 {
   VHierarchyNodeHandleListIter node_it = front_location_[_node_handle.idx()];
+  const bool isFront = (front_it_ == node_it);
   VHierarchyNodeHandleListIter next_it = front_.erase(node_it);
   front_location_[_node_handle.idx()] = front_.end();
 
-  if (front_it_ == node_it)
+  if (isFront)
     front_it_ = next_it;
 }
 
