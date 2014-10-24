@@ -439,4 +439,43 @@ TEST_F(OpenMeshReadWritePLY, LoadSimplePLYWithNormals) {
     mesh_.release_vertex_normals();
 
 }
+
+/*
+ * Just load a ply with custom properties, ascii mode
+ */
+TEST_F(OpenMeshReadWritePLY, LoadSimplePLYWithCustomProps) {
+
+    mesh_.clear();
+
+    OpenMesh::IO::Options options;
+    options += OpenMesh::IO::Options::Custom;
+
+    bool ok = OpenMesh::IO::read_mesh(mesh_, "cube-minimal-custom_props.ply", options);
+
+    EXPECT_TRUE(ok) << "Unable to load cube-minimal-custom_props.ply";
+
+    EXPECT_EQ(8u  , mesh_.n_vertices()) << "The number of loaded vertices is not correct!";
+    EXPECT_EQ(18u , mesh_.n_edges()) << "The number of loaded edges is not correct!";
+    EXPECT_EQ(12u , mesh_.n_faces()) << "The number of loaded faces is not correct!";
+
+    OpenMesh::VPropHandleT<float> qualityProp;
+    OpenMesh::VPropHandleT<unsigned int> indexProp;
+    EXPECT_TRUE(mesh_.get_property_handle(qualityProp,"quality")) << "Could not access quality property";
+    EXPECT_TRUE(mesh_.get_property_handle(indexProp,"index")) << "Could not access index property";
+
+    //check index property
+    for (unsigned i = 0; i < mesh_.n_vertices(); ++i)
+      EXPECT_EQ(i ,mesh_.property(indexProp,OpenMesh::VertexHandle(i))) << "Vertex index at vertex " << i << " is wrong";
+
+    //check quality property
+    EXPECT_EQ(1.f,mesh_.property(qualityProp,OpenMesh::VertexHandle(0))) << "Wrong quality value at Vertex 0";
+    EXPECT_EQ(0.5f,mesh_.property(qualityProp,OpenMesh::VertexHandle(1))) << "Wrong quality value at Vertex 1";
+    EXPECT_EQ(0.7f,mesh_.property(qualityProp,OpenMesh::VertexHandle(2))) << "Wrong quality value at Vertex 2";
+    EXPECT_EQ(1.f,mesh_.property(qualityProp,OpenMesh::VertexHandle(3))) << "Wrong quality value at Vertex 3";
+    EXPECT_EQ(0.1f,mesh_.property(qualityProp,OpenMesh::VertexHandle(4))) << "Wrong quality value at Vertex 4";
+    EXPECT_EQ(0.f,mesh_.property(qualityProp,OpenMesh::VertexHandle(5))) << "Wrong quality value at Vertex 5";
+    EXPECT_EQ(2.f,mesh_.property(qualityProp,OpenMesh::VertexHandle(6))) << "Wrong quality value at Vertex 6";
+    EXPECT_EQ(5.f,mesh_.property(qualityProp,OpenMesh::VertexHandle(7))) << "Wrong quality value at Vertex 7";
+
+}
 }

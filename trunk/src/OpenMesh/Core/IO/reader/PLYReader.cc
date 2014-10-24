@@ -156,6 +156,9 @@ bool _PLYReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt) {
     if (options_.color_is_float()) {
         _opt += Options::ColorFloat;
     }
+    if (options_.check(Options::Custom) && userOptions_.check(Options::Custom)) {
+        _opt += Options::Custom;
+    }
 
     //    //force user-choice for the alpha value when reading binary
     //    if ( options_.is_binary() && userOptions_.color_has_alpha() )
@@ -165,6 +168,55 @@ bool _PLYReader_::read(std::istream& _in, BaseImporter& _bi, Options& _opt) {
 
 }
 
+template<typename T>
+void assignCustomProperty(std::istream& _in, BaseImporter& _bi, VertexHandle _vh, const std::string& _propName)
+{
+  OpenMesh::VPropHandleT<T> prop;
+  if (!_bi.kernel()->get_property_handle(prop,_propName))
+    _bi.kernel()->add_property(prop,_propName);
+  T in;
+  _in >> in;
+  _bi.kernel()->property(prop,_vh) = in;
+}
+
+
+void _PLYReader_::readCustomProperty(std::istream& _in, BaseImporter& _bi, VertexHandle _vh, const std::string& _propName, const ValueType _valueType) const
+{
+  switch (_valueType)
+  {
+  case ValueTypeINT8:
+  case ValueTypeCHAR:
+      assignCustomProperty<char>(_in,_bi,_vh,_propName);
+      break;
+  case ValueTypeINT16:
+  case ValueTypeSHORT:
+      assignCustomProperty<short>(_in,_bi,_vh,_propName);
+      break;
+  case ValueTypeUINT16:
+  case ValueTypeUSHORT:
+      assignCustomProperty<unsigned short>(_in,_bi,_vh,_propName);
+      break;
+  case ValueTypeINT32:
+  case ValueTypeINT:
+      assignCustomProperty<int>(_in,_bi,_vh,_propName);
+      break;
+  case ValueTypeUINT32:
+  case ValueTypeUINT:
+      assignCustomProperty<unsigned int>(_in,_bi,_vh,_propName);
+      break;
+  case ValueTypeFLOAT32:
+  case ValueTypeFLOAT:
+      assignCustomProperty<float>(_in,_bi,_vh,_propName);
+      break;
+  case ValueTypeFLOAT64:
+  case ValueTypeDOUBLE:
+      assignCustomProperty<double>(_in,_bi,_vh,_propName);
+      break;
+  default:
+      std::cerr << "unsupported type" << std::endl;
+      break;
+  }
+}
 
 
 //-----------------------------------------------------------------------------
@@ -196,6 +248,8 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options
 
     // read vertices:
     for (i = 0; i < vertexCount_ && !_in.eof(); ++i) {
+        vh = _bi.add_vertex();
+
         v[0] = 0.0;
         v[1] = 0.0;
         v[2] = 0.0;
@@ -213,7 +267,7 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options
         c[3] = 255;
 
         for (uint propertyIndex = 0; propertyIndex < vertexPropertyCount_; ++propertyIndex) {
-            switch (vertexPropertyMap_[propertyIndex].first) {
+            switch (vertexPropertyMap_[propertyIndex].property) {
             case XCOORD:
                 _in >> v[0];
                 break;
@@ -239,36 +293,42 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options
                 _in >> t[1];
                 break;
             case COLORRED:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[0] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
                     _in >> c[0];
                 break;
             case COLORGREEN:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[1] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
                     _in >> c[1];
                 break;
             case COLORBLUE:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[2] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
                     _in >> c[2];
                 break;
             case COLORALPHA:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
                     _in >> tmp;
                     c[3] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
                     _in >> c[3];
+                break;
+            case CUSTOM_PROP:
+                if (_opt.check(Options::Custom))
+                  readCustomProperty(_in, _bi, vh, vertexPropertyMap_[propertyIndex].name, vertexPropertyMap_[propertyIndex].value);
+                else
+                  _in >> trash;
                 break;
             default:
                 _in >> trash;
@@ -276,7 +336,7 @@ bool _PLYReader_::read_ascii(std::istream& _in, BaseImporter& _bi, const Options
             }
         }
 
-        vh = _bi.add_vertex(v);
+        _bi.set_point(vh, v);
         if (_opt.vertex_has_normal())
           _bi.set_normal(vh, n);
         if (_opt.vertex_has_texcoord())
@@ -356,71 +416,71 @@ bool _PLYReader_::read_binary(std::istream& _in, BaseImporter& _bi, bool /*_swap
         c[3] = 255;
 
         for (uint propertyIndex = 0; propertyIndex < vertexPropertyCount_; ++propertyIndex) {
-            switch (vertexPropertyMap_[propertyIndex].first) {
+            switch (vertexPropertyMap_[propertyIndex].property) {
             case XCOORD:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, v[0]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, v[0]);
                 break;
             case YCOORD:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, v[1]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, v[1]);
                 break;
             case ZCOORD:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, v[2]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, v[2]);
                 break;
             case XNORM:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, n[0]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, n[0]);
                 break;
             case YNORM:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, n[1]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, n[1]);
                 break;
             case ZNORM:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, n[2]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, n[2]);
                 break;
             case TEXX:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, t[0]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, t[0]);
                 break;
             case TEXY:
-                readValue(vertexPropertyMap_[propertyIndex].second, _in, t[1]);
+                readValue(vertexPropertyMap_[propertyIndex].value, _in, t[1]);
                 break;
             case COLORRED:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
+                    readValue(vertexPropertyMap_[propertyIndex].value, _in, tmp);
 
                     c[0] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[0]);
+                    readInteger(vertexPropertyMap_[propertyIndex].value, _in, c[0]);
 
                 break;
             case COLORGREEN:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
+                    readValue(vertexPropertyMap_[propertyIndex].value, _in, tmp);
                     c[1] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[1]);
+                    readInteger(vertexPropertyMap_[propertyIndex].value, _in, c[1]);
 
                 break;
             case COLORBLUE:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
+                    readValue(vertexPropertyMap_[propertyIndex].value, _in, tmp);
                     c[2] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[2]);
+                    readInteger(vertexPropertyMap_[propertyIndex].value, _in, c[2]);
 
                 break;
             case COLORALPHA:
-                if (vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT32 ||
-                    vertexPropertyMap_[propertyIndex].second == ValueTypeFLOAT) {
-                    readValue(vertexPropertyMap_[propertyIndex].second, _in, tmp);
+                if (vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT32 ||
+                    vertexPropertyMap_[propertyIndex].value == ValueTypeFLOAT) {
+                    readValue(vertexPropertyMap_[propertyIndex].value, _in, tmp);
                     c[3] = static_cast<OpenMesh::Vec4i::value_type> (tmp * 255.0f);
                 } else
-                    readInteger(vertexPropertyMap_[propertyIndex].second, _in, c[3]);
+                    readInteger(vertexPropertyMap_[propertyIndex].value, _in, c[3]);
 
                 break;
             default:
                 // Read unsupported property
-                consume_input(_in, scalar_size_[vertexPropertyMap_[propertyIndex].second]);
+                consume_input(_in, scalar_size_[vertexPropertyMap_[propertyIndex].value]);
                 break;
             }
 
@@ -959,84 +1019,86 @@ bool _PLYReader_::can_u_read(std::istream& _is) const {
                     propertyName = get_property_name(tmp1, tmp2);
 
                     if (propertyName == "x") {
-                        std::pair<VertexProperty, ValueType> entry(XCOORD, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        vertexDimension_++;
+                      VertexPropertyInfo entry(XCOORD, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      vertexDimension_++;
                     } else if (propertyName == "y") {
-                        std::pair<VertexProperty, ValueType> entry(YCOORD, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        vertexDimension_++;
+                      VertexPropertyInfo entry(YCOORD, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      vertexDimension_++;
                     } else if (propertyName == "z") {
-                        std::pair<VertexProperty, ValueType> entry(ZCOORD, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        vertexDimension_++;
+                      VertexPropertyInfo entry(ZCOORD, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      vertexDimension_++;
                     } else if (propertyName == "nx") {
-                        std::pair<VertexProperty, ValueType> entry(XNORM, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexNormal;
+                      VertexPropertyInfo entry(XNORM, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexNormal;
                     } else if (propertyName == "ny") {
-                        std::pair<VertexProperty, ValueType> entry(YNORM, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexNormal;
+                      VertexPropertyInfo entry(YNORM, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexNormal;
                     } else if (propertyName == "nz") {
-                        std::pair<VertexProperty, ValueType> entry(ZNORM, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexNormal;
+                      VertexPropertyInfo entry(ZNORM, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexNormal;
                     } else if (propertyName == "u" || propertyName == "s") {
-                        std::pair<VertexProperty, ValueType> entry(TEXX, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexTexCoord;
+                      VertexPropertyInfo entry(TEXX, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexTexCoord;
                     } else if (propertyName == "v" || propertyName == "t") {
-                        std::pair<VertexProperty, ValueType> entry(TEXY, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexTexCoord;
+                      VertexPropertyInfo entry(TEXY, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexTexCoord;
                     } else if (propertyName == "red") {
-                        std::pair<VertexProperty, ValueType> entry(COLORRED, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexColor;
-                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
-                          options_ += Options::ColorFloat;
+                      VertexPropertyInfo entry(COLORRED, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexColor;
+                      if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                        options_ += Options::ColorFloat;
                     } else if (propertyName == "green") {
-                        std::pair<VertexProperty, ValueType> entry(COLORGREEN, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexColor;
-                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
-                          options_ += Options::ColorFloat;
+                      VertexPropertyInfo entry(COLORGREEN, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexColor;
+                      if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                        options_ += Options::ColorFloat;
                     } else if (propertyName == "blue") {
-                        std::pair<VertexProperty, ValueType> entry(COLORBLUE, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexColor;
-                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
-                          options_ += Options::ColorFloat;
+                      VertexPropertyInfo entry(COLORBLUE, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexColor;
+                      if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                        options_ += Options::ColorFloat;
                     } else if (propertyName == "diffuse_red") {
-                      std::pair<VertexProperty, ValueType> entry(COLORRED, valueType);
+                      VertexPropertyInfo entry(COLORRED, valueType);
                       vertexPropertyMap_[vertexPropertyCount_] = entry;
                       options_ += Options::VertexColor;
                       if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
                         options_ += Options::ColorFloat;
                     } else if (propertyName == "diffuse_green") {
-                      std::pair<VertexProperty, ValueType> entry(COLORGREEN, valueType);
+                      VertexPropertyInfo entry(COLORGREEN, valueType);
                       vertexPropertyMap_[vertexPropertyCount_] = entry;
                       options_ += Options::VertexColor;
                       if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
                         options_ += Options::ColorFloat;
                     } else if (propertyName == "diffuse_blue") {
-                      std::pair<VertexProperty, ValueType> entry(COLORBLUE, valueType);
+                      VertexPropertyInfo entry(COLORBLUE, valueType);
                       vertexPropertyMap_[vertexPropertyCount_] = entry;
                       options_ += Options::VertexColor;
                       if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
                         options_ += Options::ColorFloat;
                     } else if (propertyName == "alpha") {
-                        std::pair<VertexProperty, ValueType> entry(COLORALPHA, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        options_ += Options::VertexColor;
-                        options_ += Options::ColorAlpha;
-                        if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
-                          options_ += Options::ColorFloat;
+                      VertexPropertyInfo entry(COLORALPHA, valueType);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
+                      options_ += Options::VertexColor;
+                      options_ += Options::ColorAlpha;
+                      if (valueType == ValueTypeFLOAT || valueType == ValueTypeFLOAT32)
+                        options_ += Options::ColorFloat;
                     } else {
-                        std::pair<VertexProperty, ValueType> entry(UNSUPPORTED, valueType);
-                        vertexPropertyMap_[vertexPropertyCount_] = entry;
-                        std::cerr << "Unsupported property : " << propertyName << std::endl;
+                      VertexProperty prop = (!options_.is_binary()) ? CUSTOM_PROP : UNSUPPORTED; // loading vertex properties is not yet supported by the binary loader
+                      if (prop != UNSUPPORTED)
+                        options_ += Options::Custom;
+                      VertexPropertyInfo entry(prop, valueType, propertyName);
+                      vertexPropertyMap_[vertexPropertyCount_] = entry;
                     }
 
                     vertexPropertyCount_++;

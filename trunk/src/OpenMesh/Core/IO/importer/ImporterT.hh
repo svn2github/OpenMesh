@@ -94,6 +94,10 @@ public:
     return mesh_.add_vertex(vector_cast<Point>(_point));
   }
 
+  virtual VertexHandle add_vertex()
+  {
+    return mesh_.new_vertex();
+  }
 
   virtual FaceHandle add_face(const VHandles& _indices)
   {
@@ -153,6 +157,11 @@ public:
   }
 
   // vertex attributes
+
+  virtual void set_point(VertexHandle _vh, const Vec3f& _point)
+  {
+    mesh_.set_point(_vh,vector_cast<Point>(_point));
+  }
 
   virtual void set_normal(VertexHandle _vh, const Vec3f& _normal)
   {

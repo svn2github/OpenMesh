@@ -89,6 +89,9 @@ public:
   // add a vertex with coordinate \c _point
   virtual VertexHandle add_vertex(const Vec3f& _point) = 0;
 
+  // add a vertex without coordinate. Use set_point to set the position deferred
+  virtual VertexHandle add_vertex() = 0;
+
   // add a face with indices _indices refering to vertices
   typedef std::vector<VertexHandle> VHandles;
   virtual FaceHandle add_face(const VHandles& _indices) = 0;
@@ -98,6 +101,9 @@ public:
 
   // Set the texture index for a face
   virtual void set_face_texindex( FaceHandle _fh, int _texId ) = 0;
+
+  // Set coordinate of the given vertex. Use this function, if you created a vertex without coordinate
+  virtual void set_point(VertexHandle _vh, const Vec3f& _point) = 0;
 
   // set vertex normal
   virtual void set_normal(VertexHandle _vh, const Vec3f& _normal) = 0;
