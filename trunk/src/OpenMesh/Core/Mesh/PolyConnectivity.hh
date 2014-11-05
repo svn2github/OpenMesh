@@ -594,8 +594,8 @@ public:
   class EntityRange {
       public:
           EntityRange(CONTAINER_TYPE &container) : container_(container) {}
-          ITER_TYPE begin() { return (container_.*begin_fn)(); }
-          ITER_TYPE end() { return (container_.*end_fn)(); }
+          ITER_TYPE begin() const { return (container_.*begin_fn)(); }
+          ITER_TYPE end() const { return (container_.*end_fn)(); }
 
       private:
           CONTAINER_TYPE &container_;
