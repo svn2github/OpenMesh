@@ -5,6 +5,7 @@
 \li \subpage decimater_docu
 \li \subpage subdivider_docu
 \li \subpage vdpm_docu
+\li \subpage smoother_docu
 \li Miscellaneous
     OpenMesh::StripifierT
 
