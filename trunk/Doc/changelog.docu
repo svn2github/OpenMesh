@@ -6,13 +6,14 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.3</b> (?/?/?,Rev.1140)</td><td>
+<tr valign=top><td><b>3.3</b> (?/?/?,Rev.1186)</td><td>
 
 <b>Core</b>
 <ul>
 <li>change name of the types "True" and "False" to "TrueType" and "FalseType" to clarify, that these are types and avoid conflicts</li>
 <li>Fixed two missing this pointers</li>
 <li>Removed several unused variables</li>
+<li>PolyConnectivity: Fixed constness of EntityRange begin() and end() methods.</li>
 </ul>
 
 <b>Python Interface</b>
@@ -20,18 +21,35 @@
 <li>Added a Python interface for OpenMesh. Implemented via boost python</li>
 </ul>
 
+<b>Utils</b>
+<ul>
+<li>PropertyManager: Added copy_to method.</li>
+<li>PropertyManager: Added static copy(...) convenience method.</li>
+</ul>
 
 <b>IO</b>
 <ul>
 <li>OBJ writer: remove excluding condition for face color (Thanks to Javier Granado for the hint). closes #2247 </li>
+<li>PLY Reader: add custom property support for PLY reader ASCII version</li>
+</ul>
+
+<b>Tools</b>
+<ul>
+<li>VDPM: fix comparison with invalid iterator closes #2263 </li>
+<li>Decimater: ModProgMeshT fix 32/64-bit bug on windows (analyzer and synthesizer reads with unsigned int -> 32bit, writer writes size_t -> possible 64-bit)</li>
 </ul>
 
 <b>Documentation</b>
 <ul>
 <li>New acg logo for OpenMesh</li>
 <li>Fixed compilation documentation to include Qt5 and latest compilers</li>
+<li>Added smootherdocu. closes #2185</li>
 </ul>
 
+<b>Unittests</b>
+<ul>
+<li>add unittest for vdpm (read and write/read) closes #2263</li>
+</ul>
 
 <b>Build system</b>
 <ul>
@@ -41,7 +59,6 @@
 <li>fix permissions for static lib (they have the same as all other libs now)</li>
 <li>fix cmake (>=3.0) warning on MacOS idue to missing rpath. closes #2251</li>
 </ul>
-
 
 </tr>
 
