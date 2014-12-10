@@ -227,10 +227,10 @@ TEST_F(OpenMeshVDPM, ReadPM)
 {
     LoadInfo info = open_progresult_mesh("cube1.pm");
 
-    EXPECT_EQ(7526, info.mesh.n_vertices()) << "Vertices differ";
-    EXPECT_EQ(6, info.mesh.n_edges()) << "Edges differ";
-    EXPECT_EQ(4, info.mesh.n_faces()) << "Faces differ";
-    EXPECT_EQ(7522, info.n_details) << "Details differ";
+    EXPECT_EQ(7526u, info.mesh.n_vertices()) << "Vertices differ";
+    EXPECT_EQ(6u, info.mesh.n_edges()) << "Edges differ";
+    EXPECT_EQ(4u, info.mesh.n_faces()) << "Faces differ";
+    EXPECT_EQ(7522u, info.n_details) << "Details differ";
 }
 
 /*
