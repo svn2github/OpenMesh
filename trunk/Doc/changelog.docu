@@ -44,6 +44,7 @@
 <li>New acg logo for OpenMesh</li>
 <li>Fixed compilation documentation to include Qt5 and latest compilers</li>
 <li>Added smootherdocu. closes #2185</li>
+<li>Added documentation about direction of the circulators</li>
 </ul>
 
 <b>Unittests</b>
