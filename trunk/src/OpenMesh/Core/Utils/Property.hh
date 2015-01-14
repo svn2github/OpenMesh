@@ -174,7 +174,11 @@ public: // data access interface
 
   /// Get reference to property vector (be careful, improper usage, e.g. resizing, may crash OpenMesh!!!)
   vector_type& data_vector() {
+    return data_;
+  }
 
+  /// Const access to property vector
+  const vector_type& data_vector() const {
     return data_;
   }
 
@@ -338,7 +342,11 @@ public:
 
   /// Get reference to property vector (be careful, improper usage, e.g. resizing, may crash OpenMesh!!!)
   vector_type& data_vector() {
+    return data_;
+  }
 
+  /// Const access to property vector
+  const vector_type& data_vector() const {
     return data_;
   }
 
