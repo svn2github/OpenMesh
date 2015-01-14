@@ -95,39 +95,44 @@ public:
     vectorize(v);
   }
 
+#if DIM == 2
   /// special constructor for 2D vectors
-  inline VectorT(const Scalar& v0, const Scalar& v1) {
-    assert(DIM==2);
+  inline VectorT(const Scalar v0, const Scalar v1) {
     Base::values_[0] = v0; Base::values_[1] = v1;
   }
+#endif
 
+#if DIM == 3
   /// special constructor for 3D vectors
-  inline VectorT(const Scalar& v0, const Scalar& v1, const Scalar& v2) {
-    assert(DIM==3);
+  inline VectorT(const Scalar v0, const Scalar v1, const Scalar v2) {
     Base::values_[0]=v0; Base::values_[1]=v1; Base::values_[2]=v2;
   }
+#endif
 
+#if DIM == 4
   /// special constructor for 4D vectors
-  inline VectorT(const Scalar& v0, const Scalar& v1,
-     const Scalar& v2, const Scalar& v3) {
-    assert(DIM==4);
+  inline VectorT(const Scalar v0, const Scalar v1,
+     const Scalar v2, const Scalar v3) {
     Base::values_[0]=v0; Base::values_[1]=v1; Base::values_[2]=v2; Base::values_[3]=v3;
   }
+#endif
 
+#if DIM == 5
   /// special constructor for 5D vectors
-  inline VectorT(const Scalar& v0, const Scalar& v1, const Scalar& v2,
-     const Scalar& v3, const Scalar& v4) {
-    assert(DIM==5);
+  inline VectorT(const Scalar v0, const Scalar v1, const Scalar v2,
+     const Scalar v3, const Scalar v4) {
     Base::values_[0]=v0; Base::values_[1]=v1;Base::values_[2]=v2; Base::values_[3]=v3; Base::values_[4]=v4;
   }
+#endif
 
+#if DIM == 6
   /// special constructor for 6D vectors
-  inline VectorT(const Scalar& v0, const Scalar& v1, const Scalar& v2,
-     const Scalar& v3, const Scalar& v4, const Scalar& v5) {
-    assert(DIM==6);
+  inline VectorT(const Scalar v0, const Scalar v1, const Scalar v2,
+     const Scalar v3, const Scalar v4, const Scalar v5) {
     Base::values_[0]=v0; Base::values_[1]=v1; Base::values_[2]=v2;
     Base::values_[3]=v3; Base::values_[4]=v4; Base::values_[5]=v5;
   }
+#endif
 
   /// construct from a value array (explicit)
   explicit inline VectorT(const Scalar _values[DIM]) {
