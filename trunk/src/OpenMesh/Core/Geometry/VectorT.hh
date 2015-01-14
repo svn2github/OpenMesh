@@ -178,7 +178,27 @@ template <> struct VectorDataT<float, 4>
 #undef  unroll
 #undef  unroll_comb
 #undef  unroll_csv
+    
+#define DIM                    5
+#define unroll(expr)           expr(0) expr(1) expr(2) expr(3) expr(4)
+#define unroll_comb(expr, op)  expr(0) op expr(1) op expr(2) op expr(3) op expr(4)
+#define unroll_csv(expr)       expr(0), expr(1), expr(2), expr(3), expr(4)
+#include "VectorT_inc.hh"
+#undef  DIM
+#undef  unroll
+#undef  unroll_comb
+#undef  unroll_csv
 
+#define DIM                    6
+#define unroll(expr)           expr(0) expr(1) expr(2) expr(3) expr(4) expr(5)
+#define unroll_comb(expr, op)  expr(0) op expr(1) op expr(2) op expr(3) op expr(4) op expr(5)
+#define unroll_csv(expr)       expr(0), expr(1), expr(2), expr(3), expr(4), expr(5)
+#include "VectorT_inc.hh"
+#undef  DIM
+#undef  unroll
+#undef  unroll_comb
+#undef  unroll_csv
+    
 
 #undef  TEMPLATE_HEADER
 #undef  CLASSNAME
@@ -319,6 +339,23 @@ typedef VectorT<unsigned int,4> Vec4ui;
 typedef VectorT<float,4> Vec4f;
 /** 4-double vector */
 typedef VectorT<double,4> Vec4d;
+
+/** 5-byte signed vector */
+typedef VectorT<signed char, 5> Vec5c;
+/** 5-byte unsigned vector */
+typedef VectorT<unsigned char, 5> Vec5uc;
+/** 5-short signed vector */
+typedef VectorT<signed short int, 5> Vec5s;
+/** 5-short unsigned vector */
+typedef VectorT<unsigned short int, 5> Vec5us;
+/** 5-int signed vector */
+typedef VectorT<signed int, 5> Vec5i;
+/** 5-int unsigned vector */
+typedef VectorT<unsigned int, 5> Vec5ui;
+/** 5-float vector */
+typedef VectorT<float, 5> Vec5f;
+/** 5-double vector */
+typedef VectorT<double, 5> Vec5d;
 
 /** 6-byte signed vector */
 typedef VectorT<signed char,6> Vec6c;
