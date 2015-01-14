@@ -57,7 +57,7 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       /ACG/acgdev/gcc-4.7-x86_64/gtest/lib
       /opt/local/lib
       /usr/local/lib
-      /usr/include
+      /usr/lib
       "C:/libs/win32/gtest/lib"
       NO_DEFAULT_PATH )
     find_library(_GTEST_MAIN_LIBRARY gtest_main
@@ -67,7 +67,7 @@ else(GTEST_INCLUDE_DIRS AND GTEST_LIBRARIES AND GTEST_MAIN_LIBRARIES)
       /ACG/acgdev/gcc-4.7-x86_64/gtest/lib
       /opt/local/lib
       /usr/local/lib
-      /usr/include
+      /usr/lib
       "C:/libs/win32/gtest/lib"
       NO_DEFAULT_PATH )
 
