@@ -460,7 +460,7 @@ public: // Property Management
   //@{
   /// Add property.
   /// @copydoc OpenMesh::BaseKernel::add_property()
-  template <typename T> bool add_property( [VEHFM]PropHandleT<T>& _ph,
+  template <typename T> void add_property( [VEHFM]PropHandleT<T>& _ph,
                                            const std::string& _name = "" );
   //@}
 
