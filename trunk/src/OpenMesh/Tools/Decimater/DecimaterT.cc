@@ -215,6 +215,10 @@ size_t DecimaterT<Mesh>::decimate(size_t _n_collapses) {
       assert(!mesh_.status(*s_it).deleted());
       heap_vertex(*s_it);
     }
+
+    // notify observer and stop if the observer requests it
+    if (!this->notify_observer(n_collapses))
+        return n_collapses;
   }
 
   // delete heap
@@ -316,6 +320,10 @@ size_t DecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
       assert(!mesh_.status(*s_it).deleted());
       heap_vertex(*s_it);
     }
+
+    // notify observer and stop if the observer requests it
+    if (!this->notify_observer(n_collapses))
+        return n_collapses;
   }
 
   // delete heap

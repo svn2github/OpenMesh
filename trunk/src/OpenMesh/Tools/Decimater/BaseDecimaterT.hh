@@ -71,6 +71,30 @@ namespace Decimater {
 //== CLASS DEFINITION =========================================================
 
 
+class Observer
+{
+public:
+  Observer(size_t _step) :
+      step_(_step) {
+  }
+  
+  virtual ~Observer() {
+  }
+  
+  size_t get_step() const                 { return step_; }
+  // give the notification step size
+  void set_step(size_t _step)         { step_ = _step; }
+  
+  //notifies about a finished decimater step with the given step number
+  virtual void notify(size_t _step) = 0;
+  //after notification, ask for abort or not, return true, if the decimater should abort
+  virtual bool abort() const = 0;
+  
+private:
+  size_t step_;
+};
+
+
 /** base class decimater framework
     \see BaseDecimaterT, \ref decimater_docu
 */
@@ -112,6 +136,17 @@ public: //------------------------------------------------------ public methods
   void info( std::ostream& _os );
 
 public: //--------------------------------------------------- module management
+
+  // Observer interface
+  void set_observer(Observer* _o)
+  {
+      observer_ = _o;
+  }
+
+  Observer* observer()
+  {
+      return observer_;
+  }
 
   /// access mesh. used in modules.
   Mesh& mesh() { return mesh_; }
@@ -165,6 +200,17 @@ public: //--------------------------------------------------- module management
 
 
 protected:
+
+  //returns false, if abort requested by observer
+  bool notify_observer(size_t _n_collapses)
+  {
+    if (observer() && _n_collapses % observer()->get_step() == 0)
+    {
+      observer()->notify(_n_collapses);
+      return !observer()->abort();
+    }
+    return true;
+  }
 
   // Reset the initialized flag, and clear the bmodules_ and cmodule_
   void set_uninitialized() {
@@ -234,6 +280,8 @@ private: //------------------------------------------------------- private data
   // Flag if all modules were initialized
   bool       initialized_;
 
+  // observer
+  Observer* observer_;
 
 };
 

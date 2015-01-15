@@ -67,7 +67,7 @@ namespace Decimater {
 
 template<class Mesh>
 BaseDecimaterT<Mesh>::BaseDecimaterT(Mesh& _mesh) :
-    mesh_(_mesh), cmodule_(NULL), initialized_(false) {
+    mesh_(_mesh), cmodule_(NULL), initialized_(false), observer_(NULL) {
   // default properties
   mesh_.request_vertex_status();
   mesh_.request_edge_status();

@@ -198,6 +198,10 @@ size_t McDecimaterT<Mesh>::decimate(size_t _n_collapses) {
       // post-process collapse
       this->postprocess_collapse(ci);
 
+      // notify observer and stop if the observer requests it
+      if (!this->notify_observer(n_collapses))
+          return n_collapses;
+
     } else {
       if (oldCollapses == n_collapses) {
         if (collapsesUnchanged == false) {
@@ -336,6 +340,10 @@ size_t McDecimaterT<Mesh>::decimate_to_faces(size_t _nv, size_t _nf) {
 
       // post-process collapse
       this->postprocess_collapse(ci);
+
+      // notify observer and stop if the observer requests it
+      if (!this->notify_observer(n_collapses))
+          return n_collapses;
 
     } else {
       if (oldCollapses == n_collapses) {
@@ -490,6 +498,10 @@ size_t McDecimaterT<Mesh>::decimate_constraints_only(float _factor) {
 
       // post-process collapse
       this->postprocess_collapse(ci);
+
+      // notify observer and stop if the observer requests it
+      if (!this->notify_observer(n_collapses))
+          return n_collapses;
 
     } else {
       if (oldCollapses == n_collapses) {
