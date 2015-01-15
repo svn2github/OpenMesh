@@ -137,14 +137,14 @@ void VDPMClientViewerWidget::mesh_coloring()
 
   for (; vIt!=vEnd; ++vIt)
   {
-    node_handle = mesh_.data(vIt.handle()).vhierarchy_node_handle();
+    node_handle = mesh_.data(*vIt).vhierarchy_node_handle();
     ratio = vhierarchy_.node(node_handle).ratio();
     
     r = (unsigned char) ((1.0f - ratio) * myYellow[0] + ratio * myBlue[0]);
     g = (unsigned char) ((1.0f - ratio) * myYellow[1] + ratio * myBlue[1]);
     b = (unsigned char) ((1.0f - ratio) * myYellow[2] + ratio * myBlue[2]);
 
-    mesh_.set_color(vIt.handle(), OpenMesh::Vec3uc(r,g,b));
+    mesh_.set_color(*vIt, OpenMesh::Vec3uc(r,g,b));
   }
 }
 
