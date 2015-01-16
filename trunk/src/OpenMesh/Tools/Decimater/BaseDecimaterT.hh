@@ -59,6 +59,7 @@
 #include <OpenMesh/Core/Utils/Property.hh>
 #include <OpenMesh/Tools/Decimater/ModBaseT.hh>
 #include <OpenMesh/Core/Utils/Noncopyable.hh>
+#include <OpenMesh/Tools/Decimater/Observer.hh>
 
 
 
@@ -69,56 +70,6 @@ namespace Decimater {
 
 
 //== CLASS DEFINITION =========================================================
-
-/** \brief Observer class
- *
- * Observers can be used to monitor the progress of the decimation and to
- * abort it in between.
- */
-class Observer
-{
-public:
-
-  /** Create an observer
-   *
-   * @param _notificationIntervall Interval of decimation steps between notifications.
-   */
-  Observer(size_t _notificationInterval) :
-    notificationInterval_(_notificationInterval) {
-  }
-  
-  /// Destructor
-  virtual ~Observer() {
-  }
-  
-  /// Get the interval between notification steps
-  size_t get_interval() const                      { return notificationInterval_; }
-
-  /// Set the interval between notification steps
-  void set_interval(size_t _notificationInterval) { notificationInterval_ = _notificationInterval; }
-  
-  /** \brief callback
-   *
-   * This function has to be overloaded. It will be called regularly during
-   * the decimation process and will return the current step.
-   *
-   * @param _step Current step of the decimater
-   */
-  virtual void notify(size_t _step) = 0;
-
-  /** \brief Abort callback
-   *
-   * After each notification, this function is called by the decimater. If the
-   * function returns true, the decimater will stop at a consistent state. Otherwise
-   * it will continue.
-   *
-   * @return abort Yes or No
-   */
-  virtual bool abort() const { return false; };
-  
-private:
-  size_t notificationInterval_;
-};
 
 
 /** base class decimater framework
