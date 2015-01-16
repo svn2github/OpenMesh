@@ -6,7 +6,7 @@
 
 <!-- --------------------------------------------------------------------- -->
 
-<tr valign=top><td><b>3.3</b> (?/?/?,Rev.1186)</td><td>
+<tr valign=top><td><b>3.3</b> (?/?/?,Rev.1200)</td><td>
 
 <b>Core</b>
 <ul>
@@ -15,6 +15,7 @@
 <li>Removed several unused variables</li>
 <li>PolyConnectivity: Fixed constness of EntityRange begin() and end() methods.</li>
 <li>VectorT: add specializations for 5/6 dimension vectors</li>
+<li>VectorT: added const getter for data_vector()</li>
 <li>VectorT: <b> Modified Vector constructors!</b> The constructors now check the size of the vector at compile time not run time. This might produce compiler errors but ensures that the vectors are initialized correctly.</li>
 </ul>
 
@@ -39,6 +40,7 @@
 <ul>
 <li>VDPM: fix comparison with invalid iterator closes #2263 </li>
 <li>Decimater: ModProgMeshT fix 32/64-bit bug on windows (analyzer and synthesizer reads with unsigned int -> 32bit, writer writes size_t -> possible 64-bit)</li>
+<li>Decimater: Added an observer class which can trigger a callback to monitor and abort the decimater process from outside.</li>
 </ul>
 
 <b>Documentation</b>
