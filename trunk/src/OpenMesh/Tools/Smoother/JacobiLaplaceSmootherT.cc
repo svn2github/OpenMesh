@@ -166,12 +166,12 @@ compute_new_positions_C1()
       for (voh_it = Base::mesh_.cvoh_iter(*v_it); voh_it.is_valid(); ++voh_it) {
         w  = this->weight(Base::mesh_.edge_handle(*voh_it));
         uu   -= Base::mesh_.property(umbrellas_, Base::mesh_.to_vertex_handle(*voh_it));
-        diag += (w * this->weight(Base::mesh_.to_vertex_handle(*voh_it)) + 1.0) * w;
+        diag += (w * this->weight(Base::mesh_.to_vertex_handle(*voh_it)) + static_cast<typename Mesh::Scalar>(1.0) ) * w;
       }
       uu   *= this->weight(*v_it);
       diag *= this->weight(*v_it);
       uu   += Base::mesh_.property(umbrellas_, *v_it);
-      if (diag) uu *= 1.0/diag;
+      if (diag) uu *= static_cast<typename Mesh::Scalar>(1.0) / diag;
 
       // damping
       uu *= 0.25;

@@ -268,9 +268,9 @@ void SubdivideWidget::keyPressEvent( QKeyEvent *k )
 
 void SubdivideWidget::update()
 {
-  unsigned int n_faces = viewer_widget_->mesh().n_faces();
-  unsigned int n_edges = viewer_widget_->mesh().n_edges();
-  unsigned int n_vertices = viewer_widget_->mesh().n_vertices();
+  size_t n_faces = viewer_widget_->mesh().n_faces();
+  size_t n_edges = viewer_widget_->mesh().n_edges();
+  size_t n_vertices = viewer_widget_->mesh().n_vertices();
   QString message(""), temp;
   message.append(temp.setNum(n_faces));
   message.append(" Faces, ");
