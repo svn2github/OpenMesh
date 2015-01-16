@@ -78,7 +78,7 @@ public:
 
   /** Create an observer
    *
-   * @param _notificationIntervall Interval of decimation steps between notifications.
+   * @param _notificationInterval Interval of decimation steps between notifications.
    */
   Observer(size_t _notificationInterval);
   
