@@ -70,28 +70,54 @@ namespace Decimater {
 
 //== CLASS DEFINITION =========================================================
 
-
+/** \brief Observer class
+ *
+ * Observers can be used to monitor the progress of the decimation and to
+ * abort it in between.
+ */
 class Observer
 {
 public:
-  Observer(size_t _step) :
-      step_(_step) {
+
+  /** Create an observer
+   *
+   * @param _notificationIntervall Interval of decimation steps between notifications.
+   */
+  Observer(size_t _notificationInterval) :
+    notificationInterval_(_notificationInterval) {
   }
   
+  /// Destructor
   virtual ~Observer() {
   }
   
-  size_t get_step() const                 { return step_; }
-  // give the notification step size
-  void set_step(size_t _step)         { step_ = _step; }
+  /// Get the interval between notification steps
+  size_t get_interval() const                      { return notificationInterval_; }
+
+  /// Set the interval between notification steps
+  void set_interval(size_t _notificationInterval) { notificationInterval_ = _notificationInterval; }
   
-  //notifies about a finished decimater step with the given step number
+  /** \brief callback
+   *
+   * This function has to be overloaded. It will be called regularly during
+   * the decimation process and will return the current step.
+   *
+   * @param _step Current step of the decimater
+   */
   virtual void notify(size_t _step) = 0;
-  //after notification, ask for abort or not, return true, if the decimater should abort
-  virtual bool abort() const = 0;
+
+  /** \brief Abort callback
+   *
+   * After each notification, this function is called by the decimater. If the
+   * function returns true, the decimater will stop at a consistent state. Otherwise
+   * it will continue.
+   *
+   * @return abort Yes or No
+   */
+  virtual bool abort() const { return false; };
   
 private:
-  size_t step_;
+  size_t notificationInterval_;
 };
 
 
@@ -137,12 +163,19 @@ public: //------------------------------------------------------ public methods
 
 public: //--------------------------------------------------- module management
 
-  // Observer interface
+  /** \brief Add observer
+   *
+   * You can set an observer which is used as a callback to check the decimators progress and to
+   * abort it if necessary.
+   *
+   * @param _o Observer to be used
+   */
   void set_observer(Observer* _o)
   {
       observer_ = _o;
   }
 
+  /// Get current observer of a decimater
   Observer* observer()
   {
       return observer_;
@@ -201,10 +234,10 @@ public: //--------------------------------------------------- module management
 
 protected:
 
-  //returns false, if abort requested by observer
+  /// returns false, if abort requested by observer
   bool notify_observer(size_t _n_collapses)
   {
-    if (observer() && _n_collapses % observer()->get_step() == 0)
+    if (observer() && _n_collapses % observer()->get_interval() == 0)
     {
       observer()->notify(_n_collapses);
       return !observer()->abort();
@@ -212,7 +245,7 @@ protected:
     return true;
   }
 
-  // Reset the initialized flag, and clear the bmodules_ and cmodule_
+  /// Reset the initialized flag, and clear the bmodules_ and cmodule_
   void set_uninitialized() {
     initialized_ = false;
     cmodule_ = 0;
@@ -265,22 +298,22 @@ protected: //---------------------------------------------------- private method
 private: //------------------------------------------------------- private data
 
 
-  // reference to mesh
+  /// reference to mesh
   Mesh&      mesh_;
 
-  // list of binary modules
+  /// list of binary modules
   ModuleList bmodules_;
 
-  // the current priority module
+  /// the current priority module
   Module*    cmodule_;
 
-  // list of all allocated modules (including cmodule_ and all of bmodules_)
+  /// list of all allocated modules (including cmodule_ and all of bmodules_)
   ModuleList all_modules_;
 
-  // Flag if all modules were initialized
+  /// Flag if all modules were initialized
   bool       initialized_;
 
-  // observer
+  /// observer
   Observer* observer_;
 
 };
